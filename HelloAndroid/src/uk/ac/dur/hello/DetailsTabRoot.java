@@ -31,9 +31,15 @@ public class DetailsTabRoot extends TabActivity
 		spec2.setIndicator("Location", getResources().getDrawable(R.drawable.clock));
 		Intent in2 = new Intent(this, LocationActivity.class);
 		spec2.setContent(in2);
+		
+		TabSpec reviewTab = tabHost.newTabSpec("Reviews");
+		reviewTab.setIndicator("Review", getResources().getDrawable(R.drawable.clock));
+		Intent in3 = new Intent(this, LocationActivity.class);
+		reviewTab.setContent(in3);
 
 		tabHost.addTab(eventDetailsTab);
 		tabHost.addTab(spec2);
+		tabHost.addTab(reviewTab);
 	}
 
 }
