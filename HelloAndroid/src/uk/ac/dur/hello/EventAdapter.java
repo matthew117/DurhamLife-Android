@@ -52,7 +52,7 @@ public class EventAdapter extends ArrayAdapter<Event>
 			}
 			if (txtEventDate != null)
 			{
-				txtEventDate.setText(e.getStartDate() + " | " + e.getEndDate());
+				txtEventDate.setText(e.getAddress1() + " | " + e.getStartDate() + " -- " + e.getEndDate());
 			}
 		}
 		return v;
