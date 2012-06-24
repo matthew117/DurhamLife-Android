@@ -27,10 +27,10 @@ public class DetailsTabRoot extends TabActivity
 		i.putExtra("event_description", description);
 		eventDetailsTab.setContent(i);
 
-		TabSpec spec2 = tabHost.newTabSpec("Location");
-		spec2.setIndicator("Location", getResources().getDrawable(R.drawable.clock));
+		TabSpec locationTab = tabHost.newTabSpec("Location");
+		locationTab.setIndicator("Location", getResources().getDrawable(R.drawable.clock));
 		Intent in2 = new Intent(this, LocationActivity.class);
-		spec2.setContent(in2);
+		locationTab.setContent(in2);
 		
 		TabSpec reviewTab = tabHost.newTabSpec("Reviews");
 		reviewTab.setIndicator("Review", getResources().getDrawable(R.drawable.clock));
@@ -38,7 +38,7 @@ public class DetailsTabRoot extends TabActivity
 		reviewTab.setContent(in3);
 
 		tabHost.addTab(eventDetailsTab);
-		tabHost.addTab(spec2);
+		tabHost.addTab(locationTab);
 		tabHost.addTab(reviewTab);
 	}
 
