@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Duchess</string>
+    <string name="main_no_items">There are no new events</string>
+    <string name="default_description">No description available</string>
+    <string name="default_event_name">Event</string>
+    <string name="default_date">Date unspecified</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="subscribe">Don\'t have an account?</string>
+    <string name="regsiter">Register</string>
+    <string name="login">Login</string>
+    <string name="password_confim">Confirm Password</string>
+    <string name="email">E-Mail Address</string>
+    <string name="university_affiliation">University Affiliation</string>
+    <string name="college">College</string>
+    
+    <string-array name="college_array">
+        <item>N/A</item>
+        <item>Collingwood</item>
+        <item>Grey</item>
+        <item>Hatfield</item>
+        <item>Hild Bede</item>
+        <item>John Snow</item>
+        <item>Josephine Butler</item>
+        <item>St. Aidan\'s</item>
+        <item>St. Chad\'s</item>
+        <item>St. Cuthbert\'s</item>
+        <item>St. John\'s</item>
+        <item>St. Mary\'s</item>
+        <item>Stephenson</item>
+        <item>Trevelyan</item>
+        <item>University</item>
+        <item>Ustinov</item>
+        <item>Van Mildert</item>
+    </string-array>
+    
+    <string-array name="durham_affiliation">
+        <item>N/A</item>
+        <item>Student</item>
+        <item>Staff</item>
+        <item>Alumni</item>
+    </string-array>
+        <string name="durham_affiliation">Durham Affiliation</string>
+        <string name="event_image">Event Image</string>
+        <string name="address_goes_here">Address Goes Here</string>
+
+</resources>
