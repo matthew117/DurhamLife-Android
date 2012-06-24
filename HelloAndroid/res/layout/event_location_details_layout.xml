@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:text="@string/address_goes_here" />
 
-    <!-- com.google.android.maps.MapView
+    <com.google.android.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:apiKey="MyKEY"
-        android:clickable="true" /-->
+        android:apiKey="0HTweKD0WrR0DIYNrpa0995TEWcG_fxy8EzHezA"
+        android:clickable="true" />
 
 </LinearLayout>
