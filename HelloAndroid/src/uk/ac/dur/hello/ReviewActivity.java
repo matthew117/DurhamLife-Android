@@ -1,7 +1,9 @@
 package uk.ac.dur.hello;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -73,16 +75,26 @@ public class ReviewActivity extends Activity
 		@Override
 		protected void onPostExecute(List<Review> reviewList)
 		{
+			// TODO include ScrollView
+			
 			for (int i = 0; i < reviewList.size(); i++)
 			{
 				Review review = reviewList.get(i);
+				Calendar c = Calendar.getInstance();
+				int year = Integer.parseInt(review.getTimestamp().substring(0,4));
+				int month = Integer.parseInt(review.getTimestamp().substring(5,7));
+				int day = Integer.parseInt(review.getTimestamp().substring(8,9));
+				int hourOfDay = Integer.parseInt(review.getTimestamp().substring(11,13));
+				int minute = Integer.parseInt(review.getTimestamp().substring(14,16));
+				c.set(year, month, day, hourOfDay, minute);
+				SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
 				TextView t = new TextView(getApplicationContext());
 				t.setPadding(10, 5, 5, 5);
 				t.setTextColor(Color.BLACK);
 				t.setTypeface(Typeface.SERIF);
-				t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#ef9be8") : Color
-						.parseColor("#d481ce"));
-				t.setText(review.getComment());
+				t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#997A99") : Color
+						.parseColor("#9C8AA5"));
+				t.setText(sdf.format(c.getTime()) + "\n" + review.getComment());
 				layout.addView(t);
 			}
 		}
