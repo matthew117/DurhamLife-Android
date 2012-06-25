@@ -143,6 +143,7 @@ public class CustomEventListView extends ListActivity
 
 					Intent i = new Intent(view.getContext(), DetailsTabRoot.class);
 					Event e = (Event) getListAdapter().getItem(position);
+					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
 					i.putExtra("event_end_date", e.getEndDate());
