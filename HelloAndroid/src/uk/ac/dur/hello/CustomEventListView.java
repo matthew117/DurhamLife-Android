@@ -144,8 +144,15 @@ public class CustomEventListView extends ListActivity
 					Intent i = new Intent(view.getContext(), DetailsTabRoot.class);
 					Event e = (Event) getListAdapter().getItem(position);
 					i.putExtra("event_name", e.getName());
-					i.putExtra("event_date", e.getStartDate() + " | " + e.getEndDate());
+					i.putExtra("event_start_date", e.getStartDate());
+					i.putExtra("event_end_date", e.getEndDate());
 					i.putExtra("event_description", e.getDescriptionHeader());
+					i.putExtra("event_address1", e.getAddress1());
+					i.putExtra("event_address2", e.getAddress2());
+					i.putExtra("event_city", e.getCity());
+					i.putExtra("event_postcode", e.getPostcode());
+					i.putExtra("event_latitude", e.getLatitude());
+					i.putExtra("event_longitude", e.getLongitude());
 					startActivity(i);
 				}
 			});

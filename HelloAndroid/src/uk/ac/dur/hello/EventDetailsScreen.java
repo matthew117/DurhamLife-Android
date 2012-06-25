@@ -13,7 +13,8 @@ public class EventDetailsScreen extends Activity
 		setContentView(R.layout.event_details_page);
 
 		String name = getIntent().getExtras().getString("event_name");
-		String date = getIntent().getExtras().getString("event_date");
+		String start_date = getIntent().getExtras().getString("event_start_date");
+		String end_date = getIntent().getExtras().getString("event_end_date");
 		String description = getIntent().getExtras().getString("event_description");
 
 		TextView txtName = (TextView) findViewById(R.id.textViewEventName);
@@ -21,7 +22,7 @@ public class EventDetailsScreen extends Activity
 		TextView txtDescription = (TextView) findViewById(R.id.textViewEventDescription);
 
 		if (name != null) txtName.setText(name);
-		if (date != null) txtDate.setText(date);
+		if (start_date != null && end_date != null) txtDate.setText(start_date + " - " + end_date);
 		if (description != null) txtDescription.setText(description);
 	}
 

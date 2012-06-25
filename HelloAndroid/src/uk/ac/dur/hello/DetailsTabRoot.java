@@ -15,21 +15,30 @@ public class DetailsTabRoot extends TabActivity
 		setContentView(R.layout.tab_root_layout);
 
 		TabHost tabHost = getTabHost();
+		
+		Bundle e = getIntent().getExtras();
 
 		TabSpec eventDetailsTab = tabHost.newTabSpec("Details");
 		eventDetailsTab.setIndicator("Details", getResources().getDrawable(R.drawable.event_info_tab_layout));
 		Intent i = new Intent(this, EventDetailsScreen.class);
-		String name = getIntent().getExtras().getString("event_name");
-		String date = getIntent().getExtras().getString("event_date");
-		String description = getIntent().getExtras().getString("event_description");
-		i.putExtra("event_name", name);
-		i.putExtra("event_date", date);
-		i.putExtra("event_description", description);
+
+		i.putExtra("event_name", e.getString("event_name"));
+		i.putExtra("event_start_date", e.getString("event_start_date"));
+		i.putExtra("event_end_date", e.getString("event_end_date"));
+		i.putExtra("event_description", e.getString("event_description"));
 		eventDetailsTab.setContent(i);
 
 		TabSpec locationTab = tabHost.newTabSpec("Location");
 		locationTab.setIndicator("Location", getResources().getDrawable(R.drawable.clock));
 		Intent in2 = new Intent(this, LocationActivity.class);
+		
+		in2.putExtra("event_address1", e.getString("event_address1"));
+		in2.putExtra("event_address2", e.getString("event_address2"));
+		in2.putExtra("event_city", e.getString("event_city"));
+		in2.putExtra("event_postcode", e.getString("event_postcode"));
+		in2.putExtra("event_latitude", e.getString("event_latitude"));
+		in2.putExtra("event_longitude", e.getString("event_longitude"));
+		
 		locationTab.setContent(in2);
 		
 		TabSpec reviewTab = tabHost.newTabSpec("Reviews");

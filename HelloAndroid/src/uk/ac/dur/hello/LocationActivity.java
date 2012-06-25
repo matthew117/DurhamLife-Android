@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -23,20 +24,35 @@ public class LocationActivity extends MapActivity
 	private GeoPoint currentLocation;
 	private MapView mapView;
 	private MapController mc;
+	
+	private TextView addressBlock;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_location_details_layout);
-
+		
+		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
+		
+		Bundle e = getIntent().getExtras();
+		
+		// TODO add error checking, or better yet, caching
+		
+		String address1 = e.getString("event_address1");
+		String address2 = e.getString("event_address2");
+		String city = e.getString("event_city");
+		String postcode = e.getString("event_postcode");
+		
+		addressBlock.setText(address1 + "\n" + address2 + "\n" + city + "\n" + postcode);
+		
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setBuiltInZoomControls(true);
 
 		mc = mapView.getController();
-		String coordinates[] = { "54.754158", "-1.612887" };
-		double lat = Double.parseDouble(coordinates[0]);
-		double lng = Double.parseDouble(coordinates[1]);
+
+		double lat = Double.parseDouble(e.getString("event_latitude"));
+		double lng = Double.parseDouble(e.getString("event_longitude"));
 
 		point = new GeoPoint((int) (lat * 1E6), (int) (lng * 1E6));
 
@@ -73,7 +89,7 @@ public class LocationActivity extends MapActivity
 			mapView.getProjection().toPixels(point, screenPoint);
 
 			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
-			canvas.drawBitmap(bmp, screenPoint.x, screenPoint.y - 50, null);
+			canvas.drawBitmap(bmp, screenPoint.x-36, screenPoint.y - 50, null);
 
 			return true;
 		}
