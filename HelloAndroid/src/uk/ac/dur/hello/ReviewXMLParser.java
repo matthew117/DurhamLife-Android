@@ -1,6 +1,6 @@
 package uk.ac.dur.hello;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -9,13 +9,13 @@ public class ReviewXMLParser extends DefaultHandler
 {
 
 	private Review review;
-	private ArrayList<Review> reviewList;
+	private List<Review> reviewList;
 
 	private boolean isRating = false;
 	private boolean isPost = false;
 	private boolean isTimeStamp = false;
 
-	public ReviewXMLParser(ArrayList<Review> reviewList)
+	public ReviewXMLParser(List<Review> reviewList)
 	{
 		review = new Review();
 		this.reviewList = reviewList;
