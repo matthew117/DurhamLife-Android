@@ -74,10 +74,7 @@ public class ReviewActivity extends Activity
 		
 		@Override
 		protected void onPostExecute(List<Review> reviewList)
-		{
-			// TODO ScrollView didn't work as expected, consider ListView
-			// TODO Consider putting the entire activity into a scroll view
-			
+		{			
 			for (int i = 0; i < reviewList.size(); i++)
 			{
 				Review review = reviewList.get(i);

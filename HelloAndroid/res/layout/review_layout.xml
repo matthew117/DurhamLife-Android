@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reviewLayoutID"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="3dp"
-    android:paddingBottom="3dp" >
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/reviewEventNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/default_event_name"
-        android:padding="5dp"
-        android:textColor="#7E317B"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
-
-    <EditText
-        android:id="@+id/reviewTextBox"
+    <LinearLayout
+        android:id="@+id/reviewLayoutID"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine" >
+        android:orientation="vertical"
+        android:padding="3dp" >
 
-        <requestFocus />
-    </EditText>
+        <TextView
+            android:id="@+id/reviewEventNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/default_event_name"
+            android:textColor="#7E317B"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
-    <RatingBar
-        android:id="@+id/ratingStars"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        <EditText
+            android:id="@+id/reviewTextBox"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine" >
 
-    <Button
-        android:id="@+id/submitReviewButton"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:paddingTop="6dp"
-        android:text="@string/submit" />
+            <requestFocus />
+        </EditText>
 
-</LinearLayout>
+        <RatingBar
+            android:id="@+id/ratingStars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/submitReviewButton"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:paddingTop="6dp"
+            android:text="@string/submit" />
+    </LinearLayout>
+
+</ScrollView>
