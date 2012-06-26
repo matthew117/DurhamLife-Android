@@ -75,7 +75,8 @@ public class ReviewActivity extends Activity
 		@Override
 		protected void onPostExecute(List<Review> reviewList)
 		{
-			// TODO include ScrollView
+			// TODO ScrollView didn't work as expected, consider ListView
+			// TODO Consider putting the entire activity into a scroll view
 			
 			for (int i = 0; i < reviewList.size(); i++)
 			{
@@ -83,7 +84,7 @@ public class ReviewActivity extends Activity
 				Calendar c = Calendar.getInstance();
 				int year = Integer.parseInt(review.getTimestamp().substring(0,4));
 				int month = Integer.parseInt(review.getTimestamp().substring(5,7));
-				int day = Integer.parseInt(review.getTimestamp().substring(8,9));
+				int day = Integer.parseInt(review.getTimestamp().substring(8,10));
 				int hourOfDay = Integer.parseInt(review.getTimestamp().substring(11,13));
 				int minute = Integer.parseInt(review.getTimestamp().substring(14,16));
 				c.set(year, month, day, hourOfDay, minute);
