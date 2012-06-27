@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class EventAdapter extends ArrayAdapter<Event>
+public class EventListAdapter extends ArrayAdapter<Event>
 {
 	private ArrayList<Event> events;
 	private Context context;
 	private int rowLayoutResourceID;
 
-	public EventAdapter(Context context, int rowLayoutResourceID, ArrayList<Event> events)
+	public EventListAdapter(Context context, int rowLayoutResourceID, ArrayList<Event> events)
 	{
 		super(context, rowLayoutResourceID, events);
 		this.events = events;

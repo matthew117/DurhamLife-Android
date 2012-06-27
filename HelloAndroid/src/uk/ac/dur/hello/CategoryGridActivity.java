@@ -9,7 +9,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class CategoryGridViewActivity extends Activity
+public class CategoryGridActivity extends Activity
 {
 
 	GridView gridView;

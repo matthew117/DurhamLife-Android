@@ -27,7 +27,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class CustomEventListView extends ListActivity
+public class MainActivity extends ListActivity
 {
 
 	private ProgressDialog progressDialog;
@@ -131,7 +131,7 @@ public class CustomEventListView extends ListActivity
 
 			reader.setContentHandler(myXMLHandler);
 
-			final EventAdapter adapter = new EventAdapter(this, R.layout.custom_event_list_row,
+			final EventListAdapter adapter = new EventListAdapter(this, R.layout.custom_event_list_row,
 					eventList);
 			setListAdapter(adapter);
 
@@ -141,7 +141,7 @@ public class CustomEventListView extends ListActivity
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 				{
 
-					Intent i = new Intent(view.getContext(), DetailsTabRoot.class);
+					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
 					Event e = (Event) getListAdapter().getItem(position);
 					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
@@ -189,7 +189,7 @@ public class CustomEventListView extends ListActivity
 
 			Thread thread = new Thread(null, parseData, "SAXParser");
 			thread.start();
-			progressDialog = ProgressDialog.show(CustomEventListView.this, "Please wait...",
+			progressDialog = ProgressDialog.show(MainActivity.this, "Please wait...",
 					"Retrieving data ...", true);
 
 			alphabeticalSortButton.setClickable(true);
@@ -259,7 +259,7 @@ public class CustomEventListView extends ListActivity
 						{
 							if (event.isFeatured()) featuredEvents.add(event);
 						}
-						setListAdapter(new EventAdapter(listActivity, R.layout.custom_event_list_row, featuredEvents));
+						setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row, featuredEvents));
 						featureMode = false;
 					}
 					else
@@ -276,7 +276,7 @@ public class CustomEventListView extends ListActivity
 				@Override
 				public void onClick(View v)
 				{
-					Intent i = new Intent(v.getContext(), CategoryGridViewActivity.class);
+					Intent i = new Intent(v.getContext(), CategoryGridActivity.class);
 					startActivity(i);					
 				}
 			});

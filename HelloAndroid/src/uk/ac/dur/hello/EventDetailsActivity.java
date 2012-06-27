@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EventDetailsScreen extends Activity
+public class EventDetailsActivity extends Activity
 {
 	private ImageView image;
 	

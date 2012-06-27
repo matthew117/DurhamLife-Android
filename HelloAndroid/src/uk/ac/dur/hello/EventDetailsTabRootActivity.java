@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
-public class DetailsTabRoot extends TabActivity
+public class EventDetailsTabRootActivity extends TabActivity
 {
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -20,7 +20,7 @@ public class DetailsTabRoot extends TabActivity
 
 		TabSpec eventDetailsTab = tabHost.newTabSpec("Details");
 		eventDetailsTab.setIndicator("Details", getResources().getDrawable(R.drawable.event_info_tab_layout));
-		Intent i = new Intent(this, EventDetailsScreen.class);
+		Intent i = new Intent(this, EventDetailsActivity.class);
 
 		i.putExtra("event_name", e.getString("event_name"));
 		i.putExtra("event_start_date", e.getString("event_start_date"));

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DBAdapter
+public class DBAccess
 {
 	public static final String KEY_ROWID = "eventID";
 	public static final String KEY_NAME = "name";
@@ -32,7 +32,7 @@ public class DBAdapter
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
 
-	public DBAdapter(Context context)
+	public DBAccess(Context context)
 	{
 		this.context = context;
 		DBHelper = new DatabaseHelper(this.context);
@@ -68,7 +68,7 @@ public class DBAdapter
 		}
 	}
 
-	public DBAdapter open() throws SQLException
+	public DBAccess open() throws SQLException
 	{
 		db = DBHelper.getWritableDatabase();
 		return this;

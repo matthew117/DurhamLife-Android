@@ -17,7 +17,7 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name=".CustomEventListView"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,11 +26,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EventDetailsScreen"
+            android:name=".EventDetailsActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".CategoryGridViewActivity"
+            android:name=".CategoryGridActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
@@ -43,7 +43,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".DetailsTabRoot"
+            android:name=".EventDetailsTabRootActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
