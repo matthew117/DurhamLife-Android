@@ -154,6 +154,7 @@ public class CustomEventListView extends ListActivity
 					i.putExtra("event_postcode", e.getPostcode());
 					i.putExtra("event_latitude", e.getLatitude());
 					i.putExtra("event_longitude", e.getLongitude());
+					i.putExtra("image_url", e.getImageURL());
 					startActivity(i);
 				}
 			});

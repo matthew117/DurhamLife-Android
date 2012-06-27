@@ -26,6 +26,7 @@ public class DetailsTabRoot extends TabActivity
 		i.putExtra("event_start_date", e.getString("event_start_date"));
 		i.putExtra("event_end_date", e.getString("event_end_date"));
 		i.putExtra("event_description", e.getString("event_description"));
+		i.putExtra("image_url", e.getString("image_url"));
 		eventDetailsTab.setContent(i);
 
 		TabSpec locationTab = tabHost.newTabSpec("Location");
