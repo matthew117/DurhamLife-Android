@@ -17,13 +17,22 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class ReviewActivity extends Activity
 {
 	private LinearLayout layout;
 	private Bundle e;
+	
+	private TextView eventNameLabel;
+	private EditText reviewEditText;
+	private RatingBar ratingBar;
+	private Button submitReviewButton;
 	
 	// TODO actually needs to submit reviews
 	// TODO remove EditText and RatingBar if current user has written a review
@@ -38,9 +47,22 @@ public class ReviewActivity extends Activity
 		e = getIntent().getExtras();
 
 		layout = (LinearLayout) findViewById(R.id.reviewLayoutID);
-		TextView eventNameTitleText = (TextView) findViewById(R.id.reviewEventNameLabel);
+		eventNameLabel = (TextView) findViewById(R.id.reviewEventNameLabel);
+		reviewEditText = (EditText) findViewById(R.id.reviewTextBox);
+		ratingBar = (RatingBar) findViewById(R.id.ratingStars);
+		submitReviewButton = (Button) findViewById(R.id.submitReviewButton);
 
-		eventNameTitleText.setText(e.getString("event_name"));
+		eventNameLabel.setText(e.getString("event_name"));
+		
+		submitReviewButton.setOnClickListener(new View.OnClickListener()
+		{	
+			@Override
+			public void onClick(View v)
+			{
+				// create xml
+				// post request to "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php"
+			}
+		});
 		
 		// TODO requires a progress bar of some sort
 		(new BackgroundTask()).execute("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
@@ -100,6 +122,12 @@ public class ReviewActivity extends Activity
 				layout.addView(t);
 			}
 		}
+	}
+	
+	private long getCurrentUserID()
+	{
+		// TODO to be implemented properly once login works
+		return 1;
 	}
 
 }
