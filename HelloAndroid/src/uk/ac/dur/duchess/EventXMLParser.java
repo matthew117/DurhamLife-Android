@@ -75,6 +75,12 @@ public class EventXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("contactEmailAddress")) isContactEmailAddress = true;
 		else if (localName.equalsIgnoreCase("webAddress")) isWebAddress = true;
 		
+		else if (localName.equalsIgnoreCase("location"))
+		{
+			String id = attributes.getValue("id");
+			long locationID = (id != null) ? Long.parseLong(id) : -1;
+			if(locationID != -1) event.setLocationID(locationID);
+		}
 		else if (localName.equalsIgnoreCase("address1")) isAddress1 = true;
 		else if (localName.equalsIgnoreCase("address2")) isAddress2 = true;
 		else if (localName.equalsIgnoreCase("city")) isCity = true;
@@ -160,6 +166,7 @@ public class EventXMLParser extends DefaultHandler
 		else if (isImageURL)
 		{
 			event.setImageURL(new String(ch, start, length));
+			
 			event.setCategoryTags(categoryTags);
 			event.setSubcategoryTags(subcategoryTags);
 			list.add(event);

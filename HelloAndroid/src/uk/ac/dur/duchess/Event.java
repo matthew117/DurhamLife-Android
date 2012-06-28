@@ -21,6 +21,7 @@ public class Event
 	private String contactEmailAddress;
 	private String webAddress;
 
+	private long locationID;
 	private String address1;
 	private String address2;
 	private String city;
@@ -233,6 +234,16 @@ public class Event
 	public void setFeatured(boolean isFeatured)
 	{
 		this.isFeatured = isFeatured;
+	}
+
+	public long getLocationID()
+	{
+		return locationID;
+	}
+
+	public void setLocationID(long locationID)
+	{
+		this.locationID = locationID;
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class User
 {
-	private long id;
+	private long userID;
 	private String forename;
 	private String surname;
 	private String password;
@@ -15,14 +15,14 @@ public class User
 	private Map<Long, String> categoryPreferences;
 	private Map<Long, String> subcategoryPreferences;
 
-	public long getId()
+	public long getUserID()
 	{
-		return id;
+		return userID;
 	}
 
-	public void setId(long id)
+	public void setUserID(long id)
 	{
-		this.id = id;
+		this.userID = id;
 	}
 
 	public String getForename()

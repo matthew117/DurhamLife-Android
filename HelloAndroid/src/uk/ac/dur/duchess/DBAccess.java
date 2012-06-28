@@ -10,22 +10,65 @@ import android.util.Log;
 
 public class DBAccess
 {
-	public static final String KEY_ROWID = "eventID";
+	public static final String KEY_EVENT_ID = "eventID";
+	public static final String KEY_FEATURED = "featured";
+	
 	public static final String KEY_NAME = "name";
+	public static final String KEY_DESCRIPTION_HEADER = "descriptionHeader";
+	public static final String KEY_DESCRIPTION_BODY = "descriptionBody";
+	
 	public static final String KEY_START_DATE = "startDate";
 	public static final String KEY_END_DATE = "endDate";
-	public static final String KEY_DESCRIPTION_HEADER = "descriptionHeader";
+	
+	public static final String KEY_CONTACT_TELEPHONE_NUMBER = "contactTelephoneNumber";
+	public static final String KEY_CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
+	public static final String KEY_WEB_ADDRESS = "webAddress";
+	
+	public static final String KEY_LOCATION_ID = "locationID";
+	public static final String KEY_ADDRESS_1 = "address1";
+	public static final String KEY_ADDRESS_2 = "address1";
+	public static final String KEY_CITY = "city";
+	public static final String KEY_POSTCODE = "postcode";
+	public static final String KEY_LATITUDE = "latitude";
+	public static final String KEY_LONGITUDE = "longitude";
+	
+	public static final String KEY_ACCESSIBILITY_INFORMATION = "accessibilityInformation";
+	
+	public static final String KEY_CATEGORY = "category";
+	
+	public static final String KEY_IMAGE_URL = "imageURL";
 
 	private static final String TAG = "DBAdapter";
 
 	private static final String DATABASE_NAME = "duchessDB";
-	private static final String EVENT_TABLE = "events";
 	private static final int DATABASE_VERSION = 1;
+	
+	private static final String EVENT_TABLE = "events";
+	private static final String LOCATION_TABLE = "locations";
+	
 
-	private static final String DATABASE_CREATE_STATEMENT = "CREATE TABLE events("
-			+ "eventID INTEGER PRIMARY KEY AUTOINCREMENT, " + "name TEXT NOT NULL, "
-			+ "startDate DATE NOT NULL, " + "endDate DATE NOT NULL, "
-			+ "descriptionHeader TEXT NOT NULL);";
+	private static final String DATABASE_CREATE_STATEMENT =
+		"CREATE TABLE events("
+			+ "eventID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "featured INTEGER NOT NULL, "
+			+ "name TEXT NOT NULL, "
+			+ "descriptionHeader TEXT NOT NULL, "
+			+ "descriptionBody TEXT NOT NULL, "
+			+ "startDate DATE NOT NULL, "
+			+ "endDate DATE NOT NULL, "
+			+ "locationID INTEGER NOT NULL, "
+			+ "accessibilityInformation TEXT NOT NULL, "			
+			+ "category TEXT NOT NULL, "
+			+ "imageURL TEXT); " +
+			
+		"CREATE TABLE locations("
+			+ "locationID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "address1 TEXT NOT NULL, "
+			+ "address2 TEXT NOT NULL, "
+			+ "city TEXT NOT NULL, "
+			+ "postcode TEXT NOT NULL, "
+			+ "latitude TEXT NOT NULL, "
+			+ "longitude TEXT NOT NULL);";
 
 	private final Context context;
 
@@ -64,6 +107,7 @@ public class DBAccess
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion
 					+ ", which will destroy all old data");
 			db.execSQL("DROP TABLE IF EXISTS events");
+			db.execSQL("DROP TABLE IF EXISTS locations");
 			onCreate(db);
 		}
 	}
@@ -82,21 +126,62 @@ public class DBAccess
 	public long insertEvent(Event event)
 	{
 		ContentValues initialValues = new ContentValues();
+		
+		initialValues.put(KEY_FEATURED, event.isFeatured());
+		
 		initialValues.put(KEY_NAME, event.getName());
 		initialValues.put(KEY_DESCRIPTION_HEADER, event.getDescriptionHeader());
+		initialValues.put(KEY_DESCRIPTION_BODY, event.getDescriptionBody());
+		
 		initialValues.put(KEY_START_DATE, event.getStartDate());
 		initialValues.put(KEY_END_DATE, event.getEndDate());
+		
+		initialValues.put(KEY_LOCATION_ID, event.getLocationID());
+		
+		if(containsLocation(event.getLocationID())) insertLocation(event);
+		
+		initialValues.put(KEY_ACCESSIBILITY_INFORMATION, event.getAccessibilityInformation());
+		
+		initialValues.put(KEY_CATEGORY, event.getCategoryTags().get(0));
+		
+		initialValues.put(KEY_IMAGE_URL, event.getImageURL());
+		
 		return db.insert(EVENT_TABLE, null, initialValues);
+	}
+	
+	public long insertLocation(Event event)
+	{
+		ContentValues initialValues = new ContentValues();
+		
+		initialValues.put(KEY_ADDRESS_1, event.getAddress1());
+		initialValues.put(KEY_ADDRESS_2, event.getAddress2());
+		initialValues.put(KEY_CITY, event.getCity());
+		initialValues.put(KEY_POSTCODE, event.getPostcode());
+		initialValues.put(KEY_LATITUDE, event.getLatitude());
+		initialValues.put(KEY_LONGITUDE, event.getLongitude());
+		
+		return db.insert(LOCATION_TABLE, null, initialValues);
 	}
 
 	public boolean deleteEvent(long eventID)
 	{
-		return db.delete(EVENT_TABLE, KEY_ROWID + "=" + eventID, null) > 0;
+		return db.delete(EVENT_TABLE, KEY_EVENT_ID + "=" + eventID, null) > 0;
+	}
+	
+	public boolean deleteLocation(long locationID)
+	{
+		return db.delete(LOCATION_TABLE, KEY_LOCATION_ID + "=" + locationID, null) > 0;
+	}
+	
+	public boolean containsLocation(long locationID)
+	{
+		return db.query(LOCATION_TABLE, new String[] {KEY_LOCATION_ID},
+				KEY_LOCATION_ID + "=" + locationID, null, null, null, null).getCount() == 0;
 	}
 
 	public Cursor getAllEvents()
 	{
-		return db.query(EVENT_TABLE, new String[] { KEY_ROWID, KEY_NAME, KEY_START_DATE,
+		return db.query(EVENT_TABLE, new String[] { KEY_EVENT_ID, KEY_NAME, KEY_START_DATE,
 				KEY_END_DATE, KEY_DESCRIPTION_HEADER }, null, null, null, null, null);
 	}
 }
