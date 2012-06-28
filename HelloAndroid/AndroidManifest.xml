@@ -51,7 +51,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".ReviewActivity"
+            android:name="uk.ac.dur.duchess.ReviewActivity"
             android:label="@string/app_name" >
         </activity>
     </application>

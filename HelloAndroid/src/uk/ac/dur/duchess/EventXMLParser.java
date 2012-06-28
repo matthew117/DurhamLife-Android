@@ -1,4 +1,4 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import java.util.HashMap;
 import java.util.List;

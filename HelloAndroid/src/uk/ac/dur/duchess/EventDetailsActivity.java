@@ -1,10 +1,12 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+
+import uk.ac.dur.hello.R;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 public class EventDetailsActivity extends Activity
 {
 	private ImageView image;
+	private TextView txtName;
+	private TextView txtDate;
+	private TextView txtDescription;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -25,17 +30,19 @@ public class EventDetailsActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_details_page);
 
-		String name = getIntent().getExtras().getString("event_name");
-		String start_date = getIntent().getExtras().getString("event_start_date");
-		String end_date = getIntent().getExtras().getString("event_end_date");
-		String description = getIntent().getExtras().getString("event_description");
-		String image_url = getIntent().getExtras().getString("image_url");
-
-		TextView txtName = (TextView) findViewById(R.id.textViewEventName);
-		TextView txtDate = (TextView) findViewById(R.id.textViewEventDate);
-		TextView txtDescription = (TextView) findViewById(R.id.textViewEventDescription);
+		txtName = (TextView) findViewById(R.id.textViewEventName);
+		txtDate = (TextView) findViewById(R.id.textViewEventDate);
+		txtDescription = (TextView) findViewById(R.id.textViewEventDescription);
 		
 		image = (ImageView) findViewById(R.id.imageView1);
+		
+		Bundle e = getIntent().getExtras();
+		
+		String name = e.getString("event_name");
+		String start_date = e.getString("event_start_date");
+		String end_date = e.getString("event_end_date");
+		String description = e.getString("event_description");
+		String image_url = e.getString("image_url");
 
 		if (name != null) txtName.setText(name);
 		if (start_date != null && end_date != null) txtDate.setText(start_date + " - " + end_date);
@@ -68,6 +75,7 @@ public class EventDetailsActivity extends Activity
 		}
 	}
 	
+	// TODO move into networking module
 	private InputStream openHTTPConnection(String urlString) throws IOException
 	{
 		InputStream in = null;

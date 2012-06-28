@@ -1,4 +1,4 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.hello.R;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -32,7 +34,14 @@ public class MainActivity extends ListActivity
 
 	private ProgressDialog progressDialog;
 	private boolean featureMode = true;
-
+	private Button alphabeticalSortButton;
+	private Button chronologicalSortButton;
+	private Button featuredFilterButton;
+	private Button categoryGridButton;
+	private Button loginButton;
+	private Button settingsButton;
+	
+	// TODO move into networking module
 	private InputStream openHTTPConnection(String urlString) throws IOException
 	{
 		InputStream in = null;
@@ -109,12 +118,12 @@ public class MainActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		Button alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
-		Button chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
-		Button featuredFilterButton = (Button) findViewById(R.id.featureFilterButton);
-		Button categoryGridButton = (Button) findViewById(R.id.categoryGridButton);
-		Button loginButton = (Button) findViewById(R.id.loginButton);
-		Button settingsButton = (Button) findViewById(R.id.settingsButton);
+		alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
+		chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
+		featuredFilterButton = (Button) findViewById(R.id.featureFilterButton);
+		categoryGridButton = (Button) findViewById(R.id.categoryGridButton);
+		loginButton = (Button) findViewById(R.id.loginButton);
+		settingsButton = (Button) findViewById(R.id.settingsButton);
 
 		try
 		{
@@ -295,7 +304,8 @@ public class MainActivity extends ListActivity
 		}
 		catch (Exception e)
 		{
-			System.out.println(e);
+			// TODO handle error
+			e.printStackTrace();
 		}
 
 	}

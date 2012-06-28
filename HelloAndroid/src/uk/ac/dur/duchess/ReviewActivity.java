@@ -1,4 +1,4 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -12,6 +12,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.hello.R;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,6 +26,10 @@ public class ReviewActivity extends Activity
 {
 	private LinearLayout layout;
 	private Bundle e;
+	
+	// TODO actually needs to submit reviews
+	// TODO remove EditText and RatingBar if current user has written a review
+	// TODO remove EditText and RatingBar if no user is signed in (anonymous mode)
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)

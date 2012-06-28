@@ -1,4 +1,4 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import android.content.ContentValues;
 import android.content.Context;

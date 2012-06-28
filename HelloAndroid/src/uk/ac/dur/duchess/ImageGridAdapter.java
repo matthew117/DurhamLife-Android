@@ -1,4 +1,4 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import android.content.Context;
 import android.view.View;
@@ -11,6 +11,8 @@ public class ImageGridAdapter extends BaseAdapter
 {
 	private Context context;
 	private Integer[] imageIDs;
+	
+	// TODO add category label text below the image
 	
 	public ImageGridAdapter(Context context, Integer[] imageIDs)
 	{

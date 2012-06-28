@@ -1,6 +1,8 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
 import java.util.List;
+
+import uk.ac.dur.hello.R;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,7 +39,7 @@ public class LocationActivity extends MapActivity
 		
 		Bundle e = getIntent().getExtras();
 		
-		// TODO add error checking, or better yet, caching
+		// TODO add error checking
 		
 		String address1 = e.getString("event_address1");
 		String address2 = e.getString("event_address2");

@@ -1,5 +1,6 @@
-package uk.ac.dur.hello;
+package uk.ac.dur.duchess;
 
+import uk.ac.dur.hello.R;
 import android.app.Activity;
 import android.os.Bundle;
 
