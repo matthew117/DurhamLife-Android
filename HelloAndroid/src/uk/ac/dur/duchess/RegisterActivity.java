@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class RegistryActivity extends Activity
+public class RegisterActivity extends Activity
 {
 	private EditText email;
 	private EditText password;
@@ -18,7 +18,7 @@ public class RegistryActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.account_wizard_layout);
+		setContentView(R.layout.register_layout);
 		
 		email = (EditText) findViewById(R.id.registerEmailEditText);
 		password = (EditText) findViewById(R.id.registerPasswordEditText);

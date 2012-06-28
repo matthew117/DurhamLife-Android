@@ -15,7 +15,7 @@
     <string name="email">E-Mail Address</string>
     <string name="university_affiliation">University Affiliation</string>
     <string name="college">College</string>
-    
+
     <string-array name="college_array">
         <item>N/A</item>
         <item>Collingwood</item>
@@ -35,16 +35,42 @@
         <item>Ustinov</item>
         <item>Van Mildert</item>
     </string-array>
-    
     <string-array name="durham_affiliation">
         <item>N/A</item>
         <item>Student</item>
         <item>Staff</item>
         <item>Alumni</item>
     </string-array>
-        <string name="durham_affiliation">Durham Affiliation</string>
-        <string name="event_image">Event Image</string>
-        <string name="address_goes_here">Address Goes Here</string>
-        <string name="submit">Submit</string>
+    <string-array name="durham_departments">
+        <item>Anthropology</item>
+        <item>Archaeology</item>
+        <item>Biological &amp; Biomedical</item>
+        <item>Business School</item>
+        <item>Chemistry</item>
+        <item>Classics &amp; Ancient History</item>
+        <item>Computer Science</item>
+        <item>Earth Sciences</item>
+        <item>Education</item>
+        <item>Engineering</item>
+        <item>English Studies</item>
+        <item>Geography</item>
+        <item>Government and International Affairs</item>
+        <item>History</item>
+        <item>Law</item>
+        <item>Mathematical Sciences</item>
+        <item>Medicine</item>
+        <item>Modern Languages &amp; Cultures</item>
+        <item>Music</item>
+        <item>Natural Sciences</item>
+        <item>Philosophy</item>
+        <item>Physics</item>
+        <item>Psychology</item>
+        <item>Theology and Ministry</item>
+    </string-array>
+
+    <string name="durham_affiliation">Durham Affiliation</string>
+    <string name="event_image">Event Image</string>
+    <string name="address_goes_here">Address Goes Here</string>
+    <string name="submit">Submit</string>
 
 </resources>

@@ -33,7 +33,7 @@ public class LocationActivity extends MapActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.event_location_details_layout);
+		setContentView(R.layout.event_location_layout);
 		
 		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
 		

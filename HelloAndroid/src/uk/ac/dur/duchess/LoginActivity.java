@@ -34,7 +34,7 @@ public class LoginActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(getApplicationContext(), RegistryActivity.class);
+				Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
 				// TODO could maybe pass the chosen e-mail address to the registry page if they've entered one
 				startActivity(i);
 			}
