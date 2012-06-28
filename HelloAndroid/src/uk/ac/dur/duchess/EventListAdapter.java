@@ -2,8 +2,6 @@ package uk.ac.dur.duchess;
 
 import java.util.ArrayList;
 
-import uk.ac.dur.hello.R;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

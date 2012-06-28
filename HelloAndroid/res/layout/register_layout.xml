@@ -65,4 +65,21 @@
         android:entries="@array/college_array"
         android:prompt="@string/college" />
 
+    <TextView
+        android:id="@+id/registerDepartmentLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingLeft="2dp"
+        android:text="@string/department"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/departmentSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/durham_departments"
+        android:prompt="@string/department" />
+
 </LinearLayout>

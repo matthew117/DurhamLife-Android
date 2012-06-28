@@ -2,8 +2,6 @@ package uk.ac.dur.duchess;
 
 import java.util.List;
 
-import uk.ac.dur.hello.R;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;

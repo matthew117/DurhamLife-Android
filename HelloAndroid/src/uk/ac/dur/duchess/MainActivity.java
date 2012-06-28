@@ -16,8 +16,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import uk.ac.dur.hello.R;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;

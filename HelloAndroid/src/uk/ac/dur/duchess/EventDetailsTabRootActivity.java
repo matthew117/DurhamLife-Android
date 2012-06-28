@@ -1,6 +1,5 @@
 package uk.ac.dur.duchess;
 
-import uk.ac.dur.hello.R;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
