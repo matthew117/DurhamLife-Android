@@ -29,13 +29,19 @@ public class NetworkFunctions
 		httpConnection.setInstanceFollowRedirects(true);
 		httpConnection.setRequestMethod(httpMethod);
 
-		if (httpMethod.equalsIgnoreCase("POST") && postData != null)
+		if (httpMethod.equalsIgnoreCase("PUT") && postData != null)
 		{
 			httpConnection.setRequestProperty("Content-type", "application/xml");
+			httpConnection.setDoOutput(true);
 			OutputStream requestOutput = httpConnection.getOutputStream();
 			requestOutput.write(postData);
 			requestOutput.close();
 		}
+		
+		httpConnection.connect();
+		responseCode = httpConnection.getResponseCode();
+		
+		inputStream = httpConnection.getInputStream();
 
 		return inputStream;
 	}

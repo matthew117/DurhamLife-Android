@@ -1,5 +1,7 @@
 package uk.ac.dur.duchess;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.data.NetworkFunctions;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -24,20 +27,27 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ReviewActivity extends Activity
 {
 	private LinearLayout layout;
 	private Bundle e;
-	
+
 	private TextView eventNameLabel;
 	private EditText reviewEditText;
 	private RatingBar ratingBar;
 	private Button submitReviewButton;
-	
-	// TODO actually needs to submit reviews
+
 	// TODO remove EditText and RatingBar if current user has written a review
-	// TODO remove EditText and RatingBar if no user is signed in (anonymous mode)
+	// TODO remove EditText and RatingBar if no user is signed in (anonymous
+	// mode)
+	
+	// TODO allow editing of that user's review
+	// TODO add API function that only returns reviews updated since a certain time
+	
+	// TODO add stars to each review
+	// TODO general formatting
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -54,17 +64,34 @@ public class ReviewActivity extends Activity
 		submitReviewButton = (Button) findViewById(R.id.submitReviewButton);
 
 		eventNameLabel.setText(e.getString("event_name"));
-		
+
 		submitReviewButton.setOnClickListener(new View.OnClickListener()
-		{	
+		{
 			@Override
 			public void onClick(View v)
 			{
-				// create xml
-				// post request to "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php"
+				String userXMLRequest = String.format(
+						"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><review userID=\"%s\" eventID=\"%s\">"
+								+ "<rating>%d</rating>" + "<post>%s</post>"
+								+ "<timestamp>%s</timestamp>" + "</review>", getCurrentUserID(),
+						e.getLong("event_id"), (int) (ratingBar.getRating() * 2),
+						reviewEditText.getText(), System.currentTimeMillis() / 1000);
+				Toast.makeText(getApplicationContext(), userXMLRequest, Toast.LENGTH_LONG).show();
+
+				try
+				{
+					InputStream response = NetworkFunctions.getHTTPResponseStream(
+							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
+									+ e.getLong("event_id"), "PUT", userXMLRequest.getBytes());
+				}
+				catch (IOException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
-		
+
 		// TODO requires a progress bar of some sort
 		(new BackgroundTask()).execute("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
 				+ e.getLong("event_id"));
@@ -98,10 +125,10 @@ public class ReviewActivity extends Activity
 				return reviewList;
 			}
 		}
-		
+
 		@Override
 		protected void onPostExecute(List<Review> reviewList)
-		{			
+		{
 			for (int i = 0; i < reviewList.size(); i++)
 			{
 				try
@@ -127,16 +154,15 @@ public class ReviewActivity extends Activity
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				
+
 			}
 		}
 	}
-	
+
 	private long getCurrentUserID()
 	{
 		// TODO to be implemented properly once login works
-		return 1;
+		return 29;
 	}
 
 }
