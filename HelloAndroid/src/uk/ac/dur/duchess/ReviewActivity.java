@@ -1,9 +1,11 @@
 package uk.ac.dur.duchess;
 
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -103,23 +105,31 @@ public class ReviewActivity extends Activity
 		{			
 			for (int i = 0; i < reviewList.size(); i++)
 			{
-				Review review = reviewList.get(i);
-				Calendar c = Calendar.getInstance();
-				int year = Integer.parseInt(review.getTimestamp().substring(0,4));
-				int month = Integer.parseInt(review.getTimestamp().substring(5,7));
-				int day = Integer.parseInt(review.getTimestamp().substring(8,10));
-				int hourOfDay = Integer.parseInt(review.getTimestamp().substring(11,13));
-				int minute = Integer.parseInt(review.getTimestamp().substring(14,16));
-				c.set(year, month, day, hourOfDay, minute);
-				SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
-				TextView t = new TextView(getApplicationContext());
-				t.setPadding(10, 5, 5, 5);
-				t.setTextColor(Color.BLACK);
-				t.setTypeface(Typeface.SERIF);
-				t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#997A99") : Color
-						.parseColor("#9C8AA5"));
-				t.setText(sdf.format(c.getTime()) + "\n" + review.getComment());
-				layout.addView(t);
+				try
+				{
+					Review review = reviewList.get(i);
+
+					SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
+
+					Date date = sourceFormat.parse(review.getTimestamp());
+
+					TextView t = new TextView(getApplicationContext());
+					t.setPadding(10, 5, 5, 5);
+					t.setTextColor(Color.BLACK);
+					t.setTypeface(Typeface.SERIF);
+					t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#997A99") : Color
+							.parseColor("#9C8AA5"));
+					t.setText(destinationFormat.format(date) + "\n" + review.getComment());
+					layout.addView(t);
+				}
+				catch (ParseException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 			}
 		}
 	}
