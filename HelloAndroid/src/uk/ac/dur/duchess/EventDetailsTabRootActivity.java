@@ -35,6 +35,7 @@ public class EventDetailsTabRootActivity extends TabActivity
 		locationTab.setIndicator("Location", getResources().getDrawable(R.drawable.location_tab_icon));
 		Intent locationIntent = new Intent(this, LocationActivity.class);
 		
+		locationIntent.putExtra("event_name", e.getString("event_name"));
 		locationIntent.putExtra("event_address1", e.getString("event_address1"));
 		locationIntent.putExtra("event_address2", e.getString("event_address2"));
 		locationIntent.putExtra("event_city", e.getString("event_city"));

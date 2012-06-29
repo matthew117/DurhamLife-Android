@@ -26,6 +26,7 @@ public class LocationActivity extends MapActivity
 	private MapController mc;
 	
 	private TextView addressBlock;
+	private TextView eventName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -34,6 +35,7 @@ public class LocationActivity extends MapActivity
 		setContentView(R.layout.event_location_layout);
 		
 		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
+		eventName = (TextView) findViewById(R.id.locationEventNameLabel);
 		
 		Bundle e = getIntent().getExtras();
 		
@@ -45,6 +47,7 @@ public class LocationActivity extends MapActivity
 		String postcode = e.getString("event_postcode");
 		
 		addressBlock.setText(address1 + "\n" + address2 + "\n" + city + "\n" + postcode);
+		eventName.setText(e.getString("event_name"));
 		
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setBuiltInZoomControls(true);
