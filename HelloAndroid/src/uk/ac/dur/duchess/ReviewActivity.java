@@ -41,14 +41,11 @@ public class ReviewActivity extends Activity
 	private RatingBar ratingBar;
 	private Button submitReviewButton;
 
-	// TODO remove EditText and RatingBar if current user has written a review
+	// TODO disallow users from reviewing the same event twice in the API
 	// TODO remove EditText and RatingBar if no user is signed in (anonymous)
 	
 	// TODO allow editing of that user's review
 	// TODO add API function that only returns reviews updated since a certain time
-	
-	// TODO add stars to each review
-	// TODO general formatting
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -130,6 +127,13 @@ public class ReviewActivity extends Activity
 		@Override
 		protected void onPostExecute(List<Review> reviewList)
 		{
+			if (reviewList.size() == 0)
+			{
+				TextView t = new TextView(getApplicationContext());
+				t.setText("There are no reviews for this event yet.");
+				t.setPadding(5, 5, 5, 5);
+				layout.addView(t);
+			}
 			for (int i = 0; i < reviewList.size(); i++)
 			{
 				try
@@ -174,14 +178,6 @@ public class ReviewActivity extends Activity
 		            if (rating < 1) star1.setImageBitmap(emptyStar);
 					
 		            layout.addView(v);
-//					TextView t = new TextView(getApplicationContext());
-//					t.setPadding(10, 5, 5, 5);
-//					t.setTextColor(Color.BLACK);
-//					t.setTypeface(Typeface.SERIF);
-//					t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#997A99") : Color
-//							.parseColor("#9C8AA5"));
-//					t.setText(destinationFormat.format(date) + "\n" + review.getComment());
-//					layout.addView(t);
 				}
 				catch (ParseException e)
 				{
@@ -196,7 +192,7 @@ public class ReviewActivity extends Activity
 	private long getCurrentUserID()
 	{
 		// TODO to be implemented properly once login works
-		return 29;
+		return 1;
 	}
 
 }

@@ -20,7 +20,7 @@ public class EventDetailsTabRootActivity extends TabActivity
 		Bundle e = getIntent().getExtras();
 
 		TabSpec eventDetailsTab = tabHost.newTabSpec("Details");
-		eventDetailsTab.setIndicator("Details", getResources().getDrawable(R.drawable.event_info_tab_layout));
+		eventDetailsTab.setIndicator("Details", getResources().getDrawable(R.drawable.details_tab_icon));
 		Intent detailsIntent = new Intent(this, EventDetailsActivity.class);
 
 		detailsIntent.putExtra("event_name", e.getString("event_name"));
@@ -32,7 +32,7 @@ public class EventDetailsTabRootActivity extends TabActivity
 		eventDetailsTab.setContent(detailsIntent);
 
 		TabSpec locationTab = tabHost.newTabSpec("Location");
-		locationTab.setIndicator("Location", getResources().getDrawable(R.drawable.clock));
+		locationTab.setIndicator("Location", getResources().getDrawable(R.drawable.location_tab_icon));
 		Intent locationIntent = new Intent(this, LocationActivity.class);
 		
 		locationIntent.putExtra("event_address1", e.getString("event_address1"));
@@ -45,7 +45,7 @@ public class EventDetailsTabRootActivity extends TabActivity
 		locationTab.setContent(locationIntent);
 		
 		TabSpec reviewTab = tabHost.newTabSpec("Reviews");
-		reviewTab.setIndicator("Review", getResources().getDrawable(R.drawable.clock));
+		reviewTab.setIndicator("Review", getResources().getDrawable(R.drawable.rating_tab_icon));
 		Intent reviewIntent = new Intent(this, ReviewActivity.class);
 		
 		reviewIntent.putExtra("event_name", e.getString("event_name"));
