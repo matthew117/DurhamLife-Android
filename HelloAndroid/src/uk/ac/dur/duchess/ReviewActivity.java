@@ -17,13 +17,15 @@ import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -40,8 +42,7 @@ public class ReviewActivity extends Activity
 	private Button submitReviewButton;
 
 	// TODO remove EditText and RatingBar if current user has written a review
-	// TODO remove EditText and RatingBar if no user is signed in (anonymous
-	// mode)
+	// TODO remove EditText and RatingBar if no user is signed in (anonymous)
 	
 	// TODO allow editing of that user's review
 	// TODO add API function that only returns reviews updated since a certain time
@@ -140,14 +141,47 @@ public class ReviewActivity extends Activity
 
 					Date date = sourceFormat.parse(review.getTimestamp());
 
-					TextView t = new TextView(getApplicationContext());
-					t.setPadding(10, 5, 5, 5);
-					t.setTextColor(Color.BLACK);
-					t.setTypeface(Typeface.SERIF);
-					t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#997A99") : Color
-							.parseColor("#9C8AA5"));
-					t.setText(destinationFormat.format(date) + "\n" + review.getComment());
-					layout.addView(t);
+					View v = new View(getApplicationContext());
+					
+					LayoutInflater inflater = getLayoutInflater();
+		            v = inflater.inflate(R.layout.review_comment_layout, layout, false);
+		            
+		            TextView commentDate = (TextView) v.findViewById(R.id.reviewSubmitDate);
+		            TextView commentText = (TextView) v.findViewById(R.id.reviewComment);
+		            ImageView star1 = (ImageView) v.findViewById(R.id.reviewStar1);
+		            ImageView star2 = (ImageView) v.findViewById(R.id.reviewStar2);
+		            ImageView star3 = (ImageView) v.findViewById(R.id.reviewStar3);
+		            ImageView star4 = (ImageView) v.findViewById(R.id.reviewStar4);
+		            ImageView star5 = (ImageView) v.findViewById(R.id.reviewStar5);
+		            
+		            commentDate.setText(destinationFormat.format(date));
+		            commentText.setText(review.getComment());
+		            
+		            int rating = review.getRating();
+		            
+		            Bitmap emptyStar = BitmapFactory.decodeResource(getResources(), R.drawable.empty_star);
+		            Bitmap halfStar = BitmapFactory.decodeResource(getResources(), R.drawable.half_star);
+		            
+		            if (rating < 10) star5.setImageBitmap(halfStar);
+		            if (rating < 9) star5.setImageBitmap(emptyStar);
+		            if (rating < 8) star4.setImageBitmap(halfStar);
+		            if (rating < 7) star4.setImageBitmap(emptyStar);
+		            if (rating < 6) star3.setImageBitmap(halfStar);
+		            if (rating < 5) star3.setImageBitmap(emptyStar);
+		            if (rating < 4) star2.setImageBitmap(halfStar);
+		            if (rating < 3) star2.setImageBitmap(emptyStar);
+		            if (rating < 2) star1.setImageBitmap(halfStar);
+		            if (rating < 1) star1.setImageBitmap(emptyStar);
+					
+		            layout.addView(v);
+//					TextView t = new TextView(getApplicationContext());
+//					t.setPadding(10, 5, 5, 5);
+//					t.setTextColor(Color.BLACK);
+//					t.setTypeface(Typeface.SERIF);
+//					t.setBackgroundColor((i % 2 == 0) ? Color.parseColor("#997A99") : Color
+//							.parseColor("#9C8AA5"));
+//					t.setText(destinationFormat.format(date) + "\n" + review.getComment());
+//					layout.addView(t);
 				}
 				catch (ParseException e)
 				{

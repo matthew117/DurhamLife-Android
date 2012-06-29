@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/reviewSubmitDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="3dp"
+        android:text="@string/problem_loading_date"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/reviewComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/reviewStar1"
+        android:text="@string/problem_loading_comment"
+        android:typeface="serif" />
+
+    <ImageView
+        android:id="@+id/reviewStar5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/rating"
+        android:src="@drawable/full_star" />
+
+    <ImageView
+        android:id="@+id/reviewStar4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/reviewStar5"
+        android:contentDescription="@string/rating"
+        android:src="@drawable/full_star" />
+
+    <ImageView
+        android:id="@+id/reviewStar3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/reviewStar4"
+        android:contentDescription="@string/rating"
+        android:src="@drawable/full_star" />
+
+    <ImageView
+        android:id="@+id/reviewStar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/reviewStar3"
+        android:contentDescription="@string/rating"
+        android:src="@drawable/full_star" />
+
+    <ImageView
+        android:id="@+id/reviewStar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/reviewStar2"
+        android:contentDescription="@string/rating"
+        android:src="@drawable/full_star" />
+
+</RelativeLayout>
