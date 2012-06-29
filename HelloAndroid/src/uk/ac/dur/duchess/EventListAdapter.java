@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import uk.ac.dur.duchess.data.CalendarFunctions;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -55,24 +57,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			}
 			if (txtEventDate != null)
 			{
-				try
-				{
-					SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
-					SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
-					
-					Date startDate = sourceFormat.parse(e.getStartDate());
-					Date endDate = sourceFormat.parse(e.getEndDate());
-						
-					txtEventDate.setText(
-						e.getAddress1() + "\n" +
-						destinationFormat.format(startDate) + " until " +
-						destinationFormat.format(endDate));
-				}
-				catch (ParseException e1)
-				{
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
+				txtEventDate.setText( e.getAddress1() + "\n" + CalendarFunctions.getEventDate(e));
 			}
 		}
 		return v;
