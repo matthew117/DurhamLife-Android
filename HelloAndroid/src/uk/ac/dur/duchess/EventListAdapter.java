@@ -1,6 +1,9 @@
 package uk.ac.dur.duchess;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
@@ -52,7 +55,24 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			}
 			if (txtEventDate != null)
 			{
-				txtEventDate.setText(e.getAddress1() + "\n" + e.getStartDate() + " until " + e.getEndDate());
+				try
+				{
+					SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
+					SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
+					
+					Date startDate = sourceFormat.parse(e.getStartDate());
+					Date endDate = sourceFormat.parse(e.getEndDate());
+						
+					txtEventDate.setText(
+						e.getAddress1() + "\n" +
+						destinationFormat.format(startDate) + " until " +
+						destinationFormat.format(endDate));
+				}
+				catch (ParseException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
 			}
 		}
 		return v;

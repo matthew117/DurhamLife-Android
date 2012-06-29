@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -43,7 +46,24 @@ public class EventDetailsActivity extends Activity
 		String image_url = e.getString("image_url");
 
 		if (name != null) txtName.setText(name);
-		if (start_date != null && end_date != null) txtDate.setText(start_date + " - " + end_date);
+		if (start_date != null && end_date != null)
+		{
+			try
+			{
+				SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
+				
+				Date startDate = sourceFormat.parse(start_date);
+				Date endDate = sourceFormat.parse(end_date);
+					
+				txtDate.setText(destinationFormat.format(startDate) + " - " +
+					destinationFormat.format(endDate));
+			}
+			catch (ParseException pe)
+			{
+				txtDate.setText(start_date + " - " + end_date);
+			}		
+		}
 		if (description != null) txtDescription.setText(description);
 		
 		(new BackgroundTask()).execute(image_url);

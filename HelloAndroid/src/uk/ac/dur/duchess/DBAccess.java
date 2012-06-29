@@ -49,7 +49,7 @@ public class DBAccess
 
 	private static final String DATABASE_CREATE_STATEMENT =
 		"CREATE TABLE events("
-			+ "eventID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "eventID INTEGER PRIMARY KEY, "
 			+ "featured INTEGER NOT NULL, "
 			+ "name TEXT NOT NULL, "
 			+ "descriptionHeader TEXT NOT NULL, "
@@ -62,7 +62,7 @@ public class DBAccess
 			+ "imageURL TEXT); " +
 			
 		"CREATE TABLE locations("
-			+ "locationID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "locationID INTEGER PRIMARY KEY, "
 			+ "address1 TEXT NOT NULL, "
 			+ "address2 TEXT NOT NULL, "
 			+ "city TEXT NOT NULL, "
@@ -127,6 +127,7 @@ public class DBAccess
 	{
 		ContentValues initialValues = new ContentValues();
 		
+		initialValues.put(KEY_EVENT_ID, event.getEventID());
 		initialValues.put(KEY_FEATURED, event.isFeatured());
 		
 		initialValues.put(KEY_NAME, event.getName());
@@ -153,6 +154,7 @@ public class DBAccess
 	{
 		ContentValues initialValues = new ContentValues();
 		
+		initialValues.put(KEY_LOCATION_ID, event.getLocationID());
 		initialValues.put(KEY_ADDRESS_1, event.getAddress1());
 		initialValues.put(KEY_ADDRESS_2, event.getAddress2());
 		initialValues.put(KEY_CITY, event.getCity());
@@ -179,9 +181,21 @@ public class DBAccess
 				KEY_LOCATION_ID + "=" + locationID, null, null, null, null).getCount() == 0;
 	}
 
-	public Cursor getAllEvents()
+	public Cursor getEventSummaries()
 	{
 		return db.query(EVENT_TABLE, new String[] { KEY_EVENT_ID, KEY_NAME, KEY_START_DATE,
 				KEY_END_DATE, KEY_DESCRIPTION_HEADER }, null, null, null, null, null);
+	}
+	
+	public Cursor getEvent(long eventID)
+	{
+		return db.query(LOCATION_TABLE, null, KEY_EVENT_ID + "=" + eventID,
+				null, null, null, null);
+	}
+	
+	public Cursor getLocation(long locationID)
+	{
+		return db.query(LOCATION_TABLE, null, KEY_LOCATION_ID + "=" + locationID,
+				null, null, null, null);
 	}
 }
