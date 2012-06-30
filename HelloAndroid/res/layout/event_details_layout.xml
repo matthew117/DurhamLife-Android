@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/textViewEventName"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/eventDetailsContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        android:text="@string/default_event_name"
-        android:textColor="#7E317B"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
+        android:orientation="vertical"
+        android:padding="5dp" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewEventName"
-        android:layout_below="@+id/textViewEventName"
-        android:contentDescription="@string/event_image"
-        android:src="@drawable/clock" />
+        <TextView
+            android:id="@+id/textViewEventName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/default_event_name"
+            android:textColor="#7E317B"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
-    <TextView
-        android:id="@+id/textViewEventDescription"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_below="@+id/imageView1"
-        android:text="@string/default_description"
-        android:textStyle="italic"
-        android:typeface="serif" />
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="@string/event_image"
+            android:src="@drawable/clock" />
 
-    <TextView
-        android:id="@+id/textViewEventDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageView1"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/imageView1"
-        android:text="@string/default_date" />
+        <TextView
+            android:id="@+id/textViewEventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_date"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textViewEventDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/default_description"
+            android:lineSpacingMultiplier="1.1"
+            android:textStyle="italic"
+            android:typeface="serif" />
+    </LinearLayout>
+
+</ScrollView>

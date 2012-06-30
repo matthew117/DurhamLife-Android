@@ -1,11 +1,6 @@
 package uk.ac.dur.duchess;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends ListActivity
 {
@@ -39,76 +33,6 @@ public class MainActivity extends ListActivity
 	private Button loginButton;
 	private Button settingsButton;
 	
-	// TODO move into networking module
-	private InputStream openHTTPConnection(String urlString) throws IOException
-	{
-		InputStream in = null;
-		int response = -1;
-
-		URL url = new URL(urlString);
-		URLConnection conn = url.openConnection();
-
-		if (!(conn instanceof HttpURLConnection)) throw new IOException("Not an HTTP Exception");
-
-		try
-		{
-			HttpURLConnection httpConn = (HttpURLConnection) conn;
-			httpConn.setAllowUserInteraction(false);
-			httpConn.setInstanceFollowRedirects(true);
-			httpConn.setRequestMethod("GET");
-			httpConn.connect();
-			response = httpConn.getResponseCode();
-			if (response == HttpURLConnection.HTTP_OK) in = httpConn.getInputStream();
-		}
-		catch (Exception ex)
-		{
-			Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-			ex.printStackTrace();
-			throw new IOException("Connection Error");
-		}
-		return in;
-	}
-
-	private String downloadText(String URL)
-	{
-		int BUFFER_SIZE = 2000;
-		InputStream in = null;
-
-		try
-		{
-			in = openHTTPConnection(URL);
-		}
-		catch (IOException ex)
-		{
-			Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-			ex.printStackTrace();
-			return "";
-		}
-
-		InputStreamReader isr = new InputStreamReader(in);
-		int charRead;
-		String str = "";
-		char[] inputBuffer = new char[BUFFER_SIZE];
-
-		try
-		{
-			while ((charRead = isr.read(inputBuffer)) > 0)
-			{
-				String readString = String.copyValueOf(inputBuffer, 0, charRead);
-				str += readString;
-				inputBuffer = new char[BUFFER_SIZE];
-			}
-			in.close();
-		}
-		catch (Exception ex)
-		{
-			Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-			ex.printStackTrace();
-			return "";
-		}
-		return str;
-	}
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
