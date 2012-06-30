@@ -1,12 +1,8 @@
 package uk.ac.dur.duchess;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import uk.ac.dur.duchess.data.CalendarFunctions;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
