@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess;
 
+import java.util.List;
 import java.util.Map;
 
 public class User
@@ -10,9 +11,9 @@ public class User
 	private String password;
 	private String emailAddress;
 	private String dateJoined;
-	private long departmentID;
-	private long collegeID;
-	private Map<Long, String> categoryPreferences;
+	private String department;
+	private String college;
+	private List<String> categoryPreferences;
 	private Map<Long, String> subcategoryPreferences;
 
 	public long getUserID()
@@ -75,32 +76,32 @@ public class User
 		this.dateJoined = dateJoined;
 	}
 
-	public long getDepartmentID()
+	public String getDepartment()
 	{
-		return departmentID;
+		return department;
 	}
 
-	public void setDepartmentID(long departmentID)
+	public void setDepartment(String department)
 	{
-		this.departmentID = departmentID;
+		this.department = department;
 	}
 
-	public long getCollegeID()
+	public String getCollege()
 	{
-		return collegeID;
+		return college;
 	}
 
-	public void setCollegeID(long collegeID)
+	public void setCollege(String college)
 	{
-		this.collegeID = collegeID;
+		this.college = college;
 	}
 
-	public Map<Long, String> getCategoryPreferences()
+	public List<String> getCategoryPreferences()
 	{
 		return categoryPreferences;
 	}
 
-	public void setCategoryPreferences(Map<Long, String> categoryPreferences)
+	public void setCategoryPreferences(List<String> categoryPreferences)
 	{
 		this.categoryPreferences = categoryPreferences;
 	}
