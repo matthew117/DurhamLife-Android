@@ -1,5 +1,11 @@
 package uk.ac.dur.duchess;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import uk.ac.dur.duchess.data.NetworkFunctions;
+import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,15 +35,37 @@ public class RegisterActivity extends Activity
 		affiliation = (Spinner) findViewById(R.id.affiliationSpinner);
 		college = (Spinner) findViewById(R.id.collegeSpinner);
 		department = (Spinner) findViewById(R.id.departmentSpinner);
-		registerButton = (Button) findViewById(R.id.registerButton);
-		
+		registerButton = (Button) findViewById(R.id.registerUserButton);
+
 		registerButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
 				User newUser = new User();
+				newUser.setForename("Mr.");
+				newUser.setSurname("Guest");
+				newUser.setCollege(college.getSelectedItem().toString());
+				newUser.setDepartment(department.getSelectedItem().toString());
+				newUser.setEmailAddress(email.getText().toString());
+				newUser.setPassword(password.getText().toString());
 				
+				List<String> categories = new ArrayList<String>();
+				categories.add("University");
+				
+				newUser.setCategoryPreferences(categories);
+
+				try
+				{
+					NetworkFunctions.getHTTPResponseStream(
+							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php", "PUT",
+							UserFunctions.getUserXML(newUser).getBytes());
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}

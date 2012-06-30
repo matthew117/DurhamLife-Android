@@ -1,11 +1,9 @@
 package uk.ac.dur.duchess.data;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import uk.ac.dur.duchess.Event;
 import uk.ac.dur.duchess.User;
 
 public class UserFunctions
@@ -23,7 +21,7 @@ public class UserFunctions
 		xml.append("<dateJoined>");
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		sdf.format(Calendar.getInstance(), xml, null);
+		xml.append(sdf.format(Calendar.getInstance().getTime()));
 		
 		xml.append("</dateJoined>");
 		xml.append("<department>" + user.getDepartment() + "</department>");
@@ -35,7 +33,7 @@ public class UserFunctions
 		
 		for (int i = 0; i < v.size(); i++)
 		{
-			String category = (String) v.get(i);
+			String category = v.get(i);
 			xml.append("<category id=\"" + getCategoryID(category) + "\">" + category + "</category>");
 		}
 		
@@ -56,18 +54,6 @@ public class UserFunctions
 		if (category.equals("Community")) return 7;
 		if (category.equals("Sport")) return 8;
 		return 1;
-	}
-	
-	public static List<Event> filterByPreferences(User user, List<Event> eventList)
-	{
-		List<Event> newList = new ArrayList<Event>();
-		List<String> preferences = user.getCategoryPreferences();
-		
-		for(Event e : eventList)
-			if(preferences.contains(e.getCategoryTags().get(0)))
-				newList.add(e);
-		
-		return newList;
 	}
 
 }

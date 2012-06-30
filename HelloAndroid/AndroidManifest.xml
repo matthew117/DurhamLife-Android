@@ -39,7 +39,7 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".RegistryActivity"
+            android:name=".RegisterActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
