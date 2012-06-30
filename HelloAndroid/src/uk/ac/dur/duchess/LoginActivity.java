@@ -8,6 +8,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.data.SessionFunctions;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,12 +24,16 @@ public class LoginActivity extends Activity
 	private EditText passwordEditText;
 	private Button registerButton;
 	private Button loginButton;
+	
+	private Activity activity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
+		
+		activity = this;
 
 		usernameEditText = (EditText) findViewById(R.id.usernameEditText);
 		passwordEditText = (EditText) findViewById(R.id.passwordEditText);
@@ -67,6 +73,8 @@ public class LoginActivity extends Activity
 							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php/"
 									+ usernameEditText.getText())).openStream()));
 
+					SessionFunctions.saveUserPreferences(activity, user);
+					
 					Toast.makeText(v.getContext(), "Hello, " + user.getForename() + " " + user.getSurname(), Toast.LENGTH_LONG).show();
 				}
 				catch (Exception ex)

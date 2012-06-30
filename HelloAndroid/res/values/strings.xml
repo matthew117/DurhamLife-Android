@@ -84,5 +84,6 @@
     <string name="sport">Sport</string>
     <string name="conferences">Conferences</string>
     <string name="community">Community</string>
+    <string name="change_preferences">Change Preferences</string>
 
 </resources>

@@ -69,5 +69,15 @@
         android:layout_alignLeft="@+id/checkBoxConferences"
         android:layout_below="@+id/checkBoxConferences"
         android:text="@string/community" />
+
+    <Button
+        android:id="@+id/changeUserPreferencesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkBoxCommunity"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/checkBoxConferences"
+        android:layout_marginBottom="20dp"
+        android:text="@string/change_preferences" />
 
 </RelativeLayout>

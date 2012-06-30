@@ -93,12 +93,12 @@ public class CalendarFunctions
 			System.out.println("Days: " + days + ", Hours: " + hours + ", Minutes: " + minutes);
 
 			if(days == 0 && hours == 0 && minutes == 0) return "Less than 1 minute ago";
-			else if(days == 0 && hours == 0) return minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago : 1";
-			else if(days == 0 && hours == 1 && minutes < 0) return 60 + minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago: 2";
-			else if(days == 0) return hours + " hour" + ((hours != 1) ? "s" : "") + " ago : 3";
-			else if(days == 1 && hours < 0) return 24 + hours + " hour" + ((hours != 1) ? "s" : "") + " ago : 4";
+			else if(days == 0 && hours == 0) return minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago";
+			else if(days == 0 && hours == 1 && minutes < 0) return 60 + minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago";
+			else if(days == 0) return hours + " hour" + ((hours != 1) ? "s" : "") + " ago";
+			else if(days == 1 && hours < 0) return 24 + hours + " hour" + ((hours != 1) ? "s" : "") + " ago";
 
-			return destinationFormat.format(_timeStamp.getTime()) + " : 5";
+			return destinationFormat.format(_timeStamp.getTime());
 		}
 		catch(ParseException pe) { return "Time of Post Unavailable"; }
 	}
