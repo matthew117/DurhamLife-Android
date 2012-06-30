@@ -1,9 +1,11 @@
 package uk.ac.dur.duchess.data;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import uk.ac.dur.duchess.Event;
 import uk.ac.dur.duchess.User;
 
 public class UserFunctions
@@ -54,6 +56,18 @@ public class UserFunctions
 		if (category.equals("Community")) return 7;
 		if (category.equals("Sport")) return 8;
 		return 1;
+	}
+	
+	public static List<Event> filterByPreferences(User user, List<Event> eventList)
+	{
+		List<Event> newList = new ArrayList<Event>();
+		List<String> preferences = user.getCategoryPreferences();
+		
+		for(Event e : eventList)
+			if(preferences.contains(e.getCategoryTags().get(0)))
+				newList.add(e);
+		
+		return newList;
 	}
 
 }
