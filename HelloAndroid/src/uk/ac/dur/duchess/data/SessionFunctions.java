@@ -31,7 +31,7 @@ public class SessionFunctions
 		categoryMap.put(2, "Music");
 		categoryMap.put(3, "Theatre");
 		categoryMap.put(4, "Exhibitions");
-		categoryMap.put(5, "Sports");
+		categoryMap.put(5, "Sport");
 		categoryMap.put(6, "Conferences");
 		categoryMap.put(7, "Community");
 	}
