@@ -51,7 +51,7 @@ public class ImageGridAdapter extends BaseAdapter
 
 		icon.setCompoundDrawablesWithIntrinsicBounds(0, imageIDs[position], 0, 0);
 		icon.setText(categorySelection(position));
-
+		
 		return v;
 	}
 

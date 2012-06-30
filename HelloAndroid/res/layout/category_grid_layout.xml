@@ -3,5 +3,4 @@
     android:id="@+id/categoryGridViewID"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="7dp"
     android:numColumns="4" />
