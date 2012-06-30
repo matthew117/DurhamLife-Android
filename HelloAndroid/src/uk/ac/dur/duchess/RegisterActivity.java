@@ -2,6 +2,8 @@ package uk.ac.dur.duchess;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -13,6 +15,7 @@ public class RegisterActivity extends Activity
 	private Spinner affiliation;
 	private Spinner college;
 	private Spinner department;
+	private Button registerButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -26,6 +29,17 @@ public class RegisterActivity extends Activity
 		affiliation = (Spinner) findViewById(R.id.affiliationSpinner);
 		college = (Spinner) findViewById(R.id.collegeSpinner);
 		department = (Spinner) findViewById(R.id.departmentSpinner);
+		registerButton = (Button) findViewById(R.id.registerButton);
+		
+		registerButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				User newUser = new User();
+				
+			}
+		});
 	}
 
 }

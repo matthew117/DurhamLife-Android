@@ -81,5 +81,11 @@
         android:layout_height="wrap_content"
         android:entries="@array/durham_departments"
         android:prompt="@string/department" />
+
+    <Button
+        android:id="@+id/registerUserButton"
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:text="@string/regsiter" />
 
 </LinearLayout>
