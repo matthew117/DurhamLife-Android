@@ -121,7 +121,7 @@ public class MainActivity extends ListActivity
 			Thread thread = new Thread(null, parseData, "SAXParser");
 			thread.start();
 			progressDialog = ProgressDialog.show(MainActivity.this, "Please wait...",
-					"Retrieving data ...", true);
+					"Downloading Events ...", true);
 
 			alphabeticalSortButton.setOnClickListener(new View.OnClickListener()
 			{
