@@ -71,11 +71,4 @@ public class UserXMLParser extends DefaultHandler
 		else if (isLinkedAccount) user.setEmailAddress(new String(ch, start, length));
 	}
 	
-	@Override
-	public void endDocument()
-	{
-		
-	}
-
-	
 }

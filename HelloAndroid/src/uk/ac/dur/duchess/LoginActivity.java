@@ -1,5 +1,13 @@
 package uk.ac.dur.duchess;
 
+import java.net.URL;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,31 +33,49 @@ public class LoginActivity extends Activity
 		passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 		registerButton = (Button) findViewById(R.id.registerButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
-		
-		registerButton.setClickable(true); // could possibly be moved to the xml layout file
+
 		registerButton.setOnClickListener(new View.OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
 				Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-				// TODO could maybe pass the chosen e-mail address to the registry page if they've entered one
+				// TODO could maybe pass the chosen e-mail address to the
+				// registry page if they've entered one
 				startActivity(i);
 			}
 		});
-		
-		loginButton.setClickable(true); // could possible be moved to the xml layout file
+
 		loginButton.setOnClickListener(new View.OnClickListener()
-		{	
+		{
 			@Override
 			public void onClick(View v)
 			{
-				// TODO login properly + error checking
-				Toast.makeText(getApplicationContext(), "Login", Toast.LENGTH_LONG).show();			
+				// TODO error checking
+				try
+				{
+					SAXParserFactory factory = SAXParserFactory.newInstance();
+					SAXParser parser = factory.newSAXParser();
+					XMLReader xmlReader = parser.getXMLReader();
+
+					User user = new User();
+
+					UserXMLParser userXMLParser = new UserXMLParser(user);
+					xmlReader.setContentHandler(userXMLParser);
+					xmlReader.parse(new InputSource((new URL(
+							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php/"
+									+ usernameEditText.getText())).openStream()));
+
+					Toast.makeText(v.getContext(), "Hello, " + user.getForename() + " " + user.getSurname(), Toast.LENGTH_LONG).show();
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
 			}
 		});
-		
+
 	}
 
 }

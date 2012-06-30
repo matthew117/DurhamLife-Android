@@ -3,71 +3,71 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+
     <CheckBox
-        android:id="@+id/checkBox1"
+        android:id="@+id/checkBoxUniversity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="14dp"
-        android:text="University" />
-
+        android:text="@string/university" />
+
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/checkBoxCollege"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBox1"
-        android:layout_below="@+id/checkBox1"
-        android:text="College" />
-
+        android:layout_alignLeft="@+id/checkBoxUniversity"
+        android:layout_below="@+id/checkBoxUniversity"
+        android:text="@string/college" />
+
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/checkBoxMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBox2"
-        android:layout_below="@+id/checkBox2"
-        android:text="Music" />
-
+        android:layout_alignLeft="@+id/checkBoxCollege"
+        android:layout_below="@+id/checkBoxCollege"
+        android:text="@string/music" />
+
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/checkBoxTheatre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBox3"
-        android:layout_below="@+id/checkBox3"
-        android:text="Theatre" />
-
+        android:layout_alignLeft="@+id/checkBoxMusic"
+        android:layout_below="@+id/checkBoxMusic"
+        android:text="@string/theatre" />
+
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/checkBoxExhibitions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="32dp"
-        android:layout_toRightOf="@+id/checkBox1"
-        android:text="Exhibitions" />
-
+        android:layout_toRightOf="@+id/checkBoxUniversity"
+        android:text="@string/exhibitions" />
+
     <CheckBox
-        android:id="@+id/checkBox6"
+        android:id="@+id/checkBoxSport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBox5"
-        android:layout_below="@+id/checkBox5"
-        android:text="Sport" />
-
+        android:layout_alignLeft="@+id/checkBoxExhibitions"
+        android:layout_below="@+id/checkBoxExhibitions"
+        android:text="@string/sport" />
+
     <CheckBox
-        android:id="@+id/checkBox7"
+        android:id="@+id/checkBoxConferences"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBox6"
-        android:layout_below="@+id/checkBox6"
-        android:text="Conferences" />
-
+        android:layout_alignLeft="@+id/checkBoxSport"
+        android:layout_below="@+id/checkBoxSport"
+        android:text="@string/conferences" />
+
     <CheckBox
-        android:id="@+id/checkBox8"
+        android:id="@+id/checkBoxCommunity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBox7"
-        android:layout_below="@+id/checkBox7"
-        android:text="Community" />
+        android:layout_alignLeft="@+id/checkBoxConferences"
+        android:layout_below="@+id/checkBoxConferences"
+        android:text="@string/community" />
 
 </RelativeLayout>

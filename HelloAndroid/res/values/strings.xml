@@ -77,5 +77,12 @@
     <string name="problem_loading_comment">Problem Loading Comment</string>
     <string name="problem_loading_date">Problem Loading Date</string>
     <string name="rating">Rating</string>
+    <string name="university">University</string>
+    <string name="music">Music</string>
+    <string name="theatre">Theatre</string>
+    <string name="exhibitions">Exhibitions</string>
+    <string name="sport">Sport</string>
+    <string name="conferences">Conferences</string>
+    <string name="community">Community</string>
 
 </resources>

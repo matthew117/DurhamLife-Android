@@ -123,7 +123,6 @@ public class MainActivity extends ListActivity
 			progressDialog = ProgressDialog.show(MainActivity.this, "Please wait...",
 					"Retrieving data ...", true);
 
-			alphabeticalSortButton.setClickable(true);
 			alphabeticalSortButton.setOnClickListener(new View.OnClickListener()
 			{
 
@@ -143,7 +142,6 @@ public class MainActivity extends ListActivity
 				}
 			});
 
-			chronologicalSortButton.setClickable(true);
 			chronologicalSortButton.setOnClickListener(new View.OnClickListener()
 			{
 
@@ -177,7 +175,6 @@ public class MainActivity extends ListActivity
 
 			final Activity listActivity = this;
 			
-			featuredFilterButton.setClickable(true);
 			featuredFilterButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -201,7 +198,6 @@ public class MainActivity extends ListActivity
 				}
 			});
 			
-			categoryGridButton.setClickable(true);
 			categoryGridButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -212,7 +208,6 @@ public class MainActivity extends ListActivity
 				}
 			});
 			
-			loginButton.setClickable(true);
 			loginButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -220,6 +215,16 @@ public class MainActivity extends ListActivity
 				{
 					Intent i = new Intent(v.getContext(), LoginActivity.class);
 					startActivity(i);			
+				}
+			});
+			
+			settingsButton.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					Intent i = new Intent(v.getContext(), PreferenceSettingsActivity.class);
+					startActivity(i);
 				}
 			});
 
