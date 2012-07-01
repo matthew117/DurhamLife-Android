@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import uk.ac.dur.duchess.Event;
 import uk.ac.dur.duchess.User;
+import android.util.Log;
 
 public class UserFunctions
 {
@@ -19,30 +21,31 @@ public class UserFunctions
 		xml.append("<surname>" + user.getSurname() + "</surname>");
 		xml.append("<password>" + user.getPassword() + "</password>");
 		xml.append("<emailAddress>" + user.getEmailAddress() + "</emailAddress>");
-		
+
 		xml.append("<dateJoined>");
-		
+
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		xml.append(sdf.format(Calendar.getInstance().getTime()));
-		
+
 		xml.append("</dateJoined>");
 		xml.append("<department>" + user.getDepartment() + "</department>");
 		xml.append("<college>" + user.getCollege() + "</college>");
-		
+
 		List<String> v = user.getCategoryPreferences();
-		
+
 		xml.append("<preferences>");
-		
+
 		for (int i = 0; i < v.size(); i++)
 		{
 			String category = v.get(i);
-			xml.append("<category id=\"" + getCategoryID(category) + "\">" + category + "</category>");
+			xml.append("<category id=\"" + getCategoryID(category) + "\">" + category
+					+ "</category>");
 		}
-		
+
 		xml.append("</preferences>");
 		xml.append("</user>");
-		
-		return xml.toString();		
+
+		return xml.toString();
 	}
 
 	private static int getCategoryID(String category)
@@ -57,17 +60,29 @@ public class UserFunctions
 		if (category.equals("Sport")) return 8;
 		return 1;
 	}
-	
-	public static List<Event> filterByPreferences(User user, List<Event> eventList)
-    {
-            List<Event> newList = new ArrayList<Event>();
-            List<String> preferences = user.getCategoryPreferences();
-            
-            for(Event e : eventList)
-                    if(preferences.contains(e.getCategoryTags().get(0)))
-                            newList.add(e);
-            
-            return newList;
-    }
+
+	public static ArrayList<Event> filterByPreferences(User user, ArrayList<Event> eventList)
+	{
+		ArrayList<Event> newList = new ArrayList<Event>();
+		ArrayList<String> preferences = (ArrayList<String>) user.getCategoryPreferences();
+
+		Log.d("PREFERENCES", preferences.toString());
+		
+		for (Event e : eventList)
+		{
+			Map<Long,String> eventCategories = e.getCategoryTags();
+			Log.d("EVENT CATEGORIES", (eventCategories.values()).toString());
+			if (preferences.containsAll(e.getCategoryTags().values())) newList.add(e);
+		}
+		
+		eventList.clear();
+		
+		for (Event e : newList)
+		{
+			eventList.add(e);
+		}
+
+		return newList;
+	}
 
 }

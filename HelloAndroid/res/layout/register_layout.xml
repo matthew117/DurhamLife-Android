@@ -6,6 +6,22 @@
     android:padding="7dp" >
 
     <EditText
+        android:id="@+id/forenameRegister"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/forename"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/surnameRegister"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/surname"
+        android:inputType="textPersonName" />
+
+    <EditText
         android:id="@+id/registerEmailEditText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -31,22 +47,6 @@
         android:ems="10"
         android:hint="@string/password_confim"
         android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="2dp"
-        android:text="@string/durham_affiliation"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/affiliationSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/durham_affiliation"
-        android:prompt="@string/university_affiliation" />
 
     <TextView
         android:id="@+id/textView2"
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:entries="@array/durham_departments"
         android:prompt="@string/department" />
-
+
     <Button
         android:id="@+id/registerUserButton"
         android:layout_width="158dp"

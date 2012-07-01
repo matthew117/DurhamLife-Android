@@ -17,7 +17,7 @@ public class UserXMLParser extends DefaultHandler
 	
 	private boolean isDepartment = false;
 	private boolean isCollege = false;
-	private boolean isLinkedAccount = false;
+	private boolean isEmail = false;
 	
 	private boolean isCategory = false;
 	
@@ -50,7 +50,7 @@ public class UserXMLParser extends DefaultHandler
 		
 		else if (localName.equalsIgnoreCase("department")) isDepartment = true;
 		else if (localName.equalsIgnoreCase("college")) isCollege = true;
-		else if (localName.equalsIgnoreCase("linkedAccount")) isLinkedAccount = true;
+		else if (localName.equalsIgnoreCase("emailAddress")) isEmail = true;
 		
 		else if (localName.equalsIgnoreCase("category")) isCategory = true;
 	}
@@ -67,7 +67,7 @@ public class UserXMLParser extends DefaultHandler
 		
 		else if (localName.equalsIgnoreCase("department")) isDepartment = false;
 		else if (localName.equalsIgnoreCase("college")) isCollege = false;
-		else if (localName.equalsIgnoreCase("linkedAccount")) isLinkedAccount = false;
+		else if (localName.equalsIgnoreCase("emailAddress")) isEmail = false;
 		
 		else if (localName.equalsIgnoreCase("category")) isCategory = false;
 	}
@@ -81,7 +81,7 @@ public class UserXMLParser extends DefaultHandler
 		else if (isDateJoined) user.setDateJoined(new String(ch, start, length));
 		else if (isDepartment) user.setDepartment(new String(ch, start, length));
 		else if (isCollege) user.setCollege(new String(ch, start, length));
-		else if (isLinkedAccount) user.setEmailAddress(new String(ch, start, length));
+		else if (isEmail) user.setEmailAddress(new String(ch, start, length));
 		
 		else if (isCategory) preferences.add(new String(ch, start, length));
 	}

@@ -85,5 +85,7 @@
     <string name="conferences">Conferences</string>
     <string name="community">Community</string>
     <string name="change_preferences">Change Preferences</string>
+    <string name="forename">Forename</string>
+    <string name="surname">Surname</string>
 
 </resources>

@@ -11,11 +11,14 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.data.SessionFunctions;
+import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,7 +35,12 @@ public class MainActivity extends ListActivity
 	private Button categoryGridButton;
 	private Button loginButton;
 	private Button settingsButton;
+
+	private User currentUser;
+	private Activity activity;
 	
+	private ArrayList<Event> eventList;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -40,12 +48,26 @@ public class MainActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		currentUser = SessionFunctions.getCurrentUser(this);
+		activity = this;
+
 		alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
 		chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
 		featuredFilterButton = (Button) findViewById(R.id.featureFilterButton);
 		categoryGridButton = (Button) findViewById(R.id.categoryGridButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
 		settingsButton = (Button) findViewById(R.id.settingsButton);
+
+		if (currentUser != null)
+		{
+			setTitle("Duchess - Hello, " + currentUser.getForename() + " "
+					+ currentUser.getSurname());
+		}
+		else
+		{
+			setTitle("Duchess - Guest");
+			settingsButton.setVisibility(View.GONE);
+		}
 
 		try
 		{
@@ -56,14 +78,14 @@ public class MainActivity extends ListActivity
 
 			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?n=8");
 
-			final ArrayList<Event> eventList = new ArrayList<Event>();
+			eventList = new ArrayList<Event>();
 
 			EventXMLParser myXMLHandler = new EventXMLParser(eventList);
 
 			reader.setContentHandler(myXMLHandler);
 
-			final EventListAdapter adapter = new EventListAdapter(this, R.layout.custom_event_list_row,
-					eventList);
+			final EventListAdapter adapter = new EventListAdapter(this,
+					R.layout.custom_event_list_row, eventList);
 			setListAdapter(adapter);
 
 			getListView().setOnItemClickListener(new OnItemClickListener()
@@ -109,6 +131,12 @@ public class MainActivity extends ListActivity
 					try
 					{
 						reader.parse(new InputSource(url.openStream()));
+						if (currentUser != null)
+						{
+							Log.d("BEFORE FILTER", ""+eventList.size());
+							UserFunctions.filterByPreferences(currentUser, eventList);
+							Log.d("AFTER FILTER", ""+eventList.size());
+						}
 						runOnUiThread(callbackFunction);
 					}
 					catch (Exception ex)
@@ -174,7 +202,7 @@ public class MainActivity extends ListActivity
 			});
 
 			final Activity listActivity = this;
-			
+
 			featuredFilterButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -187,7 +215,8 @@ public class MainActivity extends ListActivity
 						{
 							if (event.isFeatured()) featuredEvents.add(event);
 						}
-						setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row, featuredEvents));
+						setListAdapter(new EventListAdapter(listActivity,
+								R.layout.custom_event_list_row, featuredEvents));
 						featureMode = false;
 					}
 					else
@@ -197,27 +226,37 @@ public class MainActivity extends ListActivity
 					}
 				}
 			});
-			
+
 			categoryGridButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View v)
 				{
 					Intent i = new Intent(v.getContext(), CategoryGridActivity.class);
-					startActivity(i);					
+					startActivity(i);
 				}
 			});
-			
+
 			loginButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View v)
 				{
-					Intent i = new Intent(v.getContext(), LoginActivity.class);
-					startActivity(i);			
+					if (currentUser != null)
+					{
+						SessionFunctions.endUserSession(activity);
+						currentUser = null;
+						Intent i = new Intent(v.getContext(), MainActivity.class);
+						startActivity(i);
+					}
+					else
+					{
+						Intent i = new Intent(v.getContext(), LoginActivity.class);
+						startActivity(i);
+					}
 				}
 			});
-			
+
 			settingsButton.setOnClickListener(new View.OnClickListener()
 			{
 				@Override

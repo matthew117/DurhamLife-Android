@@ -1,11 +1,18 @@
 package uk.ac.dur.duchess;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
+import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -77,6 +84,34 @@ public class PreferenceSettingsActivity extends Activity
 				
 				currentUser.setCategoryPreferences(newPreferences);
 				SessionFunctions.saveUserPreferences(activity, currentUser);
+				
+				Thread t = new Thread(new Runnable()
+				{		
+					@Override
+					public void run()
+					{
+						try
+						{
+							InputStream is = NetworkFunctions.getHTTPResponseStream(
+									"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php", "PUT",
+									UserFunctions.getUserXML(currentUser).getBytes());
+							Scanner sc = new Scanner(is);
+							while (sc.hasNextLine())
+							{
+								Log.d("Change User Pref Response", sc.nextLine());	
+							}
+						}
+						catch (IOException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				t.start();
+				
+				Intent i = new Intent(v.getContext(), MainActivity.class);
+				startActivity(i);
 			}
 		});
 	}

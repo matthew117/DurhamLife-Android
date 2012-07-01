@@ -54,8 +54,8 @@ public class EventXMLParser extends DefaultHandler
 		if (localName.equalsIgnoreCase("event"))
 		{
 			event = new Event();
-			categoryTags.clear();
-			subcategoryTags.clear();
+			categoryTags = new HashMap<Long, String>();
+			subcategoryTags = new HashMap<Long, String>();
 			
 			String isFeatured = attributes.getValue("featured");
 			event.setFeatured(isFeatured != null && isFeatured.equalsIgnoreCase("true"));

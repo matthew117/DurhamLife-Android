@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.dur.duchess.data.NetworkFunctions;
+import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,24 +20,30 @@ public class RegisterActivity extends Activity
 	private EditText email;
 	private EditText password;
 	private EditText confirm;
-	private Spinner affiliation;
 	private Spinner college;
 	private Spinner department;
 	private Button registerButton;
+	private EditText forename;
+	private EditText surname;
+	
+	private Activity activity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_layout);
+		
+		activity = this;
 
 		email = (EditText) findViewById(R.id.registerEmailEditText);
 		password = (EditText) findViewById(R.id.registerPasswordEditText);
 		confirm = (EditText) findViewById(R.id.registerConfirmPasswordEditText);
-		affiliation = (Spinner) findViewById(R.id.affiliationSpinner);
 		college = (Spinner) findViewById(R.id.collegeSpinner);
 		department = (Spinner) findViewById(R.id.departmentSpinner);
 		registerButton = (Button) findViewById(R.id.registerUserButton);
+		forename = (EditText) findViewById(R.id.forenameRegister);
+		surname = (EditText) findViewById(R.id.surnameRegister);
 
 		registerButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -43,8 +51,8 @@ public class RegisterActivity extends Activity
 			public void onClick(View v)
 			{
 				User newUser = new User();
-				newUser.setForename("Mr.");
-				newUser.setSurname("Guest");
+				newUser.setForename(forename.getText().toString());
+				newUser.setSurname(surname.getText().toString());
 				newUser.setCollege(college.getSelectedItem().toString());
 				newUser.setDepartment(department.getSelectedItem().toString());
 				newUser.setEmailAddress(email.getText().toString());
@@ -60,6 +68,11 @@ public class RegisterActivity extends Activity
 					NetworkFunctions.getHTTPResponseStream(
 							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php", "PUT",
 							UserFunctions.getUserXML(newUser).getBytes());
+					
+					SessionFunctions.saveUserPreferences(activity, newUser);
+					
+					Intent i = new Intent(v.getContext(), MainActivity.class);
+					startActivity(i);
 				}
 				catch (IOException e)
 				{

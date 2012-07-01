@@ -14,6 +14,7 @@ import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
+import uk.ac.dur.duchess.data.SessionFunctions;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,8 @@ public class ReviewActivity extends Activity
 	private RatingBar ratingBar;
 	private Button submitReviewButton;
 
+	private Activity activity;
+
 	// TODO disallow users from reviewing the same event twice in the API
 	// TODO remove EditText and RatingBar if no user is signed in (anonymous)
 
@@ -51,6 +54,8 @@ public class ReviewActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.review_layout);
+
+		activity = this;
 
 		e = getIntent().getExtras();
 
@@ -67,24 +72,33 @@ public class ReviewActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				String userXMLRequest = String.format(
-						"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><review userID=\"%s\" eventID=\"%s\">"
-								+ "<rating>%d</rating>" + "<post>%s</post>"
-								+ "<timestamp>%s</timestamp>" + "</review>", getCurrentUserID(),
-						e.getLong("event_id"), (int) (ratingBar.getRating() * 2),
-						reviewEditText.getText(), System.currentTimeMillis() / 1000);
-				Toast.makeText(getApplicationContext(), userXMLRequest, Toast.LENGTH_LONG).show();
-
-				try
+				User currentUser = SessionFunctions.getCurrentUser(activity);
+				if (currentUser == null)
 				{
-					InputStream response = NetworkFunctions.getHTTPResponseStream(
-							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
-									+ e.getLong("event_id"), "PUT", userXMLRequest.getBytes());
+					Toast.makeText(v.getContext(), "You have to be signed in to submit a review.", Toast.LENGTH_LONG).show();
+					return;
 				}
-				catch (IOException e1)
+				else
 				{
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					String userXMLRequest = String.format(
+							"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><review userID=\"%s\" eventID=\"%s\">"
+									+ "<rating>%d</rating>" + "<post>%s</post>"
+									+ "<timestamp>%s</timestamp>" + "</review>",
+							currentUser.getUserID(), e.getLong("event_id"),
+							(int) (ratingBar.getRating() * 2), reviewEditText.getText(),
+							System.currentTimeMillis() / 1000);
+
+					try
+					{
+						InputStream response = NetworkFunctions.getHTTPResponseStream(
+								"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
+										+ e.getLong("event_id"), "PUT", userXMLRequest.getBytes());
+					}
+					catch (IOException e1)
+					{
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -174,12 +188,6 @@ public class ReviewActivity extends Activity
 				layout.addView(v);
 			}
 		}
-	}
-
-	private long getCurrentUserID()
-	{
-		// TODO to be implemented properly once login works
-		return 1;
 	}
 
 }
