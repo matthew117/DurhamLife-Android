@@ -3,9 +3,12 @@ package uk.ac.dur.duchess;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ public class EventDetailsActivity extends Activity
 	private TextView txtName;
 	private TextView txtDate;
 	private TextView txtDescription;
+	private Button facebookButton;
 	private LinearLayout eventDetailsContainer;
 
 	@Override
@@ -27,9 +31,22 @@ public class EventDetailsActivity extends Activity
 		txtName = (TextView) findViewById(R.id.textViewEventName);
 		txtDate = (TextView) findViewById(R.id.textViewEventDate);
 		txtDescription = (TextView) findViewById(R.id.textViewEventDescription);
+		facebookButton = (Button) findViewById(R.id.facebookButton);
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
 
 		image = (ImageView) findViewById(R.id.imageView1);
+		
+		facebookButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				Intent i = new Intent(view.getContext(), FacebookActivity.class);
+				i.putExtras(getIntent());
+				startActivity(i);
+			}
+		});
+				
 
 		Bundle e = getIntent().getExtras();
 
