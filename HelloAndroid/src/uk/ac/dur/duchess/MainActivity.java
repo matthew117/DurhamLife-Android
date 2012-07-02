@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +77,7 @@ public class MainActivity extends ListActivity
 			SAXParser parser = factory.newSAXParser();
 			final XMLReader reader = parser.getXMLReader();
 
-			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?n=8");
+			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php");
 
 			eventList = new ArrayList<Event>();
 
@@ -130,7 +131,10 @@ public class MainActivity extends ListActivity
 				{
 					try
 					{
-						reader.parse(new InputSource(url.openStream()));
+						InputStream is = url.openStream();
+						InputSource source = new InputSource(is);
+						source.setEncoding("UTF-8");
+						reader.parse(source);
 						if (currentUser != null)
 						{
 							Log.d("BEFORE FILTER", ""+eventList.size());

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class RegisterActivity extends Activity
 {
@@ -50,34 +51,38 @@ public class RegisterActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				User newUser = new User();
-				newUser.setForename(forename.getText().toString());
-				newUser.setSurname(surname.getText().toString());
-				newUser.setCollege(college.getSelectedItem().toString());
-				newUser.setDepartment(department.getSelectedItem().toString());
-				newUser.setEmailAddress(email.getText().toString());
-				newUser.setPassword(password.getText().toString());
-				
-				List<String> categories = new ArrayList<String>();
-				categories.add("University");
-				
-				newUser.setCategoryPreferences(categories);
+				if (password.getText().toString().equals(confirm.getText().toString()))
+				{
+					User newUser = new User();
+					newUser.setForename(forename.getText().toString());
+					newUser.setSurname(surname.getText().toString());
+					newUser.setCollege(college.getSelectedItem().toString());
+					newUser.setDepartment(department.getSelectedItem().toString());
+					newUser.setEmailAddress(email.getText().toString());
+					newUser.setPassword(UserFunctions.md5(password.getText().toString()));
+					List<String> categories = new ArrayList<String>();
+					categories.add("University");
+					newUser.setCategoryPreferences(categories);
+					try
+					{
+						NetworkFunctions.getHTTPResponseStream(
+								"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php", "PUT",
+								UserFunctions.getUserXML(newUser).getBytes());
 
-				try
-				{
-					NetworkFunctions.getHTTPResponseStream(
-							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php", "PUT",
-							UserFunctions.getUserXML(newUser).getBytes());
-					
-					SessionFunctions.saveUserPreferences(activity, newUser);
-					
-					Intent i = new Intent(v.getContext(), MainActivity.class);
-					startActivity(i);
+						SessionFunctions.saveUserPreferences(activity, newUser);
+
+						Intent i = new Intent(v.getContext(), MainActivity.class);
+						startActivity(i);
+					}
+					catch (IOException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				catch (IOException e)
+				else
 				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Toast.makeText(v.getContext(), "Passwords do not match", Toast.LENGTH_LONG).show();
 				}
 			}
 		});

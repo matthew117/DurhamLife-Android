@@ -9,12 +9,14 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.data.SessionFunctions;
+import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity
 {
@@ -22,7 +24,7 @@ public class LoginActivity extends Activity
 	private EditText passwordEditText;
 	private Button registerButton;
 	private Button loginButton;
-	
+
 	private Activity activity;
 
 	@Override
@@ -30,7 +32,7 @@ public class LoginActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_layout);
-		
+
 		activity = this;
 
 		usernameEditText = (EditText) findViewById(R.id.usernameEditText);
@@ -71,10 +73,19 @@ public class LoginActivity extends Activity
 							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php/"
 									+ usernameEditText.getText())).openStream()));
 
-					SessionFunctions.saveUserPreferences(activity, user);
-					
-					Intent i = new Intent(v.getContext(), MainActivity.class);
-					startActivity(i);
+					if (!user.getPassword().equalsIgnoreCase(UserFunctions.md5(passwordEditText.getText()
+							.toString())))
+					{
+						passwordEditText.setText("");
+						Toast.makeText(v.getContext(), "Incorrect Password", Toast.LENGTH_LONG).show();
+					}
+					else
+					{
+						SessionFunctions.saveUserPreferences(activity, user);
+
+						Intent i = new Intent(v.getContext(), MainActivity.class);
+						startActivity(i);
+					}
 				}
 				catch (Exception ex)
 				{
