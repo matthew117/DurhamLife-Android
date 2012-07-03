@@ -309,6 +309,9 @@ public class MainActivity extends ListActivity
 					i.putExtra("event_start_date", e.getStartDate());
 					i.putExtra("event_end_date", e.getEndDate());
 					i.putExtra("event_description", e.getDescriptionHeader());
+					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+					i.putExtra("event_web_address", e.getWebAddress());
 					i.putExtra("event_address1", e.getAddress1());
 					i.putExtra("event_address2", e.getAddress2());
 					i.putExtra("event_city", e.getCity());

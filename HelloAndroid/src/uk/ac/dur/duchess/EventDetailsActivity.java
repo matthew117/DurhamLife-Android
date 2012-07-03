@@ -54,6 +54,7 @@ public class EventDetailsActivity extends Activity
 		String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
 		String description = e.getString("event_description");
+		String linkedAddress = e.getString("linked_address");
 		String image_url = e.getString("image_url");
 
 		if (name != null) txtName.setText(name);
