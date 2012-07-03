@@ -32,45 +32,53 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		View v = convertView;
+		ViewHolder holder;
 		if (v == null)
 		{
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			v = inflater.inflate(rowLayoutResourceID, parent, false);
+			
+			holder = new ViewHolder();
+
+			holder.txtEventName = (TextView) v.findViewById(R.id.txtEventName);
+			holder.txtEventDescription = (TextView) v.findViewById(R.id.txtEventDescription);
+			holder.txtEventDate = (TextView) v.findViewById(R.id.txtEventDate);
+			holder.star1 = (ImageView) v.findViewById(R.id.newStar1);
+			holder.star2 = (ImageView) v.findViewById(R.id.newStar2);
+			holder.star3 = (ImageView) v.findViewById(R.id.newStar3);
+			holder.star4 = (ImageView) v.findViewById(R.id.newStar4);
+			holder.star5 = (ImageView) v.findViewById(R.id.newStar5);
+			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
+			
+			v.setTag(holder);
+		}
+		else
+		{
+			holder = (ViewHolder) v.getTag();
 		}
 
 		Event e = events.get(position);
 
 		if (e != null)
 		{
-			TextView txtEventName = (TextView) v.findViewById(R.id.txtEventName);
-			TextView txtEventDescription = (TextView) v.findViewById(R.id.txtEventDescription);
-			TextView txtEventDate = (TextView) v.findViewById(R.id.txtEventDate);
-
-			if (txtEventName != null)
+			if (holder.txtEventName != null)
 			{
-				txtEventName.setText(e.getName());
+				holder.txtEventName.setText(e.getName());
 			}
-			if (txtEventDescription != null)
+			if (holder.txtEventDescription != null)
 			{
-				txtEventDescription.setText(e.getDescriptionHeader());
+				holder.txtEventDescription.setText(e.getDescriptionHeader());
 			}
-			if (txtEventDate != null)
+			if (holder.txtEventDate != null)
 			{
-				txtEventDate.setText(e.getAddress1() + "\n" + CalendarFunctions.getEventDate(e));
+				holder.txtEventDate.setText(e.getAddress1() + "\n" + CalendarFunctions.getEventDate(e));
 			}
-
-			ImageView star1 = (ImageView) v.findViewById(R.id.newStar1);
-			ImageView star2 = (ImageView) v.findViewById(R.id.newStar2);
-			ImageView star3 = (ImageView) v.findViewById(R.id.newStar3);
-			ImageView star4 = (ImageView) v.findViewById(R.id.newStar4);
-			ImageView star5 = (ImageView) v.findViewById(R.id.newStar5);
-			TextView numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
 			
 			int numberOfReviews = e.getNumberOfReviews();
 			
 			if (numberOfReviews > 0)
 			{
-				numberOfReviewsDisplay.setText("based on " + numberOfReviews + " review" + ((numberOfReviews != 1) ? "s" : ""));
+				holder.numberOfReviewsDisplay.setText("based on " + numberOfReviews + " review" + ((numberOfReviews != 1) ? "s" : ""));
 				int rating = e.getReviewScore();
 				Bitmap emptyStar = BitmapFactory.decodeResource(
 						((Activity) context).getResources(), R.drawable.empty_star);
@@ -79,113 +87,127 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				Bitmap fullStar = BitmapFactory.decodeResource(((Activity) context).getResources(),
 						R.drawable.full_star);
 				
-				star1.setVisibility(View.VISIBLE);
-				star2.setVisibility(View.VISIBLE);
-				star3.setVisibility(View.VISIBLE);
-				star4.setVisibility(View.VISIBLE);
-				star5.setVisibility(View.VISIBLE);
-				numberOfReviewsDisplay.setVisibility(View.VISIBLE);
+				holder.star1.setVisibility(View.VISIBLE);
+				holder.star2.setVisibility(View.VISIBLE);
+				holder.star3.setVisibility(View.VISIBLE);
+				holder.star4.setVisibility(View.VISIBLE);
+				holder.star5.setVisibility(View.VISIBLE);
+				holder.numberOfReviewsDisplay.setVisibility(View.VISIBLE);
 				
 				if (rating == 10)
 				{
-					star5.setImageBitmap(fullStar);
-					star4.setImageBitmap(fullStar);
-					star3.setImageBitmap(fullStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(fullStar);
+					holder.star4.setImageBitmap(fullStar);
+					holder.star3.setImageBitmap(fullStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 9)
 				{
-					star5.setImageBitmap(halfStar);
-					star4.setImageBitmap(fullStar);
-					star3.setImageBitmap(fullStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(halfStar);
+					holder.star4.setImageBitmap(fullStar);
+					holder.star3.setImageBitmap(fullStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 8)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(fullStar);
-					star3.setImageBitmap(fullStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(fullStar);
+					holder.star3.setImageBitmap(fullStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 7)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(halfStar);
-					star3.setImageBitmap(fullStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(halfStar);
+					holder.star3.setImageBitmap(fullStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 6)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(fullStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(fullStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 5)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(halfStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(halfStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 4)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(emptyStar);
-					star2.setImageBitmap(fullStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(emptyStar);
+					holder.star2.setImageBitmap(fullStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 3)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(emptyStar);
-					star2.setImageBitmap(halfStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(emptyStar);
+					holder.star2.setImageBitmap(halfStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 2)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(emptyStar);
-					star2.setImageBitmap(emptyStar);
-					star1.setImageBitmap(fullStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(emptyStar);
+					holder.star2.setImageBitmap(emptyStar);
+					holder.star1.setImageBitmap(fullStar);
 				}
 				else if (rating == 1)
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(emptyStar);
-					star2.setImageBitmap(emptyStar);
-					star1.setImageBitmap(halfStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(emptyStar);
+					holder.star2.setImageBitmap(emptyStar);
+					holder.star1.setImageBitmap(halfStar);
 				}
 				else
 				{
-					star5.setImageBitmap(emptyStar);
-					star4.setImageBitmap(emptyStar);
-					star3.setImageBitmap(emptyStar);
-					star2.setImageBitmap(emptyStar);
-					star1.setImageBitmap(emptyStar);
+					holder.star5.setImageBitmap(emptyStar);
+					holder.star4.setImageBitmap(emptyStar);
+					holder.star3.setImageBitmap(emptyStar);
+					holder.star2.setImageBitmap(emptyStar);
+					holder.star1.setImageBitmap(emptyStar);
 				}
 			}
 			else
 			{
-				star1.setVisibility(View.GONE);
-				star2.setVisibility(View.GONE);
-				star3.setVisibility(View.GONE);
-				star4.setVisibility(View.GONE);
-				star5.setVisibility(View.GONE);
-				numberOfReviewsDisplay.setVisibility(View.GONE);
+				holder.star1.setVisibility(View.GONE);
+				holder.star2.setVisibility(View.GONE);
+				holder.star3.setVisibility(View.GONE);
+				holder.star4.setVisibility(View.GONE);
+				holder.star5.setVisibility(View.GONE);
+				holder.numberOfReviewsDisplay.setVisibility(View.GONE);
 			}
 
 		}
 		return v;
+	}
+	
+	private static class ViewHolder
+	{
+		public TextView txtEventName;
+		public TextView txtEventDescription;
+		public TextView txtEventDate;
+
+		public ImageView star1;
+		public ImageView star2;
+		public ImageView star3;
+		public ImageView star4;
+		public ImageView star5;
+		public TextView numberOfReviewsDisplay;
 	}
 }
