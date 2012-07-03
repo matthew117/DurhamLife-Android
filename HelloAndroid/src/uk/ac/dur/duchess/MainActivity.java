@@ -45,12 +45,13 @@ public class MainActivity extends ListActivity
 
 	private User currentUser;
 	private Activity activity;
-	
+
 	private ImageView adImageContainer;
 	private ListView listView;
 	private Event currentAd;
-	
+
 	private ArrayList<Event> eventList;
+	private String categoryFilter;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -63,13 +64,18 @@ public class MainActivity extends ListActivity
 		activity = this;
 		listView = getListView();
 
+		Bundle extras = getIntent().getExtras();
+		
+		if (extras != null)
+		categoryFilter = extras.getString("category_filter");
+
 		alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
 		chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
 		featuredFilterButton = (Button) findViewById(R.id.featureFilterButton);
 		categoryGridButton = (Button) findViewById(R.id.categoryGridButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
 		settingsButton = (Button) findViewById(R.id.settingsButton);
-		
+
 		adImageContainer = (ImageView) findViewById(R.id.adImageContainer);
 
 		if (currentUser != null)
@@ -90,7 +96,16 @@ public class MainActivity extends ListActivity
 			SAXParser parser = factory.newSAXParser();
 			final XMLReader reader = parser.getXMLReader();
 
-			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php");
+			final URL url;
+			if (categoryFilter == null)
+			{
+				url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php");
+			}
+			else
+			{
+				url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?category="
+						+ categoryFilter);
+			}
 
 			eventList = new ArrayList<Event>();
 
@@ -137,8 +152,8 @@ public class MainActivity extends ListActivity
 				{
 					progressDialog.dismiss();
 					adapter.notifyDataSetChanged();
-					
-					for (Event e: eventList)
+
+					for (Event e : eventList)
 					{
 						if (e.isFeatured() && e.getAdImageURL() != null)
 						{
@@ -147,12 +162,13 @@ public class MainActivity extends ListActivity
 							adImageContainer.setAdjustViewBounds(true);
 							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
 							DisplayMetrics displaymetrics = new DisplayMetrics();
-					        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-					        int height = displaymetrics.heightPixels;
-					        int width = displaymetrics.widthPixels;
+							getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+							int height = displaymetrics.heightPixels;
+							int width = displaymetrics.widthPixels;
 							adImageContainer.setMinimumWidth(width);
-							adImageContainer.setMinimumHeight((int) (width/3.0));
-							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e.getAdImageURL()));
+							adImageContainer.setMinimumHeight((int) (width / 3.0));
+							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
+									.getAdImageURL()));
 							adImageContainer.invalidate();
 							break;
 						}
@@ -173,9 +189,9 @@ public class MainActivity extends ListActivity
 						reader.parse(source);
 						if (currentUser != null)
 						{
-							Log.d("BEFORE FILTER", ""+eventList.size());
+							Log.d("BEFORE FILTER", "" + eventList.size());
 							UserFunctions.filterByPreferences(currentUser, eventList);
-							Log.d("AFTER FILTER", ""+eventList.size());
+							Log.d("AFTER FILTER", "" + eventList.size());
 						}
 						runOnUiThread(callbackFunction);
 					}
@@ -298,7 +314,7 @@ public class MainActivity extends ListActivity
 					startActivity(i);
 				}
 			});
-			
+
 			adImageContainer.setClickable(true);
 			adImageContainer.setOnClickListener(new View.OnClickListener()
 			{
@@ -322,7 +338,7 @@ public class MainActivity extends ListActivity
 					i.putExtra("event_latitude", e.getLatitude());
 					i.putExtra("event_longitude", e.getLongitude());
 					i.putExtra("image_url", e.getImageURL());
-					startActivity(i);	
+					startActivity(i);
 				}
 			});
 

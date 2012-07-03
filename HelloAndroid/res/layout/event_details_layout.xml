@@ -5,15 +5,14 @@
 
     <ScrollView
         android:id="@+id/detailsScrollView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/socialNetworkingLayout"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
 
         <LinearLayout
             android:id="@+id/eventDetailsContainer"
-            android:layout_width="315dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="5dp" >

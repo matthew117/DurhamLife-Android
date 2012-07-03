@@ -1,13 +1,13 @@
 package uk.ac.dur.duchess;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class CategoryGridActivity extends Activity
 {
@@ -35,9 +35,10 @@ public class CategoryGridActivity extends Activity
 		{
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 			{
-				Toast.makeText(getApplicationContext(), categorySelection(position),
-						Toast.LENGTH_SHORT).show();
-				// TODO filter the event list by category
+				Intent i = new Intent(v.getContext(), MainActivity.class);
+				i.putExtra("category_filter", categorySelection(position));
+				startActivity(i);
+				finish();
 			}
 		});
 
