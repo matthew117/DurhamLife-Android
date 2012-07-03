@@ -4,6 +4,7 @@
     <string name="app_name">Duchess</string>
     <string name="main_no_items">There are no new events</string>
     <string name="default_description">No description available</string>
+    <string name="default_contact">No contact details available</string>
     <string name="default_event_name">Event</string>
     <string name="default_date">Date unspecified</string>
     <string name="username">Username</string>

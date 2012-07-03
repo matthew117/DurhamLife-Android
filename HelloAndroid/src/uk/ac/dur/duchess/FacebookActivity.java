@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess;
 
+import uk.ac.dur.duchess.data.CalendarFunctions;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -122,16 +123,18 @@ public class FacebookActivity extends Activity
 		String name = e.getString("event_name");
 		String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
+		String date = CalendarFunctions.getEventDate(start_date, end_date);
 		String description = e.getString("event_description");
 		String image_url = e.getString("image_url");
+		String webAddress = e.getString("event_web_address");
 		
 		Bundle params = new Bundle();
 		
 		params.putString("method", "POST");
 		params.putString("message", "I'm attending " + name);
 		params.putString("name", name);
-		params.putString("caption", start_date);
-		params.putString("link", "http://www.linkedAddress.net");
+		params.putString("caption", "Runs from " + date);
+		params.putString("link", webAddress);
 		params.putString("description", description);
 		params.putString("picture", image_url);
 

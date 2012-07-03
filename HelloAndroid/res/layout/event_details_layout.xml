@@ -54,6 +54,15 @@
                 android:text="@string/default_description"
                 android:textStyle="italic"
                 android:typeface="serif" />
+            
+             <TextView
+                android:id="@+id/textViewContactDetails"
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:layout_weight="18.90"
+                android:lineSpacingMultiplier="1.1"
+                android:text="@string/default_contact"
+                android:typeface="serif" />
         </LinearLayout>
     </ScrollView>
     

@@ -19,6 +19,7 @@ public class EventDetailsActivity extends Activity
 	private TextView txtName;
 	private TextView txtDate;
 	private TextView txtDescription;
+	private TextView txtContact;
 	private Button facebookButton;
 	private LinearLayout eventDetailsContainer;
 
@@ -31,6 +32,7 @@ public class EventDetailsActivity extends Activity
 		txtName = (TextView) findViewById(R.id.textViewEventName);
 		txtDate = (TextView) findViewById(R.id.textViewEventDate);
 		txtDescription = (TextView) findViewById(R.id.textViewEventDescription);
+		txtContact = (TextView) findViewById(R.id.textViewContactDetails);
 		facebookButton = (Button) findViewById(R.id.facebookButton);
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
 
@@ -54,20 +56,24 @@ public class EventDetailsActivity extends Activity
 		String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
 		String description = e.getString("event_description");
-		String linkedAddress = e.getString("linked_address");
+		String contactTelephone = e.getString("event_contact_telephone_number");
+		String contactEmail = e.getString("event_contact_email_address");
 		String image_url = e.getString("image_url");
 
 		if (name != null) txtName.setText(name);
 		if (start_date != null && end_date != null)
 		{
-			// TODO needs function to take just a date
-			Event event = new Event();
-			event.setStartDate(start_date);
-			event.setEndDate(end_date);
-			txtDate.setText(CalendarFunctions.getEventDate(event));
-
+			txtDate.setText(CalendarFunctions.getEventDate(start_date, end_date));
 		}
 		if (description != null) txtDescription.setText(description);
+		
+		String contactDetails = "";
+		
+		if (contactTelephone == null && contactEmail == null)
+			 contactDetails = "No contact details available";
+		else contactDetails = "For more information: "
+			 + ((contactTelephone != null) ? "Call: " + contactTelephone + "\n" : "")
+			 + ((contactEmail != null) ? "Email: " + contactEmail : "");
 
 		(new DownloadImageTask()).execute(image_url);
 	}
