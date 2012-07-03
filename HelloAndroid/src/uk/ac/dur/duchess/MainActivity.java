@@ -12,6 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
@@ -219,17 +220,9 @@ public class MainActivity extends ListActivity
 						public int compare(Event e1, Event e2)
 						{
 							String sDateStr = e1.getStartDate();
-							int sYear = Integer.parseInt(sDateStr.substring(0, 4));
-							int sMonth = Integer.parseInt(sDateStr.substring(5, 7));
-							int sDate = Integer.parseInt(sDateStr.substring(8, 10));
-
 							String tDateStr = e2.getStartDate();
-							int tYear = Integer.parseInt(tDateStr.substring(0, 4));
-							int tMonth = Integer.parseInt(tDateStr.substring(5, 7));
-							int tDate = Integer.parseInt(tDateStr.substring(8, 10));
 
-							return ((sYear * 10000 + sMonth * 100 + sDate) - (tYear * 10000
-									+ tMonth * 100 + tDate));
+							return CalendarFunctions.compareDates(sDateStr, sDateStr);
 						}
 
 					});

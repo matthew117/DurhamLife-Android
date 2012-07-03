@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/eventDetailsContainer"
@@ -37,13 +37,6 @@
             android:text="@string/default_date"
             android:textSize="12sp"
             android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/facebookButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/facebook_icon"
-            android:drawablePadding="5dp" />
 
         <TextView
             android:id="@+id/textViewEventDescription"
@@ -53,6 +46,14 @@
             android:text="@string/default_description"
             android:textStyle="italic"
             android:typeface="serif" />
+
+        <Button
+            android:id="@+id/facebookButton"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/facebook_icon"
+            android:drawablePadding="5dp" />
+
     </LinearLayout>
 
 </ScrollView>

@@ -26,7 +26,7 @@ public class FacebookActivity extends Activity
 
 	private static final String TOKEN = "access_token";
 	private static final String EXPIRES = "expires_in";
-	private static final String KEY = "facebook-credentials";
+	private static final String FACEBOOK_KEY = "facebook-credentials";
 
 	private Facebook facebook;
 	private String messageToPost = "Hi";
@@ -35,7 +35,7 @@ public class FacebookActivity extends Activity
 
 	public boolean saveCredentials(Facebook facebook)
 	{
-		Editor editor = getApplicationContext().getSharedPreferences(KEY, Context.MODE_PRIVATE).edit();
+		Editor editor = getApplicationContext().getSharedPreferences(FACEBOOK_KEY, Context.MODE_PRIVATE).edit();
 		
 		editor.putString(TOKEN, facebook.getAccessToken());
 		editor.putLong(EXPIRES, facebook.getAccessExpires());
@@ -45,7 +45,7 @@ public class FacebookActivity extends Activity
 
 	public boolean restoreCredentials(Facebook facebook)
 	{
-		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(KEY, Context.MODE_PRIVATE);
+		SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(FACEBOOK_KEY, Context.MODE_PRIVATE);
 		
 		facebook.setAccessToken(sharedPreferences.getString(TOKEN, null));
 		facebook.setAccessExpires(sharedPreferences.getLong(EXPIRES, 0));

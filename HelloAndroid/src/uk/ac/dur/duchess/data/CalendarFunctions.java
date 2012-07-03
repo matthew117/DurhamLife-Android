@@ -70,6 +70,24 @@ public class CalendarFunctions
 				&& a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
 	}
 	
+	public static int compareDates(String d1, String d2)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try
+		{
+			Calendar date1 = Calendar.getInstance(); date1.setTime(sdf.parse(d1));
+			Calendar date2 = Calendar.getInstance(); date2.setTime(sdf.parse(d2));
+			
+			return date1.compareTo(date2);
+		}
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			return 0;
+		}
+	}
+	
 	public static String getReviewTime(Review review)
 	{
 		return getReviewTime(review.getTimestamp());
