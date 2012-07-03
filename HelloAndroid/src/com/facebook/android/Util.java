@@ -236,7 +236,6 @@ public final class Util {
         // created by a WebKit view, but this might happen if you start the
         // app, restore saved state, and click logout before running a UI
         // dialog in a WebView -- in which case the app crashes
-        @SuppressWarnings("unused")
         CookieSyncManager cookieSyncMngr =
             CookieSyncManager.createInstance(context);
         CookieManager cookieManager = CookieManager.getInstance();
