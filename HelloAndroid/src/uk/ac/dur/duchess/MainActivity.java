@@ -12,6 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
@@ -19,11 +20,15 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
 
 public class MainActivity extends ListActivity
 {
@@ -40,6 +45,10 @@ public class MainActivity extends ListActivity
 	private User currentUser;
 	private Activity activity;
 	
+	private ImageView adImageContainer;
+	private ListView listView;
+	private Event currentAd;
+	
 	private ArrayList<Event> eventList;
 
 	/** Called when the activity is first created. */
@@ -51,6 +60,7 @@ public class MainActivity extends ListActivity
 
 		currentUser = SessionFunctions.getCurrentUser(this);
 		activity = this;
+		listView = getListView();
 
 		alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
 		chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
@@ -58,6 +68,8 @@ public class MainActivity extends ListActivity
 		categoryGridButton = (Button) findViewById(R.id.categoryGridButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
 		settingsButton = (Button) findViewById(R.id.settingsButton);
+		
+		adImageContainer = (ImageView) findViewById(R.id.adImageContainer);
 
 		if (currentUser != null)
 		{
@@ -121,6 +133,26 @@ public class MainActivity extends ListActivity
 				{
 					progressDialog.dismiss();
 					adapter.notifyDataSetChanged();
+					
+					for (Event e: eventList)
+					{
+						if (e.isFeatured() && e.getAdImageURL() != null)
+						{
+							currentAd = e;
+							Log.d("Download AD", e.getAdImageURL());
+//							adImageContainer.setAdjustViewBounds(true);
+							adImageContainer.setScaleType(ScaleType.FIT_XY);
+							DisplayMetrics displaymetrics = new DisplayMetrics();
+					        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+					        int height = displaymetrics.heightPixels;
+					        int width = displaymetrics.widthPixels;
+							adImageContainer.setMinimumWidth(width);
+							adImageContainer.setMinimumHeight((int) (width/3.0));
+							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e.getAdImageURL()));
+							adImageContainer.invalidate();
+							break;
+						}
+					}
 				}
 			};
 
@@ -268,6 +300,30 @@ public class MainActivity extends ListActivity
 				{
 					Intent i = new Intent(v.getContext(), PreferenceSettingsActivity.class);
 					startActivity(i);
+				}
+			});
+			
+			adImageContainer.setClickable(true);
+			adImageContainer.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
+					Event e = currentAd;
+					i.putExtra("event_id", e.getEventID());
+					i.putExtra("event_name", e.getName());
+					i.putExtra("event_start_date", e.getStartDate());
+					i.putExtra("event_end_date", e.getEndDate());
+					i.putExtra("event_description", e.getDescriptionHeader());
+					i.putExtra("event_address1", e.getAddress1());
+					i.putExtra("event_address2", e.getAddress2());
+					i.putExtra("event_city", e.getCity());
+					i.putExtra("event_postcode", e.getPostcode());
+					i.putExtra("event_latitude", e.getLatitude());
+					i.putExtra("event_longitude", e.getLongitude());
+					i.putExtra("image_url", e.getImageURL());
+					startActivity(i);	
 				}
 			});
 

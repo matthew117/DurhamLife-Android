@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import uk.ac.dur.duchess.Event;
 import uk.ac.dur.duchess.User;
@@ -72,9 +71,8 @@ public class UserFunctions
 		
 		for (Event e : eventList)
 		{
-			Map<Long,String> eventCategories = e.getCategoryTags();
-			Log.d("EVENT CATEGORIES", (eventCategories.values()).toString());
-			if (preferences.containsAll(e.getCategoryTags().values())) newList.add(e);
+			List<String> eventCategories = e.getCategoryTags();
+			if (preferences.contains(e.getCategoryTags().get(0))) newList.add(e);
 		}
 		
 		eventList.clear();

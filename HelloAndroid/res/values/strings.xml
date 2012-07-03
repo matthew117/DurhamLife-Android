@@ -87,5 +87,6 @@
     <string name="change_preferences">Change Preferences</string>
     <string name="forename">Forename</string>
     <string name="surname">Surname</string>
+    <string name="advertisement">Advertisement</string>
 
 </resources>

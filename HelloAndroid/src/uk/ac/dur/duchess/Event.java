@@ -1,6 +1,6 @@
 package uk.ac.dur.duchess;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class Event
 {
@@ -31,10 +31,15 @@ public class Event
 
 	private String accessibilityInformation;
 
-	private HashMap<Long, String> categoryTags;
-	private HashMap<Long, String> subcategoryTags;
-
+	private List<String> categoryTags;
+	
+	private String adImageURL;
+	
 	private String imageURL;
+	
+	private int reviewScore;
+	
+	private int numberOfReviews;
 
 	public long getEventID()
 	{
@@ -156,24 +161,14 @@ public class Event
 		this.accessibilityInformation = accessibilityInformation;
 	}
 
-	public HashMap<Long, String> getCategoryTags()
+	public List<String> getCategoryTags()
 	{
 		return categoryTags;
 	}
 
-	public void setCategoryTags(HashMap<Long, String> categoryTags)
+	public void setCategoryTags(List<String> categoryTags)
 	{
 		this.categoryTags = categoryTags;
-	}
-
-	public HashMap<Long, String> getSubcategoryTags()
-	{
-		return subcategoryTags;
-	}
-
-	public void setSubcategoryTags(HashMap<Long, String> subcategoryTags)
-	{
-		this.subcategoryTags = subcategoryTags;
 	}
 
 	public String getImageURL()
@@ -244,6 +239,36 @@ public class Event
 	public void setLocationID(long locationID)
 	{
 		this.locationID = locationID;
+	}
+	
+	public String getAdImageURL()
+	{
+		return adImageURL;
+	}
+
+	public void setAdImageURL(String adImageURL)
+	{
+		this.adImageURL = adImageURL;
+	}
+
+	public int getReviewScore()
+	{
+		return reviewScore;
+	}
+
+	public void setReviewScore(int reviewScore)
+	{
+		this.reviewScore = reviewScore;
+	}
+
+	public int getNumberOfReviews()
+	{
+		return numberOfReviews;
+	}
+
+	public void setNumberOfReviews(int numberOfReviews)
+	{
+		this.numberOfReviews = numberOfReviews;
 	}
 
 }

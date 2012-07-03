@@ -64,4 +64,11 @@
         android:layout_height="fill_parent"
         android:text="@string/main_no_items" />
 
+    <ImageView
+        android:id="@+id/adImageContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/advertisement"
+        android:src="@drawable/star" />
+
 </LinearLayout>
