@@ -62,6 +62,7 @@
                 android:layout_weight="18.90"
                 android:lineSpacingMultiplier="1.1"
                 android:text="@string/default_contact"
+                android:textSize="12sp"
                 android:typeface="serif" />
         </LinearLayout>
     </ScrollView>

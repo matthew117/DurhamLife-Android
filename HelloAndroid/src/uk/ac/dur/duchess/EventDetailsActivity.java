@@ -37,7 +37,7 @@ public class EventDetailsActivity extends Activity
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
 
 		image = (ImageView) findViewById(R.id.imageView1);
-		
+
 		facebookButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -48,32 +48,31 @@ public class EventDetailsActivity extends Activity
 				startActivity(i);
 			}
 		});
-				
 
 		Bundle e = getIntent().getExtras();
 
 		String name = e.getString("event_name");
 		String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
+		String date = CalendarFunctions.getEventDate(start_date, end_date);
 		String description = e.getString("event_description");
 		String contactTelephone = e.getString("event_contact_telephone_number");
 		String contactEmail = e.getString("event_contact_email_address");
 		String image_url = e.getString("image_url");
 
 		if (name != null) txtName.setText(name);
-		if (start_date != null && end_date != null)
-		{
-			txtDate.setText(CalendarFunctions.getEventDate(start_date, end_date));
-		}
+		if (start_date != null && end_date != null) txtDate.setText(date);
 		if (description != null) txtDescription.setText(description);
-		
+
 		String contactDetails = "";
-		
+
 		if (contactTelephone == null && contactEmail == null)
 			 contactDetails = "No contact details available";
 		else contactDetails = "For more information: "
 			 + ((contactTelephone != null) ? "Call: " + contactTelephone + "\n" : "")
 			 + ((contactEmail != null) ? "Email: " + contactEmail : "");
+		
+		txtContact.setText(contactDetails);
 
 		(new DownloadImageTask()).execute(image_url);
 	}
@@ -83,10 +82,7 @@ public class EventDetailsActivity extends Activity
 		@Override
 		protected Bitmap doInBackground(String... urlArray)
 		{
-			try
-			{
-				return NetworkFunctions.downloadImage(urlArray[0]);
-			}
+			try { return NetworkFunctions.downloadImage(urlArray[0]); }
 			catch (Exception ex)
 			{
 				// TODO error handling
