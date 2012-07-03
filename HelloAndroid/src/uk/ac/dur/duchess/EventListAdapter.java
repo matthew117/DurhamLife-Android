@@ -177,12 +177,12 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			}
 			else
 			{
-				star1.setVisibility(View.INVISIBLE);
-				star2.setVisibility(View.INVISIBLE);
-				star3.setVisibility(View.INVISIBLE);
-				star4.setVisibility(View.INVISIBLE);
-				star5.setVisibility(View.INVISIBLE);
-				numberOfReviewsDisplay.setVisibility(View.INVISIBLE);
+				star1.setVisibility(View.GONE);
+				star2.setVisibility(View.GONE);
+				star3.setVisibility(View.GONE);
+				star4.setVisibility(View.GONE);
+				star5.setVisibility(View.GONE);
+				numberOfReviewsDisplay.setVisibility(View.GONE);
 			}
 
 		}

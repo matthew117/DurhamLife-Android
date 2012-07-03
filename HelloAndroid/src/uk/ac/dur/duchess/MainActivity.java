@@ -141,8 +141,8 @@ public class MainActivity extends ListActivity
 						{
 							currentAd = e;
 							Log.d("Download AD", e.getAdImageURL());
-//							adImageContainer.setAdjustViewBounds(true);
-							adImageContainer.setScaleType(ScaleType.FIT_XY);
+							adImageContainer.setAdjustViewBounds(true);
+							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
 							DisplayMetrics displaymetrics = new DisplayMetrics();
 					        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 					        int height = displaymetrics.heightPixels;
