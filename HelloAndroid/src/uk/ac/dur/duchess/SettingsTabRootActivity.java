@@ -8,7 +8,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 
-public class PreferencesTabRootActivity extends TabActivity
+public class SettingsTabRootActivity extends TabActivity
 {
 	@Override
 	public void onCreate(Bundle savedInstanceState)

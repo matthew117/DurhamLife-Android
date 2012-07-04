@@ -310,7 +310,7 @@ public class MainActivity extends ListActivity
 				@Override
 				public void onClick(View v)
 				{
-					Intent i = new Intent(v.getContext(), PreferenceSettingsActivity.class);
+					Intent i = new Intent(v.getContext(), SettingsTabRootActivity.class);
 					startActivity(i);
 				}
 			});
