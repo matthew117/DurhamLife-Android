@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:layout_above="@+id/socialNetworkingLayout"
         android:layout_alignParentTop="true" >
-
+
         <LinearLayout
             android:id="@+id/eventDetailsContainer"
             android:layout_width="fill_parent"
@@ -47,23 +47,33 @@
             <TextView
                 android:id="@+id/textViewEventDescription"
                 android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="18.90"
+                android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.1"
                 android:text="@string/default_description"
                 android:textStyle="italic"
                 android:typeface="serif" />
-            
-             <TextView
-                android:id="@+id/textViewContactDetails"
+
+            <Button
+                android:id="@+id/telephoneButton"
                 android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_weight="18.90"
-                android:lineSpacingMultiplier="1.1"
-                android:text="@string/default_contact"
-                android:textSize="12sp"
-                android:typeface="serif" />
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:drawableRight="@drawable/phone"/>
+
+            <Button
+                android:id="@+id/emailContactButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/email"/>
+
+            <Button
+                android:id="@+id/websiteButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/internet"/>
+
         </LinearLayout>
+
     </ScrollView>
     
         <RelativeLayout
