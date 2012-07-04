@@ -81,7 +81,7 @@
             android:label="@string/app_name" >
         </activity>
                 <activity
-            android:name=".PersonalSettingsActivity"
+            android:name=".ProfileSettingsActivity"
             android:label="@string/app_name" >
         </activity>
         

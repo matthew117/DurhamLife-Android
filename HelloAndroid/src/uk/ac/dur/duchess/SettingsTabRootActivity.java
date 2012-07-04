@@ -27,11 +27,11 @@ public class SettingsTabRootActivity extends TabActivity
 
 		accountTab.setContent(accountIntent);
 
-		TabSpec personalTab = tabHost.newTabSpec("Location");
-		personalTab.setIndicator("Location", getResources().getDrawable(R.drawable.community));
-		Intent personalIntent = new Intent(this, PersonalSettingsActivity.class);
+		TabSpec profileTab = tabHost.newTabSpec("Profile");
+		profileTab.setIndicator("Profile", getResources().getDrawable(R.drawable.community));
+		Intent personalIntent = new Intent(this, ProfileSettingsActivity.class);
 
-		personalTab.setContent(personalIntent);
+		profileTab.setContent(personalIntent);
 
 		TabSpec preferencesTab = tabHost.newTabSpec("Preferences");
 		preferencesTab.setIndicator("Preferences", getResources().getDrawable(R.drawable.grid));
@@ -41,7 +41,7 @@ public class SettingsTabRootActivity extends TabActivity
 
 		// Add each tab to the tab host
 		tabHost.addTab(accountTab);
-		tabHost.addTab(personalTab);
+		tabHost.addTab(profileTab);
 		tabHost.addTab(preferencesTab);
 	}
 

@@ -6,7 +6,6 @@ import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +18,7 @@ public class AccountSettingsActivity extends Activity
 	private EditText oldPassword;
 	private EditText newPassword;
 	private EditText confirmPassword;
-	private Button updateButton;
+	private Button saveButton;
 	private Button cancelButton;
 	
 	private Activity activity;
@@ -40,7 +39,7 @@ public class AccountSettingsActivity extends Activity
 		newPassword = (EditText) findViewById(R.id.editPasswordEditText);
 		confirmPassword = (EditText) findViewById(R.id.editConfirmPasswordEditText);
 
-		updateButton = (Button) findViewById(R.id.confirmUpdateAccountButton);
+		saveButton = (Button) findViewById(R.id.confirmUpdateAccountButton);
 		cancelButton = (Button) findViewById(R.id.cancelUpdateAccountButton);
 		
 		email.setText(currentUser.getEmailAddress());
@@ -51,16 +50,17 @@ public class AccountSettingsActivity extends Activity
 			public void onClick(View v) { finish(); }
 		});
 
-		updateButton.setOnClickListener(new View.OnClickListener()
+		saveButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				if(newPassword.getText().toString() == null && confirmPassword.getText().toString() == null)
+				if(newPassword.getText().length() == 0 && confirmPassword.getText().length() == 0)
 				{
 					String newEmail = email.getText().toString();
 					
-					if(newEmail.equals(currentUser.getEmailAddress())) /*TODO*/;
+					if(newEmail.equals(currentUser.getEmailAddress()))
+						Toast.makeText(v.getContext(), "No changes have been made", Toast.LENGTH_LONG).show();
 					else
 					{
 						currentUser.setEmailAddress(email.getText().toString());
@@ -97,9 +97,8 @@ public class AccountSettingsActivity extends Activity
 							UserFunctions.getUserXML(currentUser).getBytes());
 
 					SessionFunctions.saveUserPreferences(activity, currentUser);
-
-					Intent i = new Intent(v.getContext(), MainActivity.class);
-					startActivity(i);
+					
+					Toast.makeText(v.getContext(), "Your login details have been saved", Toast.LENGTH_LONG).show();
 				}
 				catch (IOException e)
 				{

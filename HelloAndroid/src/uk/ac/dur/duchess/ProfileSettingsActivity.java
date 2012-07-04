@@ -6,20 +6,21 @@ import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-public class PersonalSettingsActivity extends Activity
+public class ProfileSettingsActivity extends Activity
 {
 	private EditText forename;
 	private EditText surname;
 	private Spinner college;
 	private Spinner department;
-	private Button updateButton;
+	private Button saveButton;
+	private Button cancelButton;
 
 	private Activity activity;
 	private User currentUser;
@@ -28,7 +29,7 @@ public class PersonalSettingsActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.personal_setting_layout);
+		setContentView(R.layout.profile_settings_layout);
 
 		activity = this;
 		currentUser = SessionFunctions.getCurrentUser(activity);
@@ -37,7 +38,8 @@ public class PersonalSettingsActivity extends Activity
 		surname = (EditText) findViewById(R.id.surnameEdit);
 		college = (Spinner) findViewById(R.id.collegeSpinner);
 		department = (Spinner) findViewById(R.id.departmentSpinner);
-		updateButton = (Button) findViewById(R.id.updatePersonalButton);
+		saveButton = (Button) findViewById(R.id.confirmUpdateProfileButton);
+		cancelButton = (Button) findViewById(R.id.cancelUpdateProfileButton);
 		
 		String[] colleges = getResources().getStringArray(R.array.college_array);
 		String[] departments = getResources().getStringArray(R.array.durham_departments);
@@ -52,8 +54,14 @@ public class PersonalSettingsActivity extends Activity
 		for(int i = 0; i < departments.length; i++)
 			if(departments[i].equals(currentUser.getDepartment()))
 				{department.setSelection(i); break;}
+		
+		cancelButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v) { finish(); }
+		});
 
-		updateButton.setOnClickListener(new View.OnClickListener()
+		saveButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -70,9 +78,8 @@ public class PersonalSettingsActivity extends Activity
 							UserFunctions.getUserXML(currentUser).getBytes());
 
 					SessionFunctions.saveUserPreferences(activity, currentUser);
-
-					Intent i = new Intent(v.getContext(), MainActivity.class);
-					startActivity(i);
+					
+					Toast.makeText(v.getContext(), "Your details have been saved", Toast.LENGTH_LONG).show();
 				}
 				catch (IOException e)
 				{

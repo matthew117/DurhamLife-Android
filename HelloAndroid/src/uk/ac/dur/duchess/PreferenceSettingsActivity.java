@@ -10,12 +10,12 @@ import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 public class PreferenceSettingsActivity extends Activity
 {
@@ -30,14 +30,15 @@ public class PreferenceSettingsActivity extends Activity
 	private CheckBox exhibitionsCheckBox;
 	private CheckBox conferencesCheckBox;
 	private CheckBox communityCheckBox;
-	private Button changeUserPreferencesButton;
+	private Button saveButton;
+	private Button cancelButton;
 	
 	private Activity activity;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting_layout);
+		setContentView(R.layout.preference_settings_layout);
 
 		activity = this;
 		
@@ -50,7 +51,8 @@ public class PreferenceSettingsActivity extends Activity
 		conferencesCheckBox = (CheckBox) findViewById(R.id.checkBoxConferences);
 		communityCheckBox = (CheckBox) findViewById(R.id.checkBoxCommunity);
 
-		changeUserPreferencesButton = (Button) findViewById(R.id.changeUserPreferencesButton);
+		saveButton = (Button) findViewById(R.id.confirmUpdatePreferencesButton);
+		cancelButton = (Button) findViewById(R.id.cancelUpdatePreferencesButton);
 		
 		currentUser = SessionFunctions.getCurrentUser(this);
 		
@@ -65,7 +67,13 @@ public class PreferenceSettingsActivity extends Activity
 		if (categoryPreferences.contains("Conferences")) conferencesCheckBox.setChecked(true);
 		if (categoryPreferences.contains("Community")) communityCheckBox.setChecked(true);
 
-		changeUserPreferencesButton.setOnClickListener(new View.OnClickListener()
+		cancelButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v) { finish(); }
+		});
+		
+		saveButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -84,6 +92,7 @@ public class PreferenceSettingsActivity extends Activity
 				
 				currentUser.setCategoryPreferences(newPreferences);
 				SessionFunctions.saveUserPreferences(activity, currentUser);
+				Toast.makeText(v.getContext(), "Your preferences have been saved", Toast.LENGTH_LONG).show();
 				
 				Thread t = new Thread(new Runnable()
 				{		
@@ -100,6 +109,8 @@ public class PreferenceSettingsActivity extends Activity
 							{
 								Log.d("Change User Pref Response", sc.nextLine());	
 							}
+							
+							
 						}
 						catch (IOException e)
 						{
@@ -109,9 +120,6 @@ public class PreferenceSettingsActivity extends Activity
 					}
 				});
 				t.start();
-				
-				Intent i = new Intent(v.getContext(), MainActivity.class);
-				startActivity(i);
 			}
 		});
 	}
