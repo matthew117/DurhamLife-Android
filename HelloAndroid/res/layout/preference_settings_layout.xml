@@ -5,79 +5,89 @@
     android:orientation="vertical"
     android:padding="7dp" >
 
-    <CheckBox
-        android:id="@+id/checkBoxUniversity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="14dp"
-        android:text="@string/university" />
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/preferenceSettingsButtonBar"
+        android:layout_centerHorizontal="true" >
 
-    <CheckBox
-        android:id="@+id/checkBoxCollege"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxUniversity"
-        android:layout_below="@+id/checkBoxUniversity"
-        android:text="@string/college" />
+        <TableRow>
 
-    <CheckBox
-        android:id="@+id/checkBoxMusic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxCollege"
-        android:layout_below="@+id/checkBoxCollege"
-        android:text="@string/music" />
+            <CheckBox
+                android:id="@+id/checkBoxUniversity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/university" />
 
-    <CheckBox
-        android:id="@+id/checkBoxTheatre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxMusic"
-        android:layout_below="@+id/checkBoxMusic"
-        android:text="@string/theatre" />
+            <CheckBox
+                android:id="@+id/checkBoxCollege"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/college" />
+        </TableRow>
 
-    <CheckBox
-        android:id="@+id/checkBoxExhibitions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="32dp"
-        android:layout_toRightOf="@+id/checkBoxUniversity"
-        android:text="@string/exhibitions" />
+        <TableRow>
 
-    <CheckBox
-        android:id="@+id/checkBoxSport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxExhibitions"
-        android:layout_below="@+id/checkBoxExhibitions"
-        android:text="@string/sport" />
+            <CheckBox
+                android:id="@+id/checkBoxMusic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/music" />
 
-    <CheckBox
-        android:id="@+id/checkBoxConferences"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxSport"
-        android:layout_below="@+id/checkBoxSport"
-        android:text="@string/conferences" />
+            <CheckBox
+                android:id="@+id/checkBoxTheatre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/theatre" />
+        </TableRow>
 
-    <CheckBox
-        android:id="@+id/checkBoxCommunity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/checkBoxConferences"
-        android:layout_below="@+id/checkBoxConferences"
-        android:text="@string/community" />
-
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/checkBoxExhibitions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/exhibitions" />
+
+            <CheckBox
+                android:id="@+id/checkBoxSport"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/sport" />
+        </TableRow>
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/checkBoxConferences"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/conferences" />
+
+            <CheckBox
+                android:id="@+id/checkBoxCommunity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/community" />
+        </TableRow>
+    </TableLayout>
+
     <LinearLayout
+        android:id="@+id/preferenceSettingsButtonBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="fill_horizontal"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
+        android:orientation="horizontal" >
+
         <Button
             android:id="@+id/cancelUpdatePreferencesButton"
             android:layout_width="fill_parent"
@@ -86,7 +96,7 @@
             android:layout_weight="1"
             android:padding="5dp"
             android:text="@string/cancel" />
-
+
         <Button
             android:id="@+id/confirmUpdatePreferencesButton"
             android:layout_width="fill_parent"
@@ -96,7 +106,6 @@
             android:layout_weight="1"
             android:padding="5dp"
             android:text="@string/save" />
-
     </LinearLayout>
 
 </RelativeLayout>
