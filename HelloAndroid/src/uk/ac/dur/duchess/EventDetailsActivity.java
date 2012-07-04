@@ -5,6 +5,7 @@ import uk.ac.dur.duchess.data.NetworkFunctions;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -72,11 +73,49 @@ public class EventDetailsActivity extends Activity
 		if(contactTelephone != null) phoneContactButton.setText(contactTelephone);
 		else phoneContactButton.setVisibility(View.GONE);
 		
+		phoneContactButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				Intent callIntent = new Intent(Intent.ACTION_CALL);
+		        callIntent.setData(Uri.parse("tel:+447794330580"));
+		        startActivity(callIntent);
+			}
+		});
+		
 		if(contactEmail != null) emailContactButton.setText(contactEmail);
 		else emailContactButton.setVisibility(View.GONE);
 		
+		emailContactButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				Intent intent = new Intent(Intent.ACTION_SEND);
+				intent.setType("plain/text");
+				intent.putExtra(Intent.EXTRA_EMAIL,new String[] { "jamie_bates_8@live.co.uk" });
+				intent.putExtra(Intent.EXTRA_SUBJECT, "");
+				intent.putExtra(Intent.EXTRA_TEXT, "");
+
+				startActivity(Intent.createChooser(intent, "Send E-mail"));
+			}
+		});
+		
 		if(webAddress != null) viewWebsiteButton.setText(webAddress);
 		else viewWebsiteButton.setVisibility(View.GONE);
+		
+		viewWebsiteButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				String url = getIntent().getExtras().getString("event_web_address");
+				Intent i = new Intent(Intent.ACTION_VIEW);
+				i.setData(Uri.parse(url));
+				startActivity(i);
+			}
+		});
 
 		(new DownloadImageTask()).execute(image_url);
 	}
