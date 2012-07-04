@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/userHubTableLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center" >
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/userHubBrowse"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/grid"
+                    android:gravity="center"
+                    android:text="@string/browse"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/userHubCollege"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/college"
+                    android:gravity="center"
+                    android:text="@string/college_events"
+                    android:textSize="12sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:id="@+id/userHubMyEvents"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/star"
+                    android:gravity="center"
+                    android:text="@string/my_events"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/userHubNews"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/news"
+                    android:gravity="center"
+                    android:text="@string/news"
+                    android:textSize="12sp" />
+            </TableRow>
+        </TableLayout>
+    </FrameLayout>
+
+</RelativeLayout>

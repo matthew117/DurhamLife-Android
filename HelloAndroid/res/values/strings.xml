@@ -93,5 +93,9 @@
     <string name="forename">Forename</string>
     <string name="surname">Surname</string>
     <string name="advertisement">Advertisement</string>
+    <string name="browse">Browse</string>
+    <string name="college_events">College Events</string>
+    <string name="my_events">My Events</string>
+    <string name="news">News</string>
 
 </resources>
