@@ -26,7 +26,7 @@ public class RegisterActivity extends Activity
 	private Button registerButton;
 	private EditText forename;
 	private EditText surname;
-	
+
 	private Activity activity;
 
 	@Override
@@ -34,7 +34,7 @@ public class RegisterActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_layout);
-		
+
 		activity = this;
 
 		email = (EditText) findViewById(R.id.registerEmailEditText);
@@ -45,6 +45,7 @@ public class RegisterActivity extends Activity
 		registerButton = (Button) findViewById(R.id.registerUserButton);
 		forename = (EditText) findViewById(R.id.forenameRegister);
 		surname = (EditText) findViewById(R.id.surnameRegister);
+
 
 		registerButton.setOnClickListener(new View.OnClickListener()
 		{
