@@ -22,10 +22,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,20 +43,22 @@ public class ReviewActivity extends Activity
 	private Button submitReviewButton;
 
 	private Activity activity;
+	
+	private ProgressBar progressBar;
 
 	// TODO disallow users from reviewing the same event twice in the API
 	// TODO remove EditText and RatingBar if no user is signed in (anonymous)
 
 	// TODO allow editing of that user's review
-	// TODO add API function that only returns reviews updated since a certain
-	// time
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
 		setContentView(R.layout.review_layout);
-
+		
 		activity = this;
 
 		e = getIntent().getExtras();
@@ -64,6 +68,8 @@ public class ReviewActivity extends Activity
 		reviewEditText = (EditText) findViewById(R.id.reviewTextBox);
 		ratingBar = (RatingBar) findViewById(R.id.ratingStars);
 		submitReviewButton = (Button) findViewById(R.id.submitReviewButton);
+		
+		progressBar = (ProgressBar) findViewById(R.id.reviewDownloadProgressBar);
 
 		eventNameLabel.setText(e.getString("event_name"));
 
@@ -111,6 +117,12 @@ public class ReviewActivity extends Activity
 	private class BackgroundTask extends AsyncTask<String, Void, List<Review>>
 	{
 		@Override
+		protected void onPreExecute()
+		{
+			progressBar.setVisibility(View.VISIBLE);
+		}
+		
+		@Override
 		protected List<Review> doInBackground(String... urlArray)
 		{
 			List<Review> reviewList = new ArrayList<Review>();
@@ -128,6 +140,8 @@ public class ReviewActivity extends Activity
 				reader.setContentHandler(reviewXMLParser);
 
 				reader.parse(new InputSource(url.openStream()));
+				
+				Thread.sleep(5000);
 
 				return reviewList;
 			}
@@ -140,6 +154,8 @@ public class ReviewActivity extends Activity
 		@Override
 		protected void onPostExecute(List<Review> reviewList)
 		{
+			progressBar.setVisibility(View.GONE);
+			
 			if (reviewList.size() == 0)
 			{
 				TextView t = new TextView(getApplicationContext());

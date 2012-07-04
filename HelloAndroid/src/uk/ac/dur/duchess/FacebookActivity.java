@@ -137,7 +137,7 @@ public class FacebookActivity extends Activity
 		params.putString("link", webAddress);
 		params.putString("description", description);
 		params.putString("picture", image_url);
-		params.putString("icon", /*TODO*/"");
+		params.putString("icon", "http://www.dur.ac.uk/matthew.bates/Duchess/img/DUFavicon.png");
 
 		try
 		{

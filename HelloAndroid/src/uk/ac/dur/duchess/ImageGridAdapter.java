@@ -12,13 +12,13 @@ public class ImageGridAdapter extends BaseAdapter
 {
 	private Context context;
 	private Integer[] imageIDs;
+	private String[] textLabels;
 
-	// TODO add category label text below the image
-
-	public ImageGridAdapter(Context context, Integer[] imageIDs)
+	public ImageGridAdapter(Context context, Integer[] imageIDs, String[] textLabels)
 	{
 		this.context = context;
 		this.imageIDs = imageIDs;
+		this.textLabels = textLabels;
 	}
 
 	public int getCount()
@@ -50,34 +50,9 @@ public class ImageGridAdapter extends BaseAdapter
 		icon = (TextView) v.findViewById(R.id.categoryGridLabel);
 
 		icon.setCompoundDrawablesWithIntrinsicBounds(0, imageIDs[position], 0, 0);
-		icon.setText(categorySelection(position));
+		icon.setText(textLabels[position]);
 		
 		return v;
-	}
-
-	private String categorySelection(int i)
-	{
-		switch (i)
-		{
-		case 0:
-			return "University";
-		case 1:
-			return "College";
-		case 2:
-			return "Music";
-		case 3:
-			return "Theatre";
-		case 4:
-			return "Exhibitions";
-		case 5:
-			return "Sport";
-		case 6:
-			return "Conference";
-		case 7:
-			return "Community";
-		default:
-			return "NULL Category";
-		}
 	}
 
 }

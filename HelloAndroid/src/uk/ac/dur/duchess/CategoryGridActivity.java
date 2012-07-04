@@ -29,7 +29,9 @@ public class CategoryGridActivity extends Activity
 				R.drawable.music, R.drawable.theatre, R.drawable.exhibitions, R.drawable.sport,
 				R.drawable.conference, R.drawable.community };
 
-		gridView.setAdapter(new ImageGridAdapter(this, imageIDs));
+		String[] categoryLabels = new String[] {"University", "College", "Music", "Theatre", "Exhibitions", "Sport", "Conference", "Community"};
+		
+		gridView.setAdapter(new ImageGridAdapter(this, imageIDs, categoryLabels));
 
 		gridView.setOnItemClickListener(new OnItemClickListener()
 		{

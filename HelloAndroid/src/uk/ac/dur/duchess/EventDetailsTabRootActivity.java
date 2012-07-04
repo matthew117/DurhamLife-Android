@@ -14,7 +14,6 @@ public class EventDetailsTabRootActivity extends TabActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tab_root_layout);
 
-		// TODO better icons on the tabs
 		TabHost tabHost = getTabHost();
 		
 		Bundle e = getIntent().getExtras();

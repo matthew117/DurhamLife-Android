@@ -44,6 +44,14 @@
             android:layout_gravity="right"
             android:paddingTop="6dp"
             android:text="@string/submit" />
+
+        <ProgressBar
+            android:id="@+id/reviewDownloadProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
     </LinearLayout>
 
 </ScrollView>
