@@ -12,10 +12,14 @@
     <string name="subscribe">Don\'t have an account?</string>
     <string name="regsiter">Register</string>
     <string name="login">Login</string>
-    <string name="password_confim">Confirm Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="password_confirm">Confirm Password</string>
     <string name="email">E-Mail Address</string>
     <string name="university_affiliation">University Affiliation</string>
     <string name="college">College</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 
     <string-array name="college_array">
         <item>N/A</item>
