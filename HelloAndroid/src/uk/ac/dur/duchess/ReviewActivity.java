@@ -109,7 +109,6 @@ public class ReviewActivity extends Activity
 			}
 		});
 
-		// TODO requires a progress bar of some sort
 		(new BackgroundTask()).execute("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
 				+ e.getLong("event_id"));
 	}
@@ -140,8 +139,6 @@ public class ReviewActivity extends Activity
 				reader.setContentHandler(reviewXMLParser);
 
 				reader.parse(new InputSource(url.openStream()));
-				
-				Thread.sleep(5000);
 
 				return reviewList;
 			}

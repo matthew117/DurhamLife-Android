@@ -84,6 +84,7 @@ public class CalendarFunctions
 		catch (ParseException e)
 		{
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return 0;
 		}
 	}

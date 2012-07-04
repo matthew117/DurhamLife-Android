@@ -23,6 +23,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -52,6 +55,8 @@ public class MainActivity extends ListActivity
 
 	private ArrayList<Event> eventList;
 	private String categoryFilter;
+	private EventListAdapter adapter;
+	private Activity listActivity;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,9 +70,8 @@ public class MainActivity extends ListActivity
 		listView = getListView();
 
 		Bundle extras = getIntent().getExtras();
-		
-		if (extras != null)
-		categoryFilter = extras.getString("category_filter");
+
+		if (extras != null) categoryFilter = extras.getString("category_filter");
 
 		alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
 		chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
@@ -113,8 +117,7 @@ public class MainActivity extends ListActivity
 
 			reader.setContentHandler(myXMLHandler);
 
-			final EventListAdapter adapter = new EventListAdapter(this,
-					R.layout.custom_event_list_row, eventList);
+			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 			setListAdapter(adapter);
 
 			getListView().setOnItemClickListener(new OnItemClickListener()
@@ -213,17 +216,9 @@ public class MainActivity extends ListActivity
 				@Override
 				public void onClick(View v)
 				{
-					Collections.sort(eventList, new Comparator<Event>()
-					{
-
-						@Override
-						public int compare(Event obj1, Event obj2)
-						{
-							return obj1.getName().compareTo(obj2.getName());
-						}
-					});
-					adapter.notifyDataSetChanged();
+					sortEventsAlphabetically();
 				}
+
 			});
 
 			chronologicalSortButton.setOnClickListener(new View.OnClickListener()
@@ -232,24 +227,11 @@ public class MainActivity extends ListActivity
 				@Override
 				public void onClick(View v)
 				{
-					Collections.sort(eventList, new Comparator<Event>()
-					{
-
-						@Override
-						public int compare(Event e1, Event e2)
-						{
-							String sDateStr = e1.getStartDate();
-							String tDateStr = e2.getStartDate();
-
-							return CalendarFunctions.compareDates(sDateStr, sDateStr);
-						}
-
-					});
-					adapter.notifyDataSetChanged();
+					sortEventsChronologically();
 				}
 			});
 
-			final Activity listActivity = this;
+			listActivity = this;
 
 			featuredFilterButton.setOnClickListener(new View.OnClickListener()
 			{
@@ -349,6 +331,80 @@ public class MainActivity extends ListActivity
 			e.printStackTrace();
 		}
 
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.event_list_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case R.id.menuEventListFilter:
+		{
+			if (featureMode)
+			{
+				ArrayList<Event> featuredEvents = new ArrayList<Event>();
+				for (Event event : eventList)
+				{
+					if (event.isFeatured()) featuredEvents.add(event);
+				}
+				setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
+						featuredEvents));
+				featureMode = false;
+			}
+			else
+			{
+				setListAdapter(adapter);
+				featureMode = true;
+			}
+			return true;
+		}
+		case R.id.submenuEventListAZ:
+			sortEventsAlphabetically();
+			return true;
+		case R.id.submenuEventListChronological:
+			sortEventsChronologically();
+			return true;
+		default:
+			return true;
+		}
+	}
+
+	private void sortEventsAlphabetically()
+	{
+		Collections.sort(eventList, new Comparator<Event>()
+		{
+
+			@Override
+			public int compare(Event obj1, Event obj2)
+			{
+				return obj1.getName().compareTo(obj2.getName());
+			}
+		});
+		adapter.notifyDataSetChanged();
+	}
+
+	private void sortEventsChronologically()
+	{
+		Collections.sort(eventList, new Comparator<Event>()
+		{
+
+			@Override
+			public int compare(Event e1, Event e2)
+			{
+				String sDateStr = e1.getStartDate();
+				String tDateStr = e2.getStartDate();
+
+				return CalendarFunctions.compareDates(sDateStr, tDateStr);
+			}
+
+		});
+		adapter.notifyDataSetChanged();
 	}
 
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuEventListSort"
+        android:icon="@drawable/sort"
+        android:title="Sort">
+        <menu>
+            <item
+                android:id="@+id/submenuEventListAZ"
+                android:icon="@drawable/arrow"
+                android:title="Alphabetical"/>
+            <item
+                android:id="@+id/submenuEventListChronological"
+                android:icon="@drawable/clock"
+                android:title="Chronological"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menuEventListFilter"
+        android:icon="@drawable/filter"
+        android:title="Filter"/>
+
+</menu>
