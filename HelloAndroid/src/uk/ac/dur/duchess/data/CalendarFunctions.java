@@ -56,10 +56,15 @@ public class CalendarFunctions
 	{
 		SimpleDateFormat range = new SimpleDateFormat("d MMMMM yyyy");
 		SimpleDateFormat event = new SimpleDateFormat("yyyy-MM-dd");
+		
 		try
 		{
-			Calendar fromDate  = Calendar.getInstance(); fromDate.setTime(range.parse(from));
+			Calendar fromDate  = Calendar.getInstance();
+			if(from.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) fromDate.setTime(event.parse(from));
+			else fromDate.setTime(range.parse(from));
 			Calendar toDate    = Calendar.getInstance(); toDate.setTime(range.parse(to));
+			if(to.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) toDate.setTime(event.parse(from));
+			else toDate.setTime(range.parse(from));
 			Calendar startDate = Calendar.getInstance(); startDate.setTime(event.parse(start));
 			Calendar endDate   = Calendar.getInstance(); endDate.setTime(event.parse(end));
 			
@@ -67,6 +72,8 @@ public class CalendarFunctions
 		}
 		catch (ParseException e)
 		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -75,6 +82,25 @@ public class CalendarFunctions
 	{
 		return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
 				&& a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
+	}
+	
+	public static boolean isSameDate(String a, String b)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try
+		{
+			Calendar date1 = Calendar.getInstance(); date1.setTime(sdf.parse(a));
+			Calendar date2 = Calendar.getInstance(); date2.setTime(sdf.parse(b));
+			
+			return isSameDate(date1, date2);
+		}
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public static int compareDates(String d1, String d2)

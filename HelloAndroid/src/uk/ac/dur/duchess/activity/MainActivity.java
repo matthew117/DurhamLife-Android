@@ -495,10 +495,10 @@ public class MainActivity extends ListActivity
 	{
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 		{
-			Calendar c = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-			SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
+			String date = year + "-" + monthOfYear + "-" + dayOfMonth;
+			String nextDay = year + "-" + monthOfYear + "-" + (dayOfMonth + 1);
 			
-			//TODO
+			filterEventByDateRange(date, nextDay);
 		}
 	};
 }
