@@ -1,5 +1,6 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import android.app.Activity;
 import android.app.ProgressDialog;

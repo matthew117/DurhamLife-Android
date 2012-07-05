@@ -7,7 +7,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import uk.ac.dur.duchess.User;
+import uk.ac.dur.duchess.entity.User;
 
 public class SessionFunctions
 {

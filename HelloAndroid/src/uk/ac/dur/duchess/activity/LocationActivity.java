@@ -1,6 +1,8 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
 import java.util.List;
+
+import uk.ac.dur.duchess.R;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

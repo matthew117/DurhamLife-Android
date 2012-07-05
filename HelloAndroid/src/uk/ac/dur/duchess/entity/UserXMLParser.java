@@ -1,4 +1,4 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.entity;
 
 import java.util.ArrayList;
 import java.util.List;

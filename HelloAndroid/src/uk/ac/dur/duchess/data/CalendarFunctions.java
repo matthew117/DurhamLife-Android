@@ -4,8 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import uk.ac.dur.duchess.Event;
-import uk.ac.dur.duchess.Review;
+import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.Review;
 
 public class CalendarFunctions
 {

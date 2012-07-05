@@ -1,4 +1,4 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -12,10 +12,15 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
+import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventXMLParser;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;

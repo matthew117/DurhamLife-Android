@@ -1,4 +1,4 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;

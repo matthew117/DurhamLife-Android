@@ -1,4 +1,4 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,9 +12,13 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
+import uk.ac.dur.duchess.entity.Review;
+import uk.ac.dur.duchess.entity.ReviewXMLParser;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

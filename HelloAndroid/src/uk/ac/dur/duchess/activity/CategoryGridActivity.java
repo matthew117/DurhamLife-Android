@@ -1,5 +1,7 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
+import uk.ac.dur.duchess.ImageGridAdapter;
+import uk.ac.dur.duchess.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

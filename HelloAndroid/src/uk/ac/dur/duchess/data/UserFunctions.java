@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import uk.ac.dur.duchess.Event;
-import uk.ac.dur.duchess.User;
+import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.User;
 import android.util.Log;
 
 public class UserFunctions

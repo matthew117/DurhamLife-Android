@@ -1,4 +1,4 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
 import java.net.URL;
 
@@ -8,8 +8,11 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
+import uk.ac.dur.duchess.entity.User;
+import uk.ac.dur.duchess.entity.UserXMLParser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

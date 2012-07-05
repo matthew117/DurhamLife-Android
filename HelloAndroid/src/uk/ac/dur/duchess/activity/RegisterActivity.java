@@ -1,12 +1,14 @@
-package uk.ac.dur.duchess;
+package uk.ac.dur.duchess.activity;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
