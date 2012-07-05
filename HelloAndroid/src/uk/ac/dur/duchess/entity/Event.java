@@ -4,8 +4,7 @@ import java.util.List;
 
 public class Event
 {
-	public Event()
-	{}
+	public Event() {}
 
 	private long eventID;
 	private boolean isFeatured;
@@ -16,6 +15,10 @@ public class Event
 
 	private String startDate;
 	private String endDate;
+	
+	private EventScope scope;
+	private String associatedCollege;
+	private String associatedSociety;
 
 	private String contactTelephoneNumber;
 	private String contactEmailAddress;
@@ -59,6 +62,21 @@ public class Event
 	public void setDescriptionBody(String descriptionBody)
 	{
 		this.descriptionBody = descriptionBody;
+	}
+	
+	public EventScope getScope()
+	{
+		return scope;
+	}
+	
+	public void setScope(EventScope scope)
+	{
+		this.scope = scope;
+	}
+	
+	public void setScope(String scope)
+	{
+		this.scope = EventScope.parseScope(scope);
 	}
 
 	public String getContactTelephoneNumber()
@@ -269,6 +287,22 @@ public class Event
 	public void setNumberOfReviews(int numberOfReviews)
 	{
 		this.numberOfReviews = numberOfReviews;
+	}
+
+	public String getAssociatedCollege() {
+		return associatedCollege;
+	}
+
+	public void setAssociatedCollege(String associatedCollege) {
+		this.associatedCollege = associatedCollege;
+	}
+
+	public String getAssociatedSociety() {
+		return associatedSociety;
+	}
+
+	public void setAssociatedSociety(String associatedSociety) {
+		this.associatedSociety = associatedSociety;
 	}
 
 }

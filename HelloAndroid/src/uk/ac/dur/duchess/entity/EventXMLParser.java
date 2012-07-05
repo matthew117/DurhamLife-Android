@@ -14,6 +14,10 @@ public class EventXMLParser extends DefaultHandler
 
 	private boolean isStartDate = false;
 	private boolean isEndDate = false;
+	
+	private boolean isAssociatedCollege = false;
+	private boolean isEventScope = false;
+	private boolean isAssociatedSociety = false;
 
 	private boolean isContactTelephoneNumber = false;
 	private boolean isContactEmailAddress = false;
@@ -71,7 +75,11 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (localName.equalsIgnoreCase("startDate")) isStartDate = true;
 		else if (localName.equalsIgnoreCase("endDate")) isEndDate = true;
-
+		
+		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = true;
+		else if (localName.equalsIgnoreCase("eventScope")) isEventScope = true;
+		else if (localName.equalsIgnoreCase("associatedSociety")) isAssociatedSociety = true;
+		
 		else if (localName.equalsIgnoreCase("contactTelephoneNumber")) isContactTelephoneNumber = true;
 		else if (localName.equalsIgnoreCase("contactEmailAddress")) isContactEmailAddress = true;
 		else if (localName.equalsIgnoreCase("webAddress")) isWebAddress = true;
@@ -124,6 +132,10 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (localName.equalsIgnoreCase("startDate")) isStartDate = false;
 		else if (localName.equalsIgnoreCase("endDate")) isEndDate = false;
+		
+		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = false;
+		else if (localName.equalsIgnoreCase("eventScope")) isEventScope = false;
+		else if (localName.equalsIgnoreCase("associatedSociety")) isAssociatedSociety = false;
 
 		else if (localName.equalsIgnoreCase("contactTelephoneNumber")) isContactTelephoneNumber = false;
 		else if (localName.equalsIgnoreCase("contactEmailAddress")) isContactEmailAddress = false;
@@ -155,6 +167,10 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (isStartDate) event.setStartDate(new String(ch, start, length));
 		else if (isEndDate) event.setEndDate(new String(ch, start, length));
+		
+		else if (isAssociatedCollege) event.setAssociatedCollege(new String(ch, start, length));
+		else if (isEventScope) event.setScope(new String(ch, start, length));
+		else if (isAssociatedSociety) event.setAssociatedSociety(new String(ch, start, length));
 
 		else if (isContactTelephoneNumber) event.setContactTelephoneNumber(new String(ch, start,
 				length));
