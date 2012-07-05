@@ -433,9 +433,9 @@ public class MainActivity extends ListActivity
 			{
 				if(responseCode == RESULT_OK)
 				{
-					String afterDate = data.getStringExtra("after_date");
-					String beforeDate = data.getStringExtra("before_date");
-					Toast.makeText(this, afterDate + " until " + beforeDate, Toast.LENGTH_LONG).show();
+					String fromDate = data.getStringExtra("from_date");
+					String toDate = data.getStringExtra("to_date");
+					Toast.makeText(this, fromDate + " until " + toDate, Toast.LENGTH_LONG).show();
 				}
 				break;
 			}

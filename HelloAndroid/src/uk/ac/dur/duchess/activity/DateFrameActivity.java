@@ -13,8 +13,8 @@ public class DateFrameActivity extends Activity
 {
 	private Button confirmButton;
 	private Button cancelButton;
-	private DatePicker afterDatePicker;
-	private DatePicker beforeDatePicker;
+	private DatePicker fromDatePicker;
+	private DatePicker toDatePicker;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -27,8 +27,8 @@ public class DateFrameActivity extends Activity
 		
 		confirmButton = (Button) findViewById(R.id.confirmDateFrameButton);
 		cancelButton = (Button) findViewById(R.id.cancelDateFrameButton);
-		afterDatePicker = (DatePicker) findViewById(R.id.afterDatePicker);
-		beforeDatePicker = (DatePicker) findViewById(R.id.beforeDatePicker);
+		fromDatePicker = (DatePicker) findViewById(R.id.fromDatePicker);
+		toDatePicker = (DatePicker) findViewById(R.id.toDatePicker);
 		
 		cancelButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -43,18 +43,18 @@ public class DateFrameActivity extends Activity
 			{
 				Intent returnIntent = new Intent();
 				
-				String afterDate
-					= afterDatePicker.getYear() + "-"
-					+ afterDatePicker.getMonth() + "-"
-					+ afterDatePicker.getDayOfMonth();
+				String fromDate
+					= fromDatePicker.getYear() + "-"
+					+ fromDatePicker.getMonth() + "-"
+					+ fromDatePicker.getDayOfMonth();
 				
-				String beforeDate
-					= beforeDatePicker.getYear() + "-"
-					+ beforeDatePicker.getMonth() + "-"
-					+ beforeDatePicker.getDayOfMonth();
+				String toDate
+					= toDatePicker.getYear() + "-"
+					+ toDatePicker.getMonth() + "-"
+					+ toDatePicker.getDayOfMonth();
 				
-				returnIntent.putExtra("after_date", afterDate);
-				returnIntent.putExtra("before_date", beforeDate);
+				returnIntent.putExtra("from_date", fromDate);
+				returnIntent.putExtra("to_date", toDate);
 				
 				setResult(RESULT_OK, returnIntent);
 				finish();
