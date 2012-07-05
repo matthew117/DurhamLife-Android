@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/beforeDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:text="Include events that start before this date:"
+        android:textSize="14dp" />
+
+    <DatePicker
+        android:id="@+id/afterDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/beforeDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:text="Exclude events that start after this date:"
+        android:textSize="14dp" />
+
+    <DatePicker
+        android:id="@+id/beforeDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="5dp" />
+    
+        <LinearLayout
+        android:id="@+id/dateFrameButtonBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal" android:padding="10dp">
+
+        <Button
+            android:id="@+id/cancelDateFrameButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/confirmDateFrameButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:text="@string/ok" />
+    </LinearLayout>
+
+</LinearLayout>

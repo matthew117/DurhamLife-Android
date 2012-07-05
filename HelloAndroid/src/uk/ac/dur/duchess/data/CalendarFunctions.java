@@ -31,20 +31,8 @@ public class CalendarFunctions
 			Calendar tomorrow  = Calendar.getInstance(); tomorrow.roll(Calendar.DAY_OF_YEAR, true);
 			Calendar yesterday = Calendar.getInstance(); yesterday.roll(Calendar.DAY_OF_YEAR, false);
 						
-			if(startDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
-			{
-				if(startDate.get(Calendar.DATE)     == today.get(Calendar.DATE)) _startDate = "Today";
-				if(startDate.get(Calendar.DATE) - 1 == today.get(Calendar.DATE)) _startDate = "Tomorrow";
-				if(startDate.get(Calendar.DATE) + 1 == today.get(Calendar.DATE)) _startDate = "Yesterday";
-			}
-			
-			if(endDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
-			{
-				if(endDate.get(Calendar.DATE)     == today.get(Calendar.DATE)) _endDate = "Today";
-				if(endDate.get(Calendar.DATE) - 1 == today.get(Calendar.DATE)) _endDate = "Tomorrow";
-				if(endDate.get(Calendar.DATE) + 1 == today.get(Calendar.DATE)) _endDate = "Yesterday";
-			}
-			
+			if(isSameDate(startDate, today)) _startDate = "Today";
+			if(isSameDate(endDate, today)) _endDate = "Today";
 			if(isSameDate(startDate, tomorrow)) _startDate = "Tomorrow";
 			if(isSameDate(endDate, tomorrow)) _endDate = "Tomorrow";
 			if(isSameDate(startDate, yesterday)) _startDate = "Yesterday";

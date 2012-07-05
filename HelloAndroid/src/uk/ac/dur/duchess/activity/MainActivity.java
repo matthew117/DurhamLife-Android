@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 
@@ -62,6 +63,8 @@ public class MainActivity extends ListActivity
 	private String categoryFilter;
 	private EventListAdapter adapter;
 	private Activity listActivity;
+	
+	private static final int REQUEST_DATEFRAME = 1;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -349,24 +352,13 @@ public class MainActivity extends ListActivity
 	{
 		switch (item.getItemId())
 		{
-		case R.id.menuEventListFilter:
-		{
-			if (featureMode)
-			{
-				ArrayList<Event> featuredEvents = new ArrayList<Event>();
-				for (Event event : eventList)
-				{
-					if (event.isFeatured()) featuredEvents.add(event);
-				}
-				setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
-						featuredEvents));
-				featureMode = false;
-			}
-			else
-			{
-				setListAdapter(adapter);
-				featureMode = true;
-			}
+		case R.id.submenuEventListFeatured:
+			filterEventByFeatured();
+			return true;
+		case R.id.submenuEventListByDate:
+		{	
+			Intent i = new Intent(this, DateFrameActivity.class);
+			startActivityForResult(i, REQUEST_DATEFRAME);
 			return true;
 		}
 		case R.id.submenuEventListAZ:
@@ -377,6 +369,26 @@ public class MainActivity extends ListActivity
 			return true;
 		default:
 			return true;
+		}
+	}
+
+	private void filterEventByFeatured()
+	{
+		if (featureMode)
+		{
+			ArrayList<Event> featuredEvents = new ArrayList<Event>();
+			for (Event event : eventList)
+			{
+				if (event.isFeatured()) featuredEvents.add(event);
+			}
+			setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
+					featuredEvents));
+			featureMode = false;
+		}
+		else
+		{
+			setListAdapter(adapter);
+			featureMode = true;
 		}
 	}
 
@@ -411,5 +423,24 @@ public class MainActivity extends ListActivity
 		});
 		adapter.notifyDataSetChanged();
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int responseCode, Intent data)
+	{
+		switch(requestCode)
+		{
+			case REQUEST_DATEFRAME:
+			{
+				if(responseCode == RESULT_OK)
+				{
+					String afterDate = data.getStringExtra("after_date");
+					String beforeDate = data.getStringExtra("before_date");
+					Toast.makeText(this, afterDate + " until " + beforeDate, Toast.LENGTH_LONG).show();
+				}
+				break;
+			}
+			
+			default: break;
+		}
+	}
 }

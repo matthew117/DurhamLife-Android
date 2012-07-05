@@ -20,6 +20,7 @@
     <string name="college">College</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
 
     <string-array name="college_array">
         <item>N/A</item>
