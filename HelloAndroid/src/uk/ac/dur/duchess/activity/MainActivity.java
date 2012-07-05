@@ -3,6 +3,7 @@ package uk.ac.dur.duchess.activity;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -22,6 +23,9 @@ import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,6 +39,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
@@ -63,8 +68,11 @@ public class MainActivity extends ListActivity
 	private String categoryFilter;
 	private EventListAdapter adapter;
 	private Activity listActivity;
-	
+
 	private static final int REQUEST_DATEFRAME = 1;
+	private static final int DATE_DIALOG_ID = 1;
+	
+	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -395,14 +403,14 @@ public class MainActivity extends ListActivity
 	private void sortEventsAlphabetically()
 	{
 		Collections.sort(eventList, new Comparator<Event>()
-		{
+				{
 
 			@Override
 			public int compare(Event obj1, Event obj2)
 			{
 				return obj1.getName().compareTo(obj2.getName());
 			}
-		});
+				});
 		adapter.notifyDataSetChanged();
 	}
 
@@ -410,7 +418,6 @@ public class MainActivity extends ListActivity
 	{
 		Collections.sort(eventList, new Comparator<Event>()
 		{
-
 			@Override
 			public int compare(Event e1, Event e2)
 			{
@@ -423,7 +430,7 @@ public class MainActivity extends ListActivity
 		});
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int responseCode, Intent data)
 	{
@@ -439,7 +446,7 @@ public class MainActivity extends ListActivity
 				}
 				break;
 			}
-			
+	
 			default: break;
 		}
 	}
