@@ -52,6 +52,25 @@ public class CalendarFunctions
 		}
 	}
 	
+	public static boolean inRange(String start, String end, String from, String to)
+	{
+		SimpleDateFormat range = new SimpleDateFormat("d MMMMM yyyy");
+		SimpleDateFormat event = new SimpleDateFormat("yyyy-MM-dd");
+		try
+		{
+			Calendar fromDate  = Calendar.getInstance(); fromDate.setTime(range.parse(from));
+			Calendar toDate    = Calendar.getInstance(); toDate.setTime(range.parse(to));
+			Calendar startDate = Calendar.getInstance(); startDate.setTime(event.parse(start));
+			Calendar endDate   = Calendar.getInstance(); endDate.setTime(event.parse(end));
+			
+			return startDate.before(toDate) && endDate.after(fromDate);
+		}
+		catch (ParseException e)
+		{
+			return false;
+		}
+	}
+	
 	public static boolean isSameDate(Calendar a, Calendar b)
 	{
 		return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)

@@ -25,10 +25,14 @@
                 android:id="@+id/submenuEventListFeatured"
                 android:icon="@drawable/star"
                 android:title="Featured"/>
-            <item
+             <item
                 android:id="@+id/submenuEventListByDate"
                 android:icon="@drawable/clock"
                 android:title="Date"/>
+            <item
+                android:id="@+id/submenuEventListByDateRange"
+                android:icon="@drawable/clock"
+                android:title="Date Range"/>
         </menu>    
     </item>
 

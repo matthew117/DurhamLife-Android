@@ -2,10 +2,12 @@ package uk.ac.dur.duchess.activity;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.GregorianCalendar;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -364,6 +366,11 @@ public class MainActivity extends ListActivity
 			filterEventByFeatured();
 			return true;
 		case R.id.submenuEventListByDate:
+		{
+			showDialog(DATE_DIALOG_ID);
+			return true;
+		}
+		case R.id.submenuEventListByDateRange:
 		{	
 			Intent i = new Intent(this, DateFrameActivity.class);
 			startActivityForResult(i, REQUEST_DATEFRAME);
@@ -398,6 +405,20 @@ public class MainActivity extends ListActivity
 			setListAdapter(adapter);
 			featureMode = true;
 		}
+	}
+	
+	private void filterEventByDateRange(String fromDate, String toDate)
+	{
+		ArrayList<Event> inRangeEvents = new ArrayList<Event>();
+		
+		for (Event event : eventList)
+		{
+			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(),
+					fromDate, toDate)) inRangeEvents.add(event);
+		}
+			
+		setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
+					inRangeEvents));
 	}
 
 	private void sortEventsAlphabetically()
@@ -442,7 +463,8 @@ public class MainActivity extends ListActivity
 				{
 					String fromDate = data.getStringExtra("from_date");
 					String toDate = data.getStringExtra("to_date");
-					Toast.makeText(this, fromDate + " until " + toDate, Toast.LENGTH_LONG).show();
+					
+					filterEventByDateRange(fromDate, toDate);
 				}
 				break;
 			}
@@ -450,4 +472,33 @@ public class MainActivity extends ListActivity
 			default: break;
 		}
 	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		switch (id)
+		{
+			case DATE_DIALOG_ID:
+			{
+				Calendar c = Calendar.getInstance();
+				int year = c.get(Calendar.YEAR);
+				int month = c.get(Calendar.MONTH);
+				int day = c.get(Calendar.DATE);
+				
+				return new DatePickerDialog(this, dateSetListener, year, month, day);
+			}
+		}
+		return null;
+	}
+	
+	private OnDateSetListener dateSetListener = new OnDateSetListener()
+	{
+		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+		{
+			Calendar c = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+			SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
+			
+			//TODO
+		}
+	};
 }

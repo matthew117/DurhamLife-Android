@@ -41,7 +41,7 @@ public class DateFrameActivity extends Activity
 		toDatePicker   = (Button) findViewById(R.id.toDatePicker);
 		
 		Calendar c = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
 		
 		fromDatePicker.setText(sdf.format(c.getTime()));
 		toDatePicker.setText(sdf.format(c.getTime()));
@@ -121,7 +121,7 @@ public class DateFrameActivity extends Activity
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 		{
 			Calendar c = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
 			
 			fromDatePicker.setText(sdf.format(c.getTime()));
 		}
@@ -132,7 +132,7 @@ public class DateFrameActivity extends Activity
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 		{
 			Calendar c = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("d MMMMM yyyy");
 			
 			toDatePicker.setText(sdf.format(c.getTime()));
 		}
