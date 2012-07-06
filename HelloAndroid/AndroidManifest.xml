@@ -90,6 +90,14 @@
             android:name=".activity.CollegeEventListActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".activity.SocietyListActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activity.SocietyEventListActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

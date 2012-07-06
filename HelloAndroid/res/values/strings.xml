@@ -98,5 +98,7 @@
     <string name="college_events">College Events</string>
     <string name="my_events">My Events</string>
     <string name="news">News</string>
+    <string name="st_adians">St. Aidan\'s</string>
+    <string name="societies">Societies</string>
 
 </resources>

@@ -14,6 +14,7 @@ public class UserHubActivity extends Activity
 	private TextView collegeEventButton;
 	private TextView myEventsButton;
 	private TextView newsButton;
+	private TextView societiesButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -25,6 +26,7 @@ public class UserHubActivity extends Activity
 		collegeEventButton = (TextView) findViewById(R.id.userHubCollege);
 		myEventsButton = (TextView) findViewById(R.id.userHubMyEvents);
 		newsButton = (TextView) findViewById(R.id.userHubNews);
+		societiesButton = (TextView) findViewById(R.id.userHubSocieties);
 		
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{		
@@ -41,8 +43,8 @@ public class UserHubActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				Toast.makeText(v.getContext(), "Displays a list of events run by the user's college", Toast.LENGTH_LONG).show();
-				
+				Intent i = new Intent(v.getContext(), CollegeEventListActivity.class);
+				startActivity(i);
 			}
 		});
 		
@@ -61,6 +63,16 @@ public class UserHubActivity extends Activity
 			public void onClick(View v)
 			{
 				Toast.makeText(v.getContext(), "Displays a news feed about Durham events", Toast.LENGTH_LONG).show();				
+			}
+		});
+		
+		societiesButton.setOnClickListener(new View.OnClickListener()
+		{	
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
+				startActivity(i);				
 			}
 		});
 

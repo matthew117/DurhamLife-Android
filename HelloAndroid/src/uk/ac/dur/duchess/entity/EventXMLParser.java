@@ -6,6 +6,8 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.util.Log;
+
 public class EventXMLParser extends DefaultHandler
 {
 	private boolean isName = false;
@@ -49,6 +51,7 @@ public class EventXMLParser extends DefaultHandler
 
 	public EventXMLParser(List<Event> events)
 	{
+		Log.d("EventXMLParser", "Constructor called.");
 		list = events;
 		event = new Event();
 		categoryTags = new ArrayList<String>();
@@ -59,6 +62,7 @@ public class EventXMLParser extends DefaultHandler
 	{
 		if (localName.equalsIgnoreCase("event"))
 		{
+			Log.d("EventXMLParser", "Parser sees event Tag");
 			event = new Event();
 			categoryTags = new ArrayList<String>();
 
@@ -156,6 +160,13 @@ public class EventXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("imageURL")) isImageURL = false;
 		else if (localName.equalsIgnoreCase("adImageURL")) isAdImageURL = false;
 		else if (localName.equalsIgnoreCase("reviewScore")) isReviewScore = false;
+		else if (localName.equalsIgnoreCase("event"))
+		{
+			event.setCategoryTags(categoryTags);
+			Log.d("EventXMLParser", "About to add to list.");
+			Log.d("EventXMLParser", "event.getName() => " + event.getName());
+			list.add(event);
+		}
 	}
 
 	@Override
@@ -197,9 +208,6 @@ public class EventXMLParser extends DefaultHandler
 		else if (isImageURL)
 		{
 			event.setImageURL(new String(ch, start, length));
-
-			event.setCategoryTags(categoryTags);
-			list.add(event);
 		}
 	}
 
