@@ -61,6 +61,13 @@ public class LoginActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
+				
+				if (usernameEditText.getText().length() == 0)
+				{
+					Intent i = new Intent(v.getContext(), MainActivity.class);
+					startActivity(i);
+				}
+				
 				// TODO error checking
 				try
 				{
