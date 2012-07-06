@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess.activity;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 public class CalendarActivity extends Activity
 {
@@ -20,11 +22,9 @@ public class CalendarActivity extends Activity
 	private Calendar calendar;
 	private int lowerBound;
 	private int upperBound;
+	private int lastBound;
 	
 	private LinearLayout layout;
-	
-	private Button leftButton;
-	private Button rightButton;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -39,14 +39,27 @@ public class CalendarActivity extends Activity
 		
 		int cell = 1 - lowerBound;
 		
+		TableRow days = new TableRow(this);
+		
+		String[] dayStrings = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
+		
+		for(int i = 0; i < 7; i++)
+		{
+			TextView day = new TextView(this);
+			day.setText(dayStrings[i]);
+			days.addView(day);
+		}
+		
+		table.addView(days);
+		
 		for(int row = 0; row < 6; row++)
 		{
 			TableRow tableRow = new TableRow(this);
 			
 			for(int col = 0; col < 7; col++)
 			{
-				if(cell < 1) tableRow.addView(getMonthButton(cell, Color.LTGRAY));
-				else if(cell > upperBound) tableRow.addView(getMonthButton(cell, Color.LTGRAY));
+				if(cell < 1) tableRow.addView(getMonthButton(lastBound + cell, Color.LTGRAY));
+				else if(cell > upperBound) tableRow.addView(getMonthButton(cell % upperBound, Color.LTGRAY));
 				else tableRow.addView(getMonthButton(cell, Color.BLACK));
 				
 				cell++;
@@ -55,7 +68,16 @@ public class CalendarActivity extends Activity
 			table.addView(tableRow);
 		}
 		
+		TextView monthText = new TextView(this);
+		
+		SimpleDateFormat month = new SimpleDateFormat("MMMMM");
+		
+		monthText.setText(month.format(calendar.getTime()));
+		
+		layout.setOrientation(1);
 		layout.setGravity(Gravity.CENTER_HORIZONTAL);
+		
+		layout.addView(monthText);
 		layout.addView(table);
 		
 		setContentView(layout);
@@ -75,7 +97,7 @@ public class CalendarActivity extends Activity
 		int right = button.getPaddingRight();
 		int top = button.getPaddingTop();
 		
-		button.setPadding(left/2, 1 + top/2, right/2, bottom/2);
+		button.setPadding(left, top + 2, right, bottom);
 		
 		button.setOnClickListener(new OnClickListener()
 		{
@@ -126,9 +148,14 @@ public class CalendarActivity extends Activity
 	{
 		Calendar calendar = Calendar.getInstance();
 		
-		calendar.set(month, 1);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		
 		lowerBound = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7;
-		upperBound = calendar.getMaximum(Calendar.DAY_OF_MONTH);
+		upperBound = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		
+		calendar.set(Calendar.MONTH, month - 1);
+		
+		lastBound = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 }
