@@ -86,7 +86,7 @@ public class LoginActivity extends Activity
 					{
 						SessionFunctions.saveUserPreferences(activity, user);
 
-						Intent i = new Intent(v.getContext(), MainActivity.class);
+						Intent i = new Intent(v.getContext(), UserHubActivity.class);
 						startActivity(i);
 					}
 				}

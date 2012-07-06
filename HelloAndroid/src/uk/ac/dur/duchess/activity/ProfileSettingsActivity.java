@@ -1,6 +1,8 @@
 package uk.ac.dur.duchess.activity;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.NetworkFunctions;
@@ -9,6 +11,7 @@ import uk.ac.dur.duchess.data.UserFunctions;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -68,6 +71,8 @@ public class ProfileSettingsActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
+				currentUser = SessionFunctions.getCurrentUser(activity);
+				
 				currentUser.setForename(forename.getText().toString());
 				currentUser.setSurname(surname.getText().toString());
 				currentUser.setCollege(college.getSelectedItem().toString());
@@ -75,9 +80,18 @@ public class ProfileSettingsActivity extends Activity
 
 				try
 				{
-					NetworkFunctions.getHTTPResponseStream(
+					InputStream is = NetworkFunctions.getHTTPResponseStream(
 							"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/users.php", "PUT",
 							UserFunctions.getUserXML(currentUser).getBytes());
+					
+					Log.d("NEW USER XML", UserFunctions.getUserXML(currentUser));
+					
+					Scanner sc = new Scanner(is);
+					
+					while (sc.hasNextLine())
+					{
+						Log.d("NEW USER API RESPONSE", sc.nextLine());
+					}
 
 					SessionFunctions.saveUserPreferences(activity, currentUser);
 					

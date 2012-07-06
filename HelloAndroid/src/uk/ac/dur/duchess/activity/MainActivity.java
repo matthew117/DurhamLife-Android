@@ -2,12 +2,10 @@ package uk.ac.dur.duchess.activity;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -40,24 +38,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 
 public class MainActivity extends ListActivity
 {
-
 	private ProgressDialog progressDialog;
 	private boolean featureMode = true;
-	private Button alphabeticalSortButton;
-	private Button chronologicalSortButton;
-	private Button featuredFilterButton;
-	private Button categoryGridButton;
-	private Button loginButton;
-	private Button settingsButton;
 
 	private User currentUser;
 	private Activity activity;
@@ -73,8 +62,6 @@ public class MainActivity extends ListActivity
 
 	private static final int REQUEST_DATEFRAME = 1;
 	private static final int DATE_DIALOG_ID = 1;
-	
-	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -91,13 +78,6 @@ public class MainActivity extends ListActivity
 
 		if (extras != null) categoryFilter = extras.getString("category_filter");
 
-		alphabeticalSortButton = (Button) findViewById(R.id.alphabeticalSortButton);
-		chronologicalSortButton = (Button) findViewById(R.id.chronologicalSortButton);
-		featuredFilterButton = (Button) findViewById(R.id.featureFilterButton);
-		categoryGridButton = (Button) findViewById(R.id.categoryGridButton);
-		loginButton = (Button) findViewById(R.id.loginButton);
-		settingsButton = (Button) findViewById(R.id.settingsButton);
-
 		adImageContainer = (ImageView) findViewById(R.id.adImageContainer);
 
 		if (currentUser != null)
@@ -108,7 +88,6 @@ public class MainActivity extends ListActivity
 		else
 		{
 			setTitle("Duchess - Guest");
-			settingsButton.setVisibility(View.GONE);
 		}
 
 		try
@@ -228,93 +207,6 @@ public class MainActivity extends ListActivity
 			progressDialog = ProgressDialog.show(MainActivity.this, "Please wait...",
 					"Downloading Events ...", true);
 
-			alphabeticalSortButton.setOnClickListener(new View.OnClickListener()
-			{
-
-				@Override
-				public void onClick(View v)
-				{
-					sortEventsAlphabetically();
-				}
-
-			});
-
-			chronologicalSortButton.setOnClickListener(new View.OnClickListener()
-			{
-
-				@Override
-				public void onClick(View v)
-				{
-					sortEventsChronologically();
-				}
-			});
-
-			listActivity = this;
-
-			featuredFilterButton.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					if (featureMode)
-					{
-						ArrayList<Event> featuredEvents = new ArrayList<Event>();
-						for (Event event : eventList)
-						{
-							if (event.isFeatured()) featuredEvents.add(event);
-						}
-						setListAdapter(new EventListAdapter(listActivity,
-								R.layout.custom_event_list_row, featuredEvents));
-						featureMode = false;
-					}
-					else
-					{
-						setListAdapter(adapter);
-						featureMode = true;
-					}
-				}
-			});
-
-			categoryGridButton.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					Intent i = new Intent(v.getContext(), CategoryGridActivity.class);
-					startActivity(i);
-				}
-			});
-
-			loginButton.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					if (currentUser != null)
-					{
-						SessionFunctions.endUserSession(activity);
-						currentUser = null;
-						Intent i = new Intent(v.getContext(), MainActivity.class);
-						startActivity(i);
-					}
-					else
-					{
-						Intent i = new Intent(v.getContext(), LoginActivity.class);
-						startActivity(i);
-					}
-				}
-			});
-
-			settingsButton.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					Intent i = new Intent(v.getContext(), SettingsTabRootActivity.class);
-					startActivity(i);
-				}
-			});
-
 			adImageContainer.setClickable(true);
 			adImageContainer.setOnClickListener(new View.OnClickListener()
 			{
@@ -371,7 +263,7 @@ public class MainActivity extends ListActivity
 			return true;
 		}
 		case R.id.submenuEventListByDateRange:
-		{	
+		{
 			Intent i = new Intent(this, DateFrameActivity.class);
 			startActivityForResult(i, REQUEST_DATEFRAME);
 			return true;
@@ -387,6 +279,10 @@ public class MainActivity extends ListActivity
 			return true;
 		case R.id.submenuEventListChronological:
 			sortEventsChronologically();
+			return true;
+		case R.id.menuCategoryBrowse:
+			Intent i = new Intent(this, CategoryGridActivity.class);
+			startActivity(i);
 			return true;
 		default:
 			return true;
@@ -412,32 +308,32 @@ public class MainActivity extends ListActivity
 			featureMode = true;
 		}
 	}
-	
+
 	private void filterEventByDateRange(String fromDate, String toDate)
 	{
 		ArrayList<Event> inRangeEvents = new ArrayList<Event>();
-		
+
 		for (Event event : eventList)
 		{
-			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(),
-					fromDate, toDate)) inRangeEvents.add(event);
+			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), fromDate,
+					toDate)) inRangeEvents.add(event);
 		}
-			
+
 		setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
-					inRangeEvents));
+				inRangeEvents));
 	}
 
 	private void sortEventsAlphabetically()
 	{
 		Collections.sort(eventList, new Comparator<Event>()
-				{
+		{
 
 			@Override
 			public int compare(Event obj1, Event obj2)
 			{
 				return obj1.getName().compareTo(obj2.getName());
 			}
-				});
+		});
 		adapter.notifyDataSetChanged();
 	}
 
@@ -461,49 +357,50 @@ public class MainActivity extends ListActivity
 	@Override
 	protected void onActivityResult(int requestCode, int responseCode, Intent data)
 	{
-		switch(requestCode)
+		switch (requestCode)
 		{
-			case REQUEST_DATEFRAME:
+		case REQUEST_DATEFRAME:
+		{
+			if (responseCode == RESULT_OK)
 			{
-				if(responseCode == RESULT_OK)
-				{
-					String fromDate = data.getStringExtra("from_date");
-					String toDate = data.getStringExtra("to_date");
-					
-					filterEventByDateRange(fromDate, toDate);
-				}
-				break;
+				String fromDate = data.getStringExtra("from_date");
+				String toDate = data.getStringExtra("to_date");
+
+				filterEventByDateRange(fromDate, toDate);
 			}
-	
-			default: break;
+			break;
+		}
+
+		default:
+			break;
 		}
 	}
-	
+
 	@Override
 	protected Dialog onCreateDialog(int id)
 	{
 		switch (id)
 		{
-			case DATE_DIALOG_ID:
-			{
-				Calendar c = Calendar.getInstance();
-				int year = c.get(Calendar.YEAR);
-				int month = c.get(Calendar.MONTH);
-				int day = c.get(Calendar.DATE);
-				
-				return new DatePickerDialog(this, dateSetListener, year, month, day);
-			}
+		case DATE_DIALOG_ID:
+		{
+			Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DATE);
+
+			return new DatePickerDialog(this, dateSetListener, year, month, day);
+		}
 		}
 		return null;
 	}
-	
+
 	private OnDateSetListener dateSetListener = new OnDateSetListener()
 	{
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 		{
 			String date = year + "-" + monthOfYear + "-" + dayOfMonth;
 			String nextDay = year + "-" + monthOfYear + "-" + (dayOfMonth + 1);
-			
+
 			filterEventByDateRange(date, nextDay);
 		}
 	};

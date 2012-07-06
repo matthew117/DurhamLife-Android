@@ -1,8 +1,10 @@
 package uk.ac.dur.duchess.activity;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -12,6 +14,7 @@ import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.EventListAdapter;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventXMLParser;
@@ -54,7 +57,7 @@ public class SocietyEventListActivity extends Activity
 		aboutButton = (Button) findViewById(R.id.societyAboutButton);
 		subscribeButton = (Button) findViewById(R.id.societyButtonSubscribe);
 		
-		Bundle s = getIntent().getExtras();
+		final Bundle s = getIntent().getExtras();
 		
 		aboutButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -64,6 +67,7 @@ public class SocietyEventListActivity extends Activity
 				Intent i = new Intent(v.getContext(), SocietyAboutActivity.class);
 				Bundle societyInfo = getIntent().getExtras();
 				
+				i.putExtra("society_id", societyInfo.getString("society_id"));
 				i.putExtra("society_name", societyInfo.getString("society_name"));
 				i.putExtra("society_constitution", societyInfo.getString("society_constitution"));
 				i.putExtra("society_website", societyInfo.getString("society_website"));
@@ -71,6 +75,37 @@ public class SocietyEventListActivity extends Activity
 				
 				startActivity(i);
 				
+			}
+		});
+		
+		subscribeButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Thread t = new Thread(new Runnable()
+				{		
+					@Override
+					public void run()
+					{
+						try
+						{
+							InputStream is = NetworkFunctions.getHTTPResponseStream(
+									"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php?userID=" + user.getUserID() + "&societyID=" + s.getLong("society_id"), "GET", null);
+							Scanner sc = new Scanner(is);
+							while (sc.hasNextLine())
+							{
+								Log.d("SUBSCRIBE RESPONSE", sc.nextLine());	
+							}
+						}
+						catch (IOException e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+				t.start();				
 			}
 		});
 		

@@ -15,6 +15,17 @@ public class User
 	private String college;
 	private List<String> categoryPreferences;
 	private Map<Long, String> subcategoryPreferences;
+	private List<String> societies;
+
+	public List<String> getSocieties()
+	{
+		return societies;
+	}
+
+	public void setSocieties(List<String> societies)
+	{
+		this.societies = societies;
+	}
 
 	public long getUserID()
 	{

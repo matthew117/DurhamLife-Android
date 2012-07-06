@@ -10,52 +10,6 @@
             android:layout_alignParentTop="true"
             android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="5dp" >
-
-                <Button
-                    android:id="@+id/alphabeticalSortButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/arrow"
-                    android:drawablePadding="5dp" />
-
-                <Button
-                    android:id="@+id/chronologicalSortButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/clock"
-                    android:drawablePadding="5dp" />
-
-                <Button
-                    android:id="@+id/featureFilterButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/star"
-                    android:drawablePadding="5dp" />
-
-                <Button
-                    android:id="@+id/categoryGridButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/grid" />
-
-                <Button
-                    android:id="@+id/loginButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/login" />
-
-                <Button
-                    android:id="@+id/settingsButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/settings" />
-            </LinearLayout>
-
             <ListView
                 android:id="@id/android:list"
                 android:layout_width="fill_parent"

@@ -57,6 +57,8 @@ public class AccountSettingsActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
+				currentUser = SessionFunctions.getCurrentUser(activity);
+				
 				if(newPassword.getText().length() == 0 && confirmPassword.getText().length() == 0)
 				{
 					String newEmail = email.getText().toString();

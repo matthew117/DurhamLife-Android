@@ -80,6 +80,8 @@ public class PreferenceSettingsActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
+				currentUser = SessionFunctions.getCurrentUser(activity);
+				
 				List<String> newPreferences = new ArrayList<String>();
 				currentUser.getCategoryPreferences().clear();
 				

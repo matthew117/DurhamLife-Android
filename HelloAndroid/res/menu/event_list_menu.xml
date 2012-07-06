@@ -25,7 +25,7 @@
                 android:id="@+id/submenuEventListFeatured"
                 android:icon="@drawable/star"
                 android:title="Featured"/>
-             <item
+            <item
                 android:id="@+id/submenuEventListByDate"
                 android:icon="@drawable/clock"
                 android:title="Date"/>
@@ -33,10 +33,14 @@
                 android:id="@+id/submenuEventListByDateRange"
                 android:icon="@drawable/clock"
                 android:title="Date Range"/>
-             <item
+            <item
                 android:id="@+id/submenuEventListByCalendar"
                 android:title="Calendar"/>
-        </menu>    
+        </menu>
     </item>
+    <item
+        android:id="@+id/menuCategoryBrowse"
+        android:icon="@drawable/grid"
+        android:title="Browse Categories"/>
 
 </menu>

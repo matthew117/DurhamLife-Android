@@ -15,6 +15,7 @@ public class UserHubActivity extends Activity
 	private TextView myEventsButton;
 	private TextView newsButton;
 	private TextView societiesButton;
+	private TextView settingsButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -27,6 +28,7 @@ public class UserHubActivity extends Activity
 		myEventsButton = (TextView) findViewById(R.id.userHubMyEvents);
 		newsButton = (TextView) findViewById(R.id.userHubNews);
 		societiesButton = (TextView) findViewById(R.id.userHubSocieties);
+		settingsButton = (TextView) findViewById(R.id.userHubSettings);
 		
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{		
@@ -72,6 +74,16 @@ public class UserHubActivity extends Activity
 			public void onClick(View v)
 			{
 				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
+				startActivity(i);				
+			}
+		});
+		
+		settingsButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(v.getContext(), SettingsTabRootActivity.class);
 				startActivity(i);				
 			}
 		});

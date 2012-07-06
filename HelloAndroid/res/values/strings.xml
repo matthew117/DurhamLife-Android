@@ -102,5 +102,6 @@
     <string name="societies">Societies</string>
     <string name="about">About</string>
     <string name="default_society_text">Society</string>
+    <string name="settings">Settings</string>
 
 </resources>

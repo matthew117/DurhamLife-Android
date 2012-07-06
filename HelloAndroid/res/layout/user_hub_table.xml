@@ -48,6 +48,7 @@
             <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:gravity="center" >
 
                 <TextView
@@ -72,7 +73,7 @@
                     android:text="@string/news"
                     android:textSize="12sp" />
             </TableRow>
-            
+
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -89,8 +90,18 @@
                     android:gravity="center"
                     android:text="@string/societies"
                     android:textSize="12sp" />
-                </TableRow>
-            
+
+                <TextView
+                    android:id="@+id/userHubSettings"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/settings"
+                    android:gravity="center"
+                    android:text="@string/settings"
+                    android:textSize="12sp" />
+            </TableRow>
         </TableLayout>
     </FrameLayout>
 

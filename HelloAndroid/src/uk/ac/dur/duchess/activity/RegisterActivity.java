@@ -74,7 +74,7 @@ public class RegisterActivity extends Activity
 
 						SessionFunctions.saveUserPreferences(activity, newUser);
 
-						Intent i = new Intent(v.getContext(), MainActivity.class);
+						Intent i = new Intent(v.getContext(), UserHubActivity.class);
 						startActivity(i);
 					}
 					catch (IOException e)

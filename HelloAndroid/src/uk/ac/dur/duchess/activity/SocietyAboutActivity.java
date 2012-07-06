@@ -31,7 +31,7 @@ public class SocietyAboutActivity extends Activity
 		Bundle s = getIntent().getExtras();
 		
 		String name = s.getString("society_name");
-		String webAddress = s.getString("society_website");
+		final String webAddress = s.getString("society_website");
 		final String contactEmail = s.getString("society_email");
 		String constitution = s.getString("society_constitution");
 		
@@ -63,9 +63,8 @@ public class SocietyAboutActivity extends Activity
 			@Override
 			public void onClick(View view)
 			{
-				String url = getIntent().getExtras().getString("event_web_address");
 				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setData(Uri.parse(url));
+				i.setData(Uri.parse(webAddress));
 				startActivity(i);
 			}
 		});

@@ -20,14 +20,15 @@ public class UserXMLParser extends DefaultHandler
 	private boolean isEmail = false;
 	
 	private boolean isCategory = false;
+	private boolean isSociety = false;
 	
 	private User user;
 	private List<String> preferences;
+	private List<String> societies;
 	
 	public UserXMLParser(User user)
 	{
 		this.user = user;
-		preferences = new ArrayList<String>();
 	}
 
 	@Override
@@ -39,7 +40,8 @@ public class UserXMLParser extends DefaultHandler
 			long userID = (id != null) ? Long.parseLong(id) : -1;
 			if(userID != -1) user.setUserID(userID);
 			
-			preferences.clear();
+			preferences = new ArrayList<String>();
+			societies = new ArrayList<String>();
 		}
 		else if (localName.equalsIgnoreCase("forename")) isForename = true;
 		else if (localName.equalsIgnoreCase("surname")) isSurname= true;
@@ -53,6 +55,8 @@ public class UserXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("emailAddress")) isEmail = true;
 		
 		else if (localName.equalsIgnoreCase("category")) isCategory = true;
+		
+		else if (localName.equalsIgnoreCase("society")) isSociety = true;
 	}
 
 	@Override
@@ -70,6 +74,18 @@ public class UserXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("emailAddress")) isEmail = false;
 		
 		else if (localName.equalsIgnoreCase("category")) isCategory = false;
+		
+		else if (localName.equalsIgnoreCase("society")) isSociety = false;
+		
+		else if (localName.equalsIgnoreCase("preferences"))
+		{
+			user.setCategoryPreferences(preferences);
+		}
+		
+		else if (localName.equalsIgnoreCase("societies"))
+		{
+			user.setSocieties(societies);
+		}
 	}
 
 	@Override
@@ -84,6 +100,7 @@ public class UserXMLParser extends DefaultHandler
 		else if (isEmail) user.setEmailAddress(new String(ch, start, length));
 		
 		else if (isCategory) preferences.add(new String(ch, start, length));
+		else if (isSociety) societies.add(new String(ch, start, length));
 	}
 	
 	@Override
