@@ -9,7 +9,7 @@
     <string name="default_date">Date unspecified</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="subscribe">Don\'t have an account?</string>
+    <string name="subscribe">Subscribe</string>
     <string name="regsiter">Register</string>
     <string name="login">Login</string>
     <string name="old_password">Old Password</string>
@@ -100,5 +100,7 @@
     <string name="news">News</string>
     <string name="st_adians">St. Aidan\'s</string>
     <string name="societies">Societies</string>
+    <string name="about">About</string>
+    <string name="default_society_text">Society</string>
 
 </resources>

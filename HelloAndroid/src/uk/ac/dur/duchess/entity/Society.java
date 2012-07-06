@@ -6,6 +6,7 @@ public class Society
 	private String name;
 	private String website;
 	private String email;
+	private String constitution;
 	public long getSocietyID()
 	{
 		return id;
@@ -38,7 +39,14 @@ public class Society
 	{
 		this.email = email;
 	}
-	
+	public String getConstitution()
+	{
+		return constitution;
+	}
+	public void setConstitution(String constitution)
+	{
+		this.constitution = constitution;
+	}
 	@Override
 	public String toString()
 	{

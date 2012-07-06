@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,19 +36,43 @@ public class SocietyEventListActivity extends Activity
 	private ProgressDialog progressDialog;
 	private User user;
 	private TextView societyNameText;
+	
+	private Button aboutButton;
+	private Button subscribeButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.society_list_layout);
+		setContentView(R.layout.society_event_list_layout);
 
 		user = SessionFunctions.getCurrentUser(this);
 
-		listView = (ListView) findViewById(R.id.societyListView);
-		societyNameText = (TextView) findViewById(R.id.nameOnSocietyList);
-
+		listView = (ListView) findViewById(R.id.societyEventListView);
+		societyNameText = (TextView) findViewById(R.id.nameOnSocietyEventList);
+		
+		aboutButton = (Button) findViewById(R.id.societyAboutButton);
+		subscribeButton = (Button) findViewById(R.id.societyButtonSubscribe);
+		
 		Bundle s = getIntent().getExtras();
+		
+		aboutButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(v.getContext(), SocietyAboutActivity.class);
+				Bundle societyInfo = getIntent().getExtras();
+				
+				i.putExtra("society_name", societyInfo.getString("society_name"));
+				i.putExtra("society_constitution", societyInfo.getString("society_constitution"));
+				i.putExtra("society_website", societyInfo.getString("society_website"));
+				i.putExtra("society_email", societyInfo.getString("society_email"));
+				
+				startActivity(i);
+				
+			}
+		});
 		
 		if (s.getString("society_name") != null)
 		{

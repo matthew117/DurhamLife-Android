@@ -76,6 +76,7 @@ public class SocietyListActivity extends Activity
 					i.putExtra("society_name", s.getName());
 					i.putExtra("society_website", s.getWebsite());
 					i.putExtra("society_email", s.getEmail());
+					i.putExtra("society_constitution", s.getConstitution());
 					startActivity(i);
 				}
 			});

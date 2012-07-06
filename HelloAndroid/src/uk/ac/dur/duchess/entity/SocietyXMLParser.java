@@ -15,6 +15,7 @@ public class SocietyXMLParser extends DefaultHandler
 	private boolean isNameTag;
 	private boolean isWebsiteTag;
 	private boolean isEmailTag;
+	private boolean isConstitutionTag;
 
 	public SocietyXMLParser(ArrayList<Society> societyList)
 	{
@@ -33,6 +34,7 @@ public class SocietyXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("name")) isNameTag = true;
 		else if (localName.equalsIgnoreCase("website")) isWebsiteTag = true;
 		else if (localName.equalsIgnoreCase("email")) isEmailTag = true;
+		else if (localName.equalsIgnoreCase("constitution")) isConstitutionTag = true;
 	}
 	
 	@Override
@@ -45,6 +47,7 @@ public class SocietyXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("name")) isNameTag = false;
 		else if (localName.equalsIgnoreCase("website")) isWebsiteTag = false;
 		else if (localName.equalsIgnoreCase("email")) isEmailTag = false;
+		else if (localName.equalsIgnoreCase("constitution")) isConstitutionTag = false;
 
 	}
 	
@@ -54,6 +57,7 @@ public class SocietyXMLParser extends DefaultHandler
 		if (isNameTag) s.setName(new String(ch,start,length));
 		else if (isWebsiteTag) s.setWebsite(new String(ch,start,length));
 		else if (isEmailTag) s.setEmail(new String(ch,start,length));
+		else if (isConstitutionTag) s.setConstitution(new String(ch,start,length));
 	}
 
 }
