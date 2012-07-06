@@ -103,6 +103,10 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
+                <activity
+            android:name=".activity.CalendarActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

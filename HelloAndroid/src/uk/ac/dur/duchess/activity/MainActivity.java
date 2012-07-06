@@ -376,6 +376,12 @@ public class MainActivity extends ListActivity
 			startActivityForResult(i, REQUEST_DATEFRAME);
 			return true;
 		}
+		case R.id.submenuEventListByCalendar:
+		{
+			Intent i = new Intent(this, CalendarActivity.class);
+			startActivity(i);
+			return true;
+		}
 		case R.id.submenuEventListAZ:
 			sortEventsAlphabetically();
 			return true;
