@@ -381,15 +381,15 @@ public class MainActivity extends ListActivity
 	{
 		switch (id)
 		{
-		case DATE_DIALOG_ID:
-		{
-			Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DATE);
-
-			return new DatePickerDialog(this, dateSetListener, year, month, day);
-		}
+			case DATE_DIALOG_ID:
+			{
+				Calendar c = Calendar.getInstance();
+				int year = c.get(Calendar.YEAR);
+				int month = c.get(Calendar.MONTH);
+				int day = c.get(Calendar.DATE);
+	
+				return new DatePickerDialog(this, dateSetListener, year, month, day);
+			}
 		}
 		return null;
 	}

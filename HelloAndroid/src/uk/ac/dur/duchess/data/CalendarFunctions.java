@@ -68,7 +68,7 @@ public class CalendarFunctions
 			Calendar startDate = Calendar.getInstance(); startDate.setTime(event.parse(start));
 			Calendar endDate   = Calendar.getInstance(); endDate.setTime(event.parse(end));
 			
-			return startDate.before(toDate) && endDate.after(fromDate);
+			return (startDate.compareTo(toDate) <= 0) && (endDate.compareTo(fromDate) >= 0);
 		}
 		catch (ParseException e)
 		{
