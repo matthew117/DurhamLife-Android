@@ -370,6 +370,37 @@ public class MainActivity extends ListActivity
 			}
 			break;
 		}
+		case REQUEST_CALENDAR:
+		{
+			if(responseCode == RESULT_OK)
+			{
+				String dates = data.getStringExtra("dates");
+				Log.d("CALENDAR", dates);
+				
+				String[] dateArray = dates.split(", ");
+				
+				ArrayList<Event> inRangeEvents = new ArrayList<Event>();
+				
+				for (Event event : eventList)
+				{
+					for(String date : dateArray)
+					{
+						String[] values = date.split("-");
+						String toDate = values[0] + "-" + values[1] + "-" + (Integer.parseInt(values[2]) + 1);
+						
+						if(CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), date, toDate))
+						{
+							inRangeEvents.add(event);
+							break;
+						}
+					}
+				}
+				
+				setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
+						inRangeEvents));
+			}
+			break;
+		}
 
 		default:
 			break;

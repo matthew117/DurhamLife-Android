@@ -228,7 +228,7 @@ public class CalendarActivity extends Activity
 	
 	private String cellToDate(int cell)
 	{
-		SimpleDateFormat range = new SimpleDateFormat("d MMMMM yyyy");
+		SimpleDateFormat range = new SimpleDateFormat("yyyy-MM-dd");
 		
 		Calendar cal = Calendar.getInstance();
 			
@@ -243,14 +243,14 @@ public class CalendarActivity extends Activity
 	{
 		int offset = 1 - lowerBound;
 		
-		return cell + offset;
+		return cell - offset;
 	}
 	
 	private int mapArrayToCell(int n)
 	{
 		int offset = 1 - lowerBound;
 		
-		return n - offset;
+		return n + offset;
 	}
 	
 	private String getDatesString()
