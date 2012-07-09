@@ -10,11 +10,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class CalendarActivity extends Activity
@@ -25,6 +27,8 @@ public class CalendarActivity extends Activity
 	private int lastBound;
 	
 	private LinearLayout layout;
+	private LayoutParams params;
+	private LinearLayout header;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -32,13 +36,22 @@ public class CalendarActivity extends Activity
 		super.onCreate(savedInstanceState);
 		
 		layout = new LinearLayout(this);
+		params = new LayoutParams(-1, -2, 0);
+		
+		Display display = ((android.view.WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+		int screenOrientation = display.getOrientation();
+		
+		if(screenOrientation != 0) params = new LayoutParams(-1, -1, 1);
+		
+		layout.setLayoutParams(params);
+		
 		calendar = Calendar.getInstance();
 		
 		setMonthBounds(calendar.get(Calendar.MONTH));
 		
 		int cell = 1 - lowerBound;
 		
-		LinearLayout header = new LinearLayout(this);
+		header = new LinearLayout(this);
 		header.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0));
 		header.setOrientation(1);
 		
@@ -53,8 +66,9 @@ public class CalendarActivity extends Activity
 		monthText.setPadding(5, 5, 5, 5);
 		monthText.setGravity(Gravity.CENTER_HORIZONTAL);
 		
-		GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP,
-			new int[] {Color.parseColor("#7E317B"), Color.parseColor("#D8ACE0")});
+		int[] colors = {Color.parseColor("#7E317B"), Color.parseColor("#D8ACE0")};
+		
+		GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
 		gradient.setDither(true);
 		
 		header.setBackgroundDrawable(gradient);
@@ -101,7 +115,6 @@ public class CalendarActivity extends Activity
 		layout.setOrientation(1);
 		
 		setContentView(layout);
-		
 	}
 	
 	private Button getMonthButton(final int day, int color)
