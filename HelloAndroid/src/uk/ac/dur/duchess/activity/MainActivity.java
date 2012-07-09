@@ -58,7 +58,6 @@ public class MainActivity extends ListActivity
 	private ArrayList<Event> eventList;
 	private String categoryFilter;
 	private EventListAdapter adapter;
-	private Activity listActivity;
 
 	private static final int REQUEST_DATEFRAME = 1;
 	private static final int DATE_DIALOG_ID = 1;
@@ -298,7 +297,7 @@ public class MainActivity extends ListActivity
 			{
 				if (event.isFeatured()) featuredEvents.add(event);
 			}
-			setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
+			setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
 					featuredEvents));
 			featureMode = false;
 		}
@@ -319,7 +318,7 @@ public class MainActivity extends ListActivity
 					toDate)) inRangeEvents.add(event);
 		}
 
-		setListAdapter(new EventListAdapter(listActivity, R.layout.custom_event_list_row,
+		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
 				inRangeEvents));
 	}
 
