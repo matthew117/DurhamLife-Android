@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -40,7 +41,12 @@ public class CollegeEventListActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
 		setContentView(R.layout.college_events_list_layout);
+
+		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_bar);
 
 		user = SessionFunctions.getCurrentUser(this);
 
@@ -60,7 +66,9 @@ public class CollegeEventListActivity extends Activity
 			SAXParser parser = factory.newSAXParser();
 			final XMLReader reader = parser.getXMLReader();
 
-			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?college="+collegeToCode(user.getCollege()));
+			final URL url = new URL(
+					"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?college="
+							+ collegeToCode(user.getCollege()));
 
 			eventList = new ArrayList<Event>();
 
@@ -163,7 +171,7 @@ public class CollegeEventListActivity extends Activity
 		else return null;
 
 	}
-	
+
 	private int collegeToColor(String collegeName)
 	{
 		if (collegeName.equals("St. Aidan's")) return Color.parseColor("#146539");

@@ -101,6 +101,25 @@
                     android:gravity="center"
                     android:text="@string/settings"
                     android:textSize="12sp" />
+                
+            </TableRow>
+            
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center" >
+                
+                <TextView
+                    android:id="@+id/userHubSocietyEvents"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableTop="@drawable/filter"
+                    android:gravity="center"
+                    android:text="@string/personal_societies"
+                    android:textSize="12sp" />
             </TableRow>
         </TableLayout>
     </FrameLayout>

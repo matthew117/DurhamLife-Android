@@ -10,6 +10,7 @@ Optimizations
 
 # Reviews should be in a ListView
 # Global access through application singleton rather than extensive Intent use
+# Add colours to resource files
 
 Bugs
 

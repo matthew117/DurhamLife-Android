@@ -39,7 +39,7 @@ public class CategoryGridActivity extends Activity
 		{
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
 			{
-				Intent i = new Intent(v.getContext(), MainActivity.class);
+				Intent i = new Intent(v.getContext(), EventListActivity.class);
 				i.putExtra("category_filter", categorySelection(position));
 				startActivity(i);
 				finish();

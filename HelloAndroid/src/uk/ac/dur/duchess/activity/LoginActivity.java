@@ -64,7 +64,7 @@ public class LoginActivity extends Activity
 				
 				if (usernameEditText.getText().length() == 0)
 				{
-					Intent i = new Intent(v.getContext(), MainActivity.class);
+					Intent i = new Intent(v.getContext(), EventListActivity.class);
 					startActivity(i);
 				}
 				

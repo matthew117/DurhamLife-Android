@@ -15,14 +15,14 @@ public class User
 	private String college;
 	private List<String> categoryPreferences;
 	private Map<Long, String> subcategoryPreferences;
-	private List<String> societies;
+	private List<Integer> societies;
 
-	public List<String> getSocieties()
+	public List<Integer> getSocieties()
 	{
 		return societies;
 	}
 
-	public void setSocieties(List<String> societies)
+	public void setSocieties(List<Integer> societies)
 	{
 		this.societies = societies;
 	}
