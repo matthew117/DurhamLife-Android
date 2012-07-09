@@ -62,9 +62,12 @@ public class CalendarFunctions
 			Calendar fromDate  = Calendar.getInstance();
 			if(from.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) fromDate.setTime(event.parse(from));
 			else fromDate.setTime(range.parse(from));
-			Calendar toDate    = Calendar.getInstance(); toDate.setTime(range.parse(to));
-			if(to.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) toDate.setTime(event.parse(from));
-			else toDate.setTime(range.parse(from));
+			
+			Calendar toDate    = Calendar.getInstance();
+			if(to.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) toDate.setTime(event.parse(to));
+			else toDate.setTime(range.parse(to));
+
+			
 			Calendar startDate = Calendar.getInstance(); startDate.setTime(event.parse(start));
 			Calendar endDate   = Calendar.getInstance(); endDate.setTime(event.parse(end));
 			
