@@ -2,28 +2,69 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="35dip"
-    android:background="@drawable/title_bar_gradient"
-    android:gravity="center" >
-
+    android:background="@drawable/title_bar_gradient" 
+    android:gravity="center_vertical">
+
     <ImageView
+        android:id="@+id/titleBarLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:contentDescription="@string/duchess_logo"
         android:gravity="center_vertical"
         android:paddingBottom="5dp"
-        android:paddingLeft="3dp"
+        android:paddingLeft="5dp"
         android:scaleType="fitStart"
         android:src="@drawable/duchess" />
 
-    <LinearLayout
-        android:id="@+id/titleBarButtonContainer"
+    <ImageButton
+        android:id="@+id/titleBarButton1"
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="2dp"
         android:layout_marginTop="4dp"
-        android:orientation="horizontal" />
+        android:contentDescription="@string/title_bar_button_1"
+        android:src="@drawable/full_star" />
+
+    <ImageButton
+        android:id="@+id/titleBarButton2"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/titleBarButton1"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/title_bar_button_2"
+        android:src="@drawable/half_star" />
+    
+    <ImageButton
+        android:id="@+id/titleBarButton3"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/titleBarButton2"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/title_bar_button_3"
+        android:src="@drawable/empty_star" />
+    
+    <ImageButton
+        android:id="@+id/titleBarButton4"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/titleBarButton3"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/title_bar_button_4"
+        android:src="@drawable/empty_star" />
 
 </RelativeLayout>

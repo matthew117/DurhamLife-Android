@@ -16,3 +16,4 @@ Bugs
 
 - Orientation change messes things up
 - Date filters don't seem to be working correctly
+- Calendar creates when you don't select any dates
