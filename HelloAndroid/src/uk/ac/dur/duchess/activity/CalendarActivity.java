@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -29,6 +30,11 @@ public class CalendarActivity extends Activity
 	private LinearLayout layout;
 	private LayoutParams params;
 	private LinearLayout header;
+	private LinearLayout subHeader;
+	
+	private boolean[] dates = new boolean[42];
+	
+	private Button confirmButton;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -55,6 +61,9 @@ public class CalendarActivity extends Activity
 		header.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0));
 		header.setOrientation(1);
 		
+		subHeader = new LinearLayout(this);
+		subHeader.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 1));
+		
 		TextView monthText = new TextView(this);
 		
 		SimpleDateFormat month = new SimpleDateFormat("MMMMM yyyy");
@@ -64,7 +73,6 @@ public class CalendarActivity extends Activity
 		monthText.setTextSize(15);
 		monthText.setTypeface(Typeface.SERIF, Typeface.BOLD);
 		monthText.setPadding(5, 5, 5, 5);
-		monthText.setGravity(Gravity.CENTER_HORIZONTAL);
 		
 		int[] colors = {Color.parseColor("#7E317B"), Color.parseColor("#D8ACE0")};
 		
@@ -73,8 +81,31 @@ public class CalendarActivity extends Activity
 		
 		header.setBackgroundDrawable(gradient);
 		
-		header.addView(monthText);
+		subHeader.addView(monthText, new LinearLayout.LayoutParams(-2, -2, 1));
 		
+		confirmButton = new Button(this);
+		confirmButton.setText("Confirm");
+		
+		LayoutParams buttonParams = new LinearLayout.LayoutParams(-2, -2, 0);
+		buttonParams.setMargins(0, 5, 0, 5);
+		
+		confirmButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent returnIntent = new Intent();
+				
+				returnIntent.putExtra("dates", getDatesString());
+				
+				setResult(RESULT_OK, returnIntent);
+				finish();
+			}
+		});
+		
+		subHeader.addView(confirmButton, buttonParams);
+		
+		header.addView(subHeader);
 		
 		LinearLayout days = new LinearLayout(this);
 		days.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0));
@@ -88,6 +119,7 @@ public class CalendarActivity extends Activity
 			day.setGravity(Gravity.CENTER);
 			day.setPadding(0, 0, 0, 5);
 			day.setTextColor(Color.BLACK);
+			day.setTextSize(10);
 			days.addView(day, new LinearLayout.LayoutParams(0, -2, 1));
 		}
 		
@@ -98,13 +130,11 @@ public class CalendarActivity extends Activity
 		for(int row = 0; row < 6; row++)
 		{
 			LinearLayout tableRow = new LinearLayout(this);
-			tableRow.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0));
+			tableRow.setLayoutParams(new LinearLayout.LayoutParams(-1, LayoutParams.FILL_PARENT, 1));
 			
 			for(int col = 0; col < 7; col++)
 			{
-				if(cell < 1) tableRow.addView(getMonthButton(lastBound + cell, Color.GRAY), new LinearLayout.LayoutParams(0, -2, 1)); 
-				else if(cell > upperBound) tableRow.addView(getMonthButton(cell % upperBound, Color.GRAY), new LinearLayout.LayoutParams(0, -2, 1));
-				else tableRow.addView(getMonthButton(cell, Color.BLACK), new LinearLayout.LayoutParams(0, -2, 1));
+				tableRow.addView(getMonthButton(cell), new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, 1));
 				
 				cell++;
 			}
@@ -117,20 +147,27 @@ public class CalendarActivity extends Activity
 		setContentView(layout);
 	}
 	
-	private Button getMonthButton(final int day, int color)
+	private Button getMonthButton(int cell)
 	{
-		CalendarButton button = new CalendarButton(this, color);
+		int day = cell;
+		int color = Color.BLACK;
+		
+		if(day < 1)
+		{
+			day += lastBound;
+			color = Color.GRAY;
+		}
+		else if(day > upperBound)
+		{
+			day %= upperBound;
+			color = Color.GRAY;
+		}
+		
+		CalendarButton button = new CalendarButton(this, cell, color);
 		
 		button.setText(String.valueOf(((day < 10) ? " " : "") + day));
 		button.setTextColor(color);
 		button.setBackgroundColor(Color.WHITE);
-		
-		int bottom = button.getPaddingBottom();
-		int left = button.getPaddingLeft();
-		int right = button.getPaddingRight();
-		int top = button.getPaddingTop();
-		
-		button.setPadding(left, top + 2, right, bottom);
 		
 		button.setOnClickListener(new OnClickListener()
 		{
@@ -139,17 +176,19 @@ public class CalendarActivity extends Activity
 			{
 				CalendarButton b = (CalendarButton) v;
 				
-				if(b.isClicked())
+				if(b.clicked)
 				{
-					b.setClicked(false);
-					b.setTextColor(b.getColor());
+					b.clicked = false;
+					b.setTextColor(b.color);
 					v.setBackgroundColor(Color.WHITE);
+					dates[mapCellToArray(b.cell)] = false;
 				}
 				else
 				{
-					b.setClicked(true);
+					b.clicked = true;
 					b.setTextColor(Color.parseColor("#7E317B"));
 					v.setBackgroundColor(Color.parseColor("#D8ACE0"));
+					dates[mapCellToArray(b.cell)] = true;
 				}
 			}
 			
@@ -161,20 +200,15 @@ public class CalendarActivity extends Activity
 	private class CalendarButton extends Button
 	{
 		private boolean clicked = false;
+		private int cell;
 		private int color;
 		
-		public CalendarButton(Context context, int color)
+		public CalendarButton(Context context, int cell, int color)
 		{
 			super(context);
+			this.cell = cell;
 			this.color = color;
-		}
-		
-		public boolean isClicked() { return clicked; }
-		
-		public void setClicked(boolean clicked) { this.clicked = clicked; }
-		
-		public int getColor() { return color; }
-		
+		}	
 	}
 	
 	private void setMonthBounds(int month)
@@ -190,5 +224,42 @@ public class CalendarActivity extends Activity
 		calendar.set(Calendar.MONTH, month - 1);
 		
 		lastBound = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+	}
+	
+	private String cellToDate(int cell)
+	{
+		SimpleDateFormat range = new SimpleDateFormat("d MMMMM yyyy");
+		
+		Calendar cal = Calendar.getInstance();
+			
+		cal.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+		cal.set(Calendar.DAY_OF_MONTH, cell);
+		
+		return range.format(cal.getTime());
+
+	}
+	
+	private int mapCellToArray(int cell)
+	{
+		int offset = 1 - lowerBound;
+		
+		return cell + offset;
+	}
+	
+	private int mapArrayToCell(int n)
+	{
+		int offset = 1 - lowerBound;
+		
+		return n - offset;
+	}
+	
+	private String getDatesString()
+	{
+		String str = "";
+		
+		for(int i = 0; i < dates.length; i++)
+			if(dates[i]) str += cellToDate(mapArrayToCell(i)) + ((i == dates.length - 1) ? "" : ", ");
+		
+		return str;
 	}
 }

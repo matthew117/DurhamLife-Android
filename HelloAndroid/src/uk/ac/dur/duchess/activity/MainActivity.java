@@ -60,6 +60,7 @@ public class MainActivity extends ListActivity
 	private EventListAdapter adapter;
 
 	private static final int REQUEST_DATEFRAME = 1;
+	private static final int REQUEST_CALENDAR = 2;
 	private static final int DATE_DIALOG_ID = 1;
 
 	/** Called when the activity is first created. */
@@ -270,7 +271,7 @@ public class MainActivity extends ListActivity
 		case R.id.submenuEventListByCalendar:
 		{
 			Intent i = new Intent(this, CalendarActivity.class);
-			startActivity(i);
+			startActivityForResult(i, REQUEST_CALENDAR);
 			return true;
 		}
 		case R.id.submenuEventListAZ:
