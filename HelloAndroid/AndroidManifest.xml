@@ -31,7 +31,8 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:label="" />
+            android:label=""
+            android:theme="@style/CustomTheme" />
         <activity
             android:name=".activity.UserHubActivity"
             android:label=""
