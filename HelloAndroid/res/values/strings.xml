@@ -109,5 +109,9 @@
     <string name="title_bar_button_2">Title Bar Button 2</string>
     <string name="title_bar_button_3">Title Bar Button 3</string>
     <string name="title_bar_button_4">Title Bar Button 4</string>
+    <string name="copyright">\u00A9 Durham University 2012</string>
+    <string name="copyright_message">This is a generic copyright message because I am not a lawyer.</string>
+    <string name="terms">Terms</string>
+    <string name="version">Version</string>
 
 </resources>

@@ -45,7 +45,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				Toast.makeText(v.getContext(), "Bring up 'About' page", Toast.LENGTH_LONG).show();
+				Intent i = new Intent(v.getContext(), AboutBoxActivity.class);
+				startActivity(i);
 			}
 		});
 
