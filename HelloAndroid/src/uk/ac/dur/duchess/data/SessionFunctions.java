@@ -20,7 +20,7 @@ public class SessionFunctions
 	private static final String DEPARTMENT_KEY = "department";
 	private static final String COLLEGE_KEY = "college";
 	private static final String PREFERENCES_KEY = "categoryPreferences";
-	
+	private static final String SOCIETIES_KEY = "societies";
 	
 	private static Map<Integer, String> categoryMap = new HashMap<Integer, String>();
 	
@@ -57,6 +57,7 @@ public class SessionFunctions
 		editor.putString(DEPARTMENT_KEY, user.getDepartment());
 		editor.putString(COLLEGE_KEY, user.getCollege());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
+		editor.putString(SOCIETIES_KEY, user.getSocieties().toString());
 		
 		editor.commit();
 	}
@@ -106,6 +107,7 @@ public class SessionFunctions
 		user.setDepartment(prefs.getString(DEPARTMENT_KEY, ""));
 		user.setCollege(prefs.getString(COLLEGE_KEY, ""));
 		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "")));
+		user.setSocieties(getSocietiesFromString(prefs.getString(SOCIETIES_KEY, "")));
 		
 		return (user.getUserID() == -1) ? null : user;
 	}
@@ -121,5 +123,25 @@ public class SessionFunctions
 		
 		editor.clear();
 		editor.commit();
+	}
+	
+	private static List<String> getSocietiesFromString(String s)
+	{
+		if (s.equals(""))
+		{
+			return new ArrayList<String>();
+		}
+		else
+		{
+			List<String> societies = new ArrayList<String>();
+			String[] sa = s.substring(1,s.length()-1).split(", ");
+			
+			for (String society : sa)
+			{
+				societies.add(society);
+			}
+			
+			return societies;
+		}
 	}
 }

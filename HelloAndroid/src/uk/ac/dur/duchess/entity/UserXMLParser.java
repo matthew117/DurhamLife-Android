@@ -6,8 +6,6 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import android.util.Log;
-
 public class UserXMLParser extends DefaultHandler
 {
 	private boolean isForename = false;
@@ -22,10 +20,11 @@ public class UserXMLParser extends DefaultHandler
 	private boolean isEmail = false;
 	
 	private boolean isCategory = false;
+	private boolean isSociety = false;
 	
 	private User user;
 	private List<String> preferences;
-	private List<Integer> societies;
+	private List<String> societies;
 	
 	public UserXMLParser(User user)
 	{
@@ -42,7 +41,7 @@ public class UserXMLParser extends DefaultHandler
 			if(userID != -1) user.setUserID(userID);
 			
 			preferences = new ArrayList<String>();
-			societies = new ArrayList<Integer>();
+			societies = new ArrayList<String>();
 		}
 		else if (localName.equalsIgnoreCase("forename")) isForename = true;
 		else if (localName.equalsIgnoreCase("surname")) isSurname= true;
@@ -57,10 +56,7 @@ public class UserXMLParser extends DefaultHandler
 		
 		else if (localName.equalsIgnoreCase("category")) isCategory = true;
 		
-		else if (localName.equalsIgnoreCase("society"))
-		{
-			societies.add(Integer.parseInt(attributes.getValue("id")));
-		}
+		else if (localName.equalsIgnoreCase("society")) isSociety = true;
 	}
 
 	@Override
@@ -84,10 +80,11 @@ public class UserXMLParser extends DefaultHandler
 			user.setCategoryPreferences(preferences);
 		}
 		
+		else if (localName.equalsIgnoreCase("society")) isSociety = false;
+		
 		else if (localName.equalsIgnoreCase("societies"))
 		{
 			user.setSocieties(societies);
-			Log.d("SOCIETIES", societies.toString());
 		}
 	}
 
@@ -101,7 +98,7 @@ public class UserXMLParser extends DefaultHandler
 		else if (isDepartment) user.setDepartment(new String(ch, start, length));
 		else if (isCollege) user.setCollege(new String(ch, start, length));
 		else if (isEmail) user.setEmailAddress(new String(ch, start, length));
-		
+		else if (isSociety) societies.add(new String(ch, start, length));
 		else if (isCategory) preferences.add(new String(ch, start, length));
 	}
 	

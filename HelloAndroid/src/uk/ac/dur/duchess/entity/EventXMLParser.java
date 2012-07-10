@@ -51,7 +51,6 @@ public class EventXMLParser extends DefaultHandler
 
 	public EventXMLParser(List<Event> events)
 	{
-		Log.d("EventXMLParser", "Constructor called.");
 		list = events;
 		event = new Event();
 		categoryTags = new ArrayList<String>();

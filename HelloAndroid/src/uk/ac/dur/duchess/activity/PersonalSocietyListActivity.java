@@ -1,20 +1,30 @@
 package uk.ac.dur.duchess.activity;
 
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +34,7 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +44,7 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 	private ExpandableListAdapter exAdapter;
 	private Map<String, List<Event>> eventMap;
 	private Activity activity;
+	private List<String> societyList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -44,30 +56,61 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 		
 		exListView = (ExpandableListView) findViewById(R.id.expandableSocietyList);
 		
-		User user = SessionFunctions.getCurrentUser(this);
-		List<String> societyList = new ArrayList<String>();
-		societyList.add("Computing");
-		societyList.add("Art");
+		exListView.setOnGroupClickListener(new OnGroupClickListener()
+		{
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
+			{
+				
+				try
+				{
+					SAXParserFactory factory = SAXParserFactory.newInstance();
+					SAXParser parser = factory.newSAXParser();
+					XMLReader reader = parser.getXMLReader();
+
+					URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?societyName=" + URLEncoder.encode(societyList.get(groupPosition), "UTF-8"));
+					
+					Log.d("URL", url.toString());
+					
+					List<Event> eventList = new ArrayList<Event>();
+
+					EventXMLParser myXMLHandler = new EventXMLParser(eventList);
+
+					reader.setContentHandler(myXMLHandler);
+					reader.parse(new InputSource(url.openStream()));
+					
+					eventMap.put(societyList.get(groupPosition), eventList);
+					
+					Log.d("EVENT MAP", eventMap.toString());
+					
+					Log.d("EVENT LIST", eventList.toString());
+					
+					GroupedEventListAdapter newAdapter = new GroupedEventListAdapter(societyList, eventMap);
+					
+					exListView.setAdapter(newAdapter);
+					
+				}
+				catch (Exception e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				return false;
+			}
+		});
 		
+		User user = SessionFunctions.getCurrentUser(this);
+		societyList = user.getSocieties();
+
 		eventMap = new HashMap<String, List<Event>>();
 		
-		Event e = new Event();
-		e.setName("Generic Event");
-		e.setDescriptionHeader("Description");
-		e.setStartDate("2012-05-09");
-		e.setEndDate("2012-05-09");
-		e.setAddress1("Address1");
-		
-		List<Event> eventList = new ArrayList<Event>();
-		eventList.add(e);
-		eventList.add(e);
-		
-		List<Event> eventList2 = new ArrayList<Event>();
-		eventList2.add(e);
-		
-		eventMap.put("Computing", eventList);
-		eventMap.put("Art", eventList2);
-		
+		for (String society : societyList)
+		{
+			List<Event> eventList = new ArrayList<Event>();
+			eventMap.put(society, eventList);
+		}
 
 		exAdapter = new GroupedEventListAdapter(societyList, eventMap);
 		exListView.setAdapter(exAdapter);
