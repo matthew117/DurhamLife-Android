@@ -88,9 +88,6 @@ public class UserHubActivity extends CustomTitleBarActivity
 			{
 				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
 						Toast.LENGTH_LONG).show();
-				
-				Intent i = new Intent(v.getContext(), CircleTestActivity.class);
-				startActivity(i);
 			}
 		});
 
