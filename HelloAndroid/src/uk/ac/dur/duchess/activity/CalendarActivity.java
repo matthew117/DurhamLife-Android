@@ -96,10 +96,19 @@ public class CalendarActivity extends Activity
 			{
 				Intent returnIntent = new Intent();
 				
-				returnIntent.putExtra("dates", getDatesString());
+				String dateString = getDatesString();
 				
-				setResult(RESULT_OK, returnIntent);
-				finish();
+				if(!dateString.equals(""))
+				{
+					returnIntent.putExtra("dates", dateString);
+					setResult(RESULT_OK, returnIntent);
+					finish();
+				}
+				else
+				{
+					setResult(RESULT_CANCELED);
+					finish();
+				}
 			}
 		});
 		
@@ -258,7 +267,7 @@ public class CalendarActivity extends Activity
 		String str = "";
 		
 		for(int i = 0; i < dates.length; i++)
-			if(dates[i]) str += cellToDate(mapArrayToCell(i)) + ((i == dates.length - 1) ? "" : ", ");
+			if(dates[i]) str += cellToDate(mapArrayToCell(i)) + ", ";
 		
 		return str;
 	}
