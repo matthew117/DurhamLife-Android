@@ -429,8 +429,8 @@ public class EventListActivity extends ListActivity
 	{
 		public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
 		{
-			String date = year + "-" + monthOfYear + "-" + dayOfMonth;
-			String nextDay = year + "-" + monthOfYear + "-" + (dayOfMonth + 1);
+			String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+			String nextDay = year + "-" + (monthOfYear + 1) + "-" + (dayOfMonth + 1);
 
 			filterEventByDateRange(date, nextDay);
 		}
