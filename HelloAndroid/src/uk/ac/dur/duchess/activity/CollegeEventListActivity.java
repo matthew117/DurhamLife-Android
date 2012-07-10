@@ -16,19 +16,17 @@ import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CollegeEventListActivity extends Activity
+public class CollegeEventListActivity extends CustomTitleBarActivity
 {
 	private ArrayList<Event> eventList;
 	private EventListAdapter adapter;
@@ -41,12 +39,7 @@ public class CollegeEventListActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-
 		setContentView(R.layout.college_events_list_layout);
-
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_bar);
 
 		user = SessionFunctions.getCurrentUser(this);
 
@@ -57,6 +50,7 @@ public class CollegeEventListActivity extends Activity
 		{
 			collegeNameText.setText(user.getCollege());
 			collegeNameText.setBackgroundColor(collegeToColor(user.getCollege()));
+			collegeNameText.setCompoundDrawablesWithIntrinsicBounds(collegeToImage(user.getCollege()), 0, 0, 0);
 		}
 
 		try
@@ -191,6 +185,27 @@ public class CollegeEventListActivity extends Activity
 		else if (collegeName.equals("John Snow")) return Color.parseColor("#326A89");
 		else if (collegeName.equals("Stephenson")) return Color.parseColor("#BA1810");
 		else return 0xffffff;
+	}
+
+	private int collegeToImage(String collegeName)
+	{
+		if (collegeName.equals("St. Aidan's")) return R.drawable.st_adians;
+		else if (collegeName.equals("Collingwood")) return R.drawable.collingwood;
+		else if (collegeName.equals("Grey")) return R.drawable.grey;
+		else if (collegeName.equals("Hatfield")) return R.drawable.college;
+		else if (collegeName.equals("Josephine Butler")) return R.drawable.college;
+		else if (collegeName.equals("St. Chad's")) return R.drawable.college;
+		else if (collegeName.equals("St. Cuthbert's")) return R.drawable.college;
+		else if (collegeName.equals("Hild Bede")) return R.drawable.college;
+		else if (collegeName.equals("St. John's")) return R.drawable.college;
+		else if (collegeName.equals("St. Mary's")) return R.drawable.college;
+		else if (collegeName.equals("Trevelyan")) return R.drawable.college;
+		else if (collegeName.equals("University")) return R.drawable.college;
+		else if (collegeName.equals("Van Mildert")) return R.drawable.college;
+		else if (collegeName.equals("Ustinov")) return R.drawable.college;
+		else if (collegeName.equals("John Snow")) return R.drawable.college;
+		else if (collegeName.equals("Stephenson")) return R.drawable.college;
+		else return R.drawable.college;
 	}
 
 }

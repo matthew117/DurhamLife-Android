@@ -19,7 +19,6 @@ import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +30,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class SocietyEventListActivity extends Activity
+public class SocietyEventListActivity extends CustomTitleBarActivity
 {
 	private ArrayList<Event> eventList;
 	private EventListAdapter adapter;

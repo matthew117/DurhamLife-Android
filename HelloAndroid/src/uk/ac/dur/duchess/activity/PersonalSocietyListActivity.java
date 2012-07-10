@@ -27,7 +27,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PersonalSocietyListActivity extends Activity
+public class PersonalSocietyListActivity extends CustomTitleBarActivity
 {
 	private ExpandableListView exListView;
 	private ExpandableListAdapter exAdapter;
