@@ -1,22 +1,18 @@
 package uk.ac.dur.duchess.activity;
 
-import java.io.InputStream;
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
+import java.util.List;
 
 import uk.ac.dur.duchess.EventListAdapter;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
-import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
+import uk.ac.dur.duchess.webservice.EventAPI;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,12 +24,15 @@ import android.widget.TextView;
 
 public class CollegeEventListActivity extends CustomTitleBarActivity
 {
-	private ArrayList<Event> eventList;
+	private List<Event> eventList;
 	private EventListAdapter adapter;
 	private ListView listView;
 	private ProgressDialog progressDialog;
+	private AlertDialog alertDialog;
 	private User user;
 	private TextView collegeNameText;
+	private List<Event> newList;
+	private Runnable parseData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -50,98 +49,113 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 		{
 			collegeNameText.setText(user.getCollege());
 			collegeNameText.setBackgroundColor(collegeToColor(user.getCollege()));
-			collegeNameText.setCompoundDrawablesWithIntrinsicBounds(collegeToImage(user.getCollege()), 0, 0, 0);
+			collegeNameText.setCompoundDrawablesWithIntrinsicBounds(
+					collegeToImage(user.getCollege()), 0, 0, 0);
 		}
 
-		try
+		eventList = new ArrayList<Event>();
+
+		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
+		listView.setAdapter(adapter);
+
+		listView.setOnItemClickListener(new OnItemClickListener()
 		{
-
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser parser = factory.newSAXParser();
-			final XMLReader reader = parser.getXMLReader();
-
-			final URL url = new URL(
-					"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?college="
-							+ collegeToCode(user.getCollege()));
-
-			eventList = new ArrayList<Event>();
-
-			EventXMLParser myXMLHandler = new EventXMLParser(eventList);
-
-			reader.setContentHandler(myXMLHandler);
-
-			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
-			listView.setAdapter(adapter);
-
-			listView.setOnItemClickListener(new OnItemClickListener()
-			{
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-				{
-
-					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
-					Event e = (Event) adapter.getItem(position);
-					i.putExtra("event_id", e.getEventID());
-					i.putExtra("event_name", e.getName());
-					i.putExtra("event_start_date", e.getStartDate());
-					i.putExtra("event_end_date", e.getEndDate());
-					i.putExtra("event_description", e.getDescriptionHeader());
-					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
-					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
-					i.putExtra("event_web_address", e.getWebAddress());
-					i.putExtra("event_address1", e.getAddress1());
-					i.putExtra("event_address2", e.getAddress2());
-					i.putExtra("event_city", e.getCity());
-					i.putExtra("event_postcode", e.getPostcode());
-					i.putExtra("event_latitude", e.getLatitude());
-					i.putExtra("event_longitude", e.getLongitude());
-					i.putExtra("image_url", e.getImageURL());
-					startActivity(i);
-				}
-			});
-
-			final Runnable callbackFunction = new Runnable()
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
 
-				@Override
-				public void run()
-				{
-					progressDialog.dismiss();
-					adapter.notifyDataSetChanged();
-				}
-			};
+				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+				Event e = (Event) adapter.getItem(position);
+				i.putExtra("event_id", e.getEventID());
+				i.putExtra("event_name", e.getName());
+				i.putExtra("event_start_date", e.getStartDate());
+				i.putExtra("event_end_date", e.getEndDate());
+				i.putExtra("event_description", e.getDescriptionHeader());
+				i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+				i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+				i.putExtra("event_web_address", e.getWebAddress());
+				i.putExtra("event_address1", e.getAddress1());
+				i.putExtra("event_address2", e.getAddress2());
+				i.putExtra("event_city", e.getCity());
+				i.putExtra("event_postcode", e.getPostcode());
+				i.putExtra("event_latitude", e.getLatitude());
+				i.putExtra("event_longitude", e.getLongitude());
+				i.putExtra("image_url", e.getImageURL());
+				startActivity(i);
+			}
+		});
 
-			Runnable parseData = new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					try
-					{
-						InputStream is = url.openStream();
-						InputSource source = new InputSource(is);
-						source.setEncoding("UTF-8");
-						reader.parse(source);
-						runOnUiThread(callbackFunction);
-					}
-					catch (Exception ex)
-					{
-						ex.printStackTrace();
-					}
-				}
-			};
-
-			Thread thread = new Thread(null, parseData, "SAXParser");
-			thread.start();
-			progressDialog = ProgressDialog.show(CollegeEventListActivity.this, "Please wait...",
-					"Downloading Events ...", true);
-		}
-		catch (Exception ex)
+		final Runnable callbackFunction = new Runnable()
 		{
-			progressDialog.dismiss();
-			ex.printStackTrace();
-			finish();
-		}
+			@Override
+			public void run()
+			{
+				for (Event e : newList)
+				{
+					adapter.add(e);
+				}
+				progressDialog.dismiss();
+			}
+		};
+
+		final Runnable errorCallback = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(CollegeEventListActivity.this);
+				builder.setMessage(
+						"Could not connect. Are you sure that you have an internet connection?")
+						.setCancelable(false)
+						.setNegativeButton("Back", new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int id)
+							{
+								CollegeEventListActivity.this.finish();
+							}
+						}).setPositiveButton("Retry", new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int id)
+							{
+								Thread thread = new Thread(null, parseData, "SAXParser");
+								thread.start();
+							}
+						});
+				alertDialog = builder.create();
+				alertDialog.show();
+			}
+		};
+
+		parseData = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					newList = EventAPI.downloadEventsByCollege(user.getCollege());
+					runOnUiThread(callbackFunction);
+				}
+				catch (IOException ex)
+				{
+					runOnUiThread(errorCallback);
+				}
+			}
+		};
+
+		Thread thread = new Thread(null, parseData, "SAXParser");
+		thread.start();
+		progressDialog = ProgressDialog.show(CollegeEventListActivity.this, "Please wait...",
+				"Downloading Events ...", true);
+
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		if (alertDialog != null && alertDialog.isShowing()) alertDialog.dismiss();
+		if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
 	}
 
 	private String collegeToCode(String collegeName)

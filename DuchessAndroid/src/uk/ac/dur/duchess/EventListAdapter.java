@@ -1,6 +1,6 @@
 package uk.ac.dur.duchess;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.entity.Event;
@@ -17,14 +17,14 @@ import android.widget.TextView;
 
 public class EventListAdapter extends ArrayAdapter<Event>
 {
-	private ArrayList<Event> events;
+	private List<Event> events;
 	private Context context;
 	private int rowLayoutResourceID;
 
-	public EventListAdapter(Context context, int rowLayoutResourceID, ArrayList<Event> events)
+	public EventListAdapter(Context context, int rowLayoutResourceID, List<Event> eventList)
 	{
-		super(context, rowLayoutResourceID, events);
-		this.events = events;
+		super(context, rowLayoutResourceID, eventList);
+		this.events = eventList;
 		this.context = context;
 		this.rowLayoutResourceID = rowLayoutResourceID;
 	}
