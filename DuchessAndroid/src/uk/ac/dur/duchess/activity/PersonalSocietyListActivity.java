@@ -1,30 +1,26 @@
 package uk.ac.dur.duchess.activity;
 
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
-import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
+import uk.ac.dur.duchess.webservice.EventAPI;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,7 +30,6 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +40,8 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 	private Map<String, List<Event>> eventMap;
 	private Activity activity;
 	private List<String> societyList;
+	private AlertDialog alertDialog;
+	private ProgressDialog progressDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -53,67 +50,26 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 		setContentView(R.layout.personal_society_events_list);
 
 		activity = this;
-		
+
 		exListView = (ExpandableListView) findViewById(R.id.expandableSocietyList);
-		
-		exListView.setOnGroupClickListener(new OnGroupClickListener()
-		{
-			@Override
-			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
-			{
-				
-				try
-				{
-					SAXParserFactory factory = SAXParserFactory.newInstance();
-					SAXParser parser = factory.newSAXParser();
-					XMLReader reader = parser.getXMLReader();
 
-					URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?societyName=" + URLEncoder.encode(societyList.get(groupPosition), "UTF-8"));
-					
-					Log.d("URL", url.toString());
-					
-					List<Event> eventList = new ArrayList<Event>();
-
-					EventXMLParser myXMLHandler = new EventXMLParser(eventList);
-
-					reader.setContentHandler(myXMLHandler);
-					reader.parse(new InputSource(url.openStream()));
-					
-					eventMap.put(societyList.get(groupPosition), eventList);
-					
-					Log.d("EVENT MAP", eventMap.toString());
-					
-					Log.d("EVENT LIST", eventList.toString());
-					
-					GroupedEventListAdapter newAdapter = new GroupedEventListAdapter(societyList, eventMap);
-					
-					exListView.setAdapter(newAdapter);
-					
-				}
-				catch (Exception e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				return false;
-			}
-		});
-		
 		User user = SessionFunctions.getCurrentUser(this);
 		societyList = user.getSocieties();
 
 		eventMap = new HashMap<String, List<Event>>();
-		
-		for (String society : societyList)
-		{
-			List<Event> eventList = new ArrayList<Event>();
-			eventMap.put(society, eventList);
-		}
 
+		for (String s : societyList)
+		{
+			eventMap.put(s, new ArrayList<Event>());
+		}
+		
 		exAdapter = new GroupedEventListAdapter(societyList, eventMap);
 		exListView.setAdapter(exAdapter);
+
+		String[] societyArray = new String[societyList.size()];
+		societyList.toArray(societyArray);
+		
+		(new DownloadEventsBackgroundTask()).execute(societyArray);
 	}
 
 	public class GroupedEventListAdapter extends BaseExpandableListAdapter
@@ -121,7 +77,8 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 		private List<String> groupList;
 		private Map<String, List<Event>> groupedEvents;
 
-		public GroupedEventListAdapter(List<String> groupList, Map<String, List<Event>> groupedEvents)
+		public GroupedEventListAdapter(List<String> groupList,
+				Map<String, List<Event>> groupedEvents)
 		{
 			this.groupList = groupList;
 			this.groupedEvents = groupedEvents;
@@ -150,10 +107,14 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 			TextView textView = new TextView(PersonalSocietyListActivity.this);
 			textView.setLayoutParams(lp);
 			textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-			textView.setPadding(100, 0, 0, 0);
+			textView.setPadding(60, 0, 0, 0);
 			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 			textView.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 			textView.setText(getGroup(groupPosition).toString());
+			if (getChildrenCount(groupPosition) == 0)
+			{
+				textView.setTextColor(Color.parseColor("#FF0000"));
+			}
 			return textView;
 		}
 
@@ -181,7 +142,7 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 			{
 				LayoutInflater inflater = activity.getLayoutInflater();
 				v = inflater.inflate(R.layout.custom_event_list_row, parent, false);
-				
+
 				holder = new ViewHolder();
 
 				holder.txtEventName = (TextView) v.findViewById(R.id.txtEventName);
@@ -192,8 +153,9 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 				holder.star3 = (ImageView) v.findViewById(R.id.newStar3);
 				holder.star4 = (ImageView) v.findViewById(R.id.newStar4);
 				holder.star5 = (ImageView) v.findViewById(R.id.newStar5);
-				holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
-				
+				holder.numberOfReviewsDisplay = (TextView) v
+						.findViewById(R.id.numberOfReviewsOnList);
+
 				v.setTag(holder);
 			}
 			else
@@ -215,29 +177,31 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 				}
 				if (holder.txtEventDate != null)
 				{
-					holder.txtEventDate.setText(e.getAddress1() + "\n" + CalendarFunctions.getEventDate(e));
+					holder.txtEventDate.setText(e.getAddress1() + "\n"
+							+ CalendarFunctions.getEventDate(e));
 				}
-				
+
 				int numberOfReviews = e.getNumberOfReviews();
-				
+
 				if (numberOfReviews > 0)
 				{
-					holder.numberOfReviewsDisplay.setText("based on " + numberOfReviews + " review" + ((numberOfReviews != 1) ? "s" : ""));
+					holder.numberOfReviewsDisplay.setText("based on " + numberOfReviews + " review"
+							+ ((numberOfReviews != 1) ? "s" : ""));
 					int rating = e.getReviewScore();
-					Bitmap emptyStar = BitmapFactory.decodeResource(
-							activity.getResources(), R.drawable.empty_star);
+					Bitmap emptyStar = BitmapFactory.decodeResource(activity.getResources(),
+							R.drawable.empty_star);
 					Bitmap halfStar = BitmapFactory.decodeResource(activity.getResources(),
 							R.drawable.half_star);
 					Bitmap fullStar = BitmapFactory.decodeResource(activity.getResources(),
 							R.drawable.full_star);
-					
+
 					holder.star1.setVisibility(View.VISIBLE);
 					holder.star2.setVisibility(View.VISIBLE);
 					holder.star3.setVisibility(View.VISIBLE);
 					holder.star4.setVisibility(View.VISIBLE);
 					holder.star5.setVisibility(View.VISIBLE);
 					holder.numberOfReviewsDisplay.setVisibility(View.VISIBLE);
-					
+
 					if (rating == 10)
 					{
 						holder.star5.setImageBitmap(fullStar);
@@ -351,7 +315,45 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 			return true;
 		}
 	}
-	
+
+	private class DownloadEventsBackgroundTask extends
+			AsyncTask<String, Void, Map<String, List<Event>>>
+	{
+		@Override
+		protected void onPreExecute()
+		{
+			progressDialog = ProgressDialog.show(PersonalSocietyListActivity.this,
+					"Please wait...", "Downloading Events ...", true);
+		}
+
+		@Override
+		protected Map<String, List<Event>> doInBackground(String... societyArray)
+		{
+			try
+			{
+				List<Event> eventList = new ArrayList<Event>();
+				for (String s : societyArray)
+				{
+					eventList = EventAPI.downloadEventsBySociety(s);
+					eventMap.put(s, eventList);
+				}
+				return eventMap;
+			}
+			catch (IOException ex)
+			{
+
+			}
+			return eventMap;
+		}
+
+		@Override
+		protected void onPostExecute(Map<String, List<Event>> eventMap)
+		{
+			exListView.setAdapter(new GroupedEventListAdapter(societyList, eventMap));
+			progressDialog.dismiss();
+		}
+	}
+
 	private static class ViewHolder
 	{
 		public TextView txtEventName;

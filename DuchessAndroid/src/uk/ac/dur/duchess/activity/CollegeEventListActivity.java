@@ -103,6 +103,7 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 			@Override
 			public void run()
 			{
+				progressDialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(CollegeEventListActivity.this);
 				builder.setMessage(
 						"Could not connect. Are you sure that you have an internet connection?")
@@ -119,6 +120,8 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 							{
 								Thread thread = new Thread(null, parseData, "SAXParser");
 								thread.start();
+								progressDialog = ProgressDialog.show(CollegeEventListActivity.this, "Please wait...",
+										"Downloading Events ...", true);
 							}
 						});
 				alertDialog = builder.create();
