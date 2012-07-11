@@ -1,5 +1,8 @@
 package uk.ac.dur.duchess.activity;
 
+import static java.lang.Math.acos;
+import static java.lang.Math.sqrt;
+
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
@@ -7,11 +10,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +37,8 @@ public class LocationActivity extends MapActivity
 
 	private TextView addressBlock;
 	private TextView eventName;
+	
+	private Bitmap compass;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -39,6 +48,8 @@ public class LocationActivity extends MapActivity
 
 		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
 		eventName = (TextView) findViewById(R.id.locationEventNameLabel);
+		
+		compass = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
 
 		Bundle e = getIntent().getExtras();
 
@@ -96,9 +107,64 @@ public class LocationActivity extends MapActivity
 
 			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
 			canvas.drawBitmap(bmp, screenPoint.x - 36, screenPoint.y - 50, null);
+			
+			Display display = getWindowManager().getDefaultDisplay(); 
+			int width = canvas.getWidth();
+			int height = canvas.getHeight();
+			
+			int x = width - 100;
+			int y = height - 400;
+			int bx = x + (compass.getWidth()  / 2);
+			int by = y + (compass.getHeight() / 2);
+			
+			Matrix matrix = new Matrix();
+			matrix.reset();
+			matrix.setTranslate(x, y);
+			matrix.postRotate(getRotation(), bx, by);
+			
+			canvas.drawBitmap(compass, matrix, null);
 
 			return true;
 		}
+	}
+	
+	private float getRotation()
+	{
+		if(currentLocation != null)
+		{
+			float[] d = {(float) ((point.getLongitudeE6() / 1E6) - (currentLocation.getLongitudeE6() / 1E6)),
+						 (float) ((point.getLatitudeE6()  / 1E6) - (currentLocation.getLatitudeE6()  / 1E6))};
+			
+			Log.d("LOCATION", d[0] + ", " + d[1]);
+			
+			double angle = getAngle(d, new float[] {0, 1}); //smallest angle between translation vector and north
+			
+			if(d[1] < 0) angle = 180 - angle; //if the latitude direction is -ve (south)
+			if(d[0] < 0) angle = -angle; //if the longitude direction is -ve (west)
+			
+			return (float) angle + 180;
+		}
+		else return 0;
+	}
+	
+	public static double getAngle(float[] u, float[] v)
+	{
+		return acos(dot(u, v) / (sqrt(dot(u, u)) * sqrt(dot(v, v))));
+	}
+	
+	public static float orient2D(float[] a, float[] b, float[] c)
+	{
+		return (a[0] - c[0]) * (b[1] - c[1]) - (a[1] - c[1]) * (b[0] - c[0]);
+	}
+	
+	public static float dot(float[] u, float[] v)
+	{
+		float dot = 0;
+		int n = u.length;
+		
+		for(int i = 0; i < n; i++) dot += (u[i] * v[i]);
+		
+		return dot;
 	}
 
 	private class MyLocationListener implements LocationListener
