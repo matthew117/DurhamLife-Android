@@ -1,7 +1,7 @@
 package uk.ac.dur.duchess.activity;
 
+import static android.util.FloatMath.sqrt;
 import static java.lang.Math.acos;
-import static java.lang.Math.sqrt;
 
 import java.util.List;
 
@@ -18,7 +18,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
