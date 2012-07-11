@@ -5,23 +5,25 @@
     android:orientation="vertical" >
 
     <TextView
-            android:id="@+id/locationEventNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text="@string/default_event_name"
-            android:textColor="#7E317B"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:typeface="serif" />
+        android:id="@+id/locationEventNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/default_event_name"
+        android:textColor="#7E317B"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
     <TextView
         android:id="@+id/addressBlockTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
         android:paddingBottom="3dp"
+        android:paddingLeft="5dp"
         android:text="@string/address_goes_here" />
+
 
     <com.google.android.maps.MapView
         android:id="@+id/mapView"
