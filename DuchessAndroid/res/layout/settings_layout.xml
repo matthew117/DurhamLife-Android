@@ -1,101 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:id="@+id/editEmailEditText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    android:layout_height="fill_parent" android:background="#DDDDDD">
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/forenameEdit"
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/forename"
-            android:inputType="textPersonName" />
+            android:background="@color/DUPurple"
+            android:padding="5dp"
+            android:text="Account"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textStyle="italic"
+            android:typeface="serif" />
 
-        <EditText
-            android:id="@+id/surnameEdit"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/surname"
-            android:inputType="textPersonName" >
+            android:layout_margin="5dp"
+            android:background="@drawable/curved_border"
+            android:orientation="vertical" >
 
-            <requestFocus />
-        </EditText>
+            <EditText
+                android:id="@+id/editEmailEditText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Change Password" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/collegeEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-            android:paddingLeft="2dp"
-            android:text="@string/college"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/collegeSpinner"
+            android:id="@+id/textView2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/college_array"
-            android:prompt="@string/college" />
+            android:background="@color/DUPurple"
+            android:padding="5dp"
+            android:text="Profile"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textStyle="italic"
+            android:typeface="serif" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical" android:background="@drawable/curved_border">
+
+            <EditText
+                android:id="@+id/forenameEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/forename"
+                android:inputType="textPersonName" android:ems="10"/>
+
+            <EditText
+                android:id="@+id/surnameEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/surname"
+                android:inputType="textPersonName" >
+
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical" android:background="@drawable/curved_border">
+
+            <TextView
+                android:id="@+id/collegeEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="2dp"
+                android:text="@string/college"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/collegeSpinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/college_array"
+                android:prompt="@string/college" />
+
+            <TextView
+                android:id="@+id/departmentEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="2dp"
+                android:text="@string/department"
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/departmentSpinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/durham_departments"
+                android:prompt="@string/department" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/departmentEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-            android:paddingLeft="2dp"
-            android:text="@string/department"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/departmentSpinner"
+            android:id="@+id/textView3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/durham_departments"
-            android:prompt="@string/department" />
+            android:background="@color/DUPurple"
+            android:padding="5dp"
+            android:text="Preferences"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textStyle="italic"
+            android:typeface="serif" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/curved_border" >
+
+            <TableRow>
+
+                <CheckBox
+                    android:id="@+id/checkBoxUniversity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/university" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxCollege"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/college" />
+            </TableRow>
+
+            <TableRow>
+
+                <CheckBox
+                    android:id="@+id/checkBoxMusic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/music" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxTheatre"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/theatre" />
+            </TableRow>
+
+            <TableRow>
+
+                <CheckBox
+                    android:id="@+id/checkBoxExhibitions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/exhibitions" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxSport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sport" />
+            </TableRow>
+
+            <TableRow>
+
+                <CheckBox
+                    android:id="@+id/checkBoxConferences"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/conferences" />
+
+                <CheckBox
+                    android:id="@+id/checkBoxCommunity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/community" />
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-</LinearLayout>
+</ScrollView>
