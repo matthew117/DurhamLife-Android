@@ -100,7 +100,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 		mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 	
-		mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 	}
 
 
@@ -254,6 +254,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	public void onSensorChanged(SensorEvent event)
 	{
 		rotation = (float) event.values[0];
+		
+		
 	}
 
 }
