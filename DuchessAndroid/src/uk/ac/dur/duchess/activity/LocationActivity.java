@@ -183,7 +183,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 			return (float) angle + 180 + rotation;
 		}
-		else return 0;
+		else return rotation;
 	}
 
 	public static double getAngle(float[] u, float[] v)
