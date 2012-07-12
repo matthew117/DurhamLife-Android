@@ -11,17 +11,6 @@
         android:layout_gravity="fill_horizontal"
         android:orientation="vertical"
         android:layout_alignParentTop="true">
-        
-        <EditText
-            android:id="@+id/editEmailEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress" >
-
-            <requestFocus/>
-        </EditText>
 
         <EditText
             android:id="@+id/editOldPasswordEditText"

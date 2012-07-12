@@ -118,7 +118,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), SettingsTabRootActivity.class);
+				Intent i = new Intent(v.getContext(), SettingsActivity.class);
 				startActivity(i);
 			}
 		});

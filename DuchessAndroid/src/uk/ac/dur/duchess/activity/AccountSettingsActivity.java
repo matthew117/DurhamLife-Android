@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 public class AccountSettingsActivity extends Activity
 {
-	private EditText email;
 	private EditText oldPassword;
 	private EditText newPassword;
 	private EditText confirmPassword;
@@ -36,15 +35,12 @@ public class AccountSettingsActivity extends Activity
 		activity = this;
 		currentUser = SessionFunctions.getCurrentUser(activity);
 
-		email = (EditText) findViewById(R.id.editEmailEditText);
 		oldPassword = (EditText) findViewById(R.id.editOldPasswordEditText);
 		newPassword = (EditText) findViewById(R.id.editPasswordEditText);
 		confirmPassword = (EditText) findViewById(R.id.editConfirmPasswordEditText);
 
 		saveButton = (Button) findViewById(R.id.confirmUpdateAccountButton);
 		cancelButton = (Button) findViewById(R.id.cancelUpdateAccountButton);
-		
-		email.setText(currentUser.getEmailAddress());
 		
 		cancelButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -59,27 +55,15 @@ public class AccountSettingsActivity extends Activity
 			{
 				currentUser = SessionFunctions.getCurrentUser(activity);
 				
-				if(newPassword.getText().length() == 0 && confirmPassword.getText().length() == 0)
-				{
-					String newEmail = email.getText().toString();
-					
-					if(newEmail.equals(currentUser.getEmailAddress()))
-						Toast.makeText(v.getContext(), "No changes have been made", Toast.LENGTH_LONG).show();
-					else
-					{
-						currentUser.setEmailAddress(email.getText().toString());
-						saveChanges(v);
-					}
-					
-				}		
+				if(newPassword.getText().length() == 0 && confirmPassword.getText().length() == 0) finish();
+		
 				else if(UserFunctions.md5(oldPassword.getText().toString()).equals(currentUser.getPassword()))
 				{				
 					if(newPassword.getText().toString().equals(confirmPassword.getText().toString()))
 					{
-						currentUser.setEmailAddress(email.getText().toString());
 						currentUser.setPassword(UserFunctions.md5(newPassword.getText().toString()));
-		
 						saveChanges(v);
+						finish();
 					}
 					else
 					{
