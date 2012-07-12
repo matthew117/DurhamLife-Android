@@ -172,6 +172,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 					(float) ((point.getLatitudeE6()  / 1E6) - (currentLocation.getLatitudeE6()  / 1E6))};
 
 			Log.d("LOCATION", d[0] + ", " + d[1]);
+			Log.d("ROTATION", String.valueOf(rotation));
 
 			double angle = getAngle(d, new float[] {0, 1}); //smallest angle between translation vector and north
 
