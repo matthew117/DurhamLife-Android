@@ -94,7 +94,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener locationListener = new MyLocationListener();
 
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 		mapView.invalidate();
 
@@ -153,11 +153,11 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 			
 			Paint paint = new Paint();
 			paint.setStyle(Paint.Style.STROKE);
-			paint.setStrokeWidth(3);
+			paint.setStrokeWidth(1);
 			paint.setColor(Color.BLACK);
 			paint.setTextSize(30);
 			
-			canvas.drawText(String.valueOf(distance), bx, by, paint);
+			canvas.drawText(String.valueOf(distance), bx - 50, by - 50, paint);
 			canvas.drawBitmap(compass, matrix, null);
 
 			return true;
@@ -183,7 +183,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 			return (float) angle + 180 + rotation;
 		}
-		else return rotation;
+		else return 180 + rotation;
 	}
 
 	public static double getAngle(float[] u, float[] v)
