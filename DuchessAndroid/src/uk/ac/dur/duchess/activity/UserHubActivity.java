@@ -58,7 +58,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface)getApplication()).getTracker();
+				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
+						.getTracker();
 				tracker.trackEvent("UserHub", "ButtonClicked", "Browse Events", 0);
 				tracker.dispatch();
 				Intent i = new Intent(v.getContext(), EventListActivity.class);
@@ -71,7 +72,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface)getApplication()).getTracker();
+				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
+						.getTracker();
 				tracker.trackEvent("UserHub", "ButtonClicked", "College Events", 0);
 				tracker.dispatch();
 				Intent i = new Intent(v.getContext(), CollegeEventListActivity.class);
@@ -95,6 +97,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
+				Intent i = new Intent(v.getContext(), ViewSharedPreferencesActivity.class);
+				startActivity(i);
 				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
 						Toast.LENGTH_LONG).show();
 			}
@@ -105,7 +109,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface)getApplication()).getTracker();
+				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
+						.getTracker();
 				tracker.trackEvent("UserHub", "ButtonClicked", "Browse Societies", 0);
 				tracker.dispatch();
 				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
@@ -128,7 +133,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface)getApplication()).getTracker();
+				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
+						.getTracker();
 				tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
 				tracker.dispatch();
 				Intent i = new Intent(v.getContext(), PersonalSocietyListActivity.class);
