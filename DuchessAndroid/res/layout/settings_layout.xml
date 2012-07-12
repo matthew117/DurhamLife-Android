@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress" android:layout_marginTop="2dp"/>
 
             <Button
                 android:id="@+id/passwordButton"
@@ -58,15 +58,14 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical" android:background="@drawable/curved_border">
+            android:orientation="vertical" android:background="@drawable/curved_border" android:layout_margin="5dp">
 
             <EditText
                 android:id="@+id/forenameEdit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/forename"
-                android:inputType="textPersonName" android:ems="10"/>
+                android:inputType="textPersonName" android:ems="10" android:layout_marginTop="3dp"/>
 
             <EditText
                 android:id="@+id/surnameEdit"
@@ -146,14 +145,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/university" />
+                    android:text="@string/university" android:textColor="@android:color/primary_text_light"/>
 
                 <CheckBox
                     android:id="@+id/checkBoxCollege"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/college" />
+                    android:text="@string/college" android:textColor="@android:color/primary_text_light"/>
             </TableRow>
 
             <TableRow>
@@ -163,14 +162,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/music" />
+                    android:text="@string/music" android:textColor="@android:color/primary_text_light"/>
 
                 <CheckBox
                     android:id="@+id/checkBoxTheatre"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/theatre" />
+                    android:text="@string/theatre" android:textColor="@android:color/primary_text_light"/>
             </TableRow>
 
             <TableRow>
@@ -180,14 +179,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/exhibitions" />
+                    android:text="@string/exhibitions" android:textColor="@android:color/primary_text_light"/>
 
                 <CheckBox
                     android:id="@+id/checkBoxSport"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/sport" />
+                    android:text="@string/sport" android:textColor="@android:color/primary_text_light"/>
             </TableRow>
 
             <TableRow>
@@ -197,14 +196,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/conferences" />
+                    android:text="@string/conferences" android:textColor="@android:color/primary_text_light"/>
 
                 <CheckBox
                     android:id="@+id/checkBoxCommunity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/community" />
+                    android:text="@string/community" android:textColor="@android:color/primary_text_light"/>
             </TableRow>
         </TableLayout>
     </LinearLayout>
