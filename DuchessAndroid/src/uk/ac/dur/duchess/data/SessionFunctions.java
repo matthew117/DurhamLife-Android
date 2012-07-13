@@ -59,14 +59,7 @@ public class SessionFunctions
 		editor.putString(COLLEGE_KEY, user.getCollege());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
 		editor.putString(SOCIETIES_KEY, user.getSocieties().toString());
-		
-		editor.commit();
-	}
-	
-	public static void savePinnedEvents(Activity activity, List<Integer> eventIDs)
-	{
-		SharedPreferences prefs = activity.getSharedPreferences("UserSession", Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(EVENTS_KEY, user.getEvents().toString());
 		
 		editor.commit();
 	}
@@ -117,6 +110,7 @@ public class SessionFunctions
 		user.setCollege(prefs.getString(COLLEGE_KEY, ""));
 		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "")));
 		user.setSocieties(getSocietiesFromString(prefs.getString(SOCIETIES_KEY, "")));
+		user.setEvents(getEventsFromString(prefs.getString(EVENTS_KEY, "")));
 		
 		return (user.getUserID() == -1) ? null : user;
 	}
@@ -136,7 +130,7 @@ public class SessionFunctions
 	
 	private static List<String> getSocietiesFromString(String s)
 	{
-		if (s.equals(""))
+		if (s.equals("") || s.equals("[]"))
 		{
 			return new ArrayList<String>();
 		}
@@ -151,6 +145,26 @@ public class SessionFunctions
 			}
 			
 			return societies;
+		}
+	}
+	
+	private static List<Long> getEventsFromString(String s)
+	{
+		if (s.equals("") || s.equals("[]"))
+		{
+			return new ArrayList<Long>();
+		}
+		else
+		{
+			List<Long> events = new ArrayList<Long>();
+			String[] sa = s.substring(1,s.length()-1).split(", ");
+			
+			for (String event : sa)
+			{
+				events.add(Long.parseLong(event));
+			}
+			
+			return events;
 		}
 	}
 }

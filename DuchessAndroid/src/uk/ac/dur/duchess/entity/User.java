@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,17 @@ public class User
 	private List<String> categoryPreferences;
 	private Map<Long, String> subcategoryPreferences;
 	private List<String> societies;
+	private List<Long> events = new ArrayList<Long>();
+	
+	public List<Long> getEvents() { return events; }
+	
+	public void setEvents(List<Long> events) { this.events = events; }
+	
+	public void addEvent(Long i) { events.add(i); }
+	
+	public void removeEvent(Long i) { events.remove(i); }
+	
+	public boolean hasPinnedEvent(Long i) { return events.contains(i); }
 
 	public List<String> getSocieties()
 	{

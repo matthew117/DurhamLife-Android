@@ -3,7 +3,9 @@ package uk.ac.dur.duchess;
 import java.util.List;
 
 import uk.ac.dur.duchess.data.CalendarFunctions;
+import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -30,7 +32,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
+	public View getView(final int position, View convertView, ViewGroup parent)
 	{
 		View v = convertView;
 		ViewHolder holder;
@@ -50,6 +52,42 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.star4 = (ImageView) v.findViewById(R.id.newStar4);
 			holder.star5 = (ImageView) v.findViewById(R.id.newStar5);
 			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
+			holder.pinButton = (ImageView) v.findViewById(R.id.pinButton);
+			
+			User user = SessionFunctions.getCurrentUser((Activity) context);
+			
+			if(user.hasPinnedEvent(getItem(position).getEventID()))
+			{
+				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.purple_heart));
+			}
+			else
+			{
+				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
+			}
+			
+			holder.pinButton.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					User user = SessionFunctions.getCurrentUser((Activity) context);
+					
+					ImageView iv = (ImageView) v;
+					
+					if(user.hasPinnedEvent(getItem(position).getEventID()))
+					{
+						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
+						user.removeEvent(getItem(position).getEventID());
+					}
+					else
+					{
+						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.purple_heart));
+						user.addEvent(getItem(position).getEventID());
+					}
+					
+					SessionFunctions.saveUserPreferences((Activity) context, user);
+				}
+			});
 			
 			v.setTag(holder);
 		}
@@ -58,7 +96,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder = (ViewHolder) v.getTag();
 		}
 
-		Event e = events.get(position);
+		Event e = getItem(position);
 
 		if (e != null)
 		{
@@ -140,6 +178,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		public TextView txtEventName;
 		public TextView txtEventDescription;
 		public TextView txtEventDate;
+		public ImageView pinButton;
 
 		public ImageView star1;
 		public ImageView star2;
