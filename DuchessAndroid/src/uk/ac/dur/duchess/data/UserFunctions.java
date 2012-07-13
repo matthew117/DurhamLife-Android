@@ -16,34 +16,38 @@ public class UserFunctions
 	public static String getUserXML(User user)
 	{
 		StringBuffer xml = new StringBuffer();
+		
 		xml.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
+		
 		xml.append("<user>");
-		xml.append("<forename>" + user.getForename() + "</forename>");
-		xml.append("<surname>" + user.getSurname() + "</surname>");
-		xml.append("<password>" + user.getPassword() + "</password>");
-		xml.append("<emailAddress>" + user.getEmailAddress() + "</emailAddress>");
-
-		xml.append("<dateJoined>");
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		xml.append(sdf.format(Calendar.getInstance().getTime()));
-
-		xml.append("</dateJoined>");
-		xml.append("<department>" + user.getDepartment() + "</department>");
-		xml.append("<college>" + user.getCollege() + "</college>");
-
-		List<String> v = user.getCategoryPreferences();
-
-		xml.append("<preferences>");
-
-		for (int i = 0; i < v.size(); i++)
 		{
-			String category = v.get(i);
-			xml.append("<category id=\"" + getCategoryID(category) + "\">" + category
-					+ "</category>");
+			xml.append("<forename>" + user.getForename() + "</forename>");
+			xml.append("<surname>" + user.getSurname() + "</surname>");
+			xml.append("<password>" + user.getPassword() + "</password>");
+			xml.append("<emailAddress>" + user.getEmailAddress() + "</emailAddress>");
+	
+			xml.append("<dateJoined>");
+	
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			xml.append(sdf.format(Calendar.getInstance().getTime()));
+	
+			xml.append("</dateJoined>");
+			xml.append("<department>" + user.getDepartment() + "</department>");
+			xml.append("<college>" + user.getCollege() + "</college>");
+	
+			List<String> v = user.getCategoryPreferences();
+	
+			xml.append("<preferences>");
+	
+			for (int i = 0; i < v.size(); i++)
+			{
+				String category = v.get(i);
+				xml.append("<category id=\"" + getCategoryID(category) + "\">" + category
+						+ "</category>");
+			}
+	
+			xml.append("</preferences>");
 		}
-
-		xml.append("</preferences>");
 		xml.append("</user>");
 
 		return xml.toString();
@@ -59,6 +63,7 @@ public class UserFunctions
 		if (category.equals("Conferences")) return 6;
 		if (category.equals("Community")) return 7;
 		if (category.equals("Sport")) return 8;
+		
 		return 1;
 	}
 
@@ -77,10 +82,7 @@ public class UserFunctions
 		
 		eventList.clear();
 		
-		for (Event e : newList)
-		{
-			eventList.add(e);
-		}
+		for (Event e : newList) eventList.add(e);
 
 		return newList;
 	}
@@ -94,16 +96,22 @@ public class UserFunctions
             digest = MessageDigest.getInstance("MD5");
             digest.reset();
             digest.update(in.getBytes());
+            
             byte[] a = digest.digest();
             int len = a.length;
+            
             StringBuilder sb = new StringBuilder(len << 1);
+            
             for (int i = 0; i < len; i++)
             {
                 sb.append(Character.forDigit((a[i] & 0xf0) >> 4, 16));
                 sb.append(Character.forDigit(a[i] & 0x0f, 16));
             }
             return sb.toString();
-        } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
+            
+        }
+        catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
+        
         return null;
     }
 

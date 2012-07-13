@@ -21,6 +21,7 @@ public class SessionFunctions
 	private static final String COLLEGE_KEY = "college";
 	private static final String PREFERENCES_KEY = "categoryPreferences";
 	private static final String SOCIETIES_KEY = "societies";
+	private static final String EVENTS_KEY = "events";
 	
 	private static Map<Integer, String> categoryMap = new HashMap<Integer, String>();
 	
@@ -58,6 +59,14 @@ public class SessionFunctions
 		editor.putString(COLLEGE_KEY, user.getCollege());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
 		editor.putString(SOCIETIES_KEY, user.getSocieties().toString());
+		
+		editor.commit();
+	}
+	
+	public static void savePinnedEvents(Activity activity, List<Integer> eventIDs)
+	{
+		SharedPreferences prefs = activity.getSharedPreferences("UserSession", Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
 		
 		editor.commit();
 	}
