@@ -215,7 +215,11 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 							r -= 2;
 							i++;
 						}
-						else stars[i] = halfStar;
+						else
+						{
+							stars[i] = halfStar;
+							r--;
+						}
 					}
 					
 					holder.star5.setImageBitmap(stars[4]);
