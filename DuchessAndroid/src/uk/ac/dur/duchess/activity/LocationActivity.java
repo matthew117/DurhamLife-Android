@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
