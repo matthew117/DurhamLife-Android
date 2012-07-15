@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:id="@+id/timeViewDateRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:text="July 9 - July 16" />
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/timeViewMondayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monday" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/timeViewTuesdayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tuesday" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/timeViewWednesdayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wednesday" />
+
+            <Button
+                android:id="@+id/button1"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9:00AM - 10:00AM" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/timeViewThursdayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Thursday" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/timeViewFridayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Friday" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/timeViewSaturdayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Saturday" />
+
+            <Button
+                android:id="@+id/Button01"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9:00AM - 5:00PM" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/timeViewSundayRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Sunday" />
+
+            <Button
+                android:id="@+id/Button02"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9:00AM - 5:00PM" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
