@@ -2,7 +2,7 @@ package uk.ac.dur.duchess.activity;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
-import uk.ac.dur.duchess.AnalyticsInterface;
+import uk.ac.dur.duchess.ApplicationGlobal;
 import uk.ac.dur.duchess.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -58,10 +58,13 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
-						.getTracker();
-				tracker.trackEvent("UserHub", "ButtonClicked", "Browse Events", 0);
-				tracker.dispatch();
+				if (ApplicationGlobal.getAnalyticsPermission(v.getContext())) {
+					GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
+							.getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked",
+							"Browse Events", 0);
+					tracker.dispatch();
+				}
 				Intent i = new Intent(v.getContext(), EventListActivity.class);
 				startActivity(i);
 			}
@@ -72,10 +75,13 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
-						.getTracker();
-				tracker.trackEvent("UserHub", "ButtonClicked", "College Events", 0);
-				tracker.dispatch();
+				if (ApplicationGlobal.getAnalyticsPermission(v.getContext())) {
+					GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
+							.getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked",
+							"College Events", 0);
+					tracker.dispatch();
+				}
 				Intent i = new Intent(v.getContext(), CollegeEventListActivity.class);
 				startActivity(i);
 			}
@@ -109,10 +115,13 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
-						.getTracker();
-				tracker.trackEvent("UserHub", "ButtonClicked", "Browse Societies", 0);
-				tracker.dispatch();
+				if (ApplicationGlobal.getAnalyticsPermission(v.getContext())) {
+					GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
+							.getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked",
+							"Browse Societies", 0);
+					tracker.dispatch();
+				}
 				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
 				startActivity(i);
 			}
@@ -133,7 +142,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((AnalyticsInterface) getApplication())
+				GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
 						.getTracker();
 				tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
 				tracker.dispatch();

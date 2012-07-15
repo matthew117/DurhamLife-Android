@@ -2,6 +2,7 @@ package uk.ac.dur.duchess.activity;
 
 import java.util.Map;
 
+import uk.ac.dur.duchess.ApplicationGlobal;
 import uk.ac.dur.duchess.R;
 import android.app.Activity;
 import android.content.Context;
@@ -39,6 +40,17 @@ public class ViewSharedPreferencesActivity extends Activity
 		for (String key : newMap.keySet())
 		{
 			output.append(key + " : " + newMap.get(key) + "\n");
+		}
+		
+		output.append("\n");
+
+		SharedPreferences reporting = getSharedPreferences(ApplicationGlobal.REPORTING_PREFERENCES_KEY, Context.MODE_PRIVATE);
+
+		Map<String, ?> newMap2 = reporting.getAll();
+
+		for (String key : newMap2.keySet())
+		{
+			output.append(key + " : " + newMap2.get(key) + "\n");
 		}
 	}
 }

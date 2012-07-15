@@ -17,7 +17,7 @@
 
     <application
         android:debuggable="true"
-        android:name="AnalyticsInterface"
+        android:name=".ApplicationGlobal"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
