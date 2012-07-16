@@ -23,6 +23,7 @@ public class EventDetailsTabRootActivity extends TabActivity
 		eventDetailsTab.setIndicator("Details", getResources().getDrawable(R.drawable.details_tab_icon));
 		Intent detailsIntent = new Intent(this, EventDetailsActivity.class);
 
+		detailsIntent.putExtra("event_id", e.getLong("event_id"));
 		detailsIntent.putExtra("event_name", e.getString("event_name"));
 		detailsIntent.putExtra("event_start_date", e.getString("event_start_date"));
 		detailsIntent.putExtra("event_end_date", e.getString("event_end_date"));

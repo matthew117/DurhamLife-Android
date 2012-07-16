@@ -3,6 +3,8 @@ package uk.ac.dur.duchess.activity;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
+import uk.ac.dur.duchess.data.SessionFunctions;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,8 +29,9 @@ public class EventDetailsActivity extends Activity
 	private Button phoneContactButton;
 	private Button emailContactButton;
 	private Button viewWebsiteButton;
-	private Button facebookButton;
 	private LinearLayout eventDetailsContainer;
+	
+	private long eventID;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -42,24 +45,13 @@ public class EventDetailsActivity extends Activity
 		phoneContactButton = (Button) findViewById(R.id.telephoneButton);
 		emailContactButton = (Button) findViewById(R.id.emailContactButton);
 		viewWebsiteButton = (Button) findViewById(R.id.websiteButton);
-		facebookButton = (Button) findViewById(R.id.facebookButton);
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
 
 		image = (ImageView) findViewById(R.id.imageView1);
 
-		facebookButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				Intent i = new Intent(view.getContext(), FacebookActivity.class);
-				i.putExtras(getIntent());
-				startActivity(i);
-			}
-		});
-
 		Bundle e = getIntent().getExtras();
 
+		eventID = e.getLong("event_id");
 		String name = e.getString("event_name");
 		String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
@@ -153,6 +145,20 @@ public class EventDetailsActivity extends Activity
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.event_details_menu, menu);
+		
+		User user = SessionFunctions.getCurrentUser(getParent());
+		
+		if(user.hasPinnedEvent(eventID))
+		{
+			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.purple_heart));
+			menu.getItem(0).setTitle("Remove Bookmark");
+		}
+		else
+		{
+			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.clear_heart));
+			menu.getItem(0).setTitle("Bookmark");
+		}
+		
 		return true;
 	}
 
@@ -161,6 +167,25 @@ public class EventDetailsActivity extends Activity
 		switch (item.getItemId())
 		{
 		case R.id.menuItemBookmark:
+			
+			User user = SessionFunctions.getCurrentUser(this);
+			
+			if(user.hasPinnedEvent(eventID))
+			{
+				item.setIcon(getParent().getResources().getDrawable(R.drawable.clear_heart));
+				item.setTitle("Bookmark");
+				
+				user.removeEvent(eventID);
+			}
+			else
+			{
+				item.setIcon(getParent().getResources().getDrawable(R.drawable.purple_heart));
+				item.setTitle("Remove Bookmark");
+				
+				user.addEvent(eventID);
+			}
+			
+			SessionFunctions.saveUserPreferences(this, user);
 			
 			return true;
 		case R.id.menuItemShare:

@@ -1,112 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@color/DUPurple" >
 
-    <ScrollView
-        android:id="@+id/detailsScrollView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/socialNetworkingLayout"
-        android:layout_alignParentTop="true" >
-
-        <LinearLayout
-            android:id="@+id/eventDetailsContainer"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="5dp" android:background="@color/DUPurple">
-
-            <TextView
-                android:id="@+id/textViewEventName"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="@string/default_event_name"
-                android:textSize="18sp"
-                android:textColor="@android:color/primary_text_dark"
-                android:textStyle="bold"
-                android:typeface="serif" />
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:contentDescription="@string/event_image"
-                android:src="@drawable/clock" />
-
-            <TextView
-                android:id="@+id/textViewEventDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/default_date"
-                android:textSize="14sp"
-                android:textStyle="bold" android:drawableLeft="@drawable/clock_copy" android:padding="3dp" android:gravity="center_vertical" android:drawablePadding="5dp" android:textColor="@android:color/primary_text_dark"/>
-
-            <TextView
-                android:id="@+id/textViewEventDescription"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.1"
-                android:text="@string/default_description"
-                android:textStyle="italic"
-                android:typeface="serif" android:padding="5dp" android:background="@drawable/curved_border" android:layout_marginBottom="5dp" android:textColor="@android:color/primary_text_light" android:textSize="11sp"/>
-
-            <LinearLayout
-                android:id="@+id/contactDetailsContainer"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/curved_border"
-                android:orientation="vertical"
-                android:padding="5dp" >
-
-                <TextView
-                    android:id="@+id/textViewContact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Contact Information"
-                    android:textSize="12sp"
-                    android:textStyle="bold" android:padding="3dp" android:textColor="@android:color/primary_text_light"/>
-
-                <Button
-                    android:id="@+id/telephoneButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    style="?android:attr/buttonStyleSmall" android:drawableRight="@drawable/phone_small"/>"
-
-                <Button
-                    android:id="@+id/emailContactButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" android:drawableRight="@drawable/email_small"/>
-
-                <Button
-                    android:id="@+id/websiteButton"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/internet_small" />
-            </LinearLayout>
->
-        </LinearLayout>
-    </ScrollView>
-
-    <RelativeLayout
-        android:id="@+id/socialNetworkingLayout"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/eventDetailsContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:gravity="right" >
+        android:orientation="vertical" >
 
-        <Button
-            android:id="@+id/facebookButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/facebook"
-            android:drawablePadding="5dp" />
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/textViewEventName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@string/default_event_name"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="serif" />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="@string/event_image"
+            android:src="@drawable/clock" />
+
+        <TextView
+            android:id="@+id/textViewEventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/clock_copy"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:padding="3dp"
+            android:text="@string/default_date"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewEventDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/curved_border"
+            android:lineSpacingMultiplier="1.1"
+            android:padding="5dp"
+            android:text="@string/default_description"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="11sp"
+            android:textStyle="italic"
+            android:typeface="serif" />
+
+        <LinearLayout
+            android:id="@+id/contactDetailsContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/curved_border"
+            android:orientation="vertical"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/textViewContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="Contact Information"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/telephoneButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:drawableRight="@drawable/phone_small" />
+
+            <Button
+                android:id="@+id/emailContactButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/email_small" />
+
+            <Button
+                android:id="@+id/websiteButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/internet_small" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
