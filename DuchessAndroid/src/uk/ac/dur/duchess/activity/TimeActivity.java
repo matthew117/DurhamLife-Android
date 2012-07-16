@@ -35,7 +35,21 @@ public class TimeActivity extends Activity
 		dateRangeTextView = (TextView) findViewById(R.id.timeViewDateRange);
 		
 		mondayTextView = (TextView) findViewById(R.id.mondayTextView);
+		tuesdayTextView = (TextView) findViewById(R.id.tuesdayTextView);
+		wednesdayTextView = (TextView) findViewById(R.id.wednesdayTextView);
+		thursdayTextView = (TextView) findViewById(R.id.thursdayTextView);
+		fridayTextView = (TextView) findViewById(R.id.fridayTextView);
+		saturdayTextView = (TextView) findViewById(R.id.saturdayTextView);
+		sundayTextView = (TextView) findViewById(R.id.saturdayTextView);
 		
 		mondayContainer = (LinearLayout) findViewById(R.id.mondayDateContainer);
+		tuesdayContainer = (LinearLayout) findViewById(R.id.tuesdayDateContainer);
+		wednesdayContainer = (LinearLayout) findViewById(R.id.wednesdayDateContainer);
+		thursdayContainer = (LinearLayout) findViewById(R.id.thursdayDateContainer);
+		fridayContainer = (LinearLayout) findViewById(R.id.fridayDateContainer);
+		saturdayContainer = (LinearLayout) findViewById(R.id.saturdayDateContainer);
+		sundayContainer = (LinearLayout) findViewById(R.id.sundayDateContainer);
+		
+		
 	}
 }
