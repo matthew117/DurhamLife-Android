@@ -2,7 +2,7 @@ package uk.ac.dur.duchess.activity;
 
 import java.util.Map;
 
-import uk.ac.dur.duchess.ApplicationGlobal;
+import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import android.app.Activity;
 import android.content.Context;
@@ -44,7 +44,7 @@ public class ViewSharedPreferencesActivity extends Activity
 		
 		output.append("\n");
 
-		SharedPreferences reporting = getSharedPreferences(ApplicationGlobal.REPORTING_PREFERENCES_KEY, Context.MODE_PRIVATE);
+		SharedPreferences reporting = getSharedPreferences(GlobalApplicationData.REPORTING_PREFERENCES_KEY, Context.MODE_PRIVATE);
 
 		Map<String, ?> newMap2 = reporting.getAll();
 

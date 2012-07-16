@@ -1,8 +1,6 @@
 package uk.ac.dur.duchess.activity;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
-import uk.ac.dur.duchess.ApplicationGlobal;
+import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class UserHubActivity extends CustomTitleBarActivity
 {
@@ -58,11 +58,10 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				if (ApplicationGlobal.getAnalyticsPermission(v.getContext())) {
-					GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
-							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked",
-							"Browse Events", 0);
+				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				{
+					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked", "Browse Events", 0);
 					tracker.dispatch();
 				}
 				Intent i = new Intent(v.getContext(), EventListActivity.class);
@@ -75,11 +74,11 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				if (ApplicationGlobal.getAnalyticsPermission(v.getContext())) {
-					GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
+				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				{
+					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
 							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked",
-							"College Events", 0);
+					tracker.trackEvent("UserHub", "ButtonClicked", "College Events", 0);
 					tracker.dispatch();
 				}
 				Intent i = new Intent(v.getContext(), CollegeEventListActivity.class);
@@ -117,11 +116,11 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				if (ApplicationGlobal.getAnalyticsPermission(v.getContext())) {
-					GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
+				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				{
+					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
 							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked",
-							"Browse Societies", 0);
+					tracker.trackEvent("UserHub", "ButtonClicked", "Browse Societies", 0);
 					tracker.dispatch();
 				}
 				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
@@ -144,8 +143,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((ApplicationGlobal) getApplication())
-						.getTracker();
+				GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
 				tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
 				tracker.dispatch();
 				Intent i = new Intent(v.getContext(), PersonalSocietyListActivity.class);

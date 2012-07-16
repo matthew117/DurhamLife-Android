@@ -76,10 +76,12 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			Log.d("EVENT ID", ""+e.getEventID());
 			if(user.hasPinnedEvent(e.getEventID()))
 			{
+				Log.d("PINNED LISTVIEW", "Setting image to purple because user has that event");
 				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.purple_heart));
 			}
 			else
 			{
+				Log.d("PINNED LISTVIEW", "Setting image to clear");
 				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
 			}
 			
@@ -87,9 +89,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			{
 				@Override
 				public void onClick(View v)
-				{
-					User user = SessionFunctions.getCurrentUser((Activity) context);
-					
+				{					
 					ImageView iv = (ImageView) v;
 					
 					Toast.makeText(v.getContext(), "EventID:" + events.get(position).getEventID(), Toast.LENGTH_SHORT).show();

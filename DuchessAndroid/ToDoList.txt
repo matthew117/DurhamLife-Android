@@ -1,7 +1,6 @@
 Features
 
 + News Feed
-+ List the societies that the user is subscribed to and allow them to access society event lists
 + Unsubcribe from societies
 + Caching
 + Download more events when you reach the end of the list (pagination)
@@ -15,5 +14,4 @@ Optimizations
 Bugs
 
 - Orientation change messes things up
-- Date filters don't seem to be working correctly
-- Calendar creates when you don't select any dates
+- Need to update user to fix list
