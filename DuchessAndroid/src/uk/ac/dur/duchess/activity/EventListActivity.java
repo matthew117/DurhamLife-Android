@@ -242,6 +242,13 @@ public class EventListActivity extends ListActivity
 		}
 
 	}
+	
+	@Override
+	public void onRestart()
+	{
+		super.onRestart();
+		listView.invalidateViews();
+	}
 
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
