@@ -10,18 +10,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventListAdapter extends ArrayAdapter<Event>
 {
 	private List<Event> events;
 	private Context context;
 	private int rowLayoutResourceID;
+	private User user;
 
 	public EventListAdapter(Context context, int rowLayoutResourceID, List<Event> eventList)
 	{
@@ -54,9 +57,24 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
 			holder.pinButton = (ImageView) v.findViewById(R.id.pinButton);
 			
-			User user = SessionFunctions.getCurrentUser((Activity) context);
+			user = SessionFunctions.getCurrentUser((Activity) context);
 			
-			if(user.hasPinnedEvent(getItem(position).getEventID()))
+			
+			v.setTag(holder);
+		}
+		else
+		{
+			holder = (ViewHolder) v.getTag();
+		}
+
+		Event e = getItem(position);
+		
+		Log.d("POSITION", ""+position);
+
+		if (e != null)
+		{
+			Log.d("EVENT ID", ""+e.getEventID());
+			if(user.hasPinnedEvent(e.getEventID()))
 			{
 				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.purple_heart));
 			}
@@ -74,6 +92,9 @@ public class EventListAdapter extends ArrayAdapter<Event>
 					
 					ImageView iv = (ImageView) v;
 					
+					Toast.makeText(v.getContext(), "EventID:" + events.get(position).getEventID(), Toast.LENGTH_SHORT).show();
+					Toast.makeText(v.getContext(), "Position:" + position, Toast.LENGTH_SHORT).show();
+					
 					if(user.hasPinnedEvent(getItem(position).getEventID()))
 					{
 						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
@@ -89,17 +110,6 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				}
 			});
 			
-			v.setTag(holder);
-		}
-		else
-		{
-			holder = (ViewHolder) v.getTag();
-		}
-
-		Event e = getItem(position);
-
-		if (e != null)
-		{
 			if (holder.txtEventName != null)
 			{
 				holder.txtEventName.setText(e.getName());
