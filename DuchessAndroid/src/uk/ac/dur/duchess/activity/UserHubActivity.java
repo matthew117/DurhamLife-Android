@@ -91,11 +91,8 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), TimeActivity.class);
+				Intent i = new Intent(v.getContext(), PinnedEventListActivity.class);
 				startActivity(i);
-				Toast.makeText(v.getContext(),
-						"Displays a list of events that the user is going to", Toast.LENGTH_LONG)
-						.show();
 			}
 		});
 
