@@ -35,6 +35,18 @@ public class CalendarFunctions
 			String _endDate   = destinationFormat.format(endDate.getTime());
 			
 			Calendar today     = Calendar.getInstance();
+			today.set(Calendar.HOUR_OF_DAY, 0);
+			today.set(Calendar.MINUTE, 0);
+			today.set(Calendar.SECOND, 0);
+			today.get(Calendar.DATE);
+			
+			System.out.println();
+			System.out.println("Today: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(today.getTime()));
+			System.out.println("FunctionStartDate: " + _startDate);
+			System.out.println("FunctionStartDate: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(startDate.getTime()));
+			System.out.println("FunctionEndDate: " + _endDate);
+			System.out.println("FunctionEndDate: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(endDate.getTime()));
+			
 			Calendar tomorrow  = Calendar.getInstance(); tomorrow.roll(Calendar.DAY_OF_YEAR, true);
 			Calendar yesterday = Calendar.getInstance(); yesterday.roll(Calendar.DAY_OF_YEAR, false);
 						
@@ -43,7 +55,7 @@ public class CalendarFunctions
 			if(isSameDate(startDate, tomorrow)) _startDate = "Tomorrow";
 			if(isSameDate(endDate, tomorrow)) _endDate = "Tomorrow";
 			if(isSameDate(startDate, yesterday)) _startDate = "Yesterday";
-			if(endDate.before(today))
+			if(endDate.compareTo(today) > 0)
 			{
 				_startDate = "This event has ended";
 				_endDate = "";
