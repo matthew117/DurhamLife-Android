@@ -91,7 +91,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), PinnedEventListActivity.class);
+				Intent i = new Intent(v.getContext(), TimeActivity.class);
 				startActivity(i);
 			}
 		});
