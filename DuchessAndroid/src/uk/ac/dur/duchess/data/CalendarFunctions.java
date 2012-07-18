@@ -147,9 +147,7 @@ public class CalendarFunctions
 			int hours = Hours.hoursBetween(reviewTime, now).getHours();
 			int minutes = Minutes.minutesBetween(reviewTime, now).getMinutes();
 			long seconds = Seconds.secondsBetween(reviewTime, now).getSeconds();
-			
-			System.out.println(seconds);
-			
+						
 			if(days == 0 && hours == 0 && (minutes == 0 || seconds < 60)) return "Less than 1 minute ago";
 			else if(days == 0 && hours == 0) return minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago";
 			else if(days == 0 && hours == 1 && minutes < 0) return 60 + minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago";
