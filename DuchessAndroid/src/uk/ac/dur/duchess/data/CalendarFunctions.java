@@ -4,6 +4,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Hours;
+import org.joda.time.Minutes;
+import org.joda.time.Seconds;
+import org.joda.time.format.DateTimeFormat;
+
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.Review;
 
@@ -133,29 +140,22 @@ public class CalendarFunctions
 	
 	public static String getReviewTime(String timeStamp)
 	{
-		try
-		{
-			SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
-
-			Calendar today = Calendar.getInstance();
-			Calendar _timeStamp = Calendar.getInstance();
-			_timeStamp.setTime(sourceFormat.parse(timeStamp));
-
-			int days = today.get(Calendar.DATE) - _timeStamp.get(Calendar.DATE); 
-			int hours = today.get(Calendar.HOUR_OF_DAY) - _timeStamp.get(Calendar.HOUR_OF_DAY);  
-			int minutes = today.get(Calendar.MINUTE) - _timeStamp.get(Calendar.MINUTE);
-
-			System.out.println("Days: " + days + ", Hours: " + hours + ", Minutes: " + minutes);
-
-			if(days == 0 && hours == 0 && minutes == 0) return "Less than 1 minute ago";
+			DateTime now = new DateTime();
+			DateTime reviewTime = DateTime.parse(timeStamp, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"));
+			
+			int days = Days.daysBetween(reviewTime, now).getDays();
+			int hours = Hours.hoursBetween(reviewTime, now).getHours();
+			int minutes = Minutes.minutesBetween(reviewTime, now).getMinutes();
+			long seconds = Seconds.secondsBetween(reviewTime, now).getSeconds();
+			
+			System.out.println(seconds);
+			
+			if(days == 0 && hours == 0 && (minutes == 0 || seconds < 60)) return "Less than 1 minute ago";
 			else if(days == 0 && hours == 0) return minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago";
 			else if(days == 0 && hours == 1 && minutes < 0) return 60 + minutes + " minute" + ((minutes != 1) ? "s" : "") + " ago";
 			else if(days == 0) return hours + " hour" + ((hours != 1) ? "s" : "") + " ago";
 			else if(days == 1 && hours < 0) return 24 + hours + " hour" + ((hours != 1) ? "s" : "") + " ago";
 
-			return destinationFormat.format(_timeStamp.getTime());
-		}
-		catch(ParseException pe) { return "Time of Post Unavailable"; }
+			return reviewTime.toString(DateTimeFormat.forPattern("d MMMMM yyyy"));
 	}
 }
