@@ -129,7 +129,8 @@ public class EventListActivity extends ListActivity
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
 					i.putExtra("event_end_date", e.getEndDate());
-					i.putExtra("event_description", e.getDescriptionHeader());
+					i.putExtra("event_description_header", e.getDescriptionHeader());
+					i.putExtra("event_description_body", e.getDescriptionBody());
 					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
 					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
 					i.putExtra("event_web_address", e.getWebAddress());
@@ -140,6 +141,7 @@ public class EventListActivity extends ListActivity
 					i.putExtra("event_latitude", e.getLatitude());
 					i.putExtra("event_longitude", e.getLongitude());
 					i.putExtra("image_url", e.getImageURL());
+					i.putExtra("ical_url", e.getICalURL());
 					startActivity(i);
 				}
 			});

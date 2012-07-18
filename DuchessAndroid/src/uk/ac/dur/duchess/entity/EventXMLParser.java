@@ -16,6 +16,7 @@ public class EventXMLParser extends DefaultHandler
 
 	private boolean isStartDate = false;
 	private boolean isEndDate = false;
+	private boolean isICalURL = false;
 	
 	private boolean isAssociatedCollege = false;
 	private boolean isEventScope = false;
@@ -78,6 +79,7 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (localName.equalsIgnoreCase("startDate")) isStartDate = true;
 		else if (localName.equalsIgnoreCase("endDate")) isEndDate = true;
+		else if (localName.equalsIgnoreCase("iCalURL")) isICalURL = true;
 		
 		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = true;
 		else if (localName.equalsIgnoreCase("eventScope")) isEventScope = true;
@@ -135,6 +137,7 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (localName.equalsIgnoreCase("startDate")) isStartDate = false;
 		else if (localName.equalsIgnoreCase("endDate")) isEndDate = false;
+		else if (localName.equalsIgnoreCase("iCalURL")) isICalURL = false;
 		
 		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = false;
 		else if (localName.equalsIgnoreCase("eventScope")) isEventScope = false;
@@ -177,6 +180,7 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (isStartDate) event.setStartDate(new String(ch, start, length));
 		else if (isEndDate) event.setEndDate(new String(ch, start, length));
+		else if (isICalURL) event.setICalURL(new String(ch, start, length));
 		
 		else if (isAssociatedCollege) event.setAssociatedCollege(new String(ch, start, length));
 		else if (isEventScope) event.setScope(new String(ch, start, length));

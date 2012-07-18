@@ -8,6 +8,9 @@ import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ public class EventDetailsActivity extends Activity
 	private Button emailContactButton;
 	private Button viewWebsiteButton;
 	private LinearLayout eventDetailsContainer;
+	private LinearLayout eventImageContainer;
 	
 	private long eventID;
 
@@ -46,6 +50,14 @@ public class EventDetailsActivity extends Activity
 		emailContactButton = (Button) findViewById(R.id.emailContactButton);
 		viewWebsiteButton = (Button) findViewById(R.id.websiteButton);
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
+		eventImageContainer = (LinearLayout) findViewById(R.id.eventImageContainer);
+		
+		int[] colors = {Color.parseColor("#111111"), Color.parseColor("#333333"), Color.parseColor("#555555")};
+		
+		GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
+		gradient.setDither(true);
+		
+		eventImageContainer.setBackgroundDrawable(gradient);
 
 		image = (ImageView) findViewById(R.id.imageView1);
 
@@ -56,7 +68,8 @@ public class EventDetailsActivity extends Activity
 		String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
 		String date = CalendarFunctions.getEventDate(start_date, end_date);
-		String description = e.getString("event_description");
+		String descriptionHeader = e.getString("event_description_header");
+		String descriptionBody = e.getString("event_description_body");
 		String contactTelephone = e.getString("event_contact_telephone_number");
 		String contactEmail = e.getString("event_contact_email_address");
 		String webAddress = e.getString("event_web_address");
@@ -64,7 +77,8 @@ public class EventDetailsActivity extends Activity
 
 		if (name != null) txtName.setText(name);
 		if (start_date != null && end_date != null) txtDate.setText(date);
-		if (description != null) txtDescription.setText(description);
+		if (descriptionHeader != null) txtDescription.setText(descriptionHeader);
+		if (descriptionBody != null) txtDescription.append("\n\n" + descriptionBody);
 		
 		if(contactTelephone != null) phoneContactButton.setText(contactTelephone);
 		else phoneContactButton.setVisibility(View.GONE);

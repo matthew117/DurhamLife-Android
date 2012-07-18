@@ -15,6 +15,7 @@ public class Event
 
 	private String startDate;
 	private String endDate;
+	private String iCalURL;
 	
 	private EventScope scope;
 	private String associatedCollege;
@@ -43,6 +44,16 @@ public class Event
 	private int reviewScore;
 	
 	private int numberOfReviews;
+	
+	public String getICalURL()
+	{
+		return iCalURL;
+	}
+	
+	public void setICalURL(String iCalURL)
+	{
+		this.iCalURL = iCalURL;
+	}
 
 	public long getEventID()
 	{

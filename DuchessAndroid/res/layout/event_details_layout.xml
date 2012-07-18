@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="5dp" >
 
         <TextView
             android:id="@+id/textViewEventName"
@@ -23,40 +23,99 @@
             android:textStyle="bold"
             android:typeface="serif" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/eventImageContainer"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:contentDescription="@string/event_image"
-            android:src="@drawable/clock" />
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textViewEventDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/clock_copy"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:padding="3dp"
-            android:text="@string/default_date"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_margin="5dp"
+                android:contentDescription="@string/event_image"
+                android:src="@drawable/clock" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewEventDescription"
+        <LinearLayout
+            android:id="@+id/eventDateContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@drawable/curved_border"
-            android:lineSpacingMultiplier="1.1"
-            android:padding="5dp"
-            android:text="@string/default_description"
-            android:textColor="@android:color/primary_text_light"
-            android:textSize="11sp"
-            android:textStyle="italic"
-            android:typeface="serif" />
+            android:orientation="vertical"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/textViewWhen"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="When"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewEventDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:drawableLeft="@drawable/calendar"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="@string/default_date"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/TextView1"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/clock_copy"
+                android:drawablePadding="5dp"
+                android:gravity="left|center_vertical"
+                android:text="View Times"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/eventDescriptionContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/curved_border"
+            android:orientation="vertical"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="Description"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewEventDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.1"
+                android:padding="3dp"
+                android:text="@string/default_description"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:typeface="serif" android:autoLink="all"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/contactDetailsContainer"
@@ -82,19 +141,28 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:drawableRight="@drawable/phone_small" />
+                android:drawableLeft="@drawable/phone_small"
+                android:drawablePadding="5dp"
+                android:gravity="left|center_vertical"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/emailContactButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/email_small" />
+                android:drawableLeft="@drawable/email_small"
+                android:drawablePadding="5dp"
+                android:gravity="left|center_vertical"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/websiteButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/internet_small" />
+                android:drawableLeft="@drawable/internet_small"
+                android:drawablePadding="5dp"
+                android:gravity="left|center_vertical"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 

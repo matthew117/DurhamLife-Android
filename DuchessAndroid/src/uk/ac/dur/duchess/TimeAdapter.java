@@ -1,12 +1,6 @@
 package uk.ac.dur.duchess;
 
-import static java.util.Calendar.DATE;
-import static java.util.Calendar.DAY_OF_WEEK;
-import static java.util.Calendar.DAY_OF_YEAR;
-import static java.util.Calendar.HOUR_OF_DAY;
-import static java.util.Calendar.MINUTE;
-import static java.util.Calendar.MONDAY;
-import static java.util.Calendar.SECOND;
+import static java.util.Calendar.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -62,14 +56,26 @@ public class TimeAdapter
 		
 		return calendar;
 	}
+	
+	public static Calendar getClosestFutureWeek(Calendar c)
+	{
+		Calendar week = Calendar.getInstance(Locale.UK);
+		
+		if(week.get(WEEK_OF_YEAR) < c.get(WEEK_OF_YEAR) &&
+				week.get(YEAR) <= c.get(YEAR)) week.setTime(c.getTime());
+		/* the start date of the event is on a week later than the current week
+		 * so set the time table to the first week of the event
+		 */
+		
+		return week;
+	}
 
 	public static Calendar getMondayOfGivenWeek(Calendar c)
 	{
 		Calendar monday = Calendar.getInstance(Locale.UK);
 		monday.setTime(c.getTime());
 
-		for (; monday.get(DAY_OF_WEEK) != MONDAY; monday.add(DAY_OF_WEEK, -1))
-			;
+		for (; monday.get(DAY_OF_WEEK) != MONDAY; monday.add(DAY_OF_WEEK, -1));
 
 		monday.set(HOUR_OF_DAY, 0);
 		monday.set(MINUTE, 0);
@@ -188,11 +194,15 @@ public class TimeAdapter
 					Log.d("SIZE", "Hi");
 					Period p = (Period) obj;
 					
-					DateTime s = p.getStart();
-					DateTime e = p.getEnd();
+					DateTime start = p.getStart();
+					DateTime end = p.getEnd();
 					
-					// TODO replace deprecated methods
-					eventTimeStamps.add(String.format("%04d-%02d-%02d %02d:%02d:%02d/%02d:%02d:%02d", s.getYear()+1900,s.getMonth()+1,s.getDate(),s.getHours(),s.getMinutes(),s.getSeconds(),e.getHours(),e.getMinutes(),e.getSeconds()));
+					Calendar s = Calendar.getInstance(Locale.UK); s.setTime(start);
+					Calendar e = Calendar.getInstance(Locale.UK); e.setTime(end);
+					
+					eventTimeStamps.add(String.format("%04d-%02d-%02d %02d:%02d:%02d/%02d:%02d:%02d",
+							s.get(YEAR), s.get(MONTH) + 1, s.get(DATE), s.get(HOUR_OF_DAY), s.get(MINUTE), s.get(SECOND),
+							e.get(HOUR_OF_DAY), e.get(MINUTE), e.get(SECOND)));
 				}
 			}
 		}

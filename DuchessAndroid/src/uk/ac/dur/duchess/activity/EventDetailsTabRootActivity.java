@@ -27,11 +27,13 @@ public class EventDetailsTabRootActivity extends TabActivity
 		detailsIntent.putExtra("event_name", e.getString("event_name"));
 		detailsIntent.putExtra("event_start_date", e.getString("event_start_date"));
 		detailsIntent.putExtra("event_end_date", e.getString("event_end_date"));
-		detailsIntent.putExtra("event_description", e.getString("event_description"));
+		detailsIntent.putExtra("event_description_header", e.getString("event_description_header"));
+		detailsIntent.putExtra("event_description_body", e.getString("event_description_body"));
 		detailsIntent.putExtra("event_contact_telephone_number", e.getString("event_contact_telephone_number"));
 		detailsIntent.putExtra("event_contact_email_address", e.getString("event_contact_email_address"));
 		detailsIntent.putExtra("event_web_address", e.getString("event_web_address"));
 		detailsIntent.putExtra("image_url", e.getString("image_url"));
+		detailsIntent.putExtra("ical_url", e.getString("ical_url"));
 		
 		eventDetailsTab.setContent(detailsIntent);
 
