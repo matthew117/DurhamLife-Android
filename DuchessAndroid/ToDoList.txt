@@ -15,3 +15,5 @@ Bugs
 
 - Orientation change messes things up
 - Need to update user to fix list
+- Unsubcribe button funky
+- No syncing to database for societies or pinned events

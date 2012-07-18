@@ -19,6 +19,7 @@ import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,41 +78,56 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 			}
 		});
 		
+		if (s.getString("society_name") != null)
+		{
+			societyNameText.setText(s.getString("society_name"));
+		}
+		
+		if(user.isSubscribedToSociety(societyNameText.getText().toString()))
+			subscribeButton.setText("Unsubscribe");
+		
 		subscribeButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				Thread t = new Thread(new Runnable()
-				{		
-					@Override
-					public void run()
-					{
-						try
+				String societyName = societyNameText.getText().toString();
+				
+				if(!user.isSubscribedToSociety(societyName))
+				{
+					Thread t = new Thread(new Runnable()
+					{		
+						@Override
+						public void run()
 						{
-							InputStream is = NetworkFunctions.getHTTPResponseStream(
-									"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php?userID=" + user.getUserID() + "&societyID=" + s.getLong("society_id"), "GET", null);
-							Scanner sc = new Scanner(is);
-							while (sc.hasNextLine())
+							try
 							{
-								Log.d("SUBSCRIBE RESPONSE", sc.nextLine());	
+								InputStream is = NetworkFunctions.getHTTPResponseStream(
+										"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php?userID=" +
+										user.getUserID() + "&societyID=" + s.getLong("society_id"), "GET", null);
+							}
+							catch (IOException e)
+							{
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
 						}
-						catch (IOException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});
-				t.start();				
+					});
+					t.start();
+					
+					user.getSocieties().add(societyNameText.getText().toString());
+					subscribeButton.setText("Unsubscribe");
+				}
+				else
+				{
+					// TODO Should also update in the external database not just in the shared preferences 
+					user.getSocieties().remove(societyNameText.getText().toString());
+					subscribeButton.setText("Subscribe");
+				}
+				
+				SessionFunctions.saveUserPreferences((Activity) v.getContext(), user);
 			}
 		});
-		
-		if (s.getString("society_name") != null)
-		{
-			societyNameText.setText(s.getString("society_name"));
-		}
 
 		try
 		{

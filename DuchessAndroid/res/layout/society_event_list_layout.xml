@@ -9,14 +9,14 @@
         android:layout_height="wrap_content"
         android:background="#7E317B"
         android:orientation="horizontal"
-        android:padding="3dp" >
+        android:padding="2dp" >
 
         <TextView
             android:id="@+id/nameOnSocietyEventList"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:gravity="center"
             android:text="@string/societies"
             android:textColor="#FFFFFF"
@@ -30,19 +30,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="2dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1.4"
             android:text="@string/about" />
-
+
         <Button
             android:id="@+id/societyButtonSubscribe"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="2dp"
-            android:layout_weight="1.5"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_weight="1.4"
             android:text="@string/subscribe" />
+
     </LinearLayout>
 
     <ListView

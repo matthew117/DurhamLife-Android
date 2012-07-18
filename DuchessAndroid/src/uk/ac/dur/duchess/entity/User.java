@@ -38,6 +38,8 @@ public class User
 	{
 		this.societies = societies;
 	}
+	
+	public boolean isSubscribedToSociety(String societyName) { return societies.contains(societyName); }
 
 	public long getUserID()
 	{
