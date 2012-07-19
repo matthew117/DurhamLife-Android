@@ -4,4 +4,21 @@
     <color name="DurhamWikipedia">#682860</color>
     <color name="Palatinate">#6D28AA</color>
     <color name="PalatinateScanned">#745075</color>
+    
+    <color name="Aidans">#146539</color>
+    <color name="Collingwood">#A01B1B</color>
+    <color name="Grey">#AF0B0B</color>
+    <color name="Hatfield">#00006B</color>
+    <color name="JB">#990033</color>
+    <color name="Chads">#001900</color>
+    <color name="Cuthberts">#339999</color>
+    <color name="HildBede">#003366</color>
+    <color name="Johns">#3A4C80</color>
+    <color name="Marys">#5F248E</color>
+    <color name="Trevs">#2584BB</color>
+    <color name="Castle">#6E0803</color>
+    <color name="VanMildert">#BE1727</color>
+    <color name="Ustinov">#3C4443</color>
+    <color name="JohnSnow">#326A89</color>
+    <color name="Stephenson">#BA1810</color>
 </resources>

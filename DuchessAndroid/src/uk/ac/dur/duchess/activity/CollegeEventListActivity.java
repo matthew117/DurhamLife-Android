@@ -14,7 +14,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -185,22 +185,24 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 
 	private int collegeToColor(String collegeName)
 	{
-		if (collegeName.equals("St. Aidan's")) return Color.parseColor("#146539");
-		else if (collegeName.equals("Collingwood")) return Color.parseColor("#A01B1B");
-		else if (collegeName.equals("Grey")) return Color.parseColor("#AF0B0B");
-		else if (collegeName.equals("Hatfield")) return Color.parseColor("00006B");
-		else if (collegeName.equals("Josephine Butler")) return Color.parseColor("990033");
-		else if (collegeName.equals("St. Chad's")) return Color.parseColor("#001900");
-		else if (collegeName.equals("St. Cuthbert's")) return Color.parseColor("#339999");
-		else if (collegeName.equals("Hild Bede")) return Color.parseColor("#003366");
-		else if (collegeName.equals("St. John's")) return Color.parseColor("#3A4C80");
-		else if (collegeName.equals("St. Mary's")) return Color.parseColor("#5F248E");
-		else if (collegeName.equals("Trevelyan")) return Color.parseColor("#2584BB");
-		else if (collegeName.equals("University")) return Color.parseColor("#6E0803");
-		else if (collegeName.equals("Van Mildert")) return Color.parseColor("#BE1727");
-		else if (collegeName.equals("Ustinov")) return Color.parseColor("#3C4443");
-		else if (collegeName.equals("John Snow")) return Color.parseColor("#326A89");
-		else if (collegeName.equals("Stephenson")) return Color.parseColor("#BA1810");
+		Resources res = getResources();
+		
+		if (collegeName.equals("St. Aidan's")) return res.getColor(R.color.Aidans);
+		else if (collegeName.equals("Collingwood")) return res.getColor(R.color.Collingwood);
+		else if (collegeName.equals("Grey")) return res.getColor(R.color.Grey);
+		else if (collegeName.equals("Hatfield")) return res.getColor(R.color.Hatfield);
+		else if (collegeName.equals("Josephine Butler")) return res.getColor(R.color.JB);
+		else if (collegeName.equals("St. Chad's")) return res.getColor(R.color.Chads);
+		else if (collegeName.equals("St. Cuthbert's")) return res.getColor(R.color.Cuthberts);
+		else if (collegeName.equals("Hild Bede")) return res.getColor(R.color.HildBede);
+		else if (collegeName.equals("St. John's")) return res.getColor(R.color.Johns);
+		else if (collegeName.equals("St. Mary's")) return res.getColor(R.color.Marys);
+		else if (collegeName.equals("Trevelyan")) return res.getColor(R.color.Trevs);
+		else if (collegeName.equals("University")) return res.getColor(R.color.Castle);
+		else if (collegeName.equals("Van Mildert")) return res.getColor(R.color.VanMildert);
+		else if (collegeName.equals("Ustinov")) return res.getColor(R.color.Ustinov);
+		else if (collegeName.equals("John Snow")) return res.getColor(R.color.JohnSnow);
+		else if (collegeName.equals("Stephenson")) return res.getColor(R.color.Stephenson);
 		else return 0xffffff;
 	}
 
