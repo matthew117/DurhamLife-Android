@@ -28,6 +28,7 @@ public class EventDetailsActivity extends Activity
 	private ImageView image;
 	private TextView txtName;
 	private TextView txtDate;
+	private Button timeChooserButton;
 	private TextView txtDescription;
 	private Button phoneContactButton;
 	private Button emailContactButton;
@@ -45,6 +46,7 @@ public class EventDetailsActivity extends Activity
 
 		txtName = (TextView) findViewById(R.id.textViewEventName);
 		txtDate = (TextView) findViewById(R.id.textViewEventDate);
+		timeChooserButton = (Button) findViewById(R.id.timeChooserButton);
 		txtDescription = (TextView) findViewById(R.id.textViewEventDescription);
 		phoneContactButton = (Button) findViewById(R.id.telephoneButton);
 		emailContactButton = (Button) findViewById(R.id.emailContactButton);
@@ -64,8 +66,8 @@ public class EventDetailsActivity extends Activity
 		Bundle e = getIntent().getExtras();
 
 		eventID = e.getLong("event_id");
-		String name = e.getString("event_name");
-		String start_date = e.getString("event_start_date");
+		final String name = e.getString("event_name");
+		final String start_date = e.getString("event_start_date");
 		String end_date = e.getString("event_end_date");
 		String date = CalendarFunctions.getEventDate(start_date, end_date);
 		String descriptionHeader = e.getString("event_description_header");
@@ -74,9 +76,26 @@ public class EventDetailsActivity extends Activity
 		String contactEmail = e.getString("event_contact_email_address");
 		String webAddress = e.getString("event_web_address");
 		String image_url = e.getString("image_url");
+		final String ical_url = e.getString("ical_url");
 
 		if (name != null) txtName.setText(name);
 		if (start_date != null && end_date != null) txtDate.setText(date);
+		
+		if(ical_url == null) timeChooserButton.setVisibility(View.GONE);
+		
+		timeChooserButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				Intent timeIntent = new Intent();
+		        timeIntent.putExtra("event_name", name);
+		        timeIntent.putExtra("event_start_date", start_date);
+		        timeIntent.putExtra("ical_url", ical_url);
+		        startActivity(timeIntent);
+			}
+		});
+		
 		if (descriptionHeader != null) txtDescription.setText(descriptionHeader);
 		if (descriptionBody != null) txtDescription.append("\n\n" + descriptionBody);
 		
@@ -89,7 +108,7 @@ public class EventDetailsActivity extends Activity
 			public void onClick(View view)
 			{
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
-		        callIntent.setData(Uri.parse("tel:+447794330580"));
+		        callIntent.setData(Uri.parse("tel:+447794330580")); // TODO
 		        startActivity(callIntent);
 			}
 		});
@@ -104,7 +123,7 @@ public class EventDetailsActivity extends Activity
 			{
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("plain/text");
-				intent.putExtra(Intent.EXTRA_EMAIL,new String[] { "jamie_bates_8@live.co.uk" });
+				intent.putExtra(Intent.EXTRA_EMAIL,new String[] { "jamie_bates_8@live.co.uk" }); // TODO
 				intent.putExtra(Intent.EXTRA_SUBJECT, "");
 				intent.putExtra(Intent.EXTRA_TEXT, "");
 

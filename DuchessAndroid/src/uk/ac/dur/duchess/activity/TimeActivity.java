@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class TimeActivity extends Activity
 {	
+	private TextView eventNameTextView;
 	private TextView dateRangeTextView;
 	
 	private TextView mondayTextView;
@@ -42,6 +43,7 @@ public class TimeActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.time_chooser_layout);
 		
+		eventNameTextView = (TextView) findViewById(R.id.textViewEventName);
 		dateRangeTextView = (TextView) findViewById(R.id.timeViewDateRange);
 		
 		mondayTextView    = (TextView) findViewById(R.id.mondayTextView);
@@ -65,11 +67,21 @@ public class TimeActivity extends Activity
 		
 		try
 		{
-			Calendar c = TimeAdapter.parseICalFromURL("https://www.google.com/calendar/ical/vdcap3h4ubaatdhlumo99jecq8%40group.calendar.google.com/private-017b6bfe68db828e8051d8051746deaf/basic.ics");
-			java.util.Calendar thisDay = java.util.Calendar.getInstance();
+			Bundle e = getIntent().getExtras();
+			String eventName = e.getString("event_name");
+			String iCalURL = e.getString("ical_url");
+			String startDate = e.getString("event_start_date");
 			
-			java.util.Calendar monday = TimeAdapter.getMondayOfGivenWeek(thisDay);
-			java.util.Calendar sunday = TimeAdapter.getSundayOfGivenWeek(thisDay);
+			eventNameTextView.setText(eventName);
+			
+			Calendar c = TimeAdapter.parseICalFromURL(iCalURL);
+			java.util.Calendar week = java.util.Calendar.getInstance();
+			
+			week.setTime((new SimpleDateFormat("yyyy-MM-dd")).parse(startDate));
+			week = TimeAdapter.getClosestFutureWeek(week);
+			
+			java.util.Calendar monday = TimeAdapter.getMondayOfGivenWeek(week);
+			java.util.Calendar sunday = TimeAdapter.getSundayOfGivenWeek(week);
 			
 			dateRangeTextView.setText(       (new SimpleDateFormat("d MMMMMM")).format(monday.getTime()));
 			dateRangeTextView.append(" - " + (new SimpleDateFormat("d MMMMMM")).format(sunday.getTime()));
@@ -94,8 +106,8 @@ public class TimeActivity extends Activity
 			sundayTextView.setText(leftDaytext.get(6));
 			
 			Map<Integer,List<String>> map = TimeAdapter.groupEventsByDay(
-					TimeAdapter.getRecurrenceSetForGivenWeek(c, "College Brunch",
-							(new SimpleDateFormat("yyyy-MM-dd")).format(thisDay.getTime())));
+					TimeAdapter.getRecurrenceSetForGivenWeek(c, eventName,
+							(new SimpleDateFormat("yyyy-MM-dd")).format(week.getTime())));
 			
 			for (Integer i : map.keySet())
 			{
