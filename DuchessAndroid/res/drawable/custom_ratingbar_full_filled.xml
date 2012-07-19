@@ -3,16 +3,16 @@
 
     <item android:state_pressed="true"
           android:state_window_focused="true"
-          android:drawable="@drawable/heart" />
+          android:drawable="@drawable/purple_heart" />
 
     <item android:state_focused="true"
           android:state_window_focused="true"
-          android:drawable="@drawable/heart" />
+          android:drawable="@drawable/purple_heart" />
 
     <item android:state_selected="true"
           android:state_window_focused="true"
-          android:drawable="@drawable/heart" />
+          android:drawable="@drawable/purple_heart" />
 
-    <item android:drawable="@drawable/heart" />
+    <item android:drawable="@drawable/purple_heart" />
 
 </selector>

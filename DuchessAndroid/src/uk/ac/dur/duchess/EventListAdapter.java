@@ -48,6 +48,8 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.txtEventName = (TextView) v.findViewById(R.id.txtEventName);
 			holder.txtEventDescription = (TextView) v.findViewById(R.id.txtEventDescription);
 			holder.txtEventDate = (TextView) v.findViewById(R.id.txtEventDate);
+			holder.categoryIcon1 = (ImageView) v.findViewById(R.id.categoryIcon1);
+			holder.categoryIcon2 = (ImageView) v.findViewById(R.id.categoryIcon2);
 			holder.star1 = (ImageView) v.findViewById(R.id.newStar1);
 			holder.star2 = (ImageView) v.findViewById(R.id.newStar2);
 			holder.star3 = (ImageView) v.findViewById(R.id.newStar3);
@@ -55,6 +57,8 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.star5 = (ImageView) v.findViewById(R.id.newStar5);
 			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
 			holder.pinButton = (ImageView) v.findViewById(R.id.pinButton);
+			
+			
 			
 			user = SessionFunctions.getCurrentUser((Activity) context);
 			
@@ -67,6 +71,9 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		}
 
 		Event e = getItem(position);
+		
+		holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(R.drawable.university));
+		holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(R.drawable.sport));
 		
 		Log.d("POSITION", ""+position);
 
@@ -185,6 +192,9 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		public TextView txtEventDescription;
 		public TextView txtEventDate;
 		public ImageView pinButton;
+		
+		public ImageView categoryIcon1;
+		public ImageView categoryIcon2;
 
 		public ImageView star1;
 		public ImageView star2;

@@ -9,40 +9,59 @@
     <RelativeLayout
         android:id="@+id/rowHeaderLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" android:layout_marginBottom="2dp">
 
         <TextView
             android:id="@+id/txtEventName"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/pinButton"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/pinButton"
             android:ellipsize="end"
+            android:hint="Event Name"
             android:maxLines="1"
             android:textColor="@color/DUPurple"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:typeface="serif" />
+            android:typeface="serif" android:layout_marginBottom="2dp"/>
 
-        <TextView
-            android:id="@+id/txtEventDate"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txtEventName"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/pinButton"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtEventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/txtEventName"
+                android:layout_toLeftOf="@+id/pinButton"
+                android:hint="Location + Duration"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/pinButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:clickable="true"
-            android:src="@drawable/clear_heart" />
+            <ImageView
+                android:id="@+id/pinButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:src="@drawable/clear_heart" />
+
+            <ImageView
+                android:id="@+id/categoryIcon1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEventName"
+                android:layout_toLeftOf="@+id/pinButton"
+                android:src="@drawable/full_star" android:paddingRight="5dp"/>
+
+            <ImageView
+                android:id="@+id/categoryIcon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtEventName"
+                android:layout_toLeftOf="@+id/categoryIcon1"
+                android:src="@drawable/full_star" android:paddingLeft="5dp" android:paddingRight="5dp"/>
+
     </RelativeLayout>
 
     <TextView
@@ -50,10 +69,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:hint="Event Description Header"
         android:maxLines="3"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="italic"
-        android:typeface="serif" />
+        android:typeface="serif" android:layout_marginBottom="2dp"/>
 
     <LinearLayout
         android:id="@+id/reviewStarsEventListHolder"
