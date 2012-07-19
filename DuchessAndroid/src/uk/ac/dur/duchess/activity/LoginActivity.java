@@ -14,11 +14,17 @@ import uk.ac.dur.duchess.data.UserFunctions;
 import uk.ac.dur.duchess.entity.User;
 import uk.ac.dur.duchess.entity.UserXMLParser;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class LoginActivity extends CustomTitleBarActivity
@@ -42,6 +48,39 @@ public class LoginActivity extends CustomTitleBarActivity
 		passwordEditText = (EditText) findViewById(R.id.passwordEditText);
 		registerButton = (Button) findViewById(R.id.registerButton);
 		loginButton = (Button) findViewById(R.id.loginButton);
+		
+		// Custom Title Bar properties
+		titleBarButton4.setVisibility(View.GONE);
+		titleBarButton3.setVisibility(View.GONE);
+		titleBarButton2.setVisibility(View.GONE);
+
+		Bitmap colourIcon = BitmapFactory.decodeResource(getResources(), R.drawable.colour_wheel);
+		titleBarButton1.setImageBitmap(colourIcon);
+		titleBarButton1.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				new AlertDialog.Builder(LoginActivity.this)
+		        .setSingleChoiceItems(new String[]{"#7E317B","#682860","#6D28AA","#745075"}, -1, new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int position)
+					{
+						dialog.dismiss();
+						LinearLayout loginScreen = (LinearLayout) findViewById(R.id.loginScreenBackground);
+						switch(position)
+						{
+							case 0: loginScreen.setBackgroundColor(Color.parseColor("#7E317B")); break;
+							case 1: loginScreen.setBackgroundColor(Color.parseColor("#682860")); break;
+							case 2: loginScreen.setBackgroundColor(Color.parseColor("#6D28AA")); break;
+							case 3: loginScreen.setBackgroundColor(Color.parseColor("#745075")); break;
+						}
+					}
+				})
+		        .show();
+			}
+		});
 
 		registerButton.setOnClickListener(new View.OnClickListener()
 		{

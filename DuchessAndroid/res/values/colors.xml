@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="DUPurple">#7E317B</color>
-    
+    <color name="DurhamWikipedia">#682860</color>
+    <color name="Palatinate">#6D28AA</color>
+    <color name="PalatinateScanned">#745075</color>
 </resources>
