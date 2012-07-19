@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EventListAdapter extends ArrayAdapter<Event>
 {
@@ -91,10 +90,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				public void onClick(View v)
 				{					
 					ImageView iv = (ImageView) v;
-					
-					Toast.makeText(v.getContext(), "EventID:" + events.get(position).getEventID(), Toast.LENGTH_SHORT).show();
-					Toast.makeText(v.getContext(), "Position:" + position, Toast.LENGTH_SHORT).show();
-					
+										
 					if(user.hasPinnedEvent(getItem(position).getEventID()))
 					{
 						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
