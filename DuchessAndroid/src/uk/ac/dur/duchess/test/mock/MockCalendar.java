@@ -1,6 +1,6 @@
 package uk.ac.dur.duchess.test.mock;
 
-public abstract class Calendar {
+public abstract class MockCalendar {
 
 	private static final long serialVersionUID = 1153306472509249694L;
 	

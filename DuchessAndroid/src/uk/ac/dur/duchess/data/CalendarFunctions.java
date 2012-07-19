@@ -13,6 +13,7 @@ import org.joda.time.format.DateTimeFormat;
 
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.Review;
+import uk.ac.dur.duchess.test.mock.MockCalendar;
 
 public class CalendarFunctions
 {
@@ -34,21 +35,20 @@ public class CalendarFunctions
 			String _startDate = destinationFormat.format(startDate.getTime());
 			String _endDate   = destinationFormat.format(endDate.getTime());
 			
-			Calendar today     = Calendar.getInstance();
+			Calendar today     = MockCalendar.getInstance();
 			today.set(Calendar.HOUR_OF_DAY, 0);
 			today.set(Calendar.MINUTE, 0);
 			today.set(Calendar.SECOND, 0);
 			today.get(Calendar.DATE);
 			
-			System.out.println();
 			System.out.println("Today: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(today.getTime()));
 			System.out.println("FunctionStartDate: " + _startDate);
 			System.out.println("FunctionStartDate: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(startDate.getTime()));
 			System.out.println("FunctionEndDate: " + _endDate);
 			System.out.println("FunctionEndDate: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(endDate.getTime()));
 			
-			Calendar tomorrow  = Calendar.getInstance(); tomorrow.roll(Calendar.DAY_OF_YEAR, true);
-			Calendar yesterday = Calendar.getInstance(); yesterday.roll(Calendar.DAY_OF_YEAR, false);
+			Calendar tomorrow  = MockCalendar.getInstance(); tomorrow.roll(Calendar.DAY_OF_YEAR, true);
+			Calendar yesterday = MockCalendar.getInstance(); yesterday.roll(Calendar.DAY_OF_YEAR, false);
 						
 			if(isSameDate(startDate, today)) _startDate = "Today";
 			if(isSameDate(endDate, today)) _endDate = "Today";
