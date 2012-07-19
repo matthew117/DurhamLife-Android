@@ -10,7 +10,7 @@ public abstract class MockCalendar {
 	
 	public static java.util.Calendar getInstance()
 	{
-		if (mockInstance != null) return Calendar.getInstance();
+		if (mockInstance == null) return Calendar.getInstance();
 		return (Calendar) mockInstance.clone();
 	}
 
