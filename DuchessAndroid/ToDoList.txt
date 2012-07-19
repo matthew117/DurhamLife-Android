@@ -1,7 +1,7 @@
 Features
 
 + News Feed
-+ Unsubcribe from societies (don't sync)
++ Unsubcribe from societies (doesn't sync)
 + Caching
 + Download more events when you reach the end of the list (pagination)
 + Add time instance to google calendar
@@ -17,7 +17,6 @@ Optimizations
 
 # Reviews should be in a ListView (maybe)
 # Global access through application singleton rather than extensive Intent use
-# Add colours to resource files (college colours mostly)
 
 Bugs
 
