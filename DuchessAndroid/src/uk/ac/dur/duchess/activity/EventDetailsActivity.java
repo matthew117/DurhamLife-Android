@@ -89,7 +89,7 @@ public class EventDetailsActivity extends Activity
 			@Override
 			public void onClick(View view)
 			{
-				Intent timeIntent = new Intent();
+				Intent timeIntent = new Intent(view.getContext(), TimeActivity.class);
 		        timeIntent.putExtra("event_name", name);
 		        timeIntent.putExtra("event_start_date", start_date);
 		        timeIntent.putExtra("ical_url", ical_url);
