@@ -14,6 +14,7 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -98,6 +99,8 @@ public class EventDetailsActivity extends Activity
 		
 		if (descriptionHeader != null) txtDescription.setText(descriptionHeader);
 		if (descriptionBody != null) txtDescription.append("\n\n" + descriptionBody);
+		
+		Linkify.addLinks(txtDescription, Linkify.WEB_URLS);
 		
 		if(contactTelephone != null) phoneContactButton.setText(contactTelephone);
 		else phoneContactButton.setVisibility(View.GONE);
