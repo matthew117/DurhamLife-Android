@@ -7,13 +7,13 @@ import java.util.Calendar;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Hours;
+import org.joda.time.LocalDate;
 import org.joda.time.Minutes;
 import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.Review;
-import uk.ac.dur.duchess.test.mock.MockCalendar;
 
 public class CalendarFunctions
 {
@@ -28,42 +28,42 @@ public class CalendarFunctions
 		{
 			SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
 			SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
+			SimpleDateFormat yearlessFormat = new SimpleDateFormat("d MMMMM");
 			
-			Calendar startDate = Calendar.getInstance(); startDate.setTime(sourceFormat.parse(start));
-			Calendar endDate   = Calendar.getInstance(); endDate.setTime(sourceFormat.parse(end));
+			boolean isOneDayEvent = isSameDate(start, end);
 			
-			String _startDate = destinationFormat.format(startDate.getTime());
-			String _endDate   = destinationFormat.format(endDate.getTime());
+			Calendar _now = Calendar.getInstance();
+			String now = sourceFormat.format(_now.getTime());
 			
-			Calendar today     = MockCalendar.getInstance();
-			today.set(Calendar.HOUR_OF_DAY, 0);
-			today.set(Calendar.MINUTE, 0);
-			today.set(Calendar.SECOND, 0);
-			today.get(Calendar.DATE);
+			if (isSameDate(now, start) && isOneDayEvent) return "Today";
+			if (compareByDay(now, start) == 1 && isOneDayEvent) return "Tomorrow";
+			if (isSameDate(now, start) && compareByDay(now, end) == 1) return "Today & Tomorrow";
 			
-			System.out.println("Today: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(today.getTime()));
-			System.out.println("FunctionStartDate: " + _startDate);
-			System.out.println("FunctionStartDate: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(startDate.getTime()));
-			System.out.println("FunctionEndDate: " + _endDate);
-			System.out.println("FunctionEndDate: " + (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(endDate.getTime()));
+			String transition = (compareByDay(start, end) == 1) ? " & " : " until ";
 			
-			Calendar tomorrow  = MockCalendar.getInstance(); tomorrow.roll(Calendar.DAY_OF_YEAR, true);
-			Calendar yesterday = MockCalendar.getInstance(); yesterday.roll(Calendar.DAY_OF_YEAR, false);
-						
-			if(isSameDate(startDate, today)) _startDate = "Today";
-			if(isSameDate(endDate, today)) _endDate = "Today";
-			if(isSameDate(startDate, tomorrow)) _startDate = "Tomorrow";
-			if(isSameDate(endDate, tomorrow)) _endDate = "Tomorrow";
-			if(isSameDate(startDate, yesterday)) _startDate = "Yesterday";
-			if(endDate.compareTo(today) > 0)
+			Calendar _start = Calendar.getInstance(); _start.setTime(sourceFormat.parse(start));
+			Calendar _end   = Calendar.getInstance(); _end.setTime(sourceFormat.parse(end));
+			
+			boolean startsInThisYear = _now.get(Calendar.YEAR) == _start.get(Calendar.YEAR);
+			boolean endsInThisYear = _now.get(Calendar.YEAR) == _end.get(Calendar.YEAR);
+			
+			String startDate, endDate;
+			
+			if(startsInThisYear && endsInThisYear)
 			{
-				_startDate = "This event has ended";
-				_endDate = "";
+				startDate = yearlessFormat.format(_start.getTime());	
+				endDate   = yearlessFormat.format(_end.getTime());
+			}
+			else
+			{
+				startDate = destinationFormat.format(_start.getTime());	
+				endDate   = destinationFormat.format(_end.getTime());
 			}
 			
-			if(isSameDate(startDate, endDate)) _endDate = "";
-			
-			return _startDate + ((_endDate.equals("")) ? "" : " until " + _endDate);
+			if (compareByDay(now, start) > 1 && isOneDayEvent) return startDate;
+			if (compareByDay(now, end) < 0) return "This event has ended";
+						
+			return startDate + transition + endDate;
 		}
 		catch (ParseException e1)
 		{
@@ -105,6 +105,14 @@ public class CalendarFunctions
 	{
 		return a.get(Calendar.YEAR) == b.get(Calendar.YEAR)
 				&& a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR);
+	}
+	
+	public static int compareByDay(String from, String to)
+	{
+		LocalDate a = LocalDate.parse(from, DateTimeFormat.forPattern("yyyy-MM-dd"));
+		LocalDate b = LocalDate.parse(to, DateTimeFormat.forPattern("yyyy-MM-dd"));
+		
+		return Days.daysBetween(a, b).getDays();
 	}
 	
 	public static boolean isSameDate(String a, String b)

@@ -1,19 +1,26 @@
 Features
 
 + News Feed
-+ Unsubcribe from societies
++ Unsubcribe from societies (don't sync)
 + Caching
 + Download more events when you reach the end of the list (pagination)
++ Add time instance to google calendar
++ Make personal society page better (red headings)
++ Improve TimeActivity appearance
++ Browse events by location
++ Browse events near to your location
++ Browse near events on a map
++ Sort by rating
 
 Optimizations
 
-# Reviews should be in a ListView
+# Reviews should be in a ListView (maybe)
 # Global access through application singleton rather than extensive Intent use
-# Add colours to resource files
+# Add colours to resource files (college colours mostly)
 
 Bugs
 
 - Orientation change messes things up
 - Need to update user to fix list
-- Unsubcribe button funky
+- Unsubcribe button might still be funky (check on mobile phone rather than tablet)
 - No syncing to database for societies or pinned events
