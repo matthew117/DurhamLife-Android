@@ -62,7 +62,7 @@ public class LoginActivity extends CustomTitleBarActivity
 			public void onClick(View v)
 			{
 				new AlertDialog.Builder(LoginActivity.this)
-		        .setSingleChoiceItems(new String[]{"#7E317B","#682860","#6D28AA","#745075"}, -1, new DialogInterface.OnClickListener()
+		        .setSingleChoiceItems(new String[]{"#7E317B","#682860","#6D28AA","#745075","#67226D"}, -1, new DialogInterface.OnClickListener()
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int position)
@@ -75,6 +75,7 @@ public class LoginActivity extends CustomTitleBarActivity
 							case 1: loginScreen.setBackgroundColor(Color.parseColor("#682860")); break;
 							case 2: loginScreen.setBackgroundColor(Color.parseColor("#6D28AA")); break;
 							case 3: loginScreen.setBackgroundColor(Color.parseColor("#745075")); break;
+							case 4: loginScreen.setBackgroundColor(Color.parseColor("#67226D")); break;
 						}
 					}
 				})

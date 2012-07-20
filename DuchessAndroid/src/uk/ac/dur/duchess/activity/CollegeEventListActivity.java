@@ -208,22 +208,22 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 
 	private int collegeToImage(String collegeName)
 	{
-		if (collegeName.equals("St. Aidan's")) return R.drawable.st_adians;
+		if (collegeName.equals("St. Aidan's")) return R.drawable.st_aidans;
 		else if (collegeName.equals("Collingwood")) return R.drawable.collingwood;
 		else if (collegeName.equals("Grey")) return R.drawable.grey;
-		else if (collegeName.equals("Hatfield")) return R.drawable.college;
-		else if (collegeName.equals("Josephine Butler")) return R.drawable.college;
-		else if (collegeName.equals("St. Chad's")) return R.drawable.college;
-		else if (collegeName.equals("St. Cuthbert's")) return R.drawable.college;
-		else if (collegeName.equals("Hild Bede")) return R.drawable.college;
-		else if (collegeName.equals("St. John's")) return R.drawable.college;
-		else if (collegeName.equals("St. Mary's")) return R.drawable.college;
-		else if (collegeName.equals("Trevelyan")) return R.drawable.college;
-		else if (collegeName.equals("University")) return R.drawable.college;
-		else if (collegeName.equals("Van Mildert")) return R.drawable.college;
-		else if (collegeName.equals("Ustinov")) return R.drawable.college;
-		else if (collegeName.equals("John Snow")) return R.drawable.college;
-		else if (collegeName.equals("Stephenson")) return R.drawable.college;
+		else if (collegeName.equals("Hatfield")) return R.drawable.hatfield;
+		else if (collegeName.equals("Josephine Butler")) return R.drawable.butler;
+		else if (collegeName.equals("St. Chad's")) return R.drawable.chads;
+		else if (collegeName.equals("St. Cuthbert's")) return R.drawable.cuthberts;
+		else if (collegeName.equals("Hild Bede")) return R.drawable.hild_bede;
+		else if (collegeName.equals("St. John's")) return R.drawable.st_johns;
+		else if (collegeName.equals("St. Mary's")) return R.drawable.st_marys;
+		else if (collegeName.equals("Trevelyan")) return R.drawable.trevelyan;
+		else if (collegeName.equals("University")) return R.drawable.castle;
+		else if (collegeName.equals("Van Mildert")) return R.drawable.van_mildert;
+		else if (collegeName.equals("Ustinov")) return R.drawable.ustinov;
+		else if (collegeName.equals("John Snow")) return R.drawable.john_snow;
+		else if (collegeName.equals("Stephenson")) return R.drawable.stephenson;
 		else return R.drawable.college;
 	}
 
