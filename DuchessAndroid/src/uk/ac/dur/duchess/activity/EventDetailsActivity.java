@@ -149,7 +149,8 @@ public class EventDetailsActivity extends Activity
 			}
 		});
 
-		(new DownloadImageTask()).execute(image_url);
+		if(image_url != null) (new DownloadImageTask()).execute(image_url);
+		else eventImageContainer.setVisibility(View.GONE);
 	}
 
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
@@ -160,6 +161,7 @@ public class EventDetailsActivity extends Activity
 			try { return NetworkFunctions.downloadImage(urlArray[0]); }
 			catch (Exception ex)
 			{
+				eventImageContainer.setVisibility(View.GONE);
 				// TODO error handling
 			}
 			return null;
