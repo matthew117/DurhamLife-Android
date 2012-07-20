@@ -135,6 +135,7 @@ public class LoginActivity extends CustomTitleBarActivity
 
 						Intent i = new Intent(v.getContext(), UserHubActivity.class);
 						startActivity(i);
+						finish();
 					}
 				}
 				catch (Exception ex)
