@@ -55,7 +55,7 @@ public class EventDetailsActivity extends Activity
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
 		eventImageContainer = (LinearLayout) findViewById(R.id.eventImageContainer);
 		
-		int[] colors = {Color.parseColor("#111111"), Color.parseColor("#333333"), Color.parseColor("#555555")};
+		int[] colors = {Color.parseColor("#111111"), Color.parseColor("#222222"), Color.parseColor("#333333")};
 		
 		GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
 		gradient.setDither(true);

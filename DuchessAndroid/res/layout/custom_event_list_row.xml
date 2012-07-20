@@ -33,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:lineSpacingMultiplier="1.1"
             android:layout_below="@+id/txtEventName"
             android:layout_toLeftOf="@+id/pinButton"
             android:hint="Location + Duration"
