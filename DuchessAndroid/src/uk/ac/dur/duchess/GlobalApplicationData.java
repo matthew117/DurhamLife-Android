@@ -1,5 +1,9 @@
 package uk.ac.dur.duchess;
 
+import java.util.List;
+
+import uk.ac.dur.duchess.entity.Event;
+
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 import android.app.Application;
@@ -21,6 +25,8 @@ public class GlobalApplicationData extends Application
 	private GoogleAnalyticsTracker tracker;
 
 	public static final String BUGSENSE_API_KEY = "6b8d4b74";
+	
+	public static List<Event> globalEventList;
 
 	@Override
 	public void onCreate()

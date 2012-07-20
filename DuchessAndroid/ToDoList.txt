@@ -10,8 +10,6 @@ Features
 + Browse events by location
 + Browse events near to your location
 + Browse near events on a map
-+ Sort by rating
-+ Better college shields
 
 Optimizations
 

@@ -14,6 +14,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
@@ -189,6 +190,10 @@ public class EventListActivity extends ListActivity
 						InputSource source = new InputSource(is);
 						source.setEncoding("UTF-8");
 						reader.parse(source);
+						
+						// TODO MASSIVE TEMPORARY HACK :)
+						GlobalApplicationData.globalEventList = new ArrayList<Event>(eventList);
+						
 						if (currentUser != null)
 						{
 							Log.d("BEFORE FILTER", "" + eventList.size());
@@ -289,6 +294,9 @@ public class EventListActivity extends ListActivity
 		case R.id.submenuEventListChronological:
 			sortEventsChronologically();
 			return true;
+		case R.id.submenuEventListRatings:
+			sortEventsByHighestReview();
+			return true;
 		case R.id.menuCategoryBrowse:
 			Intent i = new Intent(this, CategoryGridActivity.class);
 			startActivity(i);
@@ -357,6 +365,21 @@ public class EventListActivity extends ListActivity
 				String tDateStr = e2.getStartDate();
 
 				return CalendarFunctions.compareDates(sDateStr, tDateStr);
+			}
+
+		});
+		adapter.notifyDataSetChanged();
+	}
+	
+	private void sortEventsByHighestReview()
+	{
+		Collections.sort(eventList, new Comparator<Event>()
+		{
+			@Override
+			public int compare(Event e1, Event e2)
+			{
+				if (e1.getReviewScore() == e2.getReviewScore()) return e2.getNumberOfReviews() - e1.getNumberOfReviews();
+				return e2.getReviewScore() - e1.getReviewScore();
 			}
 
 		});

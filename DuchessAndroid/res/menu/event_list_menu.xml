@@ -14,6 +14,10 @@
                 android:id="@+id/submenuEventListChronological"
                 android:icon="@drawable/clock"
                 android:title="Chronological"/>
+            <item
+                android:id="@+id/submenuEventListRatings"
+                android:icon="@drawable/star"
+                android:title="Highest Rating"/>
         </menu>
     </item>
     <item
