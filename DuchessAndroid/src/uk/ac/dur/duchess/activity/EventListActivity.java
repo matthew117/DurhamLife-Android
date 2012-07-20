@@ -47,6 +47,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class EventListActivity extends ListActivity
 {
@@ -491,8 +492,11 @@ public class EventListActivity extends ListActivity
 		{
 			if (newLocation != null)
 			{
+				Toast.makeText(activity, "Sorting by distance", Toast.LENGTH_SHORT);
+				
 				Collections.sort(eventList, new Comparator<Event>()
 				{
+					
 					@Override
 					public int compare(Event e1, Event e2)
 					{
