@@ -18,7 +18,7 @@ public class ViewSharedPreferencesActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.view_sharded_preferences);
+		setContentView(R.layout.view_shared_preferences);
 
 		output = (TextView) findViewById(R.id.sharedPreferenceOutput);
 

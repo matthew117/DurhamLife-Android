@@ -18,6 +18,10 @@
                 android:id="@+id/submenuEventListRatings"
                 android:icon="@drawable/star"
                 android:title="Highest Rating"/>
+            <item
+                android:id="@+id/submenuEventListDistance"
+                android:icon="@drawable/location_tab_icon"
+                android:title="Distance"/>
         </menu>
     </item>
     <item

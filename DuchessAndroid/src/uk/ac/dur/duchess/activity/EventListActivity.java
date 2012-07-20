@@ -29,7 +29,11 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -59,6 +63,8 @@ public class EventListActivity extends ListActivity
 	private ArrayList<Event> eventList;
 	private String categoryFilter;
 	private EventListAdapter adapter;
+	
+	private LocationManager lm;
 
 	private static final int REQUEST_DATEFRAME = 1;
 	private static final int REQUEST_CALENDAR = 2;
@@ -297,6 +303,14 @@ public class EventListActivity extends ListActivity
 		case R.id.submenuEventListRatings:
 			sortEventsByHighestReview();
 			return true;
+		case R.id.submenuEventListDistance:
+		{
+			lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			LocationListener locationListener = new NearEventsListener();
+
+			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+			return true;
+		}
 		case R.id.menuCategoryBrowse:
 			Intent i = new Intent(this, CategoryGridActivity.class);
 			startActivity(i);
@@ -467,4 +481,52 @@ public class EventListActivity extends ListActivity
 			filterEventByDateRange(date, nextDay);
 		}
 	};
+	
+	private class NearEventsListener implements LocationListener
+	{
+		private static final int WALKING_DISTANCE = 800;
+
+		@Override
+		public void onLocationChanged(final Location newLocation)
+		{
+			if (newLocation != null)
+			{
+				Collections.sort(eventList, new Comparator<Event>()
+				{
+					@Override
+					public int compare(Event e1, Event e2)
+					{
+						float[] distanceResult1 = new float[3];
+						Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
+								Double.parseDouble(e1.getLatitude()), Double.parseDouble(e1.getLongitude()), distanceResult1);
+						double distance1 = distanceResult1[0];
+						
+						float[] distanceResult2 = new float[3];
+						Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
+								Double.parseDouble(e2.getLatitude()), Double.parseDouble(e2.getLongitude()), distanceResult2);
+						double distance2 = distanceResult2[0];
+						
+						return (int) (distance1 - distance2);
+					}
+				});
+				adapter.notifyDataSetChanged();
+				lm.removeUpdates(this);
+			}
+		}
+
+		@Override
+		public void onProviderDisabled(String provider)
+		{
+		}
+
+		@Override
+		public void onProviderEnabled(String provider)
+		{
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras)
+		{
+		}
+	}
 }

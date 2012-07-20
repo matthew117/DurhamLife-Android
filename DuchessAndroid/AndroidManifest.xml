@@ -137,6 +137,7 @@
             android:label="@string/app_name"/>
         <activity android:name=".activity.TimeActivity" android:label="@string/app_name" />
 		<activity android:name=".activity.PinnedEventListActivity" />
+		<activity android:name=".activity.NearEventsActivity" />
     </application>
 
 </manifest>

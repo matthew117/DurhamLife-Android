@@ -3,14 +3,18 @@ package uk.ac.dur.duchess.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-
 import uk.ac.dur.duchess.GlobalApplicationData;
+import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.entity.Event;
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
 
 public class NearEventsActivity extends Activity
 {
@@ -23,6 +27,13 @@ public class NearEventsActivity extends Activity
 		super.onCreate(savedInstanceState);
 		eventList = new ArrayList<Event>(GlobalApplicationData.globalEventList);
 		currentLocation = new GeoPoint((int) (54.768018 * 1E6), (int) (-1.571968 * 1E6));
+		
+		setContentView(R.layout.view_shared_preferences);
+		
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = new MyLocationListener();
+
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 	}
 	
 	private class MyLocationListener implements LocationListener
@@ -32,14 +43,17 @@ public class NearEventsActivity extends Activity
 		{
 			if (newLocation != null)
 			{
-				GeoPoint g = null;
+				GeoPoint g = new GeoPoint((int) (newLocation.getLatitude()* 1E6), (int) (newLocation.getLongitude() * 1E6));
 				
 				for (Event e : eventList)
 				{
 					String eventName = e.getName();
-					GeoPoint eventLocation = stringToGeoPoint(e.getLatitude(), e.getLongitude());
-					double distance = distanceBetweenTwoPoints(g, eventLocation);
-					
+					float[] distanceResult = new float[3];
+					Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
+							Double.parseDouble(e.getLatitude()), Double.parseDouble(e.getLongitude()), distanceResult);
+					double distance = distanceResult[0];
+					if (distance < 800)
+					Toast.makeText(NearEventsActivity.this, eventName + " : " + String.format("%.2fm", distance), Toast.LENGTH_SHORT).show();
 				}
 			}
 		}
@@ -58,20 +72,6 @@ public class NearEventsActivity extends Activity
 		public void onStatusChanged(String provider, int status, Bundle extras)
 		{
 		}
-	}
-	
-	private double distanceBetweenTwoPoints(GeoPoint a, GeoPoint b)
-	{
-		double R = 6371.0; // km
-		double dLat = Math.toRadians((a.getLatitudeE6() / 1E6 - b.getLatitudeE6() / 1E6));
-		double dLon = Math.toRadians((a.getLongitudeE6() / 1E6 - b.getLongitudeE6() / 1E6));
-		double lat1 = Math.toRadians(a.getLatitudeE6() / 1E6);
-		double lat2 = Math.toRadians(b.getLatitudeE6() / 1E6);
-
-		double t = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2)
-				* Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-		double c = 2 * Math.atan2(Math.sqrt(t), Math.sqrt(1 - t));
-		return R * c;
 	}
 	
 	private GeoPoint stringToGeoPoint(String latitude, String longitude)
