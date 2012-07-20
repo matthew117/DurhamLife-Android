@@ -3,13 +3,14 @@
     android:id="@+id/listRowLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="5dp" >
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/rowHeaderLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_marginBottom="2dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp" 
+        android:layout_marginLeft="4dp"  >
 
         <TextView
             android:id="@+id/txtEventName"
@@ -17,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_marginBottom="2dp"
             android:layout_toLeftOf="@+id/pinButton"
             android:ellipsize="end"
             android:hint="Event Name"
@@ -24,61 +26,76 @@
             android:textColor="@color/DUPurple"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:typeface="serif" android:layout_marginBottom="2dp"/>
+            android:typeface="serif" />
 
-            <TextView
-                android:id="@+id/txtEventDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/txtEventName"
-                android:layout_toLeftOf="@+id/pinButton"
-                android:hint="Location + Duration"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtEventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtEventName"
+            android:layout_toLeftOf="@+id/pinButton"
+            android:hint="Location + Duration"
+            android:textSize="12sp"
+            android:textStyle="bold" android:textColor="#666666"/>
 
-            <ImageView
-                android:id="@+id/pinButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:clickable="true"
-                android:src="@drawable/clear_heart" />
-
-            <ImageView
-                android:id="@+id/categoryIcon1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtEventName"
-                android:layout_toLeftOf="@+id/pinButton"
-                android:src="@drawable/full_star" android:paddingRight="5dp"/>
-
-            <ImageView
-                android:id="@+id/categoryIcon2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtEventName"
-                android:layout_toLeftOf="@+id/categoryIcon1"
-                android:src="@drawable/full_star" android:paddingLeft="5dp" android:paddingRight="5dp"/>
-
+        <ImageView
+            android:id="@+id/pinButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:src="@drawable/clear_bookmark" android:layout_marginRight="5dp"/>
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp" 
+        android:layout_marginLeft="4dp" >
+
+        <ImageView
+            android:id="@+id/categoryIcon1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="3dp"
+            android:src="@drawable/full_star" />
+
+        <ImageView
+            android:id="@+id/categoryIcon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="3dp"
+            android:src="@drawable/full_star" />
+
+        <ImageView
+            android:id="@+id/categoryIcon3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="3dp"
+            android:src="@drawable/full_star" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtEventDescription"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="4dp" 
         android:ellipsize="end"
         android:hint="Event Description Header"
         android:maxLines="3"
         android:textSize="12sp"
         android:textStyle="italic"
-        android:typeface="serif" android:layout_marginBottom="2dp"/>
+        android:typeface="serif" android:textColor="#444444"/>
 
     <LinearLayout
         android:id="@+id/reviewStarsEventListHolder"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="2dp">
 
         <ImageView
             android:id="@+id/newStar1"
@@ -121,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:paddingLeft="7dp"
-            android:textColor="#ffcc00"
+            android:textColor="#ffa322"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>

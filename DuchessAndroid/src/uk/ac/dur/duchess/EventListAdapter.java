@@ -10,6 +10,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +27,11 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	private Context context;
 	private int rowLayoutResourceID;
 	private User user;
+	
+	private static final Integer[] CATEGORY_ICONS = new Integer[]
+		{R.drawable.university_small, R.drawable.college_small, R.drawable.music_small,
+		 R.drawable.theatre_small, R.drawable.exhibitions_small, R.drawable.sport_small,
+		 R.drawable.conference_small, R.drawable.community_small};
 
 	public EventListAdapter(Context context, int rowLayoutResourceID, List<Event> eventList)
 	{
@@ -38,10 +46,17 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	{
 		View v = convertView;
 		ViewHolder holder;
+		
 		if (v == null)
 		{
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			v = inflater.inflate(rowLayoutResourceID, parent, false);
+			
+			int[] colors = {Color.parseColor("#DDDDDD"), Color.parseColor("#FFFFFF")};
+			GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
+			gradient.setDither(true);
+		
+			v.setBackgroundDrawable(gradient);
 			
 			holder = new ViewHolder();
 
@@ -50,6 +65,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.txtEventDate = (TextView) v.findViewById(R.id.txtEventDate);
 			holder.categoryIcon1 = (ImageView) v.findViewById(R.id.categoryIcon1);
 			holder.categoryIcon2 = (ImageView) v.findViewById(R.id.categoryIcon2);
+			holder.categoryIcon3 = (ImageView) v.findViewById(R.id.categoryIcon3);
 			holder.star1 = (ImageView) v.findViewById(R.id.newStar1);
 			holder.star2 = (ImageView) v.findViewById(R.id.newStar2);
 			holder.star3 = (ImageView) v.findViewById(R.id.newStar3);
@@ -72,8 +88,37 @@ public class EventListAdapter extends ArrayAdapter<Event>
 
 		Event e = getItem(position);
 		
-		holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(R.drawable.university));
-		holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(R.drawable.sport));
+		List<String> categories = e.getCategoryTags();
+		
+		if(categories != null)
+		{
+			if(categories.size() > 0)
+			{
+				int id = mapCategoryToIcon(categories.get(0));
+				holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+			}
+			else holder.categoryIcon1.setVisibility(View.GONE);
+			
+			if(categories.size() > 1)
+			{
+				int id = mapCategoryToIcon(categories.get(1));
+				holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+			}
+			else holder.categoryIcon2.setVisibility(View.GONE);
+			
+			if(categories.size() > 2)
+			{
+				int id = mapCategoryToIcon(categories.get(2));
+				holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+			}
+			else holder.categoryIcon3.setVisibility(View.GONE);
+		}
+		else
+		{
+			holder.categoryIcon1.setVisibility(View.GONE);
+			holder.categoryIcon2.setVisibility(View.GONE);
+			holder.categoryIcon3.setVisibility(View.GONE);
+		}
 		
 		Log.d("POSITION", ""+position);
 
@@ -83,12 +128,12 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			if(user.hasPinnedEvent(e.getEventID()))
 			{
 				Log.d("PINNED LISTVIEW", "Setting image to purple because user has that event");
-				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.purple_heart));
+				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.bookmark));
 			}
 			else
 			{
 				Log.d("PINNED LISTVIEW", "Setting image to clear");
-				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
+				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_bookmark));
 			}
 			
 			holder.pinButton.setOnClickListener(new View.OnClickListener()
@@ -100,12 +145,12 @@ public class EventListAdapter extends ArrayAdapter<Event>
 										
 					if(user.hasPinnedEvent(getItem(position).getEventID()))
 					{
-						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_heart));
+						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_bookmark));
 						user.removeEvent(getItem(position).getEventID());
 					}
 					else
 					{
-						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.purple_heart));
+						iv.setImageDrawable(context.getResources().getDrawable(R.drawable.bookmark));
 						user.addEvent(getItem(position).getEventID());
 					}
 					
@@ -186,6 +231,20 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		return v;
 	}
 	
+	private static int mapCategoryToIcon(String category)
+	{
+		if(category.equals("University")) return 0;
+		if(category.equals("College")) return 1;
+		if(category.equals("Music")) return 2;
+		if(category.equals("Theatre")) return 3;
+		if(category.equals("Exhibitions")) return 4;
+		if(category.equals("Sport")) return 5;
+		if(category.equals("Conferences")) return 6;
+		if(category.equals("Community")) return 7;
+		
+		return -1;
+	}
+	
 	private static class ViewHolder
 	{
 		public TextView txtEventName;
@@ -195,6 +254,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		
 		public ImageView categoryIcon1;
 		public ImageView categoryIcon2;
+		public ImageView categoryIcon3;
 
 		public ImageView star1;
 		public ImageView star2;

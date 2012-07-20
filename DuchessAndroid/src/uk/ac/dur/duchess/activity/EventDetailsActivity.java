@@ -186,12 +186,12 @@ public class EventDetailsActivity extends Activity
 		
 		if(user.hasPinnedEvent(eventID))
 		{
-			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.purple_heart));
+			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.bookmark));
 			menu.getItem(0).setTitle("Remove Bookmark");
 		}
 		else
 		{
-			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.clear_heart));
+			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.clear_bookmark));
 			menu.getItem(0).setTitle("Bookmark");
 		}
 		
@@ -208,14 +208,14 @@ public class EventDetailsActivity extends Activity
 			
 			if(user.hasPinnedEvent(eventID))
 			{
-				item.setIcon(getParent().getResources().getDrawable(R.drawable.clear_heart));
+				item.setIcon(getParent().getResources().getDrawable(R.drawable.clear_bookmark));
 				item.setTitle("Bookmark");
 				
 				user.removeEvent(eventID);
 			}
 			else
 			{
-				item.setIcon(getParent().getResources().getDrawable(R.drawable.purple_heart));
+				item.setIcon(getParent().getResources().getDrawable(R.drawable.bookmark));
 				item.setTitle("Remove Bookmark");
 				
 				user.addEvent(eventID);
