@@ -308,7 +308,7 @@ public class EventListActivity extends ListActivity
 			lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			LocationListener locationListener = new NearEventsListener();
 
-			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+			lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 			return true;
 		}
 		case R.id.menuCategoryBrowse:
