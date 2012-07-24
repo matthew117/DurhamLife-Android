@@ -20,13 +20,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.Surface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -46,64 +42,43 @@ public class CalendarActivity extends Activity
 	private int lastBound;
 	private int currentDay = -1;
 	
-	private LinearLayout layout;
-	private LayoutParams params;
 	private LinearLayout header;
-	private LinearLayout subHeader;
-	private LinearLayout calendarView;
 	
-	private CalendarButton currentCell;
-	
+	private TextView monthText;
 	private ImageView prevMonthButton;
 	private ImageView nextMonthButton;
+	
+	private LinearLayout calendarView;
+	
 	private List<Event> eventList;
 	private EventListAdapter adapter;
 	private ListView listView;
-	private TextView monthText;
+	
+	private CalendarButton currentCell;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.calendar_layout);
 		
-		layout = new LinearLayout(this);
-		params = new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
+		header = (LinearLayout) findViewById(R.id.calendarHeader);
 		
-		Display display = ((android.view.WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-		int screenOrientation = display.getOrientation();
+		monthText = (TextView) findViewById(R.id.monthText);
+		prevMonthButton = (ImageView) findViewById(R.id.prevMonthButton);
+		nextMonthButton = (ImageView) findViewById(R.id.nextMonthButton);
 		
-		if(screenOrientation == Surface.ROTATION_90 ||
-		   screenOrientation == Surface.ROTATION_270) params = new LayoutParams(FILL_PARENT, FILL_PARENT, 1);
+		calendarView = (LinearLayout) findViewById(R.id.calendarView);
 		
-		layout.setLayoutParams(params);
-		layout.setBackgroundColor(Color.parseColor("#DDDDDD"));
-		
-		calendarView = new LinearLayout(this);
-		calendarView.setOrientation(LinearLayout.VERTICAL);
+		listView = (ListView) findViewById(R.id.calendarListView);
 		
 		calendar = Calendar.getInstance();
 		
 		setMonthBounds(calendar.get(Calendar.MONTH));
 		
-		header = new LinearLayout(this);
-		LayoutParams headerParams = new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
-		headerParams.setMargins(0, 0, 0, 3);
-		header.setLayoutParams(headerParams);
-		header.setOrientation(LinearLayout.VERTICAL);
-		
-		subHeader = new LinearLayout(this);
-		subHeader.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 1));
-		
-		monthText = new TextView(this);
-		
 		SimpleDateFormat month = new SimpleDateFormat("MMMMM yyyy");
 		
 		monthText.setText(month.format(calendar.getTime()));
-		monthText.setTextColor(Color.BLACK);
-		monthText.setTextSize(15);
-		monthText.setTypeface(Typeface.SERIF, Typeface.BOLD);
-		monthText.setPadding(5, 5, 5, 5);
-		monthText.setGravity(Gravity.CENTER);
 		
 		int[] colors = {Color.parseColor("#7E317B"), Color.parseColor("#D8ACE0")};
 		
@@ -111,17 +86,6 @@ public class CalendarActivity extends Activity
 		gradient.setDither(true);
 		
 		header.setBackgroundDrawable(gradient);
-		
-		prevMonthButton = new ImageView(this);
-		prevMonthButton.setClickable(true);
-		prevMonthButton.setImageDrawable(getResources().getDrawable(R.drawable.month_backward));
-		
-		nextMonthButton = new ImageView(this);
-		nextMonthButton.setClickable(true);
-		nextMonthButton.setImageDrawable(getResources().getDrawable(R.drawable.month_forward));
-		
-		LayoutParams buttonParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 0);
-		buttonParams.setMargins(0, 5, 0, 5);
 		
 		prevMonthButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -155,37 +119,7 @@ public class CalendarActivity extends Activity
 			}
 		});
 		
-		subHeader.addView(prevMonthButton, buttonParams);
-		subHeader.addView(monthText, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1));
-		subHeader.addView(nextMonthButton, buttonParams);
-		
-		header.addView(subHeader);
-		
-		LinearLayout days = new LinearLayout(this);
-		days.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0));
-		
-		String[] dayStrings = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-		
-		for(int i = 0; i < 7; i++)
-		{
-			TextView day = new TextView(this);
-			day.setText(dayStrings[i]);
-			day.setGravity(Gravity.CENTER);
-			day.setPadding(0, 0, 0, 5);
-			day.setTextColor(Color.BLACK);
-			day.setTextSize(14);
-			days.addView(day, new LayoutParams(0, WRAP_CONTENT, 1));
-		}
-		
-		header.addView(days);
-		
-		layout.addView(header);
-		
 		setupCalendarLayout();
-		
-		layout.addView(calendarView, params);
-		
-		listView = new ListView(this);
 		
 		eventList = new ArrayList<Event>();
 
@@ -222,12 +156,6 @@ public class CalendarActivity extends Activity
 		});
 		
 		listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_bottom_border));
-		
-		layout.addView(listView, new LayoutParams(FILL_PARENT, FILL_PARENT, 0));
-		
-		layout.setOrientation(LinearLayout.VERTICAL);
-		
-		setContentView(layout);
 	}
 
 	private void setupCalendarLayout()
@@ -245,11 +173,12 @@ public class CalendarActivity extends Activity
 			{
 				LayoutParams cellParams = new LayoutParams(0, WRAP_CONTENT, 1);
 				
+				int left   = (col == 0) ? 6 : 3;
+				int top    = (row == 0) ? 6 : 3;
+				int right  = (col == 6) ? 6 : 3;
 				int bottom = (row == 5) ? 6 : 3;
 				
-				if(col == 0) cellParams.setMargins(6, 3, 3, bottom);
-				else if(col == 6) cellParams.setMargins(3, 3, 6, bottom);
-				else cellParams.setMargins(3, 3, 3, bottom);
+				cellParams.setMargins(left, top, right, bottom);
 				
 				tableRow.addView(getMonthButton(cell, col), cellParams);
 				
@@ -331,7 +260,7 @@ public class CalendarActivity extends Activity
 		 {
 			 super.onDraw(canvas);
 			 
-			 Calendar cal = Calendar.getInstance();		 
+			 Calendar.getInstance();		 
 			 
 			 if(cell == currentDay && currentDay != -1)
 			 {
