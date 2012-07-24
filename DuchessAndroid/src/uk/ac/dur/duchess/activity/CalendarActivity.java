@@ -26,11 +26,13 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.Surface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -48,13 +50,16 @@ public class CalendarActivity extends Activity
 	private LayoutParams params;
 	private LinearLayout header;
 	private LinearLayout subHeader;
+	private LinearLayout calendarView;
 	
 	private CalendarButton currentCell;
 	
-	private Button confirmButton;
+	private ImageView prevMonthButton;
+	private ImageView nextMonthButton;
 	private List<Event> eventList;
 	private EventListAdapter adapter;
 	private ListView listView;
+	private TextView monthText;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -67,10 +72,14 @@ public class CalendarActivity extends Activity
 		Display display = ((android.view.WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 		int screenOrientation = display.getOrientation();
 		
-		if(screenOrientation != 0) params = new LayoutParams(FILL_PARENT, FILL_PARENT, 1);
+		if(screenOrientation == Surface.ROTATION_90 ||
+		   screenOrientation == Surface.ROTATION_270) params = new LayoutParams(FILL_PARENT, FILL_PARENT, 1);
 		
 		layout.setLayoutParams(params);
 		layout.setBackgroundColor(Color.parseColor("#DDDDDD"));
+		
+		calendarView = new LinearLayout(this);
+		calendarView.setOrientation(LinearLayout.VERTICAL);
 		
 		calendar = Calendar.getInstance();
 		
@@ -80,12 +89,12 @@ public class CalendarActivity extends Activity
 		LayoutParams headerParams = new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
 		headerParams.setMargins(0, 0, 0, 3);
 		header.setLayoutParams(headerParams);
-		header.setOrientation(1);
+		header.setOrientation(LinearLayout.VERTICAL);
 		
 		subHeader = new LinearLayout(this);
 		subHeader.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 1));
 		
-		TextView monthText = new TextView(this);
+		monthText = new TextView(this);
 		
 		SimpleDateFormat month = new SimpleDateFormat("MMMMM yyyy");
 		
@@ -94,6 +103,7 @@ public class CalendarActivity extends Activity
 		monthText.setTextSize(15);
 		monthText.setTypeface(Typeface.SERIF, Typeface.BOLD);
 		monthText.setPadding(5, 5, 5, 5);
+		monthText.setGravity(Gravity.CENTER);
 		
 		int[] colors = {Color.parseColor("#7E317B"), Color.parseColor("#D8ACE0")};
 		
@@ -102,24 +112,52 @@ public class CalendarActivity extends Activity
 		
 		header.setBackgroundDrawable(gradient);
 		
-		subHeader.addView(monthText, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1));
+		prevMonthButton = new ImageView(this);
+		prevMonthButton.setClickable(true);
+		prevMonthButton.setImageDrawable(getResources().getDrawable(R.drawable.month_backward));
 		
-		confirmButton = new Button(this);
-		confirmButton.setText("Confirm");
+		nextMonthButton = new ImageView(this);
+		nextMonthButton.setClickable(true);
+		nextMonthButton.setImageDrawable(getResources().getDrawable(R.drawable.month_forward));
 		
 		LayoutParams buttonParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 0);
 		buttonParams.setMargins(0, 5, 0, 5);
 		
-		confirmButton.setOnClickListener(new View.OnClickListener()
+		prevMonthButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
+				calendar.add(Calendar.MONTH, -1);
+				setMonthBounds(calendar.get(Calendar.MONTH));
 				
+				SimpleDateFormat month = new SimpleDateFormat("MMMMM yyyy");
+				
+				monthText.setText(month.format(calendar.getTime()));
+				
+				setupCalendarLayout();
 			}
 		});
 		
-		subHeader.addView(confirmButton, buttonParams);
+		nextMonthButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				calendar.add(Calendar.MONTH, 1);
+				setMonthBounds(calendar.get(Calendar.MONTH));
+				
+				SimpleDateFormat month = new SimpleDateFormat("MMMMM yyyy");
+				
+				monthText.setText(month.format(calendar.getTime()));
+				
+				setupCalendarLayout();
+			}
+		});
+		
+		subHeader.addView(prevMonthButton, buttonParams);
+		subHeader.addView(monthText, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1));
+		subHeader.addView(nextMonthButton, buttonParams);
 		
 		header.addView(subHeader);
 		
@@ -145,11 +183,13 @@ public class CalendarActivity extends Activity
 		
 		setupCalendarLayout();
 		
+		layout.addView(calendarView, params);
+		
 		listView = new ListView(this);
 		
-		eventList = GlobalApplicationData.globalEventList; // TODO
+		eventList = new ArrayList<Event>();
 
-		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, new ArrayList<Event>());
+		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		listView.setAdapter(adapter);
 		
 		listView.setOnItemClickListener(new OnItemClickListener()
@@ -192,6 +232,8 @@ public class CalendarActivity extends Activity
 
 	private void setupCalendarLayout()
 	{
+		calendarView.removeAllViews();
+		
 		int cell = 1 - lowerBound;
 		
 		for(int row = 0; row < 6; row++)
@@ -214,7 +256,7 @@ public class CalendarActivity extends Activity
 				cell++;
 			}
 			
-			layout.addView(tableRow);
+			calendarView.addView(tableRow);
 		}
 	}
 	
@@ -289,7 +331,9 @@ public class CalendarActivity extends Activity
 		 {
 			 super.onDraw(canvas);
 			 
-			 if(cell == currentDay)
+			 Calendar cal = Calendar.getInstance();		 
+			 
+			 if(cell == currentDay && currentDay != -1)
 			 {
 				 float w = getWidth()  / 2;
 				 float h = getHeight() / 2;
@@ -307,20 +351,23 @@ public class CalendarActivity extends Activity
 	
 	private void setMonthBounds(int month)
 	{
-		if(month == calendar.get(Calendar.MONTH))
-			currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+		Calendar cal = Calendar.getInstance();
 		
-		Calendar calendar = Calendar.getInstance();
+		if(month == cal.get(Calendar.MONTH) &&
+		   calendar.get(Calendar.YEAR) == cal.get(Calendar.YEAR))
+			currentDay = cal.get(Calendar.DAY_OF_MONTH);
+		else currentDay = -1;
 		
-		calendar.set(Calendar.MONTH, month);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		cal.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+		cal.set(Calendar.MONTH, month);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		
-		lowerBound = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7;
-		upperBound = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		lowerBound = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+		upperBound = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		
-		calendar.set(Calendar.MONTH, month - 1);
+		cal.set(Calendar.MONTH, month - 1);
 		
-		lastBound = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		lastBound = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
 	private String cellToDate(int cell)
@@ -328,7 +375,8 @@ public class CalendarActivity extends Activity
 		SimpleDateFormat range = new SimpleDateFormat("yyyy-MM-dd");
 		
 		Calendar cal = Calendar.getInstance();
-			
+		
+		cal.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
 		cal.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
 		cal.set(Calendar.DAY_OF_MONTH, cell);
 		
@@ -338,15 +386,18 @@ public class CalendarActivity extends Activity
 	
 	private void filterEventByDateRange(String fromDate, String toDate)
 	{
-		ArrayList<Event> inRangeEvents = new ArrayList<Event>();
+		eventList.clear();
+		List<Event> events = GlobalApplicationData.globalEventList;
 
-		for (Event event : eventList)
+		for (Event event : events)
 		{
 			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), fromDate,
-					toDate)) inRangeEvents.add(event);
+					toDate)) eventList.add(event);
 		}
 
 		listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
-				inRangeEvents));
+				eventList));
+		
+		adapter.notifyDataSetChanged();
 	}
 }
