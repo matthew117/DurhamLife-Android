@@ -68,7 +68,6 @@ public class EventListActivity extends ListActivity
 	private LocationManager lm;
 
 	private static final int REQUEST_DATEFRAME = 1;
-	private static final int REQUEST_CALENDAR = 2;
 	private static final int DATE_DIALOG_ID = 1;
 
 	/** Called when the activity is first created. */
@@ -233,7 +232,8 @@ public class EventListActivity extends ListActivity
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
 					i.putExtra("event_end_date", e.getEndDate());
-					i.putExtra("event_description", e.getDescriptionHeader());
+					i.putExtra("event_description_header", e.getDescriptionHeader());
+					i.putExtra("event_description_body", e.getDescriptionBody());
 					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
 					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
 					i.putExtra("event_web_address", e.getWebAddress());
@@ -244,6 +244,7 @@ public class EventListActivity extends ListActivity
 					i.putExtra("event_latitude", e.getLatitude());
 					i.putExtra("event_longitude", e.getLongitude());
 					i.putExtra("image_url", e.getImageURL());
+					i.putExtra("ical_url", e.getICalURL());
 					startActivity(i);
 				}
 			});
@@ -292,7 +293,7 @@ public class EventListActivity extends ListActivity
 		case R.id.submenuEventListByCalendar:
 		{
 			Intent i = new Intent(this, CalendarActivity.class);
-			startActivityForResult(i, REQUEST_CALENDAR);
+			startActivity(i);
 			return true;
 		}
 		case R.id.submenuEventListAZ:
@@ -414,37 +415,6 @@ public class EventListActivity extends ListActivity
 				String toDate = data.getStringExtra("to_date");
 
 				filterEventByDateRange(fromDate, toDate);
-			}
-			break;
-		}
-		case REQUEST_CALENDAR:
-		{
-			if(responseCode == RESULT_OK)
-			{
-				String dates = data.getStringExtra("dates");
-				Log.d("CALENDAR", dates);
-				
-				String[] dateArray = dates.split(", ");
-				
-				ArrayList<Event> inRangeEvents = new ArrayList<Event>();
-				
-				for (Event event : eventList)
-				{
-					for(String date : dateArray)
-					{
-						String[] values = date.split("-");
-						String toDate = values[0] + "-" + values[1] + "-" + (Integer.parseInt(values[2]) + 1);
-						
-						if(CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), date, toDate))
-						{
-							inRangeEvents.add(event);
-							break;
-						}
-					}
-				}
-				
-				setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
-						inRangeEvents));
 			}
 			break;
 		}

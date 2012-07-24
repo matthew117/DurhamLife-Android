@@ -4,24 +4,21 @@ import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.EventListAdapter;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.entity.Event;
-import uk.ac.dur.duchess.entity.EventXMLParser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -52,7 +49,7 @@ public class CalendarActivity extends Activity
 	private LinearLayout header;
 	private LinearLayout subHeader;
 	
-	private boolean[] dates = new boolean[42];
+	private CalendarButton currentCell;
 	
 	private Button confirmButton;
 	private List<Event> eventList;
@@ -118,21 +115,7 @@ public class CalendarActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				Intent returnIntent = new Intent();
 				
-				String dateString = getDatesString();
-				
-				if(!dateString.equals(""))
-				{
-					returnIntent.putExtra("dates", dateString);
-					setResult(RESULT_OK, returnIntent);
-					finish();
-				}
-				else
-				{
-					setResult(RESULT_CANCELED);
-					finish();
-				}
 			}
 		});
 		
@@ -166,7 +149,7 @@ public class CalendarActivity extends Activity
 		
 		eventList = GlobalApplicationData.globalEventList; // TODO
 
-		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
+		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, new ArrayList<Event>());
 		listView.setAdapter(adapter);
 		
 		listView.setOnItemClickListener(new OnItemClickListener()
@@ -198,10 +181,9 @@ public class CalendarActivity extends Activity
 			}
 		});
 		
-		listView.setVerticalFadingEdgeEnabled(true);
-		listView.setFadingEdgeLength(12);
+		listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_bottom_border));
 		
-		layout.addView(listView, new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0));
+		layout.addView(listView, new LayoutParams(FILL_PARENT, FILL_PARENT, 0));
 		
 		layout.setOrientation(LinearLayout.VERTICAL);
 		
@@ -227,7 +209,7 @@ public class CalendarActivity extends Activity
 				else if(col == 6) cellParams.setMargins(3, 3, 6, bottom);
 				else cellParams.setMargins(3, 3, 3, bottom);
 				
-				tableRow.addView(getMonthButton(cell), cellParams);
+				tableRow.addView(getMonthButton(cell, col), cellParams);
 				
 				cell++;
 			}
@@ -236,10 +218,13 @@ public class CalendarActivity extends Activity
 		}
 	}
 	
-	private Button getMonthButton(int cell)
+	private Button getMonthButton(int cell, int col)
 	{
 		int day = cell;
 		int color = Color.BLACK;
+		
+		if(col == 5) color = Color.parseColor("#0076A3");
+		else if(col == 6) color = Color.parseColor("#ED1C24");
 		
 		if(day < 1)
 		{
@@ -254,12 +239,11 @@ public class CalendarActivity extends Activity
 		
 		CalendarButton button = new CalendarButton(this, cell, color);
 		
-		button.setText(String.valueOf(((day < 10) ? " " : "") + day));
+		button.setText(String.valueOf(day));
 		button.setTextSize(16);
 		button.setPadding(5, 15, 5, 15);
 		button.setTextColor(color);
 		button.setBackgroundColor(Color.WHITE);
-		if(cell == currentDay) button.setBackgroundDrawable(getResources().getDrawable(R.drawable.border_shape));
 		
 		button.setOnClickListener(new OnClickListener()
 		{
@@ -267,21 +251,18 @@ public class CalendarActivity extends Activity
 			public void onClick(View v)
 			{
 				CalendarButton b = (CalendarButton) v;
+			
+				currentCell.setTextColor(currentCell.color);
+				currentCell.setBackgroundColor(Color.WHITE);
+
+				b.setTextColor(Color.WHITE);
+				v.setBackgroundColor(Color.parseColor("#8560A8"));
+				currentCell = b;
 				
-				if(b.clicked)
-				{
-					b.clicked = false;
-					b.setTextColor(b.color);
-					v.setBackgroundColor(Color.WHITE);
-					dates[mapCellToArray(b.cell)] = false;
-				}
-				else
-				{
-					b.clicked = true;
-					b.setTextColor(Color.parseColor("#7E317B"));
-					v.setBackgroundColor(Color.parseColor("#D8ACE0"));
-					dates[mapCellToArray(b.cell)] = true;
-				}
+				String fromDate = cellToDate(b.cell);
+				String toDate   = cellToDate(b.cell + 1);
+				
+				filterEventByDateRange(fromDate, toDate);
 			}
 			
 		});
@@ -291,7 +272,6 @@ public class CalendarActivity extends Activity
 	
 	private class CalendarButton extends Button
 	{
-		private boolean clicked = false;
 		private int cell;
 		private int color;
 		
@@ -300,7 +280,29 @@ public class CalendarActivity extends Activity
 			super(context);
 			this.cell = cell;
 			this.color = color;
-		}	
+			
+			if(cell == currentDay) currentCell = this;
+		}
+		
+		 @Override
+		 protected void onDraw(Canvas canvas)
+		 {
+			 super.onDraw(canvas);
+			 
+			 if(cell == currentDay)
+			 {
+				 float w = getWidth()  / 2;
+				 float h = getHeight() / 2;
+				 
+				 Bitmap bitmap =
+						 BitmapFactory.decodeResource(getResources(), R.drawable.today_indicator);
+				 
+				 w -= bitmap.getWidth()  / 2;
+				 h -= bitmap.getHeight() / 2;
+				 
+			     canvas.drawBitmap(bitmap, w, h, null);
+			 }
+		 }
 	}
 	
 	private void setMonthBounds(int month)
@@ -334,27 +336,17 @@ public class CalendarActivity extends Activity
 
 	}
 	
-	private int mapCellToArray(int cell)
+	private void filterEventByDateRange(String fromDate, String toDate)
 	{
-		int offset = 1 - lowerBound;
-		
-		return cell - offset;
-	}
-	
-	private int mapArrayToCell(int n)
-	{
-		int offset = 1 - lowerBound;
-		
-		return n + offset;
-	}
-	
-	private String getDatesString()
-	{
-		String str = "";
-		
-		for(int i = 0; i < dates.length; i++)
-			if(dates[i]) str += cellToDate(mapArrayToCell(i)) + ", ";
-		
-		return str;
+		ArrayList<Event> inRangeEvents = new ArrayList<Event>();
+
+		for (Event event : eventList)
+		{
+			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), fromDate,
+					toDate)) inRangeEvents.add(event);
+		}
+
+		listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
+				inRangeEvents));
 	}
 }
