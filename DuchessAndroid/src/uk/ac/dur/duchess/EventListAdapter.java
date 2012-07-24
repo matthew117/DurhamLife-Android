@@ -74,8 +74,6 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
 			holder.pinButton = (ImageView) v.findViewById(R.id.pinButton);
 			
-			
-			
 			user = SessionFunctions.getCurrentUser((Activity) context);
 			
 			
@@ -88,42 +86,42 @@ public class EventListAdapter extends ArrayAdapter<Event>
 
 		Event e = getItem(position);
 		
-		List<String> categories = e.getCategoryTags();
-		
-		if(categories != null)
-		{
-			if(categories.size() > 0)
-			{
-				int id = mapCategoryToIcon(categories.get(0));
-				holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
-			}
-			else holder.categoryIcon1.setVisibility(View.GONE);
-			
-			if(categories.size() > 1)
-			{
-				int id = mapCategoryToIcon(categories.get(1));
-				holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
-			}
-			else holder.categoryIcon2.setVisibility(View.GONE);
-			
-			if(categories.size() > 2)
-			{
-				int id = mapCategoryToIcon(categories.get(2));
-				holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
-			}
-			else holder.categoryIcon3.setVisibility(View.GONE);
-		}
-		else
-		{
-			holder.categoryIcon1.setVisibility(View.GONE);
-			holder.categoryIcon2.setVisibility(View.GONE);
-			holder.categoryIcon3.setVisibility(View.GONE);
-		}
-		
 		Log.d("POSITION", ""+position);
 
 		if (e != null)
 		{
+			List<String> categories = e.getCategoryTags();
+			
+			if(categories != null)
+			{
+				if(categories.size() > 0)
+				{
+					int id = mapCategoryToIcon(categories.get(0));
+					holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+				}
+				else holder.categoryIcon1.setVisibility(View.GONE);
+				
+				if(categories.size() > 1)
+				{
+					int id = mapCategoryToIcon(categories.get(1));
+					holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+				}
+				else holder.categoryIcon2.setVisibility(View.GONE);
+				
+				if(categories.size() > 2)
+				{
+					int id = mapCategoryToIcon(categories.get(2));
+					holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+				}
+				else holder.categoryIcon3.setVisibility(View.GONE);
+			}
+			else
+			{
+				holder.categoryIcon1.setVisibility(View.GONE);
+				holder.categoryIcon2.setVisibility(View.GONE);
+				holder.categoryIcon3.setVisibility(View.GONE);
+			}
+			
 			Log.d("EVENT ID", ""+e.getEventID());
 			if(user.hasPinnedEvent(e.getEventID()))
 			{
@@ -134,7 +132,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			{
 				Log.d("PINNED LISTVIEW", "Setting image to clear");
 				holder.pinButton.setImageDrawable(context.getResources().getDrawable(R.drawable.clear_bookmark));
-			}
+			}	
 			
 			holder.pinButton.setOnClickListener(new View.OnClickListener()
 			{

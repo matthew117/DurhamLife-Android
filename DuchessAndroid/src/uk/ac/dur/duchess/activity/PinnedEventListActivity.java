@@ -13,10 +13,14 @@ import uk.ac.dur.duchess.webservice.EventAPI;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class PinnedEventListActivity extends ListActivity {
 	
@@ -38,6 +42,35 @@ public class PinnedEventListActivity extends ListActivity {
 		listAdapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		
 		listView.setAdapter(listAdapter);
+		
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+
+				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+				Event e = (Event) listAdapter.getItem(position);
+				i.putExtra("event_id", e.getEventID());
+				i.putExtra("event_name", e.getName());
+				i.putExtra("event_start_date", e.getStartDate());
+				i.putExtra("event_end_date", e.getEndDate());
+				i.putExtra("event_description_header", e.getDescriptionHeader());
+				i.putExtra("event_description_body", e.getDescriptionBody());
+				i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+				i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+				i.putExtra("event_web_address", e.getWebAddress());
+				i.putExtra("event_address1", e.getAddress1());
+				i.putExtra("event_address2", e.getAddress2());
+				i.putExtra("event_city", e.getCity());
+				i.putExtra("event_postcode", e.getPostcode());
+				i.putExtra("event_latitude", e.getLatitude());
+				i.putExtra("event_longitude", e.getLongitude());
+				i.putExtra("image_url", e.getImageURL());
+				i.putExtra("ical_url", e.getICalURL());
+				startActivity(i);
+			}
+		});
 		
 		errorThread = new Runnable() {	
 			@Override

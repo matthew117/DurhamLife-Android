@@ -23,3 +23,4 @@ Bugs
 - Unsubcribe button might still be funky (check on mobile phone rather than tablet)
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
+- Category icons seems to disappear when the list view is scrolled excessively

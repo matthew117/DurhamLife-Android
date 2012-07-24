@@ -1,8 +1,24 @@
 package uk.ac.dur.duchess.activity;
 
+import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+
+import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.GlobalApplicationData;
+import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventXMLParser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +31,12 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class CalendarActivity extends Activity
@@ -26,6 +45,7 @@ public class CalendarActivity extends Activity
 	private int lowerBound;
 	private int upperBound;
 	private int lastBound;
+	private int currentDay = -1;
 	
 	private LinearLayout layout;
 	private LayoutParams params;
@@ -35,6 +55,9 @@ public class CalendarActivity extends Activity
 	private boolean[] dates = new boolean[42];
 	
 	private Button confirmButton;
+	private List<Event> eventList;
+	private EventListAdapter adapter;
+	private ListView listView;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -42,27 +65,28 @@ public class CalendarActivity extends Activity
 		super.onCreate(savedInstanceState);
 		
 		layout = new LinearLayout(this);
-		params = new LayoutParams(-1, -2, 0);
+		params = new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
 		
 		Display display = ((android.view.WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 		int screenOrientation = display.getOrientation();
 		
-		if(screenOrientation != 0) params = new LayoutParams(-1, -1, 1);
+		if(screenOrientation != 0) params = new LayoutParams(FILL_PARENT, FILL_PARENT, 1);
 		
 		layout.setLayoutParams(params);
+		layout.setBackgroundColor(Color.parseColor("#DDDDDD"));
 		
 		calendar = Calendar.getInstance();
 		
 		setMonthBounds(calendar.get(Calendar.MONTH));
 		
-		int cell = 1 - lowerBound;
-		
 		header = new LinearLayout(this);
-		header.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0));
+		LayoutParams headerParams = new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
+		headerParams.setMargins(0, 0, 0, 3);
+		header.setLayoutParams(headerParams);
 		header.setOrientation(1);
 		
 		subHeader = new LinearLayout(this);
-		subHeader.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 1));
+		subHeader.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 1));
 		
 		TextView monthText = new TextView(this);
 		
@@ -81,12 +105,12 @@ public class CalendarActivity extends Activity
 		
 		header.setBackgroundDrawable(gradient);
 		
-		subHeader.addView(monthText, new LinearLayout.LayoutParams(-2, -2, 1));
+		subHeader.addView(monthText, new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 1));
 		
 		confirmButton = new Button(this);
 		confirmButton.setText("Confirm");
 		
-		LayoutParams buttonParams = new LinearLayout.LayoutParams(-2, -2, 0);
+		LayoutParams buttonParams = new LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 0);
 		buttonParams.setMargins(0, 5, 0, 5);
 		
 		confirmButton.setOnClickListener(new View.OnClickListener()
@@ -117,9 +141,9 @@ public class CalendarActivity extends Activity
 		header.addView(subHeader);
 		
 		LinearLayout days = new LinearLayout(this);
-		days.setLayoutParams(new LinearLayout.LayoutParams(-1, -2, 0));
+		days.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0));
 		
-		String[] dayStrings = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
+		String[] dayStrings = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 		
 		for(int i = 0; i < 7; i++)
 		{
@@ -128,32 +152,88 @@ public class CalendarActivity extends Activity
 			day.setGravity(Gravity.CENTER);
 			day.setPadding(0, 0, 0, 5);
 			day.setTextColor(Color.BLACK);
-			day.setTextSize(10);
-			days.addView(day, new LinearLayout.LayoutParams(0, -2, 1));
+			day.setTextSize(14);
+			days.addView(day, new LayoutParams(0, WRAP_CONTENT, 1));
 		}
 		
 		header.addView(days);
 		
 		layout.addView(header);
 		
+		setupCalendarLayout();
+		
+		listView = new ListView(this);
+		
+		eventList = GlobalApplicationData.globalEventList; // TODO
+
+		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
+		listView.setAdapter(adapter);
+		
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+
+				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+				Event e = (Event) adapter.getItem(position);
+				i.putExtra("event_id", e.getEventID());
+				i.putExtra("event_name", e.getName());
+				i.putExtra("event_start_date", e.getStartDate());
+				i.putExtra("event_end_date", e.getEndDate());
+				i.putExtra("event_description_header", e.getDescriptionHeader());
+				i.putExtra("event_description_body", e.getDescriptionBody());
+				i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+				i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+				i.putExtra("event_web_address", e.getWebAddress());
+				i.putExtra("event_address1", e.getAddress1());
+				i.putExtra("event_address2", e.getAddress2());
+				i.putExtra("event_city", e.getCity());
+				i.putExtra("event_postcode", e.getPostcode());
+				i.putExtra("event_latitude", e.getLatitude());
+				i.putExtra("event_longitude", e.getLongitude());
+				i.putExtra("image_url", e.getImageURL());
+				i.putExtra("ical_url", e.getICalURL());
+				startActivity(i);
+			}
+		});
+		
+		listView.setVerticalFadingEdgeEnabled(true);
+		listView.setFadingEdgeLength(12);
+		
+		layout.addView(listView, new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0));
+		
+		layout.setOrientation(LinearLayout.VERTICAL);
+		
+		setContentView(layout);
+	}
+
+	private void setupCalendarLayout()
+	{
+		int cell = 1 - lowerBound;
+		
 		for(int row = 0; row < 6; row++)
 		{
 			LinearLayout tableRow = new LinearLayout(this);
-			tableRow.setLayoutParams(new LinearLayout.LayoutParams(-1, LayoutParams.FILL_PARENT, 1));
+			tableRow.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0));
 			
 			for(int col = 0; col < 7; col++)
 			{
-				tableRow.addView(getMonthButton(cell), new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, 1));
+				LayoutParams cellParams = new LayoutParams(0, WRAP_CONTENT, 1);
+				
+				int bottom = (row == 5) ? 6 : 3;
+				
+				if(col == 0) cellParams.setMargins(6, 3, 3, bottom);
+				else if(col == 6) cellParams.setMargins(3, 3, 6, bottom);
+				else cellParams.setMargins(3, 3, 3, bottom);
+				
+				tableRow.addView(getMonthButton(cell), cellParams);
 				
 				cell++;
 			}
 			
 			layout.addView(tableRow);
 		}
-		
-		layout.setOrientation(1);
-		
-		setContentView(layout);
 	}
 	
 	private Button getMonthButton(int cell)
@@ -175,8 +255,11 @@ public class CalendarActivity extends Activity
 		CalendarButton button = new CalendarButton(this, cell, color);
 		
 		button.setText(String.valueOf(((day < 10) ? " " : "") + day));
+		button.setTextSize(16);
+		button.setPadding(5, 15, 5, 15);
 		button.setTextColor(color);
 		button.setBackgroundColor(Color.WHITE);
+		if(cell == currentDay) button.setBackgroundDrawable(getResources().getDrawable(R.drawable.border_shape));
 		
 		button.setOnClickListener(new OnClickListener()
 		{
@@ -222,6 +305,9 @@ public class CalendarActivity extends Activity
 	
 	private void setMonthBounds(int month)
 	{
+		if(month == calendar.get(Calendar.MONTH))
+			currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+		
 		Calendar calendar = Calendar.getInstance();
 		
 		calendar.set(Calendar.MONTH, month);
