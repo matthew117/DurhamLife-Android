@@ -31,7 +31,7 @@ public class CategoryGridActivity extends Activity
 				R.drawable.music, R.drawable.theatre, R.drawable.exhibitions, R.drawable.sport,
 				R.drawable.conference, R.drawable.community };
 
-		String[] categoryLabels = new String[] {"University", "College", "Music", "Theatre", "Exhibitions", "Sport", "Conference", "Community"};
+		String[] categoryLabels = new String[] {"University", "College", "Music", "Theatre", "Exhibitions", "Sport", "Conferences", "Community"};
 		
 		gridView.setAdapter(new ImageGridAdapter(this, imageIDs, categoryLabels));
 
@@ -65,7 +65,7 @@ public class CategoryGridActivity extends Activity
 		case 5:
 			return "Sport";
 		case 6:
-			return "Conference";
+			return "Conferences";
 		case 7:
 			return "Community";
 		default:
