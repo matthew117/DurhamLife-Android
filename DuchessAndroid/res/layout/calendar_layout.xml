@@ -38,53 +38,53 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:paddingBottom="2dp">
+            android:layout_height="wrap_content" android:paddingBottom="2dp" android:layout_weight="0" android:layout_marginLeft="3dp" android:layout_marginRight="3dp">
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Mon" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Tue" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Wed" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Thu" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView7"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Fri" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Sat" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/textView8"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Sun" android:textSize="14sp" android:textColor="@android:color/primary_text_light" android:gravity="center"/>
