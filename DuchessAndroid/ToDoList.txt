@@ -4,12 +4,12 @@ Features
 + Unsubcribe from societies (doesn't sync)
 + Caching
 + Download more events when you reach the end of the list (pagination)
-+ Add time instance to google calendar
 + Make personal society page better (red headings)
 + Improve TimeActivity appearance
 + Browse events by location
 + Browse events near to your location
 + Browse near events on a map
++ Clear All/Select All for preferences on settings
 
 Optimizations
 
@@ -23,4 +23,4 @@ Bugs
 - Unsubcribe button might still be funky (check on mobile phone rather than tablet)
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
-- Category icons seems to disappear when the list view is scrolled excessively
+- A time instance is added to google calendar even if you press back (out of our control?)

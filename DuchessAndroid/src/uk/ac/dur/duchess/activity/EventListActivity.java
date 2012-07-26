@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -259,10 +260,11 @@ public class EventListActivity extends ListActivity
 	}
 	
 	@Override
-	public void onRestart()
+	public void onResume()
 	{
-		super.onRestart();
-		listView.invalidateViews();
+		super.onResume();
+		currentUser = SessionFunctions.getCurrentUser(this);
+		adapter.notifyDataSetChanged();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -288,12 +290,6 @@ public class EventListActivity extends ListActivity
 		{
 			Intent i = new Intent(this, DateFrameActivity.class);
 			startActivityForResult(i, REQUEST_DATEFRAME);
-			return true;
-		}
-		case R.id.submenuEventListByCalendar:
-		{
-			Intent i = new Intent(this, CalendarActivity.class);
-			startActivity(i);
 			return true;
 		}
 		case R.id.submenuEventListAZ:

@@ -113,5 +113,15 @@
     <string name="copyright_message">This is a generic copyright message because I am not a lawyer.</string>
     <string name="terms">Terms</string>
     <string name="version">Version</string>
+    <string-array name="event_categories">
+        <item >University</item>
+        <item >College</item>
+        <item >Music</item>
+        <item >Theatre</item>
+        <item >Exhibitions</item>
+        <item >Sport</item>
+        <item >Conferences</item>
+        <item >Community</item>
+    </string-array>
 
 </resources>

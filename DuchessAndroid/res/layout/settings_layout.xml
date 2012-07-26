@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#DDDDDD"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true" >
+    android:background="#DDDDDD" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:orientation="vertical" >
 
         <TextView
@@ -220,6 +220,26 @@
                     android:text="@string/community"
                     android:textColor="@android:color/primary_text_light" />
             </TableRow>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp" >
+
+                <Button
+                    android:id="@+id/selectPreferencesButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select All" />
+
+                <Button
+                    android:id="@+id/clearPreferencesButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Clear All" />
+            </LinearLayout>
         </TableLayout>
     </LinearLayout>
 

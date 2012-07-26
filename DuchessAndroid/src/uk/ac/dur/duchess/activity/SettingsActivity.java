@@ -33,9 +33,13 @@ public class SettingsActivity extends Activity
 	private CheckBox exhibitionsCheckBox;
 	private CheckBox conferencesCheckBox;
 	private CheckBox communityCheckBox;
+	private Button selectAll;
+	private Button clearAll;
 	
 	private Activity activity;
 	private User currentUser;
+	
+	private CheckBox[] preferences;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -62,6 +66,16 @@ public class SettingsActivity extends Activity
 		exhibitionsCheckBox = (CheckBox) findViewById(R.id.checkBoxExhibitions);
 		conferencesCheckBox = (CheckBox) findViewById(R.id.checkBoxConferences);
 		communityCheckBox   = (CheckBox) findViewById(R.id.checkBoxCommunity);
+		
+		preferences = new CheckBox[]
+			{
+				universityCheckBox, collegeCheckBox, musicCheckBox,
+				sportCheckBox, theatreCheckBox, exhibitionsCheckBox,
+				conferencesCheckBox, communityCheckBox
+			};
+		
+		selectAll = (Button) findViewById(R.id.selectPreferencesButton);
+		clearAll  = (Button) findViewById(R.id.clearPreferencesButton);
 		
 		email.setText(currentUser.getEmailAddress());
 		
@@ -91,14 +105,28 @@ public class SettingsActivity extends Activity
 		
 		List<String> categoryPreferences = currentUser.getCategoryPreferences();
 		
-		if (categoryPreferences.contains("University"))  universityCheckBox.setChecked(true);
-		if (categoryPreferences.contains("College"))     collegeCheckBox.setChecked(true);
-		if (categoryPreferences.contains("Music"))       musicCheckBox.setChecked(true);
-		if (categoryPreferences.contains("Theatre"))     theatreCheckBox.setChecked(true);
-		if (categoryPreferences.contains("Exhibitions")) exhibitionsCheckBox.setChecked(true);
-		if (categoryPreferences.contains("Sport"))       sportCheckBox.setChecked(true);
-		if (categoryPreferences.contains("Conferences")) conferencesCheckBox.setChecked(true);
-		if (categoryPreferences.contains("Community"))   communityCheckBox.setChecked(true);
+		String[] categories = getResources().getStringArray(R.array.event_categories);
+		
+		for(int i = 0; i < categories.length; i++)
+			if(categoryPreferences.contains(categories[i])) preferences[i].setChecked(true);
+		
+		selectAll.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				for(CheckBox box : preferences) box.setChecked(true);
+			}
+		});
+		
+		clearAll.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				for(CheckBox box : preferences) box.setChecked(false);
+			}
+		});
 	}
 	
 	@Override
@@ -114,14 +142,10 @@ public class SettingsActivity extends Activity
 		List<String> newPreferences = new ArrayList<String>();
 		currentUser.getCategoryPreferences().clear();
 		
-		if (universityCheckBox.isChecked())  newPreferences.add("University");
-		if (collegeCheckBox.isChecked())     newPreferences.add("College");
-		if (musicCheckBox.isChecked())       newPreferences.add("Music");
-		if (theatreCheckBox.isChecked())     newPreferences.add("Theatre");
-		if (exhibitionsCheckBox.isChecked()) newPreferences.add("Exhibitions");
-		if (sportCheckBox.isChecked())       newPreferences.add("Sport");
-		if (conferencesCheckBox.isChecked()) newPreferences.add("Conferences");
-		if (communityCheckBox.isChecked())   newPreferences.add("Community");
+		String[] categories = getResources().getStringArray(R.array.event_categories);
+		
+		for(int i = 0; i < categories.length; i++)
+			if(preferences[i].isChecked()) newPreferences.add(categories[i]);
 		
 		currentUser.setCategoryPreferences(newPreferences);
 		

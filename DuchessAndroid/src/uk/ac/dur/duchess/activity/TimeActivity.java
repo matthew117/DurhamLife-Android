@@ -1,20 +1,22 @@
 package uk.ac.dur.duchess.activity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-
 import net.fortuna.ical4j.model.Calendar;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.TimeAdapter;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class TimeActivity extends Activity
 {	
@@ -68,7 +70,7 @@ public class TimeActivity extends Activity
 		try
 		{
 			Bundle e = getIntent().getExtras();
-			String eventName = e.getString("event_name");
+			final String eventName = e.getString("event_name");
 			String iCalURL = e.getString("ical_url");
 			String startDate = e.getString("event_start_date");
 			
@@ -126,31 +128,56 @@ public class TimeActivity extends Activity
 			SimpleDateFormat source = new SimpleDateFormat(format24);
 			SimpleDateFormat timeFormat = new SimpleDateFormat(usesAM_PM ? format12 : format24);
 			
+			final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			
 			for (Integer day : map.keySet())
 			{
 				List<String> buttonText = map.get(day);
 				if (buttonText != null)
 				{
-					for (String s : buttonText)
+					for (final String s : buttonText)
 					{
 						Button b = new Button(this);
 						
-						String startTime = s.substring(11, 16);
-						String endTime   = s.substring(20, 26);
-						
-						startTime = timeFormat.format(source.parse(startTime));
-						endTime   = timeFormat.format(source.parse(endTime));
+						String startTime = timeFormat.format(source.parse(s.substring(11, 16)));
+						String endTime   = timeFormat.format(source.parse(s.substring(20, 26)));
 						
 						b.setText(startTime + " - " + endTime);
+						
+						b.setOnClickListener(new View.OnClickListener()
+						{
+							@Override
+							public void onClick(View v)
+							{
+								try
+								{
+									java.util.Calendar start = java.util.Calendar.getInstance(); 
+									java.util.Calendar end   = java.util.Calendar.getInstance(); 
+									
+									start.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(s.substring(0, 10) + " " + s.substring(11, 16)));
+									end.setTime  (new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(s.substring(0, 10) + " " + s.substring(20, 26)));
+									
+									Intent intent = new Intent(Intent.ACTION_EDIT);
+									
+									intent.setType("vnd.android.cursor.item/event");
+									intent.putExtra("beginTime", start.getTimeInMillis());
+									intent.putExtra("endTime", end.getTimeInMillis());
+									intent.putExtra("title", eventName);
+									
+									startActivity(intent);
+								}
+								catch(ParseException e) { e.printStackTrace(); }
+							}
+						});
 						
 						containers[day - 1].addView(b);
 					}
 				}
 			}
 		}
-		catch (Exception ex)
+		catch (Exception e)
 		{
-			ex.printStackTrace();
+			e.printStackTrace();
 		}
 		
 	}

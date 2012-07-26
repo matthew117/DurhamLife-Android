@@ -21,6 +21,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 	private TextView societiesButton;
 	private TextView settingsButton;
 	private TextView societyEventListButton;
+	private TextView calendarButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -35,6 +36,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 		societiesButton = (TextView) findViewById(R.id.userHubSocieties);
 		settingsButton = (TextView) findViewById(R.id.userHubSettings);
 		societyEventListButton = (TextView) findViewById(R.id.userHubSocietyEvents);
+		calendarButton = (TextView) findViewById(R.id.userHubCalendar);
 
 		// Custom Title Bar properties
 		titleBarButton4.setVisibility(View.GONE);
@@ -148,5 +150,14 @@ public class UserHubActivity extends CustomTitleBarActivity
 			}
 		});
 
+		calendarButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(v.getContext(), CalendarActivity.class);
+				startActivity(i);
+			}
+		});
 	}
 }

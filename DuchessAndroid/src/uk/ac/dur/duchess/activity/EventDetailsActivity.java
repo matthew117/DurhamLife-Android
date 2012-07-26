@@ -62,7 +62,7 @@ public class EventDetailsActivity extends Activity
 		
 		eventImageContainer.setBackgroundDrawable(gradient);
 
-		image = (ImageView) findViewById(R.id.imageView1);
+		image = (ImageView) findViewById(R.id.eventImage);
 
 		Bundle e = getIntent().getExtras();
 
@@ -73,8 +73,8 @@ public class EventDetailsActivity extends Activity
 		String date = CalendarFunctions.getEventDate(start_date, end_date);
 		String descriptionHeader = e.getString("event_description_header");
 		String descriptionBody = e.getString("event_description_body");
-		String contactTelephone = e.getString("event_contact_telephone_number");
-		String contactEmail = e.getString("event_contact_email_address");
+		final String contactTelephone = e.getString("event_contact_telephone_number");
+		final String contactEmail = e.getString("event_contact_email_address");
 		String webAddress = e.getString("event_web_address");
 		String image_url = e.getString("image_url");
 		final String ical_url = e.getString("ical_url");
@@ -111,7 +111,7 @@ public class EventDetailsActivity extends Activity
 			public void onClick(View view)
 			{
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
-		        callIntent.setData(Uri.parse("tel:+447794330580")); // TODO
+		        callIntent.setData(Uri.parse("tel:" + contactTelephone));
 		        startActivity(callIntent);
 			}
 		});
@@ -126,7 +126,7 @@ public class EventDetailsActivity extends Activity
 			{
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("plain/text");
-				intent.putExtra(Intent.EXTRA_EMAIL,new String[] { "jamie_bates_8@live.co.uk" }); // TODO
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { contactEmail });
 				intent.putExtra(Intent.EXTRA_SUBJECT, "");
 				intent.putExtra(Intent.EXTRA_TEXT, "");
 

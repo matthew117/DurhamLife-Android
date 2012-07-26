@@ -98,6 +98,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				{
 					int id = mapCategoryToIcon(categories.get(0));
 					holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+					holder.categoryIcon1.setVisibility(View.VISIBLE);
 				}
 				else holder.categoryIcon1.setVisibility(View.GONE);
 				
@@ -105,6 +106,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				{
 					int id = mapCategoryToIcon(categories.get(1));
 					holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+					holder.categoryIcon2.setVisibility(View.VISIBLE);
 				}
 				else holder.categoryIcon2.setVisibility(View.GONE);
 				
@@ -112,6 +114,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				{
 					int id = mapCategoryToIcon(categories.get(2));
 					holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+					holder.categoryIcon3.setVisibility(View.VISIBLE);
 				}
 				else holder.categoryIcon3.setVisibility(View.GONE);
 			}
@@ -122,7 +125,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				holder.categoryIcon3.setVisibility(View.GONE);
 			}
 			
-			Log.d("EVENT ID", ""+e.getEventID());
+			Log.d("EVENT ID", "" + e.getEventID());
 			if(user.hasPinnedEvent(e.getEventID()))
 			{
 				Log.d("PINNED LISTVIEW", "Setting image to purple because user has that event");

@@ -323,9 +323,6 @@ public class CalendarActivity extends Activity
 			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), fromDate,
 					toDate)) eventList.add(event);
 		}
-
-		listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
-				eventList));
 		
 		adapter.notifyDataSetChanged();
 	}
