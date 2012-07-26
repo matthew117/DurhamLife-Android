@@ -77,6 +77,7 @@ public class EventDetailsActivity extends Activity
 		final String contactEmail = e.getString("event_contact_email_address");
 		String webAddress = e.getString("event_web_address");
 		String image_url = e.getString("image_url");
+		final String address = e.getString("event_address1");
 		final String ical_url = e.getString("ical_url");
 
 		if (name != null) txtName.setText(name);
@@ -92,6 +93,7 @@ public class EventDetailsActivity extends Activity
 				Intent timeIntent = new Intent(view.getContext(), TimeActivity.class);
 		        timeIntent.putExtra("event_name", name);
 		        timeIntent.putExtra("event_start_date", start_date);
+		        timeIntent.putExtra("event_address", address);
 		        timeIntent.putExtra("ical_url", ical_url);
 		        startActivity(timeIntent);
 			}

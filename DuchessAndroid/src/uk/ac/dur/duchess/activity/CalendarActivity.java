@@ -119,8 +119,6 @@ public class CalendarActivity extends Activity
 			}
 		});
 		
-		setupCalendarLayout();
-		
 		eventList = new ArrayList<Event>();
 
 		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
@@ -156,6 +154,16 @@ public class CalendarActivity extends Activity
 		});
 		
 		listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_bottom_border));
+		
+		setupCalendarLayout();
+		
+		currentCell.setTextColor(Color.WHITE);
+		currentCell.setBackgroundColor(Color.parseColor("#8560A8"));
+		
+		String fromDate = cellToDate(currentCell.cell);
+		String toDate   = cellToDate(currentCell.cell + 1);
+		
+		filterEventByDateRange(fromDate, toDate);
 	}
 
 	private void setupCalendarLayout()
@@ -187,6 +195,9 @@ public class CalendarActivity extends Activity
 			
 			calendarView.addView(tableRow);
 		}
+
+		eventList.clear();
+		adapter.notifyDataSetChanged();
 	}
 	
 	private Button getMonthButton(int cell, int col)

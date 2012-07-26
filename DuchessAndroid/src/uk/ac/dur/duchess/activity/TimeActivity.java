@@ -71,6 +71,7 @@ public class TimeActivity extends Activity
 		{
 			Bundle e = getIntent().getExtras();
 			final String eventName = e.getString("event_name");
+			final String eventLocation = e.getString("event_address");
 			String iCalURL = e.getString("ical_url");
 			String startDate = e.getString("event_start_date");
 			
@@ -163,6 +164,7 @@ public class TimeActivity extends Activity
 									intent.putExtra("beginTime", start.getTimeInMillis());
 									intent.putExtra("endTime", end.getTimeInMillis());
 									intent.putExtra("title", eventName);
+									intent.putExtra("eventLocation", eventLocation);
 									
 									startActivity(intent);
 								}
