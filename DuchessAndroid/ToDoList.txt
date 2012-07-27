@@ -5,11 +5,10 @@ Features
 + Caching
 + Download more events when you reach the end of the list (pagination)
 + Make personal society page better (red headings)
-+ Improve TimeActivity appearance
++ Improve TimeActivity by allowing the user to go view different weeks
 + Browse events by location
 + Browse events near to your location
 + Browse near events on a map
-+ Clear All/Select All for preferences on settings
 
 Optimizations
 

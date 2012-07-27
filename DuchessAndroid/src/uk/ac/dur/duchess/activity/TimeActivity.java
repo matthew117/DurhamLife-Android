@@ -7,14 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import net.fortuna.ical4j.model.Calendar;
+import uk.ac.dur.duchess.FlowLayout;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.TimeAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -31,13 +34,13 @@ public class TimeActivity extends Activity
 	private TextView saturdayTextView;
 	private TextView sundayTextView;
 	
-	private LinearLayout mondayContainer;
-	private LinearLayout tuesdayContainer;
-	private LinearLayout wednesdayContainer;
-	private LinearLayout thursdayContainer;
-	private LinearLayout fridayContainer;
-	private LinearLayout saturdayContainer;
-	private LinearLayout sundayContainer;
+	private FlowLayout mondayContainer;
+	private FlowLayout tuesdayContainer;
+	private FlowLayout wednesdayContainer;
+	private FlowLayout thursdayContainer;
+	private FlowLayout fridayContainer;
+	private FlowLayout saturdayContainer;
+	private FlowLayout sundayContainer;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -56,16 +59,19 @@ public class TimeActivity extends Activity
 		saturdayTextView  = (TextView) findViewById(R.id.saturdayTextView);
 		sundayTextView    = (TextView) findViewById(R.id.sundayTextView);
 		
-		mondayContainer    = (LinearLayout) findViewById(R.id.mondayDateContainer);
-		tuesdayContainer   = (LinearLayout) findViewById(R.id.tuesdayDateContainer);
-		wednesdayContainer = (LinearLayout) findViewById(R.id.wednesdayDateContainer);
-		thursdayContainer  = (LinearLayout) findViewById(R.id.thursdayDateContainer);
-		fridayContainer    = (LinearLayout) findViewById(R.id.fridayDateContainer);
-		saturdayContainer  = (LinearLayout) findViewById(R.id.saturdayDateContainer);
-		sundayContainer    = (LinearLayout) findViewById(R.id.sundayDateContainer);
+		mondayContainer    = (FlowLayout) findViewById(R.id.mondayDateContainer);
+		tuesdayContainer   = (FlowLayout) findViewById(R.id.tuesdayDateContainer);
+		wednesdayContainer = (FlowLayout) findViewById(R.id.wednesdayDateContainer);
+		thursdayContainer  = (FlowLayout) findViewById(R.id.thursdayDateContainer);
+		fridayContainer    = (FlowLayout) findViewById(R.id.fridayDateContainer);
+		saturdayContainer  = (FlowLayout) findViewById(R.id.saturdayDateContainer);
+		sundayContainer    = (FlowLayout) findViewById(R.id.sundayDateContainer);
 		
-		LinearLayout[] containers = {sundayContainer, mondayContainer, tuesdayContainer,
+		FlowLayout[] containers = {sundayContainer, mondayContainer, tuesdayContainer,
 				wednesdayContainer, thursdayContainer, fridayContainer, saturdayContainer};
+		
+		TextView[] dayTextViews = {mondayTextView, tuesdayTextView, wednesdayTextView,
+				thursdayTextView, fridayTextView, saturdayTextView, sundayTextView};
 		
 		try
 		{
@@ -76,6 +82,13 @@ public class TimeActivity extends Activity
 			String startDate = e.getString("event_start_date");
 			
 			eventNameTextView.setText(eventName);
+			
+			int[] headerColors = {Color.parseColor("#67226D"), Color.parseColor("#D8ACE0")};
+			
+			GradientDrawable headerGradient = new GradientDrawable(Orientation.BOTTOM_TOP, headerColors);
+			headerGradient.setDither(true);
+			
+			findViewById(R.id.weekHeader).setBackgroundDrawable(headerGradient);
 			
 			Calendar c = TimeAdapter.parseICalFromURL(iCalURL);
 			java.util.Calendar week = java.util.Calendar.getInstance();
@@ -97,16 +110,28 @@ public class TimeActivity extends Activity
 			{
 				java.util.Calendar f = java.util.Calendar.getInstance();
 				f.setTime((new SimpleDateFormat("yyyy-MM-dd")).parse(dayText));
-				leftDaytext.add((new SimpleDateFormat("E dd")).format(f.getTime()));
+				leftDaytext.add((new SimpleDateFormat("EEEEE, dd MMMMM yyyy")).format(f.getTime()));
 			}
+			
+			int[] subHeaderColors = {Color.parseColor("#BBBBBB"), Color.parseColor("#DDDDDD"), Color.parseColor("#FFFFFF")};
+			
+			GradientDrawable subHeaderGradient = new GradientDrawable(Orientation.BOTTOM_TOP, subHeaderColors);
+			subHeaderGradient.setDither(true);
 
-			mondayTextView.setText(leftDaytext.get(0));
-			tuesdayTextView.setText(leftDaytext.get(1));
-			wednesdayTextView.setText(leftDaytext.get(2));
-			thursdayTextView.setText(leftDaytext.get(3));
-			fridayTextView.setText(leftDaytext.get(4));
-			saturdayTextView.setText(leftDaytext.get(5));
-			sundayTextView.setText(leftDaytext.get(6));
+			for(int i = 0; i < leftDaytext.size(); i++)
+			{
+				dayTextViews[i].setText(leftDaytext.get(i));
+				dayTextViews[i].setBackgroundDrawable(subHeaderGradient);
+			}
+			
+			findViewById(R.id.footerView).setBackgroundDrawable(subHeaderGradient);
+			
+			int[] containerColors = {Color.parseColor("#444444"), Color.parseColor("#333333"), Color.parseColor("#222222")};
+			
+			GradientDrawable containerGradient = new GradientDrawable(Orientation.BOTTOM_TOP, containerColors);
+			containerGradient.setDither(true);
+			
+			for(FlowLayout layout : containers) layout.setBackgroundDrawable(containerGradient);
 			
 			Map<Integer,List<String>> map = TimeAdapter.groupEventsByDay(
 					TimeAdapter.getRecurrenceSetForGivenWeek(c, eventName,
@@ -134,6 +159,7 @@ public class TimeActivity extends Activity
 			for (Integer day : map.keySet())
 			{
 				List<String> buttonText = map.get(day);
+				
 				if (buttonText != null)
 				{
 					for (final String s : buttonText)
@@ -144,6 +170,9 @@ public class TimeActivity extends Activity
 						String endTime   = timeFormat.format(source.parse(s.substring(20, 26)));
 						
 						b.setText(startTime + " - " + endTime);
+						b.setBackgroundDrawable(getResources().getDrawable(R.drawable.time_button));
+						b.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.plus, 0);
+						b.setCompoundDrawablePadding(5);
 						
 						b.setOnClickListener(new View.OnClickListener()
 						{
@@ -176,6 +205,13 @@ public class TimeActivity extends Activity
 					}
 				}
 			}
+			
+			for(int i = 0; i < containers.length; i++)
+				if(containers[i].getChildCount() == 0)
+				{
+					containers[i].setVisibility(View.GONE);
+					dayTextViews[(containers.length + i - 1) % containers.length].setVisibility(View.GONE);
+				}
 		}
 		catch (Exception e)
 		{
