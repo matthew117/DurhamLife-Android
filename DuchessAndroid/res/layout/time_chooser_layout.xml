@@ -79,7 +79,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp" />
+                android:padding="5dp" android:background="@drawable/dark_gradient"/>
 
             <TextView
                 android:id="@+id/tuesdayTextView"
@@ -94,7 +94,7 @@
                 android:id="@+id/tuesdayDateContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="5dp"/>
+                android:orientation="vertical" android:padding="5dp" android:background="@drawable/dark_gradient"/>
 
             <TextView
                 android:id="@+id/wednesdayTextView"
@@ -109,7 +109,7 @@
                 android:id="@+id/wednesdayDateContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="5dp"/>
+                android:orientation="vertical" android:padding="5dp" android:background="@drawable/dark_gradient"/>
 
             <TextView
                 android:id="@+id/thursdayTextView"
@@ -124,7 +124,7 @@
                 android:id="@+id/thursdayDateContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="5dp"/>
+                android:orientation="vertical" android:padding="5dp" android:background="@drawable/dark_gradient"/>
 
             <TextView
                 android:id="@+id/fridayTextView"
@@ -139,7 +139,7 @@
                 android:id="@+id/fridayDateContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="5dp"/>
+                android:orientation="vertical" android:padding="5dp" android:background="@drawable/dark_gradient"/>
 
             <TextView
                 android:id="@+id/saturdayTextView"
@@ -154,7 +154,7 @@
                 android:id="@+id/saturdayDateContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="5dp"/>
+                android:orientation="vertical" android:padding="5dp" android:background="@drawable/dark_gradient"/>
 
             <TextView
                 android:id="@+id/sundayTextView"
@@ -169,7 +169,7 @@
                 android:id="@+id/sundayDateContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="5dp"/>
+                android:orientation="vertical" android:padding="5dp" android:background="@drawable/dark_gradient"/>
         </LinearLayout>
     </ScrollView>
 
@@ -177,6 +177,6 @@
         android:id="@+id/footerView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"/>
+        android:padding="5dp" android:textColor="@android:color/primary_text_light" android:textStyle="bold"/>
 
 </LinearLayout>

@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:background="@drawable/top_bottom_gradient_border" android:padding="5dp">
 
     <TextView
         android:id="@+id/reviewSubmitDate"
@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:paddingBottom="3dp"
         android:text="@string/problem_loading_date"
-        android:textStyle="bold" />
+        android:textStyle="bold" android:textColor="#666666"/>
 
     <TextView
         android:id="@+id/reviewComment"
@@ -22,7 +22,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/reviewStar1"
         android:text="@string/problem_loading_comment"
-        android:typeface="serif" />
+        android:typeface="serif" android:textColor="#444444"/>
 
     <ImageView
         android:id="@+id/reviewStar5"

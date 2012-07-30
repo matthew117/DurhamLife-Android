@@ -85,7 +85,7 @@ public class ReviewActivity extends Activity
 				User currentUser = SessionFunctions.getCurrentUser(activity);
 				if (currentUser == null)
 				{
-					Toast.makeText(v.getContext(), "You have to be signed in to submit a review.", Toast.LENGTH_LONG).show();
+					Toast.makeText(v.getContext(), "Please sign in to submit a review.", Toast.LENGTH_LONG).show();
 					return;
 				}
 				else

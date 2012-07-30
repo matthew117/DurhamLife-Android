@@ -107,7 +107,7 @@ public class TimeAdapter
 
 		for (; !copyStart.after(end); copyStart.add(DAY_OF_YEAR, 1))
 		{
-			dateList.add((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(copyStart.getTime()));
+			dateList.add((new SimpleDateFormat("yyyy-MM-dd")).format(copyStart.getTime()));
 		}
 
 		return dateList;

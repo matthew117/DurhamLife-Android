@@ -69,7 +69,7 @@ public class EventDetailsActivity extends Activity
 		eventID = e.getLong("event_id");
 		final String name = e.getString("event_name");
 		final String start_date = e.getString("event_start_date");
-		String end_date = e.getString("event_end_date");
+		final String end_date = e.getString("event_end_date");
 		String date = CalendarFunctions.getEventDate(start_date, end_date);
 		String descriptionHeader = e.getString("event_description_header");
 		String descriptionBody = e.getString("event_description_body");
@@ -83,7 +83,7 @@ public class EventDetailsActivity extends Activity
 		if (name != null) txtName.setText(name);
 		if (start_date != null && end_date != null) txtDate.setText(date);
 		
-		if(ical_url == null) timeChooserButton.setVisibility(View.GONE);
+		if(ical_url == null || date == "This event has ended") timeChooserButton.setVisibility(View.GONE);
 		
 		timeChooserButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -93,6 +93,7 @@ public class EventDetailsActivity extends Activity
 				Intent timeIntent = new Intent(view.getContext(), TimeActivity.class);
 		        timeIntent.putExtra("event_name", name);
 		        timeIntent.putExtra("event_start_date", start_date);
+		        timeIntent.putExtra("event_end_date", end_date);
 		        timeIntent.putExtra("event_address", address);
 		        timeIntent.putExtra("ical_url", ical_url);
 		        startActivity(timeIntent);
