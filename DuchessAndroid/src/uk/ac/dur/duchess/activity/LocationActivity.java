@@ -22,7 +22,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.widget.TextView;
 
@@ -48,6 +47,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	private Bitmap compass;
 	private double distance = 0;
 	private float rotation = 0;
+	private LocationManager lm;
+	private LocationListener locationListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -90,8 +91,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		listOfOverlays.clear();
 		listOfOverlays.add(mapOverlay);
 
-		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		LocationListener locationListener = new MyLocationListener();
+		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationListener = new MyLocationListener();
 
 		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
@@ -107,12 +108,14 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	{
 		super.onResume();
 		mySensorManager.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 	}
 
 	protected void onPause()
 	{
 		super.onPause();
 		mySensorManager.unregisterListener(this);
+		lm.removeUpdates(locationListener);
 	}
 
 
