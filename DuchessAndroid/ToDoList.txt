@@ -14,7 +14,6 @@ Optimizations
 
 # Reviews should be in a ListView (maybe)
 # Global access through application singleton rather than extensive Intent use
-# Make bookmark buttons larger
 
 Bugs
 
@@ -25,4 +24,3 @@ Bugs
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
 - A time instance is added to google calendar even if you press back (out of our control?)
 - Linkify causes text to disappear
-- Reviews with 0 stars and no text should probably be disabled (maybe only one review per event per user?)

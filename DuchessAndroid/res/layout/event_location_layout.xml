@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/DUPurple"
     android:orientation="vertical" >
 
     <TextView
@@ -11,19 +12,43 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:text="@string/default_event_name"
-        android:textColor="#7E317B"
+        android:textColor="@android:color/primary_text_dark"
         android:textSize="18sp"
         android:textStyle="bold"
         android:typeface="serif" />
 
-    <TextView
-        android:id="@+id/addressBlockTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/eventDescriptionContainer"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="3dp"
-        android:paddingLeft="5dp"
-        android:text="@string/address_goes_here" />
+        android:background="@drawable/curved_border_light"
+        android:orientation="vertical"
+        android:padding="5dp" android:layout_margin="5dp">
 
+        <TextView
+            android:id="@+id/textViewWhere"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="Where"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/addressBlockTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:drawableLeft="@drawable/location_tab_icon"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="@string/address_goes_here"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+    </LinearLayout>
 
     <com.google.android.maps.MapView
         android:id="@+id/mapView"

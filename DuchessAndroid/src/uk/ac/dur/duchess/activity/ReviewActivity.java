@@ -49,9 +49,15 @@ public class ReviewActivity extends Activity
 	private Activity activity;
 	
 	private ProgressBar progressBar;
+	private User currentUser;
 
 	// TODO disallow users from reviewing the same event twice in the API
-	// TODO remove EditText and RatingBar if no user is signed in (anonymous)
+	/* 
+	 * Accomplishes this partially on client-side by checking review IDs againt current user ID
+	 * EDIT: above solution removed, allowing the same user to submit multiple reviews but
+	 * limit spam by removing text and rating once the review has been submitted sucessfully
+	 * (i.e. user cannot repeatedly press submit)
+	 */
 
 	// TODO allow editing of that user's review
 
@@ -64,7 +70,7 @@ public class ReviewActivity extends Activity
 		setContentView(R.layout.review_layout);
 		
 		activity = this;
-
+		currentUser = SessionFunctions.getCurrentUser(activity);
 		e = getIntent().getExtras();
 
 		layout = (LinearLayout) findViewById(R.id.reviewLayoutID);
@@ -76,19 +82,26 @@ public class ReviewActivity extends Activity
 		progressBar = (ProgressBar) findViewById(R.id.reviewDownloadProgressBar);
 
 		eventNameLabel.setText(e.getString("event_name"));
+		
+		if(currentUser == null)
+		{
+			reviewEditText.setVisibility(View.GONE);
+			ratingBar.setVisibility(View.GONE);
+			submitReviewButton.setVisibility(View.GONE);
+			
+			TextView t = new TextView(getApplicationContext());
+			t.setText("Please sign in to submit a review");
+			t.setPadding(5, 5, 5, 5);
+			
+			layout.addView(t, 1);
+		}
 
 		submitReviewButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				User currentUser = SessionFunctions.getCurrentUser(activity);
-				if (currentUser == null)
-				{
-					Toast.makeText(v.getContext(), "Please sign in to submit a review.", Toast.LENGTH_LONG).show();
-					return;
-				}
-				else
+				if(reviewEditText.getText().length() != 0 && ratingBar.getRating() != 0)
 				{
 					String userXMLRequest = String.format(
 							"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><review userID=\"%s\" eventID=\"%s\">"
@@ -103,12 +116,27 @@ public class ReviewActivity extends Activity
 						InputStream response = NetworkFunctions.getHTTPResponseStream(
 								"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
 										+ e.getLong("event_id"), "PUT", userXMLRequest.getBytes());
+						
+						reviewEditText.setText("");
+						ratingBar.setRating(0);
+						
+						Toast.makeText(v.getContext(), "Review submitted", Toast.LENGTH_LONG).show();
 					}
 					catch (IOException e1)
 					{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+				}
+				else if(reviewEditText.getText().length() == 0)
+				{
+					Toast.makeText(v.getContext(), "Review content is empty!", Toast.LENGTH_LONG).show();
+					return;
+				}
+				else if(ratingBar.getRating() == 0)
+				{
+					Toast.makeText(v.getContext(), "Please rate this event", Toast.LENGTH_LONG).show();
+					return;
 				}
 			}
 		});
@@ -164,6 +192,7 @@ public class ReviewActivity extends Activity
 				t.setPadding(5, 5, 5, 5);
 				layout.addView(t);
 			}
+			
 			for (int i = 0; i < reviewList.size(); i++)
 			{
 				Review review = reviewList.get(i);

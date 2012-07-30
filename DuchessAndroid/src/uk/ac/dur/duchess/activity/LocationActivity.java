@@ -58,7 +58,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
 		eventName = (TextView) findViewById(R.id.locationEventNameLabel);
 
-		compass = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
+		compass = BitmapFactory.decodeResource(getResources(), R.drawable.compass_arrow);
 
 		Bundle e = getIntent().getExtras();
 
@@ -69,7 +69,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		String city = e.getString("event_city");
 		String postcode = e.getString("event_postcode");
 
-		addressBlock.setText(address1 + "\n" + address2 + "\n" + city + "\n" + postcode);
+		addressBlock.setText(address1 + ", " + address2 + "\n" + city + ", " + postcode);
 		eventName.setText(e.getString("event_name"));
 
 		mapView = (MapView) findViewById(R.id.mapView);
@@ -134,7 +134,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
 			canvas.drawBitmap(bmp, screenPoint.x - 36, screenPoint.y - 50, null);
-			
+			Bitmap base = BitmapFactory.decodeResource(getResources(), R.drawable.compass_base);
 
 			Display display = getWindowManager().getDefaultDisplay(); 
 			int width = canvas.getWidth();
@@ -142,21 +142,30 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 			int x = width - 100;
 			int y = height - 400;
-			int bx = x + (compass.getWidth()  / 2);
-			int by = y + (compass.getHeight() / 2);
+			int px = x + (compass.getWidth()  / 2);
+			int py = y + (compass.getHeight() / 2);
+			int bx = x + (base.getWidth()  / 2) - (compass.getWidth()  / 2);
+			int by = y + (base.getHeight() / 2) - (compass.getHeight() / 2);
+			
+			
 
 			Matrix matrix = new Matrix();
 			matrix.reset();
 			matrix.setTranslate(x, y);
-			matrix.postRotate(getRotation(), bx, by);
+			
+			canvas.drawBitmap(base, matrix, null);
+			
+			
+			matrix.setTranslate(bx, by);
+			matrix.preRotate(getRotation(), (compass.getWidth() / 2), (compass.getHeight() / 2));
+			
 			
 			Paint paint = new Paint();
-			paint.setStyle(Paint.Style.STROKE);
-			paint.setStrokeWidth(1);
+			paint.setStyle(Paint.Style.FILL);
 			paint.setColor(Color.BLACK);
-			paint.setTextSize(30);
+			paint.setTextSize(30);	
 			
-			canvas.drawText(String.valueOf(distance), bx - 50, by - 50, paint);
+			canvas.drawText(String.format("%.3f", distance), px, py - 50, paint);
 			canvas.drawBitmap(compass, matrix, null);
 
 			return true;
@@ -170,8 +179,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 			float[] d = {(float) ((point.getLongitudeE6() / 1E6) - (currentLocation.getLongitudeE6() / 1E6)),
 					(float) ((point.getLatitudeE6()  / 1E6) - (currentLocation.getLatitudeE6()  / 1E6))};
 
-			Log.d("LOCATION", d[0] + ", " + d[1]);
-			Log.d("ROTATION", String.valueOf(rotation));
+//			Log.d("LOCATION", d[0] + ", " + d[1]);
+//			Log.d("ROTATION", String.valueOf(rotation));
 
 			double angle = getAngle(d, new float[] {0, 1}); //smallest angle between translation vector and north
 
