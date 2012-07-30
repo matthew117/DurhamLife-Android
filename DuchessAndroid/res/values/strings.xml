@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Duchess</string>
+    <string name="app_name">Durham Life</string>
     <string name="main_no_items">There are no new events</string>
     <string name="default_description">No description available</string>
     <string name="default_contact">No contact details available</string>
@@ -123,5 +123,6 @@
         <item >Conferences</item>
         <item >Community</item>
     </string-array>
+        <string name="society_description">Society Description</string>
 
 </resources>

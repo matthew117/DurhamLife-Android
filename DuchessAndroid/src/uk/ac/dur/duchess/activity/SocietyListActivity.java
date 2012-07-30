@@ -11,6 +11,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.SocietyListAdapter;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Society;
 import uk.ac.dur.duchess.entity.SocietyXMLParser;
@@ -61,7 +62,7 @@ public class SocietyListActivity extends Activity
 
 			reader.setContentHandler(myXMLHandler);
 
-			adapter = new ArrayAdapter<Society>(this, android.R.layout.simple_list_item_1, societyList);
+			adapter = new SocietyListAdapter(this, R.layout.society_list_row, societyList);
 			listView.setAdapter(adapter);
 
 			listView.setOnItemClickListener(new OnItemClickListener()

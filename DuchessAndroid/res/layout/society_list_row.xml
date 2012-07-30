@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/society_list_background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/societyListRowSocietyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/societies"
+        android:textColor="@color/list_title_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/societyListRowSocietyDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingRight="3dp"
+        android:text="@string/society_description"
+        android:textColor="@color/list_description_color"
+        android:textSize="12sp"
+        android:typeface="serif" />
+
+</LinearLayout>
