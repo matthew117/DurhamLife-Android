@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 public class SocietyListAdapter extends ArrayAdapter<Society> {
 
-	private List<Society> societyList;
 	private Context context;
 	private int rowLayoutResourceID;
 	
@@ -22,7 +21,6 @@ public class SocietyListAdapter extends ArrayAdapter<Society> {
 	{
 		super(context, rowLayoutResourceID, societyList);
 		this.context = context;
-		this.societyList = societyList;
 		this.rowLayoutResourceID = rowLayoutResourceID;
 	}
 
