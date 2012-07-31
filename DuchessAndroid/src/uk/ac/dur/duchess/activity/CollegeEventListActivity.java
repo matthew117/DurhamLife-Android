@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,6 +58,7 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 
 		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		listView.setAdapter(adapter);
+		listView.setEmptyView(findViewById(R.id.collegeEventListEmpty));
 
 		listView.setOnItemClickListener(new OnItemClickListener()
 		{
