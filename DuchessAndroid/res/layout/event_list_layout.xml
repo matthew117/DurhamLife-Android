@@ -8,7 +8,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/adImageContainer"
             android:layout_alignParentTop="true"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:background="#FFFFFF">
 
             <ListView
                 android:id="@id/android:list"

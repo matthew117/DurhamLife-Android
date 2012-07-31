@@ -22,8 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class PinnedEventListActivity extends ListActivity {
-	
+public class PinnedEventListActivity extends ListActivity
+{	
 	private ListView listView;
 	private ArrayAdapter<Event> listAdapter;
 	private List<Event> eventList;

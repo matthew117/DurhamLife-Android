@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:ignore="UselessParent" >
+    tools:ignore="UselessParent" android:background="@drawable/abstract_textures">
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -31,7 +31,7 @@
                     android:drawableTop="@drawable/grid"
                     android:gravity="center"
                     android:text="@string/browse"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
 
                 <TextView
                     android:id="@+id/userHubCollege"
@@ -42,7 +42,7 @@
                     android:drawableTop="@drawable/college"
                     android:gravity="center"
                     android:text="@string/college_events"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
             </TableRow>
 
             <TableRow
@@ -60,7 +60,7 @@
                     android:drawableTop="@drawable/calendar_large"
                     android:gravity="center"
                     android:text="Calendar"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
 
                 <TextView
                     android:id="@+id/userHubSocieties"
@@ -71,7 +71,7 @@
                     android:drawableTop="@drawable/community"
                     android:gravity="center"
                     android:text="@string/societies"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
 
             </TableRow>
 
@@ -90,7 +90,7 @@
                     android:drawableTop="@drawable/ribbon_star"
                     android:gravity="center"
                     android:text="@string/my_events"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
 
                 <TextView
                     android:id="@+id/userHubSocietyEvents"
@@ -101,7 +101,7 @@
                     android:drawableTop="@drawable/filter"
                     android:gravity="center"
                     android:text="@string/personal_societies"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
                 
             </TableRow>
             
@@ -120,7 +120,7 @@
                     android:drawableTop="@drawable/news"
                     android:gravity="center"
                     android:text="@string/news"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
 
                 <TextView
                     android:id="@+id/userHubSettings"
@@ -131,7 +131,7 @@
                     android:drawableTop="@drawable/settings"
                     android:gravity="center"
                     android:text="@string/settings"
-                    android:textSize="12sp" />
+                    android:textSize="12sp" android:textColor="@android:color/primary_text_light"/>
 
             </TableRow>
 
