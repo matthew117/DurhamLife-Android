@@ -34,16 +34,16 @@ public class CustomTitleBarActivity extends Activity
 		titleBarButton3 = (ImageButton) findViewById(R.id.titleBarButton3);
 		titleBarButton4 = (ImageButton) findViewById(R.id.titleBarButton4);
 		
-		titleBarLogo = (ImageView) findViewById(R.id.titleBarLogo);
-		titleBarLogo.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent i = new Intent(v.getContext(), MainActivity.class);
-				startActivity(i);
-				finish();
-			}
-		});
+//		titleBarLogo = (ImageView) findViewById(R.id.titleBarLogo);
+//		titleBarLogo.setOnClickListener(new View.OnClickListener()
+//		{
+//			@Override
+//			public void onClick(View v)
+//			{
+//				Intent i = new Intent(v.getContext(), MainActivity.class);
+//				startActivity(i);
+//				finish();
+//			}
+//		});
 	}
 }

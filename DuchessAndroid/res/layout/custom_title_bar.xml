@@ -4,20 +4,6 @@
     android:layout_height="35dip"
     android:background="@drawable/title_bar_gradient" 
     android:gravity="center_vertical">
-
-    <ImageView
-        android:id="@+id/titleBarLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:clickable="true"
-        android:contentDescription="@string/duchess_logo"
-        android:gravity="center_vertical"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:scaleType="fitStart"
-        android:src="@drawable/duchess" />
 
     <ImageButton
         android:id="@+id/titleBarButton1"

@@ -35,7 +35,7 @@ public class PinnedEventListActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.event_list_layout);
 		
 		listView = getListView();
 		eventList = new ArrayList<Event>();
