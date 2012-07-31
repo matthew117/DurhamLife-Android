@@ -68,6 +68,7 @@ public class EventListActivity extends ListActivity
 	private LocationManager lm;
 
 	private static final int REQUEST_DATEFRAME = 1;
+	private static final int REQUEST_CATEG0RY = 2;
 	private static final int DATE_DIALOG_ID = 1;
 
 	/** Called when the activity is first created. */
@@ -310,7 +311,7 @@ public class EventListActivity extends ListActivity
 		}
 		case R.id.menuCategoryBrowse:
 			Intent i = new Intent(this, CategoryGridActivity.class);
-			startActivity(i);
+			startActivityForResult(i, REQUEST_CATEG0RY);
 			return true;
 		default:
 			return true;
@@ -410,6 +411,23 @@ public class EventListActivity extends ListActivity
 				String toDate = data.getStringExtra("to_date");
 
 				filterEventByDateRange(fromDate, toDate);
+			}
+			break;
+		}
+		case REQUEST_CATEG0RY:
+		{
+			if (responseCode == RESULT_OK)
+			{
+				String category = data.getStringExtra("category_filter");
+				
+				ArrayList<Event> categoryEvents = new ArrayList<Event>();
+
+				for (Event event : eventList)
+					if(event.getCategoryTags().contains(category))
+						categoryEvents.add(event);
+
+				setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
+						categoryEvents));
 			}
 			break;
 		}

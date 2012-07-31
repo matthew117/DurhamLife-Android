@@ -77,7 +77,13 @@ public class UserFunctions
 		for (Event e : eventList)
 		{
 			List<String> eventCategories = e.getCategoryTags();
-			if (preferences.contains(e.getCategoryTags().get(0))) newList.add(e);
+			
+			for(String category : eventCategories)
+				if(preferences.contains(category))
+				{
+					newList.add(e);
+					break;
+				}
 		}
 		
 		eventList.clear();

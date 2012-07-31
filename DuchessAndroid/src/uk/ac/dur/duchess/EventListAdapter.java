@@ -232,16 +232,13 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		return v;
 	}
 	
-	private static int mapCategoryToIcon(String category)
+	private int mapCategoryToIcon(String category)
 	{
-		if(category.equals("University")) return 0;
-		if(category.equals("College")) return 1;
-		if(category.equals("Music")) return 2;
-		if(category.equals("Theatre")) return 3;
-		if(category.equals("Exhibitions")) return 4;
-		if(category.equals("Sport")) return 5;
-		if(category.equals("Conferences")) return 6;
-		if(category.equals("Community")) return 7;
+		String[] categories =
+				context.getResources().getStringArray(R.array.event_categories);
+		
+		for (int i = 0; i < categories.length; i++)
+			if(categories[i].equals(category)) return i;
 		
 		return -1;
 	}

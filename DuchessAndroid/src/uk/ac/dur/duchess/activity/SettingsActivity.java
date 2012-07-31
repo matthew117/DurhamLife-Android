@@ -9,6 +9,7 @@ import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -68,11 +69,11 @@ public class SettingsActivity extends Activity
 		communityCheckBox   = (CheckBox) findViewById(R.id.checkBoxCommunity);
 		
 		preferences = new CheckBox[]
-			{
-				universityCheckBox, collegeCheckBox, musicCheckBox,
-				sportCheckBox, theatreCheckBox, exhibitionsCheckBox,
-				conferencesCheckBox, communityCheckBox
-			};
+		{
+			universityCheckBox, collegeCheckBox, musicCheckBox,
+			theatreCheckBox, exhibitionsCheckBox, sportCheckBox, 
+			conferencesCheckBox, communityCheckBox
+		};
 		
 		selectAll = (Button) findViewById(R.id.selectPreferencesButton);
 		clearAll  = (Button) findViewById(R.id.clearPreferencesButton);
@@ -146,6 +147,8 @@ public class SettingsActivity extends Activity
 		
 		for(int i = 0; i < categories.length; i++)
 			if(preferences[i].isChecked()) newPreferences.add(categories[i]);
+		
+		Log.d("CATEGORIES", newPreferences.toString());
 		
 		currentUser.setCategoryPreferences(newPreferences);
 		
