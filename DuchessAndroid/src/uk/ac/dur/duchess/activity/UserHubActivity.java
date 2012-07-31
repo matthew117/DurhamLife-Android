@@ -93,6 +93,13 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
+				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				{
+					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
+							.getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked", "Bookmarked Events", 0);
+					tracker.dispatch();
+				}
 				Intent i = new Intent(v.getContext(), PinnedEventListActivity.class);
 				startActivity(i);
 			}
@@ -103,7 +110,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), NearEventsActivity.class);
+				Intent i = new Intent(v.getContext(), ViewSharedPreferencesActivity.class);
 				startActivity(i);
 				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
 						Toast.LENGTH_LONG).show();
@@ -142,9 +149,12 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
-				tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
-				tracker.dispatch();
+				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				{
+					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
+					tracker.dispatch();
+				}
 				Intent i = new Intent(v.getContext(), PersonalSocietyListActivity.class);
 				startActivity(i);
 			}
@@ -155,6 +165,13 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
+				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				{
+					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
+							.getTracker();
+					tracker.trackEvent("UserHub", "ButtonClicked", "Event Calendar", 0);
+					tracker.dispatch();
+				}
 				Intent i = new Intent(v.getContext(), CalendarActivity.class);
 				startActivity(i);
 			}
