@@ -4,8 +4,6 @@ Features
 + Unsubcribe from societies (doesn't sync)
 + Caching
 + Download more events when you reach the end of the list (pagination)
-+ Make personal society page better (red headings)
-+ Improve TimeActivity by allowing the user to go view different weeks
 + Browse events by location
 + Browse events near to your location
 + Browse near events on a map
@@ -23,4 +21,3 @@ Bugs
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
 - A time instance is added to google calendar even if you press back (out of our control?)
-- Linkify causes text to disappear
