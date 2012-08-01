@@ -41,6 +41,12 @@ public class PinnedEventListActivity extends Activity
 		eventList = new ArrayList<Event>();
 		listAdapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		
+		User user = SessionFunctions.getCurrentUser(PinnedEventListActivity.this);
+		if (!user.hasAnyBookmarkedEvents())
+		{
+			listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));
+		}
+		
 		listView.setAdapter(listAdapter);
 		
 		listView.setOnItemClickListener(new OnItemClickListener()
@@ -111,7 +117,6 @@ public class PinnedEventListActivity extends Activity
 			@Override
 			public void run() {
 				listAdapter.notifyDataSetChanged();
-				listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));
 			}
 		};
 		(new Thread(downloadEvents)).start();

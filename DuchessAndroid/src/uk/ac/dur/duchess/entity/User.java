@@ -28,6 +28,8 @@ public class User
 	public void removeEvent(Long i) { events.remove(i); }
 	
 	public boolean hasPinnedEvent(Long i) { return events.contains(i); }
+	
+	public boolean hasAnyBookmarkedEvents() { return events.size() > 0; }
 
 	public List<String> getSocieties()
 	{
