@@ -16,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -165,28 +164,6 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 		if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
 	}
 
-	private String collegeToCode(String collegeName)
-	{
-		if (collegeName.equals("St. Aidan's")) return "SA";
-		else if (collegeName.equals("Collingwood")) return "CW";
-		else if (collegeName.equals("Grey")) return "GR";
-		else if (collegeName.equals("Hatfield")) return "HAT";
-		else if (collegeName.equals("Josephine Butler")) return "JB";
-		else if (collegeName.equals("St. Chad's")) return "CH";
-		else if (collegeName.equals("St. Cuthbert's")) return "CB";
-		else if (collegeName.equals("Hild Bede")) return "HB";
-		else if (collegeName.equals("St. John's")) return "JHN";
-		else if (collegeName.equals("St. Mary's")) return "MRY";
-		else if (collegeName.equals("Trevelyan")) return "TRV";
-		else if (collegeName.equals("University")) return "UNI";
-		else if (collegeName.equals("Van Mildert")) return "VM";
-		else if (collegeName.equals("Ustinov")) return "UST";
-		else if (collegeName.equals("John Snow")) return "JS";
-		else if (collegeName.equals("Stephenson")) return "STV";
-		else return null;
-
-	}
-
 	private int collegeToColor(String collegeName)
 	{
 		Resources res = getResources();
@@ -229,6 +206,13 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 		else if (collegeName.equals("John Snow")) return R.drawable.john_snow;
 		else if (collegeName.equals("Stephenson")) return R.drawable.stephenson;
 		else return R.drawable.college;
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		listView.setAdapter(listView.getAdapter());
 	}
 
 }

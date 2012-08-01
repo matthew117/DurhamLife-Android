@@ -97,6 +97,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				if(categories.size() > 0)
 				{
 					int id = mapCategoryToIcon(categories.get(0));
+					Log.d("CAT_ID", String.valueOf(id));
 					holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
 					holder.categoryIcon1.setVisibility(View.VISIBLE);
 				}

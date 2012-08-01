@@ -337,4 +337,11 @@ public class CalendarActivity extends Activity
 		
 		adapter.notifyDataSetChanged();
 	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		listView.setAdapter(listView.getAdapter());
+	}
 }

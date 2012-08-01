@@ -15,9 +15,13 @@ import uk.ac.dur.duchess.entity.User;
 import uk.ac.dur.duchess.webservice.EventAPI;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class PersonalSocietyListActivity extends CustomTitleBarActivity
 {
@@ -25,6 +29,9 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 	private Activity activity;
 	private List<String> societyList;
 	private ProgressDialog progressDialog;
+	
+	private SeparatedListAdapter adapter;
+	private ListView listView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -32,6 +39,7 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 		super.onCreate(savedInstanceState);
 
 		activity = this;
+		listView = new ListView(activity); 
 
 		User user = SessionFunctions.getCurrentUser(this);
 		societyList = user.getSocieties();
@@ -83,20 +91,55 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 		protected void onPostExecute(Map<String, List<Event>> eventMap)
 		{
 	        // create our list and custom adapter  
-	        SeparatedListAdapter adapter = new SeparatedListAdapter(activity);  
+	        adapter = new SeparatedListAdapter(activity);  
 	        
 			for(String society : eventMap.keySet())
 			{
 				adapter.addSection(society,
 						new EventListAdapter(activity, R.layout.custom_event_list_row, eventMap.get(society))); 
 			}
-			
-			ListView list = new ListView(activity);  
-	        list.setAdapter(adapter);
+			 
+	        listView.setAdapter(adapter);
 	        
-	        activity.setContentView(list);
+	        listView.setOnItemClickListener(new OnItemClickListener()
+			{
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+				{
+
+					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+					Event e = (Event) adapter.getItem(position);
+					i.putExtra("event_id", e.getEventID());
+					i.putExtra("event_name", e.getName());
+					i.putExtra("event_start_date", e.getStartDate());
+					i.putExtra("event_end_date", e.getEndDate());
+					i.putExtra("event_description_header", e.getDescriptionHeader());
+					i.putExtra("event_description_body", e.getDescriptionBody());
+					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+					i.putExtra("event_web_address", e.getWebAddress());
+					i.putExtra("event_address1", e.getAddress1());
+					i.putExtra("event_address2", e.getAddress2());
+					i.putExtra("event_city", e.getCity());
+					i.putExtra("event_postcode", e.getPostcode());
+					i.putExtra("event_latitude", e.getLatitude());
+					i.putExtra("event_longitude", e.getLongitude());
+					i.putExtra("image_url", e.getImageURL());
+					i.putExtra("ical_url", e.getICalURL());
+					startActivity(i);
+				}
+			});
+	        
+	        activity.setContentView(listView);
 			
 			progressDialog.dismiss();
 		}
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		listView.setAdapter(listView.getAdapter());
 	}
 }

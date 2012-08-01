@@ -220,5 +220,13 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 			finish();
 		}
 	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		user = SessionFunctions.getCurrentUser(this);
+		listView.setAdapter(listView.getAdapter());
+	}
 
 }

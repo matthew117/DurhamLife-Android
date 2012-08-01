@@ -129,5 +129,12 @@ public class PinnedEventListActivity extends ListActivity
 		}
 		runOnUiThread(uiCallbackThread);
 	}
+	
 
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		listView.setAdapter(listView.getAdapter());
+	}
 }

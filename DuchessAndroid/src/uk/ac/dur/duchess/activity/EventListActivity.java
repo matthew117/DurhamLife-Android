@@ -264,7 +264,7 @@ public class EventListActivity extends ListActivity
 	{
 		super.onResume();
 		currentUser = SessionFunctions.getCurrentUser(this);
-		adapter.notifyDataSetChanged();
+		setListAdapter(getListAdapter());
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu)
