@@ -38,7 +38,6 @@ public class PinnedEventListActivity extends Activity
 		setContentView(R.layout.bookmark_list_layout);
 		
 		listView = (ListView) findViewById(R.id.bookmarkListView);
-		listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));
 		eventList = new ArrayList<Event>();
 		listAdapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		
@@ -112,6 +111,7 @@ public class PinnedEventListActivity extends Activity
 			@Override
 			public void run() {
 				listAdapter.notifyDataSetChanged();
+				listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));
 			}
 		};
 		(new Thread(downloadEvents)).start();
