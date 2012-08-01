@@ -124,5 +124,6 @@
         <item >Community</item>
     </string-array>
         <string name="society_description">Society Description</string>
+        <string name="bookmarked_events">Bookmarked Events</string>
 
 </resources>

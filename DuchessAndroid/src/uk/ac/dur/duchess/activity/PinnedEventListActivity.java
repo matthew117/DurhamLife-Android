@@ -10,19 +10,19 @@ import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.User;
 import uk.ac.dur.duchess.webservice.EventAPI;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class PinnedEventListActivity extends ListActivity
+public class PinnedEventListActivity extends Activity
 {	
 	private ListView listView;
 	private ArrayAdapter<Event> listAdapter;
@@ -35,9 +35,10 @@ public class PinnedEventListActivity extends ListActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.event_list_layout);
+		setContentView(R.layout.bookmark_list_layout);
 		
-		listView = getListView();
+		listView = (ListView) findViewById(R.id.bookmarkListView);
+		listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));
 		eventList = new ArrayList<Event>();
 		listAdapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		
