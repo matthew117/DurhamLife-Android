@@ -12,6 +12,7 @@ import uk.ac.dur.duchess.entity.User;
 import uk.ac.dur.duchess.webservice.EventAPI;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -22,7 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class PinnedEventListActivity extends Activity
+public class BookmarkedEventListActivity extends Activity
 {	
 	private ListView listView;
 	private ArrayAdapter<Event> listAdapter;
@@ -30,6 +31,8 @@ public class PinnedEventListActivity extends Activity
 	private Runnable errorThread;
 	private Runnable downloadEvents;
 	private Runnable uiCallbackThread;
+	private ProgressDialog progressDialog;
+	private AlertDialog alertDialog;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -41,7 +44,7 @@ public class PinnedEventListActivity extends Activity
 		eventList = new ArrayList<Event>();
 		listAdapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 		
-		User user = SessionFunctions.getCurrentUser(PinnedEventListActivity.this);
+		User user = SessionFunctions.getCurrentUser(BookmarkedEventListActivity.this);
 		if (!user.hasAnyBookmarkedEvents())
 		{
 			listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));
@@ -81,7 +84,8 @@ public class PinnedEventListActivity extends Activity
 		errorThread = new Runnable() {	
 			@Override
 			public void run() {
-				AlertDialog.Builder builder = new AlertDialog.Builder(PinnedEventListActivity.this);
+				if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+				AlertDialog.Builder builder = new AlertDialog.Builder(BookmarkedEventListActivity.this);
 				builder.setTitle("Connection Error.")
 				.setMessage("Failed to download events.")
 				.setCancelable(false)
@@ -96,9 +100,13 @@ public class PinnedEventListActivity extends Activity
 				{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						progressDialog = ProgressDialog.show(BookmarkedEventListActivity.this, "Please wait...",
+								"Downloading Events ...", true);
 						(new Thread(downloadEvents)).start();				
 					}
-				});			
+				});
+				alertDialog = builder.create();
+				alertDialog.show();
 			}
 		};
 		
@@ -117,15 +125,18 @@ public class PinnedEventListActivity extends Activity
 			@Override
 			public void run() {
 				listAdapter.notifyDataSetChanged();
+				if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
 			}
 		};
 		(new Thread(downloadEvents)).start();
+		progressDialog = ProgressDialog.show(BookmarkedEventListActivity.this, "Please wait...",
+				"Downloading Events ...", true);
 	}
 
 	private void downloadEventsAndUpdateList() throws IOException {
 		List<Event> allEvents = EventAPI.downloadAllEvents();
 		eventList.clear();
-		User user = SessionFunctions.getCurrentUser(PinnedEventListActivity.this);
+		User user = SessionFunctions.getCurrentUser(BookmarkedEventListActivity.this);
 		for (Event event : allEvents)
 		{
 			if (user.hasPinnedEvent(event.getEventID()))
@@ -142,5 +153,13 @@ public class PinnedEventListActivity extends Activity
 	{
 		super.onResume();
 		listView.setAdapter(listView.getAdapter());
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		if (alertDialog != null && alertDialog.isShowing()) alertDialog.dismiss();
+		if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
 	}
 }

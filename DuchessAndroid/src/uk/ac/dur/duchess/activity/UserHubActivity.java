@@ -100,7 +100,7 @@ public class UserHubActivity extends CustomTitleBarActivity
 					tracker.trackEvent("UserHub", "ButtonClicked", "Bookmarked Events", 0);
 					tracker.dispatch();
 				}
-				Intent i = new Intent(v.getContext(), PinnedEventListActivity.class);
+				Intent i = new Intent(v.getContext(), BookmarkedEventListActivity.class);
 				startActivity(i);
 			}
 		});
