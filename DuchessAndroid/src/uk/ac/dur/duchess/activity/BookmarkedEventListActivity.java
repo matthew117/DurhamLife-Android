@@ -128,9 +128,13 @@ public class BookmarkedEventListActivity extends Activity
 				if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
 			}
 		};
-		(new Thread(downloadEvents)).start();
-		progressDialog = ProgressDialog.show(BookmarkedEventListActivity.this, "Please wait...",
-				"Downloading Events ...", true);
+		
+		if (user.hasAnyBookmarkedEvents())
+		{
+			(new Thread(downloadEvents)).start();
+			progressDialog = ProgressDialog.show(BookmarkedEventListActivity.this, "Please wait...",
+					"Downloading Events ...", true);
+		}
 	}
 
 	private void downloadEventsAndUpdateList() throws IOException {
