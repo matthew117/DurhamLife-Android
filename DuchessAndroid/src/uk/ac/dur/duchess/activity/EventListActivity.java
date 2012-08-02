@@ -20,7 +20,9 @@ import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
+import uk.ac.dur.duchess.entity.DBAccess;
 import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventLocation;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
@@ -133,6 +135,7 @@ public class EventListActivity extends ListActivity
 
 					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
 					Event e = (Event) getListAdapter().getItem(position);
+					EventLocation l = e.getLocation();
 					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
@@ -142,12 +145,12 @@ public class EventListActivity extends ListActivity
 					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
 					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
 					i.putExtra("event_web_address", e.getWebAddress());
-					i.putExtra("event_address1", e.getAddress1());
-					i.putExtra("event_address2", e.getAddress2());
-					i.putExtra("event_city", e.getCity());
-					i.putExtra("event_postcode", e.getPostcode());
-					i.putExtra("event_latitude", e.getLatitude());
-					i.putExtra("event_longitude", e.getLongitude());
+					i.putExtra("event_address1", l.getAddress1());
+					i.putExtra("event_address2", l.getAddress2());
+					i.putExtra("event_city", l.getCity());
+					i.putExtra("event_postcode", l.getPostcode());
+					i.putExtra("event_latitude", l.getLatitude());
+					i.putExtra("event_longitude", l.getLongitude());
 					i.putExtra("image_url", e.getImageURL());
 					i.putExtra("ical_url", e.getICalURL());
 					startActivity(i);
@@ -198,6 +201,13 @@ public class EventListActivity extends ListActivity
 						source.setEncoding("UTF-8");
 						reader.parse(source);
 						
+						DBAccess database = new DBAccess(activity);
+						database.open();
+						
+						for(Event event : eventList) database.insertEvent(event);
+						
+						database.close();
+						
 						// TODO MASSIVE TEMPORARY HACK :)
 						GlobalApplicationData.globalEventList = new ArrayList<Event>(eventList);
 						
@@ -229,6 +239,7 @@ public class EventListActivity extends ListActivity
 				{
 					Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
 					Event e = currentAd;
+					EventLocation l = e.getLocation();
 					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
@@ -238,12 +249,12 @@ public class EventListActivity extends ListActivity
 					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
 					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
 					i.putExtra("event_web_address", e.getWebAddress());
-					i.putExtra("event_address1", e.getAddress1());
-					i.putExtra("event_address2", e.getAddress2());
-					i.putExtra("event_city", e.getCity());
-					i.putExtra("event_postcode", e.getPostcode());
-					i.putExtra("event_latitude", e.getLatitude());
-					i.putExtra("event_longitude", e.getLongitude());
+					i.putExtra("event_address1", l.getAddress1());
+					i.putExtra("event_address2", l.getAddress2());
+					i.putExtra("event_city", l.getCity());
+					i.putExtra("event_postcode", l.getPostcode());
+					i.putExtra("event_latitude", l.getLatitude());
+					i.putExtra("event_longitude", l.getLongitude());
 					i.putExtra("image_url", e.getImageURL());
 					i.putExtra("ical_url", e.getICalURL());
 					startActivity(i);
@@ -483,14 +494,17 @@ public class EventListActivity extends ListActivity
 					@Override
 					public int compare(Event e1, Event e2)
 					{
+						EventLocation loc1 = e1.getLocation();
+						EventLocation loc2 = e2.getLocation();
+						
 						float[] distanceResult1 = new float[3];
 						Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
-								Double.parseDouble(e1.getLatitude()), Double.parseDouble(e1.getLongitude()), distanceResult1);
+								Double.parseDouble(loc1.getLatitude()), Double.parseDouble(loc1.getLongitude()), distanceResult1);
 						double distance1 = distanceResult1[0];
 						
 						float[] distanceResult2 = new float[3];
 						Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
-								Double.parseDouble(e2.getLatitude()), Double.parseDouble(e2.getLongitude()), distanceResult2);
+								Double.parseDouble(loc2.getLatitude()), Double.parseDouble(loc2.getLongitude()), distanceResult2);
 						double distance2 = distanceResult2[0];
 						
 						return (int) (distance1 - distance2);

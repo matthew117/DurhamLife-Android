@@ -6,6 +6,7 @@ import java.util.List;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventLocation;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -47,13 +48,20 @@ public class NearEventsActivity extends Activity
 				
 				for (Event e : eventList)
 				{
+					EventLocation loc = e.getLocation();
+					
 					String eventName = e.getName();
+					
 					float[] distanceResult = new float[3];
+					
 					Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
-							Double.parseDouble(e.getLatitude()), Double.parseDouble(e.getLongitude()), distanceResult);
+							Double.parseDouble(loc.getLatitude()), Double.parseDouble(loc.getLongitude()), distanceResult);
+					
 					double distance = distanceResult[0];
+					
 					if (distance < 800)
-					Toast.makeText(NearEventsActivity.this, eventName + " : " + String.format("%.2fm", distance), Toast.LENGTH_SHORT).show();
+						Toast.makeText(NearEventsActivity.this, eventName + " : " + String.format("%.2fm", distance),
+								Toast.LENGTH_SHORT).show();
 				}
 			}
 		}

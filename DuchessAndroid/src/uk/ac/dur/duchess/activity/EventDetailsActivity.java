@@ -4,9 +4,12 @@ import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
+import uk.ac.dur.duchess.entity.DBAccess;
+import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -15,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,6 +42,7 @@ public class EventDetailsActivity extends Activity
 	private LinearLayout eventImageContainer;
 	
 	private long eventID;
+	private Event event;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -65,25 +70,23 @@ public class EventDetailsActivity extends Activity
 		image = (ImageView) findViewById(R.id.eventImage);
 
 		Bundle e = getIntent().getExtras();
+		
+		DBAccess database = new DBAccess(this);
+		database.open();
+		
+		event = database.getEvent(e.getLong("event_id"));
+		
+		database.close();
 
 		eventID = e.getLong("event_id");
-		final String name = e.getString("event_name");
-		final String start_date = e.getString("event_start_date");
-		final String end_date = e.getString("event_end_date");
-		String date = CalendarFunctions.getEventDate(start_date, end_date);
-		String descriptionHeader = e.getString("event_description_header");
-		String descriptionBody = e.getString("event_description_body");
-		final String contactTelephone = e.getString("event_contact_telephone_number");
-		final String contactEmail = e.getString("event_contact_email_address");
-		String webAddress = e.getString("event_web_address");
-		String image_url = e.getString("image_url");
-		final String address = e.getString("event_address1");
-		final String ical_url = e.getString("ical_url");
 
-		if (name != null) txtName.setText(name);
-		if (start_date != null && end_date != null) txtDate.setText(date);
+		String date = CalendarFunctions.getEventDate(event);
+
+		if (event.getName() != null) txtName.setText(event.getName());
+		if (event.getStartDate() != null && event.getEndDate() != null)
+			txtDate.setText(date);
 		
-		if(ical_url == null || date == "This event has ended") timeChooserButton.setVisibility(View.GONE);
+		if(event.getICalURL() == null || date == "This event has ended") timeChooserButton.setVisibility(View.GONE);
 		
 		timeChooserButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -91,21 +94,22 @@ public class EventDetailsActivity extends Activity
 			public void onClick(View view)
 			{
 				Intent timeIntent = new Intent(view.getContext(), TimeActivity.class);
-		        timeIntent.putExtra("event_name", name);
-		        timeIntent.putExtra("event_start_date", start_date);
-		        timeIntent.putExtra("event_end_date", end_date);
-		        timeIntent.putExtra("event_address", address);
-		        timeIntent.putExtra("ical_url", ical_url);
+		        timeIntent.putExtra("event_name", event.getName());
+		        timeIntent.putExtra("event_start_date", event.getStartDate());
+		        timeIntent.putExtra("event_end_date", event.getEndDate());
+		        timeIntent.putExtra("event_address", event.getLocation().getAddress1());
+		        timeIntent.putExtra("ical_url", event.getICalURL());
 		        startActivity(timeIntent);
 			}
 		});
 		
-		if (descriptionHeader != null) txtDescription.setText(descriptionHeader);
-		if (descriptionBody != null) txtDescription.append("\n\n" + descriptionBody);
+		if (event.getDescriptionHeader() != null) txtDescription.setText(event.getDescriptionHeader());
+		if (event.getDescriptionBody() != null) txtDescription.append("\n\n" + event.getDescriptionBody());
 		
 		Linkify.addLinks(txtDescription, Linkify.WEB_URLS);
 		
-		if(contactTelephone != null) phoneContactButton.setText(contactTelephone);
+		if(event.getContactTelephoneNumber() != null)
+			phoneContactButton.setText(event.getContactTelephoneNumber());
 		else phoneContactButton.setVisibility(View.GONE);
 		
 		phoneContactButton.setOnClickListener(new View.OnClickListener()
@@ -114,12 +118,13 @@ public class EventDetailsActivity extends Activity
 			public void onClick(View view)
 			{
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
-		        callIntent.setData(Uri.parse("tel:" + contactTelephone));
+		        callIntent.setData(Uri.parse("tel:" + event.getContactTelephoneNumber()));
 		        startActivity(callIntent);
 			}
 		});
 		
-		if(contactEmail != null) emailContactButton.setText(contactEmail);
+		if(event.getContactEmailAddress() != null)
+			emailContactButton.setText(event.getContactEmailAddress());
 		else emailContactButton.setVisibility(View.GONE);
 		
 		emailContactButton.setOnClickListener(new View.OnClickListener()
@@ -129,7 +134,7 @@ public class EventDetailsActivity extends Activity
 			{
 				Intent intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("plain/text");
-				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { contactEmail });
+				intent.putExtra(Intent.EXTRA_EMAIL, new String[] { event.getContactEmailAddress() });
 				intent.putExtra(Intent.EXTRA_SUBJECT, "");
 				intent.putExtra(Intent.EXTRA_TEXT, "");
 
@@ -137,7 +142,7 @@ public class EventDetailsActivity extends Activity
 			}
 		});
 		
-		if(webAddress != null) viewWebsiteButton.setText(webAddress);
+		if(event.getWebAddress() != null) viewWebsiteButton.setText(event.getWebAddress());
 		else viewWebsiteButton.setVisibility(View.GONE);
 		
 		viewWebsiteButton.setOnClickListener(new View.OnClickListener()
@@ -145,14 +150,14 @@ public class EventDetailsActivity extends Activity
 			@Override
 			public void onClick(View view)
 			{
-				String url = getIntent().getExtras().getString("event_web_address");
+				String url = event.getWebAddress();
 				Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(url));
 				startActivity(i);
 			}
 		});
 
-		if(image_url != null) (new DownloadImageTask()).execute(image_url);
+		if(event.getImageURL() != null) (new DownloadImageTask()).execute(event.getImageURL());
 		else eventImageContainer.setVisibility(View.GONE);
 	}
 

@@ -19,25 +19,34 @@ public class DBAccess
 	
 	public static final String KEY_START_DATE = "startDate";
 	public static final String KEY_END_DATE = "endDate";
+	public static final String KEY_ICAL_URL = "iCalURL";
+	
+	public static final String KEY_SCOPE = "scope";
+	public static final String KEY_ASSOCIATED_COLLEGE = "associatedCollege";
+	public static final String KEY_ASSOCIATED_SOCIETY = "associatedSociety";
 	
 	public static final String KEY_CONTACT_TELEPHONE_NUMBER = "contactTelephoneNumber";
 	public static final String KEY_CONTACT_EMAIL_ADDRESS = "contactEmailAddress";
 	public static final String KEY_WEB_ADDRESS = "webAddress";
-	
-	public static final String KEY_LOCATION_ID = "locationID";
-	public static final String KEY_ADDRESS_1 = "address1";
-	public static final String KEY_ADDRESS_2 = "address1";
-	public static final String KEY_CITY = "city";
-	public static final String KEY_POSTCODE = "postcode";
-	public static final String KEY_LATITUDE = "latitude";
-	public static final String KEY_LONGITUDE = "longitude";
 	
 	public static final String KEY_ACCESSIBILITY_INFORMATION = "accessibilityInformation";
 	
 	public static final String KEY_CATEGORY = "category";
 	
 	public static final String KEY_IMAGE_URL = "imageURL";
-
+	public static final String KEY_AD_IMAGE_URL = "adImageURL";
+	
+	public static final String KEY_REVIEW_SCORE = "reviewScore";
+	public static final String KEY_NUM_OF_REVIEWS = "numberOfReviews";
+	
+	public static final String KEY_LOCATION_ID = "locationID";
+	public static final String KEY_ADDRESS_1 = "address1";
+	public static final String KEY_ADDRESS_2 = "address2";
+	public static final String KEY_CITY = "city";
+	public static final String KEY_POSTCODE = "postcode";
+	public static final String KEY_LATITUDE = "latitude";
+	public static final String KEY_LONGITUDE = "longitude";
+	
 	private static final String TAG = "DBAdapter";
 
 	private static final String DATABASE_NAME = "duchessDB";
@@ -47,9 +56,9 @@ public class DBAccess
 	private static final String LOCATION_TABLE = "locations";
 	
 
-	private static final String DATABASE_CREATE_STATEMENT =
+	private static final String EVENT_CREATE_STATEMENT =
 		"CREATE TABLE events("
-			+ "eventID INTEGER PRIMARY KEY, "
+			+  KEY_EVENT_ID + " INTEGER PRIMARY KEY, "
 			+ "featured INTEGER NOT NULL, "
 			+ "name TEXT NOT NULL, "
 			+ "descriptionHeader TEXT NOT NULL, "
@@ -57,10 +66,18 @@ public class DBAccess
 			+ "startDate DATE NOT NULL, "
 			+ "endDate DATE NOT NULL, "
 			+ "locationID INTEGER NOT NULL, "
-			+ "accessibilityInformation TEXT NOT NULL, "			
+			+ "scope TEXT NOT NULL, "
+			+ "associatedCollege TEXT, "
+			+ "associatedSociety TEXT, "
+			+ "accessibilityInformation TEXT, "			
 			+ "category TEXT NOT NULL, "
-			+ "imageURL TEXT); " +
+			+ "imageURL TEXT, "
+			+ KEY_AD_IMAGE_URL + " TEXT, "
+			+ KEY_REVIEW_SCORE + " INTEGER, "
+			+ KEY_NUM_OF_REVIEWS + " INTEGER, "
+			+ "iCalURL TEXT)";
 			
+	private static final String LOCATION_CREATE_STATEMENT =
 		"CREATE TABLE locations("
 			+ "locationID INTEGER PRIMARY KEY, "
 			+ "address1 TEXT NOT NULL, "
@@ -68,7 +85,7 @@ public class DBAccess
 			+ "city TEXT NOT NULL, "
 			+ "postcode TEXT NOT NULL, "
 			+ "latitude TEXT NOT NULL, "
-			+ "longitude TEXT NOT NULL);";
+			+ "longitude TEXT NOT NULL)";
 
 	private final Context context;
 
@@ -93,7 +110,8 @@ public class DBAccess
 		{
 			try
 			{
-				db.execSQL(DATABASE_CREATE_STATEMENT);
+				db.execSQL(EVENT_CREATE_STATEMENT);
+				db.execSQL(LOCATION_CREATE_STATEMENT);
 			}
 			catch (SQLException e)
 			{
@@ -125,44 +143,54 @@ public class DBAccess
 
 	public long insertEvent(Event event)
 	{
-		ContentValues initialValues = new ContentValues();
+		ContentValues values = new ContentValues();
 		
-		initialValues.put(KEY_EVENT_ID, event.getEventID());
-		initialValues.put(KEY_FEATURED, event.isFeatured());
+		values.put(KEY_EVENT_ID, event.getEventID());
+		values.put(KEY_FEATURED, event.isFeatured());
 		
-		initialValues.put(KEY_NAME, event.getName());
-		initialValues.put(KEY_DESCRIPTION_HEADER, event.getDescriptionHeader());
-		initialValues.put(KEY_DESCRIPTION_BODY, event.getDescriptionBody());
+		values.put(KEY_NAME, event.getName());
+		values.put(KEY_DESCRIPTION_HEADER, event.getDescriptionHeader());
+		values.put(KEY_DESCRIPTION_BODY, event.getDescriptionBody());
 		
-		initialValues.put(KEY_START_DATE, event.getStartDate());
-		initialValues.put(KEY_END_DATE, event.getEndDate());
+		values.put(KEY_START_DATE, event.getStartDate());
+		values.put(KEY_END_DATE, event.getEndDate());
+		values.put(KEY_ICAL_URL, event.getICalURL());
 		
-		initialValues.put(KEY_LOCATION_ID, event.getLocationID());
+		values.put(KEY_LOCATION_ID, event.getLocation().getLocationID());
 		
-		if(containsLocation(event.getLocationID())) insertLocation(event);
+		if(!containsLocation(event.getLocation().getLocationID()))
+			insertLocation(event.getLocation());
 		
-		initialValues.put(KEY_ACCESSIBILITY_INFORMATION, event.getAccessibilityInformation());
+		values.put(KEY_SCOPE, event.getScope().name());
+		values.put(KEY_ASSOCIATED_COLLEGE, event.getAssociatedCollege());
+		values.put(KEY_ASSOCIATED_SOCIETY, event.getAssociatedSociety());
 		
-		initialValues.put(KEY_CATEGORY, event.getCategoryTags().get(0));
+		values.put(KEY_ACCESSIBILITY_INFORMATION, event.getAccessibilityInformation());
 		
-		initialValues.put(KEY_IMAGE_URL, event.getImageURL());
+		values.put(KEY_CATEGORY, event.getCategoryTags().toString());
 		
-		return db.insert(EVENT_TABLE, null, initialValues);
+		values.put(KEY_IMAGE_URL, event.getImageURL());
+		values.put(KEY_AD_IMAGE_URL, event.getAdImageURL());
+		
+		values.put(KEY_REVIEW_SCORE, event.getReviewScore());
+		values.put(KEY_NUM_OF_REVIEWS, event.getNumberOfReviews());
+		
+		return db.insert(EVENT_TABLE, null, values);
 	}
 	
-	public long insertLocation(Event event)
+	public long insertLocation(EventLocation location)
 	{
-		ContentValues initialValues = new ContentValues();
+		ContentValues values = new ContentValues();
 		
-		initialValues.put(KEY_LOCATION_ID, event.getLocationID());
-		initialValues.put(KEY_ADDRESS_1, event.getAddress1());
-		initialValues.put(KEY_ADDRESS_2, event.getAddress2());
-		initialValues.put(KEY_CITY, event.getCity());
-		initialValues.put(KEY_POSTCODE, event.getPostcode());
-		initialValues.put(KEY_LATITUDE, event.getLatitude());
-		initialValues.put(KEY_LONGITUDE, event.getLongitude());
+		values.put(KEY_LOCATION_ID, location.getLocationID());
+		values.put(KEY_ADDRESS_1, location.getAddress1());
+		values.put(KEY_ADDRESS_2, location.getAddress2());
+		values.put(KEY_CITY, location.getCity());
+		values.put(KEY_POSTCODE, location.getPostcode());
+		values.put(KEY_LATITUDE, location.getLatitude());
+		values.put(KEY_LONGITUDE, location.getLongitude());
 		
-		return db.insert(LOCATION_TABLE, null, initialValues);
+		return db.insert(LOCATION_TABLE, null, values);
 	}
 
 	public boolean deleteEvent(long eventID)
@@ -177,8 +205,14 @@ public class DBAccess
 	
 	public boolean containsLocation(long locationID)
 	{
-		return db.query(LOCATION_TABLE, new String[] {KEY_LOCATION_ID},
-				KEY_LOCATION_ID + "=" + locationID, null, null, null, null).getCount() == 0;
+		Cursor c = db.query(LOCATION_TABLE, new String[] {KEY_LOCATION_ID},
+			KEY_LOCATION_ID + "=" + locationID, null, null, null, null);
+		
+		int rows = c.getCount();
+		
+		c.close();
+		
+		return rows != 0;
 	}
 
 	public Cursor getEventSummaries()
@@ -187,15 +221,79 @@ public class DBAccess
 				KEY_END_DATE, KEY_DESCRIPTION_HEADER }, null, null, null, null, null);
 	}
 	
-	public Cursor getEvent(long eventID)
+	public Event getEvent(long eventID)
 	{
-		return db.query(LOCATION_TABLE, null, KEY_EVENT_ID + "=" + eventID,
+		Cursor row = db.query(EVENT_TABLE, null, KEY_EVENT_ID + "=" + eventID, 
 				null, null, null, null);
+		
+		if(row.getCount() == 0)
+		{
+			row.close();
+			return null;
+		}
+		else row.moveToFirst();
+		
+		Event event = new Event();
+		
+		event.setEventID(eventID);
+		
+		event.setName(row.getString(row.getColumnIndex(KEY_NAME)));
+		event.setDescriptionHeader(row.getString(row.getColumnIndex(KEY_DESCRIPTION_HEADER)));
+		event.setDescriptionBody(row.getString(row.getColumnIndex(KEY_DESCRIPTION_BODY)));
+		
+		event.setStartDate(row.getString(row.getColumnIndex(KEY_START_DATE)));
+		event.setEndDate(row.getString(row.getColumnIndex(KEY_END_DATE)));
+		event.setICalURL(row.getString(row.getColumnIndex(KEY_ICAL_URL)));
+		
+		event.setLocation(getLocation(row.getLong(row.getColumnIndex(KEY_LOCATION_ID))));
+		
+		event.setScope(row.getString(row.getColumnIndex(KEY_SCOPE)));
+		event.setAssociatedCollege(row.getString(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE)));
+		event.setAssociatedSociety(row.getString(row.getColumnIndex(KEY_ASSOCIATED_SOCIETY)));
+		
+		event.setContactTelephoneNumber(row.getString(row.getColumnIndex(KEY_CONTACT_TELEPHONE_NUMBER)));
+		event.setContactEmailAddress(row.getString(row.getColumnIndex(KEY_CONTACT_EMAIL_ADDRESS)));
+		event.setWebAddress(row.getString(row.getColumnIndex(KEY_WEB_ADDRESS)));
+		
+		event.setAccessibilityInformation(row.getString(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION)));
+		
+		event.setCategoryTags(row.getString(row.getColumnIndex(KEY_CATEGORY)));
+		
+		event.setImageURL(row.getString(row.getColumnIndex(KEY_IMAGE_URL)));
+		event.setAdImageURL(row.getString(row.getColumnIndex(KEY_AD_IMAGE_URL)));
+		
+		event.setReviewScore(row.getInt(row.getColumnIndex(KEY_REVIEW_SCORE)));
+		event.setNumberOfReviews(row.getInt(row.getColumnIndex(KEY_NUM_OF_REVIEWS)));
+		
+		row.close();
+		
+		return event;
 	}
 	
-	public Cursor getLocation(long locationID)
+	public EventLocation getLocation(long locationID)
 	{
-		return db.query(LOCATION_TABLE, null, KEY_LOCATION_ID + "=" + locationID,
+		Cursor row = db.query(LOCATION_TABLE, null, KEY_LOCATION_ID + "=" + locationID,
 				null, null, null, null);
+		
+		if(row.getCount() == 0)
+		{
+			row.close();
+			return null;
+		}
+		else row.moveToFirst();
+		
+		EventLocation location = new EventLocation();
+		
+		location.setLocationID(locationID);
+		location.setAddress1(row.getString(row.getColumnIndex(KEY_ADDRESS_1)));
+		location.setAddress2(row.getString(row.getColumnIndex(KEY_ADDRESS_2)));
+		location.setCity(row.getString(row.getColumnIndex(KEY_CITY)));
+		location.setPostcode(row.getString(row.getColumnIndex(KEY_POSTCODE)));
+		location.setLatitude(row.getString(row.getColumnIndex(KEY_LATITUDE)));
+		location.setLongitude(row.getString(row.getColumnIndex(KEY_LONGITUDE)));
+		
+		row.close();
+		
+		return location;
 	}
 }

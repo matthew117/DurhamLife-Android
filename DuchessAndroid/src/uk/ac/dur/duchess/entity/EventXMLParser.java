@@ -34,7 +34,6 @@ public class EventXMLParser extends DefaultHandler
 	private boolean isLongitude = false;
 
 	private boolean isCategory = false;
-	private boolean isSubcategory = false;
 
 	private boolean isAccessibilityInformation = false;
 
@@ -46,6 +45,7 @@ public class EventXMLParser extends DefaultHandler
 	private List<Event> list;
 
 	private Event event;
+	private EventLocation location;
 	private List<String> categoryTags;
 
 	private long tagID = -1;
@@ -54,6 +54,7 @@ public class EventXMLParser extends DefaultHandler
 	{
 		list = events;
 		event = new Event();
+		location = new EventLocation();
 		categoryTags = new ArrayList<String>();
 	}
 
@@ -64,6 +65,7 @@ public class EventXMLParser extends DefaultHandler
 		{
 			Log.d("EventXMLParser", "Parser sees event Tag");
 			event = new Event();
+			location = new EventLocation();
 			categoryTags = new ArrayList<String>();
 
 			String isFeatured = attributes.getValue("featured");
@@ -93,7 +95,7 @@ public class EventXMLParser extends DefaultHandler
 		{
 			String id = attributes.getValue("id");
 			long locationID = (id != null) ? Long.parseLong(id) : -1;
-			if (locationID != -1) event.setLocationID(locationID);
+			if (locationID != -1) location.setLocationID(locationID);
 		}
 		else if (localName.equalsIgnoreCase("address1")) isAddress1 = true;
 		else if (localName.equalsIgnoreCase("address2")) isAddress2 = true;
@@ -108,13 +110,6 @@ public class EventXMLParser extends DefaultHandler
 			tagID = (id != null) ? Long.parseLong(id) : -1;
 
 			isCategory = true;
-		}
-		else if (localName.equalsIgnoreCase("subcategory"))
-		{
-			String id = attributes.getValue("id");
-			tagID = (id != null) ? Long.parseLong(id) : -1;
-
-			isSubcategory = true;
 		}
 
 		else if (localName.equalsIgnoreCase("accessibilityInformation")) isAccessibilityInformation = true;
@@ -155,7 +150,6 @@ public class EventXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("longitude")) isLongitude = false;
 
 		else if (localName.equalsIgnoreCase("category")) isCategory = false;
-		else if (localName.equalsIgnoreCase("subcategory")) isSubcategory = false;
 
 		else if (localName.equalsIgnoreCase("accessibilityInformation")) isAccessibilityInformation = false;
 
@@ -165,6 +159,7 @@ public class EventXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("event"))
 		{
 			event.setCategoryTags(categoryTags);
+			event.setLocation(location);
 			Log.d("EventXMLParser", "About to add to list.");
 			Log.d("EventXMLParser", "event.getName() => " + event.getName());
 			list.add(event);
@@ -191,12 +186,12 @@ public class EventXMLParser extends DefaultHandler
 		else if (isContactEmailAddress) event.setContactEmailAddress(new String(ch, start, length));
 		else if (isWebAddress) event.setWebAddress(new String(ch, start, length));
 
-		else if (isAddress1) event.setAddress1(new String(ch, start, length));
-		else if (isAddress2) event.setAddress2(new String(ch, start, length));
-		else if (isCity) event.setCity(new String(ch, start, length));
-		else if (isPostcode) event.setPostcode(new String(ch, start, length));
-		else if (isLatitude) event.setLatitude(new String(ch, start, length));
-		else if (isLongitude) event.setLongitude(new String(ch, start, length));
+		else if (isAddress1) location.setAddress1(new String(ch, start, length));
+		else if (isAddress2) location.setAddress2(new String(ch, start, length));
+		else if (isCity) location.setCity(new String(ch, start, length));
+		else if (isPostcode) location.setPostcode(new String(ch, start, length));
+		else if (isLatitude) location.setLatitude(new String(ch, start, length));
+		else if (isLongitude) location.setLongitude(new String(ch, start, length));
 
 		else if (isCategory && tagID != -1) categoryTags.add(new String(ch, start, length));
 

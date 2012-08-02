@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess.entity;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Event
@@ -17,6 +18,8 @@ public class Event
 	private String endDate;
 	private String iCalURL;
 	
+	private EventLocation location;
+	
 	private EventScope scope;
 	private String associatedCollege;
 	private String associatedSociety;
@@ -25,24 +28,14 @@ public class Event
 	private String contactEmailAddress;
 	private String webAddress;
 
-	private long locationID;
-	private String address1;
-	private String address2;
-	private String city;
-	private String postcode;
-	private String latitude;
-	private String longitude;
-
 	private String accessibilityInformation;
 
 	private List<String> categoryTags;
 	
 	private String adImageURL;
-	
 	private String imageURL;
 	
 	private int reviewScore;
-	
 	private int numberOfReviews;
 	
 	public String getICalURL()
@@ -120,66 +113,6 @@ public class Event
 		this.webAddress = webAddress;
 	}
 
-	public String getAddress1()
-	{
-		return address1;
-	}
-
-	public void setAddress1(String address1)
-	{
-		this.address1 = address1;
-	}
-
-	public String getAddress2()
-	{
-		return address2;
-	}
-
-	public void setAddress2(String address2)
-	{
-		this.address2 = address2;
-	}
-
-	public String getCity()
-	{
-		return city;
-	}
-
-	public void setCity(String city)
-	{
-		this.city = city;
-	}
-
-	public String getPostcode()
-	{
-		return postcode;
-	}
-
-	public void setPostcode(String postcode)
-	{
-		this.postcode = postcode;
-	}
-
-	public String getLatitude()
-	{
-		return latitude;
-	}
-
-	public void setLatitude(String latitude)
-	{
-		this.latitude = latitude;
-	}
-
-	public String getLongitude()
-	{
-		return longitude;
-	}
-
-	public void setLongitude(String longitude)
-	{
-		this.longitude = longitude;
-	}
-
 	public String getAccessibilityInformation()
 	{
 		return accessibilityInformation;
@@ -198,6 +131,14 @@ public class Event
 	public void setCategoryTags(List<String> categoryTags)
 	{
 		this.categoryTags = categoryTags;
+	}
+	
+	public void setCategoryTags(String categories)
+	{
+		categories = categories.substring(1, categories.length() - 1);
+		categories = categories.replaceAll(", ", ",");
+		
+		categoryTags = Arrays.asList(categories.split(","));
 	}
 
 	public String getImageURL()
@@ -259,16 +200,6 @@ public class Event
 	{
 		this.isFeatured = isFeatured;
 	}
-
-	public long getLocationID()
-	{
-		return locationID;
-	}
-
-	public void setLocationID(long locationID)
-	{
-		this.locationID = locationID;
-	}
 	
 	public String getAdImageURL()
 	{
@@ -314,6 +245,14 @@ public class Event
 
 	public void setAssociatedSociety(String associatedSociety) {
 		this.associatedSociety = associatedSociety;
+	}
+
+	public EventLocation getLocation() {
+		return location;
+	}
+
+	public void setLocation(EventLocation location) {
+		this.location = location;
 	}
 
 }

@@ -178,7 +178,8 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			}
 			if (holder.txtEventDate != null)
 			{
-				holder.txtEventDate.setText(e.getAddress1() + "\n" + CalendarFunctions.getEventDate(e));
+				holder.txtEventDate.setText(e.getLocation().getAddress1() + "\n"
+						+ CalendarFunctions.getEventDate(e));
 			}
 			
 			int numberOfReviews = e.getNumberOfReviews();

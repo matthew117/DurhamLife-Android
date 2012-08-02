@@ -16,6 +16,7 @@ import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventLocation;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
@@ -156,6 +157,7 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 
 					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
 					Event e = (Event) adapter.getItem(position);
+					EventLocation l = e.getLocation();
 					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
@@ -165,12 +167,12 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
 					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
 					i.putExtra("event_web_address", e.getWebAddress());
-					i.putExtra("event_address1", e.getAddress1());
-					i.putExtra("event_address2", e.getAddress2());
-					i.putExtra("event_city", e.getCity());
-					i.putExtra("event_postcode", e.getPostcode());
-					i.putExtra("event_latitude", e.getLatitude());
-					i.putExtra("event_longitude", e.getLongitude());
+					i.putExtra("event_address1", l.getAddress1());
+					i.putExtra("event_address2", l.getAddress2());
+					i.putExtra("event_city", l.getCity());
+					i.putExtra("event_postcode", l.getPostcode());
+					i.putExtra("event_latitude", l.getLatitude());
+					i.putExtra("event_longitude", l.getLongitude());
 					i.putExtra("image_url", e.getImageURL());
 					i.putExtra("ical_url", e.getICalURL());
 					startActivity(i);
