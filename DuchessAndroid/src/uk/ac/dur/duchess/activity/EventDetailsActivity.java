@@ -9,7 +9,6 @@ import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -18,7 +17,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,7 +39,6 @@ public class EventDetailsActivity extends Activity
 	private LinearLayout eventDetailsContainer;
 	private LinearLayout eventImageContainer;
 	
-	private long eventID;
 	private Event event;
 
 	@Override
@@ -77,8 +74,6 @@ public class EventDetailsActivity extends Activity
 		event = database.getEvent(e.getLong("event_id"));
 		
 		database.close();
-
-		eventID = e.getLong("event_id");
 
 		String date = CalendarFunctions.getEventDate(event);
 
@@ -194,7 +189,7 @@ public class EventDetailsActivity extends Activity
 		
 		User user = SessionFunctions.getCurrentUser(getParent());
 		
-		if(user.hasPinnedEvent(eventID))
+		if(user.hasPinnedEvent(event.getEventID()))
 		{
 			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.bookmark));
 			menu.getItem(0).setTitle("Remove Bookmark");
@@ -216,19 +211,19 @@ public class EventDetailsActivity extends Activity
 			
 			User user = SessionFunctions.getCurrentUser(this);
 			
-			if(user.hasPinnedEvent(eventID))
+			if(user.hasPinnedEvent(event.getEventID()))
 			{
 				item.setIcon(getParent().getResources().getDrawable(R.drawable.clear_bookmark));
 				item.setTitle("Bookmark");
 				
-				user.removeEvent(eventID);
+				user.removeEvent(event.getEventID());
 			}
 			else
 			{
 				item.setIcon(getParent().getResources().getDrawable(R.drawable.bookmark));
 				item.setTitle("Remove Bookmark");
 				
-				user.addEvent(eventID);
+				user.addEvent(event.getEventID());
 			}
 			
 			SessionFunctions.saveUserPreferences(this, user);

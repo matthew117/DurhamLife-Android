@@ -1,11 +1,10 @@
 package uk.ac.dur.duchess.activity;
 
-import static android.util.FloatMath.sqrt;
-import static java.lang.Math.acos;
-
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.entity.DBAccess;
+import uk.ac.dur.duchess.entity.EventLocation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,6 +51,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	private double eventLat;
 	private double eventLon;
 	public float bearing = 0;
+	private EventLocation location;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -67,13 +67,16 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		Bundle e = getIntent().getExtras();
 
 		// TODO add error checking
+		
+		DBAccess database = new DBAccess(this);
+		database.open();
+		
+		location = database.getLocation(e.getLong("location_id"));
+		
+		database.close();
 
-		String address1 = e.getString("event_address1");
-		String address2 = e.getString("event_address2");
-		String city = e.getString("event_city");
-		String postcode = e.getString("event_postcode");
-
-		addressBlock.setText(address1 + ", " + address2 + "\n" + city + ", " + postcode);
+		addressBlock.setText(location.getAddress1() + ", " + location.getAddress2() + "\n"
+				+ location.getCity() + ", " + location.getPostcode());
 		eventName.setText(e.getString("event_name"));
 
 		mapView = (MapView) findViewById(R.id.mapView);
@@ -81,8 +84,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 		mc = mapView.getController();
 
-		eventLat = Double.parseDouble(e.getString("event_latitude"));
-		eventLon = Double.parseDouble(e.getString("event_longitude"));
+		eventLat = Double.parseDouble(location.getLatitude());
+		eventLon = Double.parseDouble(location.getLongitude());
 
 		point = new GeoPoint((int) (eventLat * 1E6), (int) (eventLon * 1E6));
 
