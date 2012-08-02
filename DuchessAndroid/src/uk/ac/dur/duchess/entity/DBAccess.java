@@ -146,6 +146,18 @@ public class DBAccess
 	{
 		DBHelper.close();
 	}
+	
+	public boolean eventTableIsEmpty()
+	{
+		Cursor c = db.query(EVENT_TABLE, new String[] {KEY_EVENT_ID},
+				null, null, null, null, null);
+			
+		int rows = c.getCount();
+			
+		c.close();
+			
+		return rows == 0;
+	}
 
 	public long insertEvent(Event event)
 	{

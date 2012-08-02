@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -60,7 +61,7 @@ public class EventListActivity extends ListActivity
 	private ListView listView;
 	private Event currentAd;
 
-	private ArrayList<Event> eventList;
+	private List<Event> eventList;
 	private String categoryFilter;
 	private EventListAdapter adapter;
 	
@@ -99,178 +100,194 @@ public class EventListActivity extends ListActivity
 			setTitle("Duchess - Guest");
 		}
 
-		try
+		DBAccess database = new DBAccess(activity);
+		database.open();
+		
+		if(database.eventTableIsEmpty())
 		{
-
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser parser = factory.newSAXParser();
-			final XMLReader reader = parser.getXMLReader();
-
-			final URL url;
-			if (categoryFilter == null)
+			database.close();
+		
+			try
 			{
-				url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php");
+	
+				SAXParserFactory factory = SAXParserFactory.newInstance();
+				SAXParser parser = factory.newSAXParser();
+				final XMLReader reader = parser.getXMLReader();
+	
+				final URL url;
+				if (categoryFilter == null)
+				{
+					url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php");
+				}
+				else
+				{
+					url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?category="
+							+ categoryFilter);
+				}
+	
+				eventList = new ArrayList<Event>();
+	
+				EventXMLParser myXMLHandler = new EventXMLParser(eventList);
+	
+				reader.setContentHandler(myXMLHandler);
+	
+				adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
+				setListAdapter(adapter);
+	
+				getListView().setOnItemClickListener(new OnItemClickListener()
+				{
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+					{
+	
+						Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+						Event e = (Event) getListAdapter().getItem(position);
+						EventLocation l = e.getLocation();
+						i.putExtra("event_id", e.getEventID());
+						i.putExtra("location_id", l.getLocationID());
+						i.putExtra("event_name", e.getName());
+	//					i.putExtra("event_start_date", e.getStartDate());
+	//					i.putExtra("event_end_date", e.getEndDate());
+	//					i.putExtra("event_description_header", e.getDescriptionHeader());
+	//					i.putExtra("event_description_body", e.getDescriptionBody());
+	//					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+	//					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+	//					i.putExtra("event_web_address", e.getWebAddress());
+	//					i.putExtra("event_address1", l.getAddress1());
+	//					i.putExtra("event_address2", l.getAddress2());
+	//					i.putExtra("event_city", l.getCity());
+	//					i.putExtra("event_postcode", l.getPostcode());
+	//					i.putExtra("event_latitude", l.getLatitude());
+	//					i.putExtra("event_longitude", l.getLongitude());
+	//					i.putExtra("image_url", e.getImageURL());
+	//					i.putExtra("ical_url", e.getICalURL());
+						startActivity(i);
+					}
+				});
+	
+				final Runnable callbackFunction = new Runnable()
+				{
+	
+					@Override
+					public void run()
+					{
+						progressDialog.dismiss();
+						adapter.notifyDataSetChanged();
+	
+	//					for (Event e : eventList)
+	//					{
+	//						if (e.isFeatured() && e.getAdImageURL() != null)
+	//						{
+	//							currentAd = e;
+	//							Log.d("Download AD", e.getAdImageURL());
+	//							adImageContainer.setAdjustViewBounds(true);
+	//							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
+	//							DisplayMetrics displaymetrics = new DisplayMetrics();
+	//							getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+	//							int height = displaymetrics.heightPixels;
+	//							int width = displaymetrics.widthPixels;
+	//							adImageContainer.setMinimumWidth(width);
+	//							adImageContainer.setMinimumHeight((int) (width / 3.0));
+	//							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
+	//									.getAdImageURL()));
+	//							adImageContainer.invalidate();
+	//							break;
+	//						}
+	//					}
+						
+						android.os.Debug.stopMethodTracing();
+					}
+				};
+	
+				Runnable parseData = new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						try
+						{
+							InputStream is = url.openStream();
+							InputSource source = new InputSource(is);
+							source.setEncoding("UTF-8");
+							reader.parse(source);
+							
+							DBAccess database = new DBAccess(activity);
+							database.open();
+							
+							for(Event event : eventList)
+								if(!database.containsEvent(event.getEventID())) database.insertEvent(event);
+							
+							database.close();
+							
+							// TODO MASSIVE TEMPORARY HACK :)
+							GlobalApplicationData.globalEventList = new ArrayList<Event>(eventList);
+							
+							if (currentUser != null)
+							{
+								Log.d("BEFORE FILTER", "" + eventList.size());
+								UserFunctions.filterByPreferences(currentUser, eventList);
+								Log.d("AFTER FILTER", "" + eventList.size());
+							}
+							runOnUiThread(callbackFunction);
+						}
+						catch (Exception ex)
+						{
+							ex.printStackTrace();
+						}
+					}
+				};
+	
+				Thread thread = new Thread(null, parseData, "SAXParser");
+				thread.start();
+				progressDialog = ProgressDialog.show(EventListActivity.this, "Please wait...",
+						"Downloading Events ...", true);
+	
+				adImageContainer.setClickable(true);
+				adImageContainer.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
+						Event e = currentAd;
+						EventLocation l = e.getLocation();
+						i.putExtra("event_id", e.getEventID());
+						i.putExtra("event_name", e.getName());
+						i.putExtra("event_start_date", e.getStartDate());
+						i.putExtra("event_end_date", e.getEndDate());
+						i.putExtra("event_description_header", e.getDescriptionHeader());
+						i.putExtra("event_description_body", e.getDescriptionBody());
+						i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+						i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+						i.putExtra("event_web_address", e.getWebAddress());
+						i.putExtra("event_address1", l.getAddress1());
+						i.putExtra("event_address2", l.getAddress2());
+						i.putExtra("event_city", l.getCity());
+						i.putExtra("event_postcode", l.getPostcode());
+						i.putExtra("event_latitude", l.getLatitude());
+						i.putExtra("event_longitude", l.getLongitude());
+						i.putExtra("image_url", e.getImageURL());
+						i.putExtra("ical_url", e.getICalURL());
+						startActivity(i);
+					}
+				});
+	
 			}
-			else
+
+			catch (Exception e)
 			{
-				url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?category="
-						+ categoryFilter);
+				// TODO handle error
+				e.printStackTrace();
 			}
-
-			eventList = new ArrayList<Event>();
-
-			EventXMLParser myXMLHandler = new EventXMLParser(eventList);
-
-			reader.setContentHandler(myXMLHandler);
+		}
+		else
+		{
+			eventList = database.getEvents();
+			database.close();
 
 			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
 			setListAdapter(adapter);
-
-			getListView().setOnItemClickListener(new OnItemClickListener()
-			{
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-				{
-
-					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
-					Event e = (Event) getListAdapter().getItem(position);
-					EventLocation l = e.getLocation();
-					i.putExtra("event_id", e.getEventID());
-					i.putExtra("location_id", l.getLocationID());
-					i.putExtra("event_name", e.getName());
-//					i.putExtra("event_start_date", e.getStartDate());
-//					i.putExtra("event_end_date", e.getEndDate());
-//					i.putExtra("event_description_header", e.getDescriptionHeader());
-//					i.putExtra("event_description_body", e.getDescriptionBody());
-//					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
-//					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
-//					i.putExtra("event_web_address", e.getWebAddress());
-//					i.putExtra("event_address1", l.getAddress1());
-//					i.putExtra("event_address2", l.getAddress2());
-//					i.putExtra("event_city", l.getCity());
-//					i.putExtra("event_postcode", l.getPostcode());
-//					i.putExtra("event_latitude", l.getLatitude());
-//					i.putExtra("event_longitude", l.getLongitude());
-//					i.putExtra("image_url", e.getImageURL());
-//					i.putExtra("ical_url", e.getICalURL());
-					startActivity(i);
-				}
-			});
-
-			final Runnable callbackFunction = new Runnable()
-			{
-
-				@Override
-				public void run()
-				{
-					progressDialog.dismiss();
-					adapter.notifyDataSetChanged();
-
-//					for (Event e : eventList)
-//					{
-//						if (e.isFeatured() && e.getAdImageURL() != null)
-//						{
-//							currentAd = e;
-//							Log.d("Download AD", e.getAdImageURL());
-//							adImageContainer.setAdjustViewBounds(true);
-//							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
-//							DisplayMetrics displaymetrics = new DisplayMetrics();
-//							getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//							int height = displaymetrics.heightPixels;
-//							int width = displaymetrics.widthPixels;
-//							adImageContainer.setMinimumWidth(width);
-//							adImageContainer.setMinimumHeight((int) (width / 3.0));
-//							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
-//									.getAdImageURL()));
-//							adImageContainer.invalidate();
-//							break;
-//						}
-//					}
-					
-					android.os.Debug.stopMethodTracing();
-				}
-			};
-
-			Runnable parseData = new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					try
-					{
-						InputStream is = url.openStream();
-						InputSource source = new InputSource(is);
-						source.setEncoding("UTF-8");
-						reader.parse(source);
-						
-						DBAccess database = new DBAccess(activity);
-						database.open();
-						
-						for(Event event : eventList)
-							if(!database.containsEvent(event.getEventID())) database.insertEvent(event);
-						
-						database.close();
-						
-						// TODO MASSIVE TEMPORARY HACK :)
-						GlobalApplicationData.globalEventList = new ArrayList<Event>(eventList);
-						
-						if (currentUser != null)
-						{
-							Log.d("BEFORE FILTER", "" + eventList.size());
-							UserFunctions.filterByPreferences(currentUser, eventList);
-							Log.d("AFTER FILTER", "" + eventList.size());
-						}
-						runOnUiThread(callbackFunction);
-					}
-					catch (Exception ex)
-					{
-						ex.printStackTrace();
-					}
-				}
-			};
-
-			Thread thread = new Thread(null, parseData, "SAXParser");
-			thread.start();
-			progressDialog = ProgressDialog.show(EventListActivity.this, "Please wait...",
-					"Downloading Events ...", true);
-
-			adImageContainer.setClickable(true);
-			adImageContainer.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
-					Event e = currentAd;
-					EventLocation l = e.getLocation();
-					i.putExtra("event_id", e.getEventID());
-					i.putExtra("event_name", e.getName());
-					i.putExtra("event_start_date", e.getStartDate());
-					i.putExtra("event_end_date", e.getEndDate());
-					i.putExtra("event_description_header", e.getDescriptionHeader());
-					i.putExtra("event_description_body", e.getDescriptionBody());
-					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
-					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
-					i.putExtra("event_web_address", e.getWebAddress());
-					i.putExtra("event_address1", l.getAddress1());
-					i.putExtra("event_address2", l.getAddress2());
-					i.putExtra("event_city", l.getCity());
-					i.putExtra("event_postcode", l.getPostcode());
-					i.putExtra("event_latitude", l.getLatitude());
-					i.putExtra("event_longitude", l.getLongitude());
-					i.putExtra("image_url", e.getImageURL());
-					i.putExtra("ical_url", e.getICalURL());
-					startActivity(i);
-				}
-			});
-
 		}
-		catch (Exception e)
-		{
-			// TODO handle error
-			e.printStackTrace();
-		}
-
 	}
 	
 	@Override

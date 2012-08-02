@@ -67,7 +67,7 @@ public class UserFunctions
 		return 1;
 	}
 
-	public static ArrayList<Event> filterByPreferences(User user, ArrayList<Event> eventList)
+	public static ArrayList<Event> filterByPreferences(User user, List<Event> eventList)
 	{
 		ArrayList<Event> newList = new ArrayList<Event>();
 		ArrayList<String> preferences = (ArrayList<String>) user.getCategoryPreferences();
