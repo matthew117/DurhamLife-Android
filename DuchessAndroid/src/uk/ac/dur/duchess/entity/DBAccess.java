@@ -214,6 +214,18 @@ public class DBAccess
 		
 		return rows != 0;
 	}
+	
+	public boolean containsEvent(long eventID)
+	{
+		Cursor c = db.query(EVENT_TABLE, new String[] {KEY_EVENT_ID},
+			KEY_EVENT_ID + "=" + eventID, null, null, null, null);
+		
+		int rows = c.getCount();
+		
+		c.close();
+		
+		return rows != 0;
+	}
 
 	public Cursor getEventSummaries()
 	{

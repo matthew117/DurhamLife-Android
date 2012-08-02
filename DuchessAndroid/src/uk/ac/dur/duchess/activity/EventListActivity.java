@@ -208,7 +208,8 @@ public class EventListActivity extends ListActivity
 						DBAccess database = new DBAccess(activity);
 						database.open();
 						
-						for(Event event : eventList) database.insertEvent(event);
+						for(Event event : eventList)
+							if(!database.containsEvent(event.getEventID())) database.insertEvent(event);
 						
 						database.close();
 						
