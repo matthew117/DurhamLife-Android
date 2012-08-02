@@ -81,6 +81,7 @@ public class Event
 	public void setScope(String scope)
 	{
 		this.scope = EventScope.parseScope(scope);
+		System.err.println(this.scope);
 	}
 
 	public String getContactTelephoneNumber()

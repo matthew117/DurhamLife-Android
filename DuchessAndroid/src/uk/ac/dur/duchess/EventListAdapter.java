@@ -43,7 +43,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent)
-	{
+	{		
 		View v = convertView;
 		ViewHolder holder;
 		
@@ -239,6 +239,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			}
 
 		}
+		
 		return v;
 	}
 	

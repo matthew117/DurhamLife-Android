@@ -161,7 +161,7 @@ public class DBAccess
 		if(!containsLocation(event.getLocation().getLocationID()))
 			insertLocation(event.getLocation());
 		
-		values.put(KEY_SCOPE, event.getScope().name());
+		values.put(KEY_SCOPE, (event.getScope() != null) ? event.getScope().name() : "OPEN");
 		values.put(KEY_ASSOCIATED_COLLEGE, event.getAssociatedCollege());
 		values.put(KEY_ASSOCIATED_SOCIETY, event.getAssociatedSociety());
 		

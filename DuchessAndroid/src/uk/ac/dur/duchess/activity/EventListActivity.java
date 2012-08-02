@@ -77,6 +77,8 @@ public class EventListActivity extends ListActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+		android.os.Debug.startMethodTracing("duchess");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_list_layout);
 
@@ -166,26 +168,28 @@ public class EventListActivity extends ListActivity
 					progressDialog.dismiss();
 					adapter.notifyDataSetChanged();
 
-					for (Event e : eventList)
-					{
-						if (e.isFeatured() && e.getAdImageURL() != null)
-						{
-							currentAd = e;
-							Log.d("Download AD", e.getAdImageURL());
-							adImageContainer.setAdjustViewBounds(true);
-							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
-							DisplayMetrics displaymetrics = new DisplayMetrics();
-							getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-							int height = displaymetrics.heightPixels;
-							int width = displaymetrics.widthPixels;
-							adImageContainer.setMinimumWidth(width);
-							adImageContainer.setMinimumHeight((int) (width / 3.0));
-							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
-									.getAdImageURL()));
-							adImageContainer.invalidate();
-							break;
-						}
-					}
+//					for (Event e : eventList)
+//					{
+//						if (e.isFeatured() && e.getAdImageURL() != null)
+//						{
+//							currentAd = e;
+//							Log.d("Download AD", e.getAdImageURL());
+//							adImageContainer.setAdjustViewBounds(true);
+//							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
+//							DisplayMetrics displaymetrics = new DisplayMetrics();
+//							getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//							int height = displaymetrics.heightPixels;
+//							int width = displaymetrics.widthPixels;
+//							adImageContainer.setMinimumWidth(width);
+//							adImageContainer.setMinimumHeight((int) (width / 3.0));
+//							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
+//									.getAdImageURL()));
+//							adImageContainer.invalidate();
+//							break;
+//						}
+//					}
+					
+					android.os.Debug.stopMethodTracing();
 				}
 			};
 
