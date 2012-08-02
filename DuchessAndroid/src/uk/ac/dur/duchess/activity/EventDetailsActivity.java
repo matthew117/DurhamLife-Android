@@ -10,9 +10,6 @@ import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,8 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class EventDetailsActivity extends Activity
@@ -37,7 +36,8 @@ public class EventDetailsActivity extends Activity
 	private Button emailContactButton;
 	private Button viewWebsiteButton;
 	private LinearLayout eventDetailsContainer;
-	private LinearLayout eventImageContainer;
+	private FrameLayout eventImageContainer;
+	private ProgressBar imageActivityIndicator;
 	
 	private Event event;
 
@@ -55,14 +55,8 @@ public class EventDetailsActivity extends Activity
 		emailContactButton = (Button) findViewById(R.id.emailContactButton);
 		viewWebsiteButton = (Button) findViewById(R.id.websiteButton);
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
-		eventImageContainer = (LinearLayout) findViewById(R.id.eventImageContainer);
-		
-		int[] colors = {Color.parseColor("#111111"), Color.parseColor("#222222"), Color.parseColor("#333333")};
-		
-		GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
-		gradient.setDither(true);
-		
-		eventImageContainer.setBackgroundDrawable(gradient);
+		eventImageContainer = (FrameLayout) findViewById(R.id.eventImageContainer);
+		imageActivityIndicator = (ProgressBar) findViewById(R.id.eventDetailsImageProgress);
 
 		image = (ImageView) findViewById(R.id.eventImage);
 
@@ -164,6 +158,7 @@ public class EventDetailsActivity extends Activity
 			try { return NetworkFunctions.downloadImage(urlArray[0]); }
 			catch (Exception ex)
 			{
+				imageActivityIndicator.setVisibility(View.GONE);
 				eventImageContainer.setVisibility(View.GONE);
 				// TODO error handling
 			}
@@ -173,11 +168,19 @@ public class EventDetailsActivity extends Activity
 		@Override
 		protected void onPostExecute(Bitmap bitmap)
 		{
+			if (bitmap == null)
+			{
+				imageActivityIndicator.setVisibility(View.GONE);
+				eventImageContainer.setVisibility(View.GONE);
+				image.setVisibility(View.GONE);
+				return;
+			}
 			image.setAdjustViewBounds(true);
 			int width = eventDetailsContainer.getWidth();
 			image.setMaxHeight((int) (width * (4.0 / 6.0)));
 			image.setMaxWidth(width);
 			image.setImageBitmap(bitmap);
+			imageActivityIndicator.setVisibility(View.GONE);
 			image.invalidate();
 		}
 	}
