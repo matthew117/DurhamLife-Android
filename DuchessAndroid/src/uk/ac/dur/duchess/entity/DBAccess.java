@@ -1,5 +1,8 @@
 package uk.ac.dur.duchess.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -252,9 +255,42 @@ public class DBAccess
 		}
 		else row.moveToFirst();
 		
+		Event event = toEvent(row);
+		
+		row.close();
+		
+		return event;
+	}
+	
+	public List<Event> getEvents()
+	{
+		List<Event> events = new ArrayList<Event>();
+		
+		Cursor row = db.query(EVENT_TABLE, null, null, null, null, null, null);
+
+		if(row.getCount() == 0)
+		{
+			row.close();
+			return events;
+		}
+		else row.moveToFirst();
+
+		while(!row.isAfterLast())
+		{
+			events.add(toEvent(row));
+			row.moveToNext();
+		}
+
+		row.close();
+
+		return events;
+	}
+
+	private Event toEvent(Cursor row)
+	{
 		Event event = new Event();
 		
-		event.setEventID(eventID);
+		event.setEventID(row.getLong(row.getColumnIndex(KEY_EVENT_ID)));
 		
 		event.setName(row.getString(row.getColumnIndex(KEY_NAME)));
 		event.setDescriptionHeader(row.getString(row.getColumnIndex(KEY_DESCRIPTION_HEADER)));
@@ -262,30 +298,38 @@ public class DBAccess
 		
 		event.setStartDate(row.getString(row.getColumnIndex(KEY_START_DATE)));
 		event.setEndDate(row.getString(row.getColumnIndex(KEY_END_DATE)));
-		if(row.getColumnIndex(KEY_ICAL_URL) != -1) event.setICalURL(row.getString(row.getColumnIndex(KEY_ICAL_URL)));
+		if(row.getColumnIndex(KEY_ICAL_URL) != -1)
+			event.setICalURL(row.getString(row.getColumnIndex(KEY_ICAL_URL)));
 		
 		event.setLocation(getLocation(row.getLong(row.getColumnIndex(KEY_LOCATION_ID))));
 		
 		event.setScope(row.getString(row.getColumnIndex(KEY_SCOPE)));
-		if(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE) != -1) event.setAssociatedCollege(row.getString(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE)));
-		if(row.getColumnIndex(KEY_ASSOCIATED_SOCIETY) != -1) event.setAssociatedSociety(row.getString(row.getColumnIndex(KEY_ASSOCIATED_SOCIETY)));
+		if(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE) != -1)
+			event.setAssociatedCollege(row.getString(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE)));
+		if(row.getColumnIndex(KEY_ASSOCIATED_SOCIETY) != -1)
+			event.setAssociatedSociety(row.getString(row.getColumnIndex(KEY_ASSOCIATED_SOCIETY)));
 		
-		if(row.getColumnIndex(KEY_CONTACT_TELEPHONE_NUMBER) != -1) event.setContactTelephoneNumber(row.getString(row.getColumnIndex(KEY_CONTACT_TELEPHONE_NUMBER)));
-		if(row.getColumnIndex(KEY_CONTACT_EMAIL_ADDRESS) != -1) event.setContactEmailAddress(row.getString(row.getColumnIndex(KEY_CONTACT_EMAIL_ADDRESS)));
-		if(row.getColumnIndex(KEY_WEB_ADDRESS) != -1) event.setWebAddress(row.getString(row.getColumnIndex(KEY_WEB_ADDRESS)));
+		if(row.getColumnIndex(KEY_CONTACT_TELEPHONE_NUMBER) != -1)
+			event.setContactTelephoneNumber(row.getString(row.getColumnIndex(KEY_CONTACT_TELEPHONE_NUMBER)));
+		if(row.getColumnIndex(KEY_CONTACT_EMAIL_ADDRESS) != -1)
+			event.setContactEmailAddress(row.getString(row.getColumnIndex(KEY_CONTACT_EMAIL_ADDRESS)));
+		if(row.getColumnIndex(KEY_WEB_ADDRESS) != -1)
+			event.setWebAddress(row.getString(row.getColumnIndex(KEY_WEB_ADDRESS)));
 		
-		if(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION) != -1) event.setAccessibilityInformation(row.getString(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION)));
+		if(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION) != -1)
+			event.setAccessibilityInformation(row.getString(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION)));
 		
 		event.setCategoryTags(row.getString(row.getColumnIndex(KEY_CATEGORY)));
 		
-		if(row.getColumnIndex(KEY_IMAGE_URL) != -1) event.setImageURL(row.getString(row.getColumnIndex(KEY_IMAGE_URL)));
-		if(row.getColumnIndex(KEY_AD_IMAGE_URL) != -1) event.setAdImageURL(row.getString(row.getColumnIndex(KEY_AD_IMAGE_URL)));
+		if(row.getColumnIndex(KEY_IMAGE_URL) != -1)
+			event.setImageURL(row.getString(row.getColumnIndex(KEY_IMAGE_URL)));
+		if(row.getColumnIndex(KEY_AD_IMAGE_URL) != -1)
+			event.setAdImageURL(row.getString(row.getColumnIndex(KEY_AD_IMAGE_URL)));
 		
-		if(row.getColumnIndex(KEY_REVIEW_SCORE) != -1) event.setReviewScore(row.getInt(row.getColumnIndex(KEY_REVIEW_SCORE)));
-		if(row.getColumnIndex(KEY_NUM_OF_REVIEWS) != -1) event.setNumberOfReviews(row.getInt(row.getColumnIndex(KEY_NUM_OF_REVIEWS)));
-		
-		row.close();
-		
+		if(row.getColumnIndex(KEY_REVIEW_SCORE) != -1)
+			event.setReviewScore(row.getInt(row.getColumnIndex(KEY_REVIEW_SCORE)));
+		if(row.getColumnIndex(KEY_NUM_OF_REVIEWS) != -1)
+			event.setNumberOfReviews(row.getInt(row.getColumnIndex(KEY_NUM_OF_REVIEWS)));
 		return event;
 	}
 	
