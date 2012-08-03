@@ -12,6 +12,7 @@ import uk.ac.dur.duchess.EventListAdapter;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
 import android.app.Activity;
@@ -57,11 +58,15 @@ public class CalendarActivity extends Activity
 	
 	private CalendarButton currentCell;
 	
+	private Context context;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_layout);
+		
+		this.context = this;
 		
 		header = (LinearLayout) findViewById(R.id.calendarHeader);
 		
@@ -198,7 +203,7 @@ public class CalendarActivity extends Activity
 			calendarView.addView(tableRow);
 		}
 
-		eventList.clear();
+		adapter.clear();
 		adapter.notifyDataSetChanged();
 	}
 	
@@ -328,13 +333,15 @@ public class CalendarActivity extends Activity
 	
 	private void filterEventByDateRange(String fromDate, String toDate)
 	{
-		eventList.clear();
-		List<Event> events = GlobalApplicationData.globalEventList;
+		adapter.clear();
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider dataPro = delegate.getDataProvider();
+		List<Event> events = dataPro.getAllEvents(context);
 
 		for (Event event : events)
 		{
 			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), fromDate,
-					toDate)) eventList.add(event);
+					toDate)) adapter.add(event);
 		}
 		
 		adapter.notifyDataSetChanged();

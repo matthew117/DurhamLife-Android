@@ -1,10 +1,10 @@
 package uk.ac.dur.duchess.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
 import android.app.Activity;
@@ -26,7 +26,9 @@ public class NearEventsActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		eventList = new ArrayList<Event>(GlobalApplicationData.globalEventList);
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider dataPro = delegate.getDataProvider();
+		eventList = dataPro.getAllEvents(this);
 		currentLocation = new GeoPoint((int) (54.768018 * 1E6), (int) (-1.571968 * 1E6));
 		
 		setContentView(R.layout.view_shared_preferences);

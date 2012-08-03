@@ -84,9 +84,10 @@ public class DataProvider
 			List<Event> collegeEventList = new ArrayList<Event>();
 			for (Event event : eventList)
 			{
-				if (event.getAssociatedCollege().equals(college)) collegeEventList.add(event);
+				String associatedCollege = event.getAssociatedCollege();
+				if (associatedCollege != null && associatedCollege.equals(college)) collegeEventList.add(event);
 			}
-			return new ArrayList<Event>(eventList);
+			return collegeEventList;
 		}
 		// This suggests that an up to date college event list is stored in a local database
 		else if (!memoryCacheIsValid && databaseCacheIsValid)
@@ -110,6 +111,8 @@ public class DataProvider
 			try
 			{
 				List<Event> collegeEventList = EventAPI.downloadEventsByCollege(college);
+				
+				if (!memoryCacheIsValid) eventList = new ArrayList<Event>(collegeEventList);
 				
 				/**
 				memoryCacheIsValid = true; // Can no longer say that
