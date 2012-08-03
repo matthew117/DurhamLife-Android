@@ -161,21 +161,6 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
 					i.putExtra("location_id", l.getLocationID());
-					i.putExtra("event_start_date", e.getStartDate());
-					i.putExtra("event_end_date", e.getEndDate());
-					i.putExtra("event_description_header", e.getDescriptionHeader());
-					i.putExtra("event_description_body", e.getDescriptionBody());
-					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
-					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
-					i.putExtra("event_web_address", e.getWebAddress());
-					i.putExtra("event_address1", l.getAddress1());
-					i.putExtra("event_address2", l.getAddress2());
-					i.putExtra("event_city", l.getCity());
-					i.putExtra("event_postcode", l.getPostcode());
-					i.putExtra("event_latitude", l.getLatitude());
-					i.putExtra("event_longitude", l.getLongitude());
-					i.putExtra("image_url", e.getImageURL());
-					i.putExtra("ical_url", e.getICalURL());
 					startActivity(i);
 				}
 			});
