@@ -12,7 +12,6 @@ Features
 Optimizations
 
 # Reviews should be in a ListView (maybe)
-# Global access through application singleton rather than extensive Intent use
 
 Bugs
 

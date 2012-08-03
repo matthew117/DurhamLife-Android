@@ -6,12 +6,21 @@ import java.util.List;
 
 import uk.ac.dur.duchess.entity.DBAccess;
 import uk.ac.dur.duchess.entity.Event;
+import uk.ac.dur.duchess.entity.EventLocation;
+import uk.ac.dur.duchess.entity.Review;
 import uk.ac.dur.duchess.entity.Society;
 import uk.ac.dur.duchess.webservice.EventAPI;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class DataProvider
 {	
+	public static final String CACHE_SHARED_PREFERENCES_KEY = "duchess_cache";
+	private static final String CACHE_LAST_MODIFIED_KEY = "last_modified";
+	private static final String CACHE_EXPIRES_IN_KEY = "expires_in";
+	
 	private boolean memoryCacheIsValid = false;
 	private boolean databaseCacheIsValid = false;
 	
@@ -27,10 +36,15 @@ public class DataProvider
 		calculateCacheValidity(context);
 		
 		// This suggests that an up to date event list is stored in memory
-		if (eventList != null && memoryCacheIsValid) return new ArrayList<Event>(eventList);
+		if (eventList != null && memoryCacheIsValid)
+		{
+			Log.d("CACHE", "Loading from Memory");
+			return new ArrayList<Event>(eventList);
+		}
 		// This suggests that an up to date event list is stored in a local database
 		else if (!memoryCacheIsValid && databaseCacheIsValid)
 		{
+			Log.d("CACHE", "Loading from Database");
 			DBAccess database = new DBAccess(context);
 			database.open();
 			eventList = database.getAllEvents();
@@ -44,6 +58,7 @@ public class DataProvider
 		{
 			try
 			{
+				Log.d("CACHE", "Downloading from Web Service");
 				eventList = EventAPI.downloadAllEvents();
 				memoryCacheIsValid = true;
 				// add the downloaded events to the database in the background
@@ -61,6 +76,8 @@ public class DataProvider
 						}
 						database.close();
 						databaseCacheIsValid = true;
+						updateCacheLastModified(context, System.currentTimeMillis());
+						setCacheExpiresIn(context, 60*60*1000 /* milliseconds */);
 					}
 				});
 				addEventsToDatabase.start();
@@ -157,9 +174,46 @@ public class DataProvider
 	
 	public List<Society> getSocieties() {return null;}
 	
+	public List<Review> getReviews(int eventID)
+	{
+		return null;
+	}
+	
+	public List<EventLocation> getLocations()
+	{
+		return null;
+	}
+	
 	private void calculateCacheValidity(Context context)
 	{
-		// TODO Auto-generated method stub
+		SharedPreferences sharedPrefs = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+		long lastModified = sharedPrefs.getLong(CACHE_LAST_MODIFIED_KEY, 0);
+		long expiresIn = sharedPrefs.getLong(CACHE_EXPIRES_IN_KEY, 0);
+
+		Log.d("CACHE", String.format("modified: %d\nexpires:  %d", lastModified, lastModified + expiresIn));
 		
+		if (System.currentTimeMillis() < lastModified + expiresIn)
+		{
+			databaseCacheIsValid = true;
+		}
+		else
+		{
+			databaseCacheIsValid = false;
+			memoryCacheIsValid = false;
+		}
+	}
+	
+	private void updateCacheLastModified(Context context, long timeStamp)
+	{
+		Editor editor = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE).edit();
+		editor.putLong(CACHE_LAST_MODIFIED_KEY, timeStamp);
+		editor.commit();
+	}
+	
+	public void setCacheExpiresIn(Context context, long timeStamp)
+	{
+		Editor editor = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE).edit();
+		editor.putLong(CACHE_EXPIRES_IN_KEY, timeStamp);
+		editor.commit();
 	}
 }

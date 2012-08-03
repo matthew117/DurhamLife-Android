@@ -4,6 +4,7 @@ import java.util.Map;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.data.DataProvider;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -51,6 +52,15 @@ public class ViewSharedPreferencesActivity extends Activity
 		for (String key : newMap2.keySet())
 		{
 			output.append(key + " : " + newMap2.get(key) + "\n");
+		}
+		
+		SharedPreferences caching = getSharedPreferences(DataProvider.CACHE_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+
+		Map<String, ?> newMap3 = caching.getAll();
+
+		for (String key : newMap3.keySet())
+		{
+			output.append(key + " : " + newMap3.get(key) + "\n");
 		}
 	}
 }
