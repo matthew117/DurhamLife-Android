@@ -112,6 +112,7 @@ public class PersonalSocietyListActivity extends CustomTitleBarActivity
 					Event e = (Event) adapter.getItem(position);
 					EventLocation l = e.getLocation();
 					i.putExtra("event_id", e.getEventID());
+					i.putExtra("location_id", l.getLocationID());
 					i.putExtra("event_name", e.getName());
 					i.putExtra("event_start_date", e.getStartDate());
 					i.putExtra("event_end_date", e.getEndDate());

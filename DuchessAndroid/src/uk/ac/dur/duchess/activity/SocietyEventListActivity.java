@@ -160,6 +160,7 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 					EventLocation l = e.getLocation();
 					i.putExtra("event_id", e.getEventID());
 					i.putExtra("event_name", e.getName());
+					i.putExtra("location_id", l.getLocationID());
 					i.putExtra("event_start_date", e.getStartDate());
 					i.putExtra("event_end_date", e.getEndDate());
 					i.putExtra("event_description_header", e.getDescriptionHeader());
