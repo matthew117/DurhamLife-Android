@@ -282,7 +282,7 @@ public class EventListActivity extends ListActivity
 		}
 		else
 		{
-			eventList = database.getEvents();
+			eventList = database.getAllEvents();
 			database.close();
 
 			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);

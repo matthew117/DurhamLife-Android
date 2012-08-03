@@ -274,11 +274,11 @@ public class DBAccess
 		return event;
 	}
 	
-	public List<Event> getEvents()
+	public List<Event> queryEventTable(String query)
 	{
 		List<Event> events = new ArrayList<Event>();
 		
-		Cursor row = db.query(EVENT_TABLE, null, null, null, null, null, null);
+		Cursor row = db.query(EVENT_TABLE, null, query, null, null, null, null);
 
 		if(row.getCount() == 0)
 		{
@@ -296,6 +296,47 @@ public class DBAccess
 		row.close();
 
 		return events;
+	}
+	
+	public List<Event> getAllEvents()
+	{
+		return queryEventTable(null);
+	}
+	
+	public List<Event> getEventsByCollege(String college)
+	{
+		return queryEventTable(KEY_ASSOCIATED_COLLEGE + "='" + college + "'");
+	}
+	
+	public List<Event> getEventsByColleges(List<String> colleges)
+	{
+		StringBuilder query = new StringBuilder();
+		
+		for(int i = 0; i < colleges.size(); i++)
+		{
+			query.append(KEY_ASSOCIATED_COLLEGE + "='" + colleges.get(i) +
+					(i == colleges.size() - 1 ? "'" : "' OR "));
+		}
+		
+		return queryEventTable(query.toString());
+	}
+	
+	public List<Event> getEventsBySociety(String society)
+	{
+		return queryEventTable(KEY_ASSOCIATED_SOCIETY + "='" + society + "'");
+	}
+	
+	public List<Event> getEventsBySocieties(List<String> societies)
+	{
+		StringBuilder query = new StringBuilder();
+		
+		for(int i = 0; i < societies.size(); i++)
+		{
+			query.append(KEY_ASSOCIATED_SOCIETY + "='" + societies.get(i) +
+					(i == societies.size() - 1 ? "'" : "' OR "));
+		}
+		
+		return queryEventTable(query.toString());
 	}
 
 	private Event toEvent(Cursor row)
