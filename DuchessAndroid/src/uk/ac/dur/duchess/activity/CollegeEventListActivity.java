@@ -1,18 +1,19 @@
 package uk.ac.dur.duchess.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
 import uk.ac.dur.duchess.entity.User;
-import uk.ac.dur.duchess.webservice.EventAPI;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -34,6 +35,7 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 	private TextView collegeNameText;
 	private List<Event> newList;
 	private Runnable parseData;
+	private Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -41,6 +43,8 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.college_events_list_layout);
 
+		this.context = this;
+		
 		user = SessionFunctions.getCurrentUser(this);
 
 		listView = (ListView) findViewById(R.id.collegeEventListView);
@@ -139,15 +143,13 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 			@Override
 			public void run()
 			{
-				try
-				{
-					newList = EventAPI.downloadEventsByCollege(user.getCollege());
-					runOnUiThread(callbackFunction);
-				}
-				catch (IOException ex)
-				{
-					runOnUiThread(errorCallback);
-				}
+					GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+					DataProvider dataPro = delegate.getDataProvider();
+					newList = dataPro.getEventsByCollege(context, user.getCollege());
+					
+					if (newList != null) runOnUiThread(callbackFunction);
+					else                 runOnUiThread(errorCallback);
+				
 			}
 		};
 

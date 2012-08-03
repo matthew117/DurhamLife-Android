@@ -46,24 +46,19 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	{		
 		View v = convertView;
 		ViewHolder holder;
-		
-		long time = System.nanoTime();
-		
+				
 		if (v == null)
 		{			
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			v = inflater.inflate(rowLayoutResourceID, parent, false);
 			
-			Log.d("EVENT_LIST_PROFILING", "Layout inflated: " + (System.nanoTime() - time));
 			
 			int[] colors = {Color.parseColor("#DDDDDD"), Color.parseColor("#FFFFFF")};
 			GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
 			gradient.setDither(true);
 		
 			v.setBackgroundDrawable(gradient);
-			
-			Log.d("EVENT_LIST_PROFILING", "Gradient set: " + (System.nanoTime() - time));
-			
+						
 			holder = new ViewHolder();
 
 			holder.txtEventName = (TextView) v.findViewById(R.id.txtEventName);
@@ -80,11 +75,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
 			holder.pinButton = (ImageView) v.findViewById(R.id.pinButton);
 			
-			Log.d("EVENT_LIST_PROFILING", "Views allocated from IDs: " + (System.nanoTime() - time));
-			
 			user = SessionFunctions.getCurrentUser((Activity) context);
-			
-			Log.d("EVENT_LIST_PROFILING", "User data loaded: " + (System.nanoTime() - time));
 			
 			v.setTag(holder);
 		}
@@ -97,8 +88,6 @@ public class EventListAdapter extends ArrayAdapter<Event>
 
 		if (e != null)
 		{
-			Log.d("EVENT_LIST_PROFILING", "Started determining categories: " + (System.nanoTime() - time));
-			
 			List<String> categories = e.getCategoryTags();
 			
 			if(categories != null)
@@ -127,8 +116,6 @@ public class EventListAdapter extends ArrayAdapter<Event>
 					holder.categoryIcon3.setVisibility(View.VISIBLE);
 				}
 				else holder.categoryIcon3.setVisibility(View.GONE);
-				
-				Log.d("EVENT_LIST_PROFILING", "Determined categories: " + (System.nanoTime() - time));
 			}
 			else
 			{

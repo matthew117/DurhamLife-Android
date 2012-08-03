@@ -100,7 +100,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationListener = new MyLocationListener();
 
-		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		mapView.invalidate();
 
@@ -168,6 +168,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 			Paint paint = new Paint();
 			paint.setStyle(Paint.Style.FILL);
 			paint.setColor(Color.BLACK);
+			paint.setAntiAlias(true);
 			paint.setTextSize(30);	
 			
 			canvas.drawText(String.format("%.3f", distance), px, py - 50, paint);

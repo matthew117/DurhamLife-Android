@@ -2,6 +2,7 @@ package uk.ac.dur.duchess;
 
 import java.util.List;
 
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.entity.Event;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
@@ -27,6 +28,8 @@ public class GlobalApplicationData extends Application
 	public static final String BUGSENSE_API_KEY = "6b8d4b74";
 	
 	public static List<Event> globalEventList;
+	
+	public static DataProvider dataProvider;
 
 	@Override
 	public void onCreate()
@@ -35,6 +38,13 @@ public class GlobalApplicationData extends Application
 		sInstance = this;
 		tracker = GoogleAnalyticsTracker.getInstance();
 		tracker.startNewSession(GOOGLE_ANALYTICS_TRACKING_ID, getApplicationContext());
+	}
+	
+	public DataProvider getDataProvider()
+	{
+		if (dataProvider == null) dataProvider = new DataProvider();
+		
+		return dataProvider;
 	}
 
 	public static GlobalApplicationData getInstance()

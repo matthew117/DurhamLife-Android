@@ -1,29 +1,19 @@
 package uk.ac.dur.duchess.activity;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.EventListAdapter;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.data.UserFunctions;
-import uk.ac.dur.duchess.entity.DBAccess;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
-import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -47,11 +37,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class EventListActivity extends ListActivity
 {
 	private ProgressDialog progressDialog;
+	private ProgressDialog locationProgress;
 	private boolean featureMode = true;
 
 	private User currentUser;
@@ -64,7 +54,7 @@ public class EventListActivity extends ListActivity
 	private List<Event> eventList;
 	private String categoryFilter;
 	private EventListAdapter adapter;
-	
+
 	private LocationManager lm;
 
 	private static final int REQUEST_DATEFRAME = 1;
@@ -75,8 +65,8 @@ public class EventListActivity extends ListActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		android.os.Debug.startMethodTracing("duchess");
-		
+//		android.os.Debug.startMethodTracing("duchess");
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_list_layout);
 
@@ -84,212 +74,150 @@ public class EventListActivity extends ListActivity
 		activity = this;
 		listView = getListView();
 
-		Bundle extras = getIntent().getExtras();
-
-		if (extras != null) categoryFilter = extras.getString("category_filter");
-
 		adImageContainer = (ImageView) findViewById(R.id.adImageContainer);
 
-		if (currentUser != null)
-		{
-			setTitle("Duchess - Hello, " + currentUser.getForename() + " "
-					+ currentUser.getSurname());
-		}
-		else
-		{
-			setTitle("Duchess - Guest");
-		}
+		eventList = new ArrayList<Event>();
 
-		DBAccess database = new DBAccess(activity);
-		database.open();
-		
-		if(database.eventTableIsEmpty())
+		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
+		setListAdapter(adapter);
+
+		getListView().setOnItemClickListener(new OnItemClickListener()
 		{
-			database.close();
-		
-			try
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-	
-				SAXParserFactory factory = SAXParserFactory.newInstance();
-				SAXParser parser = factory.newSAXParser();
-				final XMLReader reader = parser.getXMLReader();
-	
-				final URL url;
-				if (categoryFilter == null)
-				{
-					url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php");
-				}
-				else
-				{
-					url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?category="
-							+ categoryFilter);
-				}
-	
-				eventList = new ArrayList<Event>();
-	
-				EventXMLParser myXMLHandler = new EventXMLParser(eventList);
-	
-				reader.setContentHandler(myXMLHandler);
-	
-				adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
-				setListAdapter(adapter);
-	
-				getListView().setOnItemClickListener(new OnItemClickListener()
-				{
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-					{
-	
-						Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
-						Event e = (Event) getListAdapter().getItem(position);
-						EventLocation l = e.getLocation();
-						i.putExtra("event_id", e.getEventID());
-						i.putExtra("location_id", l.getLocationID());
-						i.putExtra("event_name", e.getName());
-	//					i.putExtra("event_start_date", e.getStartDate());
-	//					i.putExtra("event_end_date", e.getEndDate());
-	//					i.putExtra("event_description_header", e.getDescriptionHeader());
-	//					i.putExtra("event_description_body", e.getDescriptionBody());
-	//					i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
-	//					i.putExtra("event_contact_email_address", e.getContactEmailAddress());
-	//					i.putExtra("event_web_address", e.getWebAddress());
-	//					i.putExtra("event_address1", l.getAddress1());
-	//					i.putExtra("event_address2", l.getAddress2());
-	//					i.putExtra("event_city", l.getCity());
-	//					i.putExtra("event_postcode", l.getPostcode());
-	//					i.putExtra("event_latitude", l.getLatitude());
-	//					i.putExtra("event_longitude", l.getLongitude());
-	//					i.putExtra("image_url", e.getImageURL());
-	//					i.putExtra("ical_url", e.getICalURL());
-						startActivity(i);
-					}
-				});
-	
-				final Runnable callbackFunction = new Runnable()
-				{
-	
-					@Override
-					public void run()
-					{
-						progressDialog.dismiss();
-						adapter.notifyDataSetChanged();
-	
-	//					for (Event e : eventList)
-	//					{
-	//						if (e.isFeatured() && e.getAdImageURL() != null)
-	//						{
-	//							currentAd = e;
-	//							Log.d("Download AD", e.getAdImageURL());
-	//							adImageContainer.setAdjustViewBounds(true);
-	//							adImageContainer.setScaleType(ScaleType.CENTER_CROP);
-	//							DisplayMetrics displaymetrics = new DisplayMetrics();
-	//							getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-	//							int height = displaymetrics.heightPixels;
-	//							int width = displaymetrics.widthPixels;
-	//							adImageContainer.setMinimumWidth(width);
-	//							adImageContainer.setMinimumHeight((int) (width / 3.0));
-	//							adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
-	//									.getAdImageURL()));
-	//							adImageContainer.invalidate();
-	//							break;
-	//						}
-	//					}
-						
-						android.os.Debug.stopMethodTracing();
-					}
-				};
-	
-				Runnable parseData = new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						try
-						{
-							InputStream is = url.openStream();
-							InputSource source = new InputSource(is);
-							source.setEncoding("UTF-8");
-							reader.parse(source);
-							
-							DBAccess database = new DBAccess(activity);
-							database.open();
-							
-							for(Event event : eventList)
-								if(!database.containsEvent(event.getEventID())) database.insertEvent(event);
-							
-							database.close();
-							
-							// TODO MASSIVE TEMPORARY HACK :)
-							GlobalApplicationData.globalEventList = new ArrayList<Event>(eventList);
-							
-							if (currentUser != null)
-							{
-								Log.d("BEFORE FILTER", "" + eventList.size());
-								UserFunctions.filterByPreferences(currentUser, eventList);
-								Log.d("AFTER FILTER", "" + eventList.size());
-							}
-							runOnUiThread(callbackFunction);
-						}
-						catch (Exception ex)
-						{
-							ex.printStackTrace();
-						}
-					}
-				};
-	
-				Thread thread = new Thread(null, parseData, "SAXParser");
-				thread.start();
-				progressDialog = ProgressDialog.show(EventListActivity.this, "Please wait...",
-						"Downloading Events ...", true);
-	
-				adImageContainer.setClickable(true);
-				adImageContainer.setOnClickListener(new View.OnClickListener()
-				{
-					@Override
-					public void onClick(View v)
-					{
-						Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
-						Event e = currentAd;
-						EventLocation l = e.getLocation();
-						i.putExtra("event_id", e.getEventID());
-						i.putExtra("event_name", e.getName());
-						i.putExtra("event_start_date", e.getStartDate());
-						i.putExtra("event_end_date", e.getEndDate());
-						i.putExtra("event_description_header", e.getDescriptionHeader());
-						i.putExtra("event_description_body", e.getDescriptionBody());
-						i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
-						i.putExtra("event_contact_email_address", e.getContactEmailAddress());
-						i.putExtra("event_web_address", e.getWebAddress());
-						i.putExtra("event_address1", l.getAddress1());
-						i.putExtra("event_address2", l.getAddress2());
-						i.putExtra("event_city", l.getCity());
-						i.putExtra("event_postcode", l.getPostcode());
-						i.putExtra("event_latitude", l.getLatitude());
-						i.putExtra("event_longitude", l.getLongitude());
-						i.putExtra("image_url", e.getImageURL());
-						i.putExtra("ical_url", e.getICalURL());
-						startActivity(i);
-					}
-				});
-	
-			}
 
-			catch (Exception e)
-			{
-				// TODO handle error
-				e.printStackTrace();
+				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+				Event e = (Event) getListAdapter().getItem(position);
+				EventLocation l = e.getLocation();
+				i.putExtra("event_id", e.getEventID());
+				i.putExtra("location_id", l.getLocationID());
+				i.putExtra("event_name", e.getName());
+				// i.putExtra("event_start_date", e.getStartDate());
+				// i.putExtra("event_end_date", e.getEndDate());
+				// i.putExtra("event_description_header", e.getDescriptionHeader());
+				// i.putExtra("event_description_body", e.getDescriptionBody());
+				// i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+				// i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+				// i.putExtra("event_web_address", e.getWebAddress());
+				// i.putExtra("event_address1", l.getAddress1());
+				// i.putExtra("event_address2", l.getAddress2());
+				// i.putExtra("event_city", l.getCity());
+				// i.putExtra("event_postcode", l.getPostcode());
+				// i.putExtra("event_latitude", l.getLatitude());
+				// i.putExtra("event_longitude", l.getLongitude());
+				// i.putExtra("image_url", e.getImageURL());
+				// i.putExtra("ical_url", e.getICalURL());
+				startActivity(i);
 			}
-		}
-		else
+		});
+
+		final Runnable callbackFunction = new Runnable()
 		{
-			eventList = database.getAllEvents();
-			database.close();
 
-			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
-			setListAdapter(adapter);
-		}
+			@Override
+			public void run()
+			{
+				if (eventList != null)
+				{
+					for (Event event : eventList)
+					{
+						adapter.add(event);
+					}
+				}
+				progressDialog.dismiss();
+				adapter.notifyDataSetChanged();
+
+				// for (Event e : eventList)
+				// {
+				// if (e.isFeatured() && e.getAdImageURL() != null)
+				// {
+				// currentAd = e;
+				// Log.d("Download AD", e.getAdImageURL());
+				// adImageContainer.setAdjustViewBounds(true);
+				// adImageContainer.setScaleType(ScaleType.CENTER_CROP);
+				// DisplayMetrics displaymetrics = new DisplayMetrics();
+				// getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+				// int height = displaymetrics.heightPixels;
+				// int width = displaymetrics.widthPixels;
+				// adImageContainer.setMinimumWidth(width);
+				// adImageContainer.setMinimumHeight((int) (width / 3.0));
+				// adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
+				// .getAdImageURL()));
+				// adImageContainer.invalidate();
+				// break;
+				// }
+				// }
+
+//				android.os.Debug.stopMethodTracing();
+			}
+		};
+
+		Runnable parseData = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+					DataProvider dataPro = delegate.getDataProvider();
+					eventList = dataPro.getAllEvents(activity);
+
+					if (currentUser != null && eventList != null)
+					{
+						Log.d("BEFORE FILTER", "" + eventList.size());
+						UserFunctions.filterByPreferences(currentUser, eventList);
+						Log.d("AFTER FILTER", "" + eventList.size());
+					}
+					runOnUiThread(callbackFunction);
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		};
+
+		Thread thread = new Thread(null, parseData, "SAXParser");
+		thread.start();
+		progressDialog = ProgressDialog.show(EventListActivity.this, "Please wait...",
+				"Downloading Events ...", true);
+
+		adImageContainer.setClickable(true);
+		adImageContainer.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
+				Event e = currentAd;
+				EventLocation l = e.getLocation();
+				i.putExtra("event_id", e.getEventID());
+				i.putExtra("event_name", e.getName());
+				i.putExtra("event_start_date", e.getStartDate());
+				i.putExtra("event_end_date", e.getEndDate());
+				i.putExtra("event_description_header", e.getDescriptionHeader());
+				i.putExtra("event_description_body", e.getDescriptionBody());
+				i.putExtra("event_contact_telephone_number", e.getContactTelephoneNumber());
+				i.putExtra("event_contact_email_address", e.getContactEmailAddress());
+				i.putExtra("event_web_address", e.getWebAddress());
+				i.putExtra("event_address1", l.getAddress1());
+				i.putExtra("event_address2", l.getAddress2());
+				i.putExtra("event_city", l.getCity());
+				i.putExtra("event_postcode", l.getPostcode());
+				i.putExtra("event_latitude", l.getLatitude());
+				i.putExtra("event_longitude", l.getLongitude());
+				i.putExtra("image_url", e.getImageURL());
+				i.putExtra("ical_url", e.getICalURL());
+				startActivity(i);
+			}
+		});
+
+		
+
 	}
-	
+
 	@Override
 	public void onResume()
 	{
@@ -334,9 +262,9 @@ public class EventListActivity extends ListActivity
 			return true;
 		case R.id.submenuEventListDistance:
 		{
+			locationProgress = ProgressDialog.show(activity, "Sorting By Distance", "Retrieving Location...");
 			lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			LocationListener locationListener = new NearEventsListener();
-
 			lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 			return true;
 		}
@@ -379,13 +307,12 @@ public class EventListActivity extends ListActivity
 					toDate)) inRangeEvents.add(event);
 		}
 
-		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
-				inRangeEvents));
+		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, inRangeEvents));
 	}
 
 	private void sortEventsAlphabetically()
 	{
-		Collections.sort(eventList, new Comparator<Event>()
+		adapter.sort(new Comparator<Event>()
 		{
 
 			@Override
@@ -399,7 +326,7 @@ public class EventListActivity extends ListActivity
 
 	private void sortEventsChronologically()
 	{
-		Collections.sort(eventList, new Comparator<Event>()
+		adapter.sort(new Comparator<Event>()
 		{
 			@Override
 			public int compare(Event e1, Event e2)
@@ -413,15 +340,16 @@ public class EventListActivity extends ListActivity
 		});
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	private void sortEventsByHighestReview()
 	{
-		Collections.sort(eventList, new Comparator<Event>()
+		adapter.sort(new Comparator<Event>()
 		{
 			@Override
 			public int compare(Event e1, Event e2)
 			{
-				if (e1.getReviewScore() == e2.getReviewScore()) return e2.getNumberOfReviews() - e1.getNumberOfReviews();
+				if (e1.getReviewScore() == e2.getReviewScore())
+					return e2.getNumberOfReviews() - e1.getNumberOfReviews();
 				return e2.getReviewScore() - e1.getReviewScore();
 			}
 
@@ -450,12 +378,11 @@ public class EventListActivity extends ListActivity
 			if (responseCode == RESULT_OK)
 			{
 				String category = data.getStringExtra("category_filter");
-				
+
 				ArrayList<Event> categoryEvents = new ArrayList<Event>();
 
 				for (Event event : eventList)
-					if(event.getCategoryTags().contains(category))
-						categoryEvents.add(event);
+					if (event.getCategoryTags().contains(category)) categoryEvents.add(event);
 
 				setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
 						categoryEvents));
@@ -473,15 +400,15 @@ public class EventListActivity extends ListActivity
 	{
 		switch (id)
 		{
-			case DATE_DIALOG_ID:
-			{
-				Calendar c = Calendar.getInstance();
-				int year = c.get(Calendar.YEAR);
-				int month = c.get(Calendar.MONTH);
-				int day = c.get(Calendar.DATE);
-	
-				return new DatePickerDialog(this, dateSetListener, year, month, day);
-			}
+		case DATE_DIALOG_ID:
+		{
+			Calendar c = Calendar.getInstance();
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH);
+			int day = c.get(Calendar.DATE);
+
+			return new DatePickerDialog(this, dateSetListener, year, month, day);
+		}
 		}
 		return null;
 	}
@@ -496,7 +423,7 @@ public class EventListActivity extends ListActivity
 			filterEventByDateRange(date, nextDay);
 		}
 	};
-	
+
 	private class NearEventsListener implements LocationListener
 	{
 		private static final int WALKING_DISTANCE = 800;
@@ -506,27 +433,29 @@ public class EventListActivity extends ListActivity
 		{
 			if (newLocation != null)
 			{
-				Toast.makeText(activity, "Sorting by distance", Toast.LENGTH_SHORT);
-				
-				Collections.sort(eventList, new Comparator<Event>()
+				locationProgress.dismiss();
+
+				adapter.sort(new Comparator<Event>()
 				{
-					
+
 					@Override
 					public int compare(Event e1, Event e2)
 					{
 						EventLocation loc1 = e1.getLocation();
 						EventLocation loc2 = e2.getLocation();
-						
+
 						float[] distanceResult1 = new float[3];
-						Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
-								Double.parseDouble(loc1.getLatitude()), Double.parseDouble(loc1.getLongitude()), distanceResult1);
+						Location.distanceBetween(newLocation.getLatitude(),
+								newLocation.getLongitude(), Double.parseDouble(loc1.getLatitude()),
+								Double.parseDouble(loc1.getLongitude()), distanceResult1);
 						double distance1 = distanceResult1[0];
-						
+
 						float[] distanceResult2 = new float[3];
-						Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
-								Double.parseDouble(loc2.getLatitude()), Double.parseDouble(loc2.getLongitude()), distanceResult2);
+						Location.distanceBetween(newLocation.getLatitude(),
+								newLocation.getLongitude(), Double.parseDouble(loc2.getLatitude()),
+								Double.parseDouble(loc2.getLongitude()), distanceResult2);
 						double distance2 = distanceResult2[0];
-						
+
 						return (int) (distance1 - distance2);
 					}
 				});
