@@ -2,18 +2,19 @@ package uk.ac.dur.duchess.entity;
 
 public class Society
 {
-	private long id;
+	private long societyID;
 	private String name;
 	private String website;
 	private String email;
 	private String constitution;
+	
 	public long getSocietyID()
 	{
-		return id;
+		return societyID;
 	}
-	public void setSocietyID(long id)
+	public void setSocietyID(long societyID)
 	{
-		this.id = id;
+		this.societyID = societyID;
 	}
 	public String getName()
 	{

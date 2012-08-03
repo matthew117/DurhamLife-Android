@@ -36,7 +36,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 public class EventListActivity extends ListActivity
 {
@@ -48,11 +47,9 @@ public class EventListActivity extends ListActivity
 	private Activity activity;
 
 	private ImageView adImageContainer;
-	private ListView listView;
 	private Event currentAd;
 
 	private List<Event> eventList;
-	private String categoryFilter;
 	private EventListAdapter adapter;
 
 	private LocationManager lm;
@@ -72,7 +69,6 @@ public class EventListActivity extends ListActivity
 
 		currentUser = SessionFunctions.getCurrentUser(this);
 		activity = this;
-		listView = getListView();
 
 		adImageContainer = (ImageView) findViewById(R.id.adImageContainer);
 

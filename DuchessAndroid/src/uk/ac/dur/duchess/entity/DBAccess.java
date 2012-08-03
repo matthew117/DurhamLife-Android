@@ -16,7 +16,7 @@ public class DBAccess
 	public static final String KEY_EVENT_ID = "eventID";
 	public static final String KEY_FEATURED = "featured";
 	
-	public static final String KEY_NAME = "name";
+	public static final String KEY_EVENT_NAME = "name";
 	public static final String KEY_DESCRIPTION_HEADER = "descriptionHeader";
 	public static final String KEY_DESCRIPTION_BODY = "descriptionBody";
 	
@@ -34,7 +34,7 @@ public class DBAccess
 	
 	public static final String KEY_ACCESSIBILITY_INFORMATION = "accessibilityInformation";
 	
-	public static final String KEY_CATEGORY = "category";
+	public static final String KEY_CATEGORIES = "category";
 	
 	public static final String KEY_IMAGE_URL = "imageURL";
 	public static final String KEY_AD_IMAGE_URL = "adImageURL";
@@ -50,6 +50,12 @@ public class DBAccess
 	public static final String KEY_LATITUDE = "latitude";
 	public static final String KEY_LONGITUDE = "longitude";
 	
+	public static final String KEY_SOCIETY_ID = "societyID";
+	public static final String KEY_SOCIETY_NAME = "name";
+	public static final String KEY_SOCIETY_WEBSITE = "website";
+	public static final String KEY_SOCIETY_EMAIL = "email";
+	public static final String KEY_CONSTITUTION = "constitution";
+	
 	private static final String TAG = "DBAdapter";
 
 	private static final String DATABASE_NAME = "duchessDB";
@@ -57,41 +63,50 @@ public class DBAccess
 	
 	private static final String EVENT_TABLE = "events";
 	private static final String LOCATION_TABLE = "locations";
+	private static final String SOCIETY_TABLE = "societies";
 	
 
 	private static final String EVENT_CREATE_STATEMENT =
-		"CREATE TABLE events("
-			+  KEY_EVENT_ID + " INTEGER PRIMARY KEY, "
-			+ "featured INTEGER NOT NULL, "
-			+ "name TEXT NOT NULL, "
-			+ "descriptionHeader TEXT NOT NULL, "
-			+ "descriptionBody TEXT NOT NULL, "
-			+ "startDate DATE NOT NULL, "
-			+ "endDate DATE NOT NULL, "
+		"CREATE TABLE " + EVENT_TABLE + "("
+			+ KEY_EVENT_ID + " INTEGER PRIMARY KEY, "
+			+ KEY_FEATURED + " INTEGER NOT NULL, "
+			+ KEY_EVENT_NAME + " TEXT NOT NULL, "
+			+ KEY_DESCRIPTION_HEADER + " TEXT NOT NULL, "
+			+ KEY_DESCRIPTION_BODY + " TEXT NOT NULL, "
+			+ KEY_START_DATE + " DATE NOT NULL, "
+			+ KEY_END_DATE + " DATE NOT NULL, "
 			+ KEY_ICAL_URL + " TEXT, "
-			+ "locationID INTEGER NOT NULL, "
-			+ "scope TEXT NOT NULL, "
-			+ "associatedCollege TEXT, "
-			+ "associatedSociety TEXT, "
+			+ KEY_LOCATION_ID + " INTEGER NOT NULL, "
+			+ KEY_SCOPE + " TEXT NOT NULL, "
+			+ KEY_ASSOCIATED_COLLEGE + " TEXT, "
+			+ KEY_ASSOCIATED_SOCIETY + " TEXT, "
 			+ KEY_CONTACT_TELEPHONE_NUMBER + " TEXT, "
 			+ KEY_CONTACT_EMAIL_ADDRESS + " TEXT, "
 			+ KEY_WEB_ADDRESS + " TEXT, "
-			+ "accessibilityInformation TEXT, "			
-			+ "category TEXT NOT NULL, "
-			+ "imageURL TEXT, "
+			+ KEY_ACCESSIBILITY_INFORMATION + " TEXT, "			
+			+ KEY_CATEGORIES + " TEXT NOT NULL, "
+			+ KEY_IMAGE_URL + " TEXT, "
 			+ KEY_AD_IMAGE_URL + " TEXT, "
 			+ KEY_REVIEW_SCORE + " INTEGER, "
 			+ KEY_NUM_OF_REVIEWS + " INTEGER)";
 			
 	private static final String LOCATION_CREATE_STATEMENT =
-		"CREATE TABLE locations("
-			+ "locationID INTEGER PRIMARY KEY, "
-			+ "address1 TEXT NOT NULL, "
-			+ "address2 TEXT NOT NULL, "
-			+ "city TEXT NOT NULL, "
-			+ "postcode TEXT NOT NULL, "
-			+ "latitude TEXT NOT NULL, "
-			+ "longitude TEXT NOT NULL)";
+		"CREATE TABLE " + LOCATION_TABLE + "("
+			+ KEY_LOCATION_ID + " INTEGER PRIMARY KEY, "
+			+ KEY_ADDRESS_1 + " TEXT NOT NULL, "
+			+ KEY_ADDRESS_2 + " TEXT NOT NULL, "
+			+ KEY_CITY + " TEXT NOT NULL, "
+			+ KEY_POSTCODE + " TEXT NOT NULL, "
+			+ KEY_LATITUDE + "latitude TEXT NOT NULL, "
+			+ KEY_LONGITUDE + " TEXT NOT NULL)";
+	
+	private static final String SOCIETY_CREATE_STATEMENT =
+		"CREATE TABLE " + SOCIETY_TABLE + "("
+			+ KEY_SOCIETY_ID + " INTEGER PRIMARY KEY, "
+			+ KEY_SOCIETY_NAME + " TEXT NOT NULL, "
+			+ KEY_SOCIETY_WEBSITE + " TEXT, "
+			+ KEY_SOCIETY_EMAIL + " TEXT, "
+			+ KEY_CONSTITUTION + " TEXT)";
 
 	private final Context context;
 
@@ -118,6 +133,7 @@ public class DBAccess
 			{
 				db.execSQL(EVENT_CREATE_STATEMENT);
 				db.execSQL(LOCATION_CREATE_STATEMENT);
+				db.execSQL(SOCIETY_CREATE_STATEMENT);
 			}
 			catch (SQLException e)
 			{
@@ -130,8 +146,10 @@ public class DBAccess
 		{
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion
 					+ ", which will destroy all old data");
-			db.execSQL("DROP TABLE IF EXISTS events");
-			db.execSQL("DROP TABLE IF EXISTS locations");
+			
+			db.execSQL("DROP TABLE IF EXISTS " + EVENT_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + LOCATION_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + SOCIETY_TABLE);
 			onCreate(db);
 		}
 	}
@@ -166,7 +184,7 @@ public class DBAccess
 		values.put(KEY_EVENT_ID, event.getEventID());
 		values.put(KEY_FEATURED, event.isFeatured());
 		
-		values.put(KEY_NAME, event.getName());
+		values.put(KEY_EVENT_NAME, event.getName());
 		values.put(KEY_DESCRIPTION_HEADER, event.getDescriptionHeader());
 		values.put(KEY_DESCRIPTION_BODY, event.getDescriptionBody());
 		
@@ -189,7 +207,7 @@ public class DBAccess
 		
 		values.put(KEY_ACCESSIBILITY_INFORMATION, event.getAccessibilityInformation());
 		
-		values.put(KEY_CATEGORY, event.getCategoryTags().toString());
+		values.put(KEY_CATEGORIES, event.getCategoryTags().toString());
 		
 		values.put(KEY_IMAGE_URL, event.getImageURL());
 		values.put(KEY_AD_IMAGE_URL, event.getAdImageURL());
@@ -214,6 +232,19 @@ public class DBAccess
 		
 		return db.insert(LOCATION_TABLE, null, values);
 	}
+	
+	public long insertSociety(Society society)
+	{
+		ContentValues values = new ContentValues();
+		
+		values.put(KEY_SOCIETY_ID, society.getSocietyID());
+		values.put(KEY_SOCIETY_NAME, society.getName());
+		values.put(KEY_SOCIETY_WEBSITE, society.getWebsite());
+		values.put(KEY_SOCIETY_EMAIL, society.getEmail());
+		values.put(KEY_CONSTITUTION, society.getConstitution());
+		
+		return db.insert(SOCIETY_TABLE, null, values);
+	}
 
 	public boolean deleteEvent(long eventID)
 	{
@@ -223,6 +254,11 @@ public class DBAccess
 	public boolean deleteLocation(long locationID)
 	{
 		return db.delete(LOCATION_TABLE, KEY_LOCATION_ID + "=" + locationID, null) > 0;
+	}
+	
+	public boolean deleteSociety(long societyID)
+	{
+		return db.delete(SOCIETY_TABLE, KEY_SOCIETY_ID + "=" + societyID, null) > 0;
 	}
 	
 	public boolean containsLocation(long locationID)
@@ -248,11 +284,17 @@ public class DBAccess
 		
 		return rows != 0;
 	}
-
-	public Cursor getEventSummaries()
+	
+	public boolean containsSociety(long societyID)
 	{
-		return db.query(EVENT_TABLE, new String[] { KEY_EVENT_ID, KEY_NAME, KEY_START_DATE,
-				KEY_END_DATE, KEY_DESCRIPTION_HEADER }, null, null, null, null, null);
+		Cursor c = db.query(SOCIETY_TABLE, new String[] {KEY_SOCIETY_ID},
+			KEY_SOCIETY_ID + "=" + societyID, null, null, null, null);
+		
+		int rows = c.getCount();
+		
+		c.close();
+		
+		return rows != 0;
 	}
 	
 	public Event getEvent(long eventID)
@@ -345,7 +387,7 @@ public class DBAccess
 		
 		event.setEventID(row.getLong(row.getColumnIndex(KEY_EVENT_ID)));
 		
-		event.setName(row.getString(row.getColumnIndex(KEY_NAME)));
+		event.setName(row.getString(row.getColumnIndex(KEY_EVENT_NAME)));
 		event.setDescriptionHeader(row.getString(row.getColumnIndex(KEY_DESCRIPTION_HEADER)));
 		event.setDescriptionBody(row.getString(row.getColumnIndex(KEY_DESCRIPTION_BODY)));
 		
@@ -372,7 +414,7 @@ public class DBAccess
 		if(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION) != -1)
 			event.setAccessibilityInformation(row.getString(row.getColumnIndex(KEY_ACCESSIBILITY_INFORMATION)));
 		
-		event.setCategoryTags(row.getString(row.getColumnIndex(KEY_CATEGORY)));
+		event.setCategoryTags(row.getString(row.getColumnIndex(KEY_CATEGORIES)));
 		
 		if(row.getColumnIndex(KEY_IMAGE_URL) != -1)
 			event.setImageURL(row.getString(row.getColumnIndex(KEY_IMAGE_URL)));
@@ -383,6 +425,7 @@ public class DBAccess
 			event.setReviewScore(row.getInt(row.getColumnIndex(KEY_REVIEW_SCORE)));
 		if(row.getColumnIndex(KEY_NUM_OF_REVIEWS) != -1)
 			event.setNumberOfReviews(row.getInt(row.getColumnIndex(KEY_NUM_OF_REVIEWS)));
+		
 		return event;
 	}
 	
@@ -411,5 +454,49 @@ public class DBAccess
 		row.close();
 		
 		return location;
+	}
+	
+	public List<Society> getSocieties()
+	{
+		List<Society> societies = new ArrayList<Society>();
+		
+		Cursor row = db.query(SOCIETY_TABLE, null, null, null, null, null, null);
+
+		if(row.getCount() == 0)
+		{
+			row.close();
+			return societies;
+		}
+		else row.moveToFirst();
+
+		while(!row.isAfterLast())
+		{
+			societies.add(toSociety(row));
+			row.moveToNext();
+		}
+
+		row.close();
+
+		return societies;
+	}
+	
+	private Society toSociety(Cursor row)
+	{
+		Society society = new Society();
+		
+		society.setSocietyID(row.getLong(row.getColumnIndex(KEY_SOCIETY_ID)));
+		
+		society.setName(row.getString(row.getColumnIndex(KEY_SOCIETY_NAME)));
+
+		if(row.getColumnIndex(KEY_SOCIETY_WEBSITE) != -1)
+			society.setWebsite(row.getString(row.getColumnIndex(KEY_SOCIETY_WEBSITE)));
+		
+		if(row.getColumnIndex(KEY_SOCIETY_EMAIL) != -1)
+			society.setEmail(row.getString(row.getColumnIndex(KEY_SOCIETY_EMAIL)));
+		
+		if(row.getColumnIndex(KEY_CONSTITUTION) != -1)
+			society.setConstitution(row.getString(row.getColumnIndex(KEY_CONSTITUTION)));
+		
+		return society;
 	}
 }
