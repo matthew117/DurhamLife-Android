@@ -397,9 +397,6 @@ public class DBAccess
 			event.setICalURL(row.getString(row.getColumnIndex(KEY_ICAL_URL)));
 		
 		EventLocation location = getLocation(row.getLong(row.getColumnIndex(KEY_LOCATION_ID)));
-		
-		Log.d("Location", (location != null) ? location.getAddress1() : "null");
-		
 		event.setLocation(location);
 		
 		event.setScope(row.getString(row.getColumnIndex(KEY_SCOPE)));
@@ -445,17 +442,48 @@ public class DBAccess
 		}
 		else row.moveToFirst();
 		
+		EventLocation location = toLocation(row);
+		
+		row.close();
+		
+		return location;
+	}
+	
+	public List<EventLocation> getAllLocations()
+	{
+		List<EventLocation> locations = new ArrayList<EventLocation>();
+		
+		Cursor row = db.query(LOCATION_TABLE, null, null, null, null, null, null);
+		
+		if(row.getCount() == 0)
+		{
+			row.close();
+			return locations;
+		}
+		else row.moveToFirst();
+
+		while(!row.isAfterLast())
+		{
+			locations.add(toLocation(row));
+			row.moveToNext();
+		}
+
+		row.close();
+
+		return locations;
+	}
+	
+	private EventLocation toLocation(Cursor row)
+	{
 		EventLocation location = new EventLocation();
 		
-		location.setLocationID(locationID);
+		location.setLocationID(row.getLong(row.getColumnIndex(KEY_LOCATION_ID)));
 		location.setAddress1(row.getString(row.getColumnIndex(KEY_ADDRESS_1)));
 		location.setAddress2(row.getString(row.getColumnIndex(KEY_ADDRESS_2)));
 		location.setCity(row.getString(row.getColumnIndex(KEY_CITY)));
 		location.setPostcode(row.getString(row.getColumnIndex(KEY_POSTCODE)));
 		location.setLatitude(row.getString(row.getColumnIndex(KEY_LATITUDE)));
 		location.setLongitude(row.getString(row.getColumnIndex(KEY_LONGITUDE)));
-		
-		row.close();
 		
 		return location;
 	}
