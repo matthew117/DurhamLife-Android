@@ -21,6 +21,7 @@ Bugs
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
 - A time instance is added to google calendar even if you press back (out of our control?)
+- TimeActivity only shows defult text when the iCal does not parse due to no wi-fi
 
  --------------------------------------------------------------------
  ListView              | DataProvider | ProgressDialog | Connectivity
