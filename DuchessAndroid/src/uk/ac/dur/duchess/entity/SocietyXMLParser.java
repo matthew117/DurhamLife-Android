@@ -1,6 +1,5 @@
 package uk.ac.dur.duchess.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.xml.sax.Attributes;
@@ -17,9 +16,9 @@ public class SocietyXMLParser extends DefaultHandler
 	private boolean isEmailTag;
 	private boolean isConstitutionTag;
 
-	public SocietyXMLParser(ArrayList<Society> societyList)
+	public SocietyXMLParser(List<Society> societyList2)
 	{
-		this.societyList = societyList;
+		this.societyList = societyList2;
 		s = new Society();
 	}
 	

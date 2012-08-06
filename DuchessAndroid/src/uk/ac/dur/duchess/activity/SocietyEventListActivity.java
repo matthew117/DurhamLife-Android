@@ -2,28 +2,23 @@ package uk.ac.dur.duchess.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
+import java.util.List;
 
 import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.NetworkFunctions;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
-import uk.ac.dur.duchess.entity.EventXMLParser;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,7 +28,7 @@ import android.widget.TextView;
 
 public class SocietyEventListActivity extends CustomTitleBarActivity
 {
-	private ArrayList<Event> eventList;
+	private List<Event> eventList;
 	private EventListAdapter adapter;
 	private ListView listView;
 	private ProgressDialog progressDialog;
@@ -42,6 +37,10 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 	
 	private Button aboutButton;
 	private Button subscribeButton;
+	
+	private String societyName;
+	
+	private Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -49,6 +48,8 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.society_event_list_layout);
 
+		context = this;
+		
 		user = SessionFunctions.getCurrentUser(this);
 
 		listView = (ListView) findViewById(R.id.societyEventListView);
@@ -80,7 +81,8 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 		
 		if (s.getString("society_name") != null)
 		{
-			societyNameText.setText(s.getString("society_name"));
+			societyName = s.getString("society_name");
+			societyNameText.setText(societyName);
 		}
 		
 		if(user.isSubscribedToSociety(societyNameText.getText().toString()))
@@ -129,24 +131,7 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 			}
 		});
 
-		try
-		{
-
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser parser = factory.newSAXParser();
-			final XMLReader reader = parser.getXMLReader();
-
-			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/events.php?society="+s.getLong("society_id"));
-
-			Log.d("URL", url.toString());
-			
-			eventList = new ArrayList<Event>();
-
-			EventXMLParser myXMLHandler = new EventXMLParser(eventList);
-
-			reader.setContentHandler(myXMLHandler);
-
-			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
+			adapter = new EventListAdapter(this, R.layout.custom_event_list_row, new ArrayList<Event>());
 			listView.setAdapter(adapter);
 
 			listView.setOnItemClickListener(new OnItemClickListener()
@@ -171,8 +156,8 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 				@Override
 				public void run()
 				{
+					for (Event event : eventList) adapter.add(event);
 					progressDialog.dismiss();
-					adapter.notifyDataSetChanged();
 				}
 			};
 
@@ -183,10 +168,9 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 				{
 					try
 					{
-						InputStream is = url.openStream();					
-						InputSource source = new InputSource(is);
-						source.setEncoding("UTF-8");
-						reader.parse(source);
+						GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+						DataProvider data = delegate.getDataProvider();
+						eventList = data.getEventsBySociety(context, societyName);
 						runOnUiThread(callbackFunction);
 					}
 					catch (Exception ex)
@@ -196,17 +180,11 @@ public class SocietyEventListActivity extends CustomTitleBarActivity
 				}
 			};
 
-			Thread thread = new Thread(null, parseData, "SAXParser");
+			Thread thread = new Thread(null, parseData, "DownloadEventsThread");
 			thread.start();
 			progressDialog = ProgressDialog.show(SocietyEventListActivity.this, "Please wait...",
-					"Downloading Events ...", true);
-		}
-		catch (Exception ex)
-		{
-			progressDialog.dismiss();
-			ex.printStackTrace();
-			finish();
-		}
+					"Loading Events ...", true);
+		
 	}
 	
 	@Override

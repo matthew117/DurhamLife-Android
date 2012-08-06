@@ -134,7 +134,6 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 					
 					if (newList != null) runOnUiThread(callbackFunction);
 					else                 runOnUiThread(errorCallback);
-				
 			}
 		};
 
