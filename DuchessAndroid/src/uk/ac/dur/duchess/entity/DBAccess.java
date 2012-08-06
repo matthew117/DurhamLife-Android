@@ -512,6 +512,25 @@ public class DBAccess
 		return societies;
 	}
 	
+	public Society getSociety(String name)
+	{
+		Cursor row = db.query(SOCIETY_TABLE, null, KEY_SOCIETY_NAME + "=\"" + name + "\"",
+				null, null, null, null);
+		
+		if(row.getCount() == 0)
+		{
+			row.close();
+			return null;
+		}
+		else row.moveToFirst();
+		
+		Society society = toSociety(row);
+		
+		row.close();
+		
+		return society;
+	}
+	
 	private Society toSociety(Cursor row)
 	{
 		Society society = new Society();
