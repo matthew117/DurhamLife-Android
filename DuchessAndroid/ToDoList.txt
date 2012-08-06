@@ -28,7 +28,7 @@ Bugs
  College Events        |       Y      |        Y       |       Y
  Browse                |       Y      |        Y       |       N
  Calendar              |       Y      |        N       |       N
- My Events (Bookmarks) |       Y      |        Y       |       Y(?)
+ My Events (Bookmarks) |       Y      |        Y       |       Y
  Societies             |       Y      |        Y       |       N
  Personal Societies    |       N      |        Y       |       N
  Society               |       N      |        Y       |       N
