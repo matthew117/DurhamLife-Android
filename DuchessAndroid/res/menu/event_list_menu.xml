@@ -41,6 +41,10 @@
                 android:id="@+id/submenuEventListByDateRange"
                 android:icon="@drawable/clock"
                 android:title="Date Range"/>
+            <item
+                android:id="@+id/submenuEventListByLocation"
+                android:icon="@drawable/location_tab_icon"
+                android:title="Location"/>
         </menu>
     </item>
     <item

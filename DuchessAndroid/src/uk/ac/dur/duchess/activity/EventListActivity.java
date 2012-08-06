@@ -16,12 +16,14 @@ import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
 import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -57,6 +59,7 @@ public class EventListActivity extends ListActivity
 	private static final int REQUEST_DATEFRAME = 1;
 	private static final int REQUEST_CATEG0RY = 2;
 	private static final int DATE_DIALOG_ID = 1;
+	private static final int LOCATION_DIALOG_ID = 2;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -213,6 +216,11 @@ public class EventListActivity extends ListActivity
 			startActivityForResult(i, REQUEST_DATEFRAME);
 			return true;
 		}
+		case R.id.submenuEventListByLocation:
+		{
+			showDialog(LOCATION_DIALOG_ID);
+			return true;
+		}
 		case R.id.submenuEventListAZ:
 			sortEventsAlphabetically();
 			return true;
@@ -270,6 +278,19 @@ public class EventListActivity extends ListActivity
 		}
 
 		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, inRangeEvents));
+	}
+	
+	private void filterEventByLocation(String location)
+	{
+		ArrayList<Event> events = new ArrayList<Event>();
+
+		for (Event event : eventList)
+		{
+			if (event.getLocation().getAddress1().equals(location))
+				events.add(event);
+		}
+
+		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, events));
 	}
 
 	private void sortEventsAlphabetically()
@@ -362,15 +383,36 @@ public class EventListActivity extends ListActivity
 	{
 		switch (id)
 		{
-		case DATE_DIALOG_ID:
-		{
-			Calendar c = Calendar.getInstance();
-			int year = c.get(Calendar.YEAR);
-			int month = c.get(Calendar.MONTH);
-			int day = c.get(Calendar.DATE);
-
-			return new DatePickerDialog(this, dateSetListener, year, month, day);
-		}
+			case DATE_DIALOG_ID:
+			{
+				Calendar c = Calendar.getInstance();
+				int year = c.get(Calendar.YEAR);
+				int month = c.get(Calendar.MONTH);
+				int day = c.get(Calendar.DATE);
+	
+				return new DatePickerDialog(this, dateSetListener, year, month, day);
+			}
+			case LOCATION_DIALOG_ID:
+			{
+				GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+				DataProvider dataPro = delegate.getDataProvider();
+				
+				List<EventLocation> locations = dataPro.getLocations(this);
+				final CharSequence[] items = new CharSequence[locations.size()];
+				for(int i = 0; i < items.length; i++) items[i] = locations.get(i).getAddress1();
+	
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("Pick a location");
+				builder.setItems(items, new DialogInterface.OnClickListener()
+				{
+				    public void onClick(DialogInterface dialog, int item)
+				    {
+				        filterEventByLocation(items[item].toString());
+				    }
+				});
+				
+				return builder.create();
+			}
 		}
 		return null;
 	}
