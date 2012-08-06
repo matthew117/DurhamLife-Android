@@ -97,7 +97,7 @@ public class DBAccess
 			+ KEY_ADDRESS_2 + " TEXT NOT NULL, "
 			+ KEY_CITY + " TEXT NOT NULL, "
 			+ KEY_POSTCODE + " TEXT NOT NULL, "
-			+ KEY_LATITUDE + "latitude TEXT NOT NULL, "
+			+ KEY_LATITUDE + " TEXT NOT NULL, "
 			+ KEY_LONGITUDE + " TEXT NOT NULL)";
 	
 	private static final String SOCIETY_CREATE_STATEMENT =
@@ -347,7 +347,7 @@ public class DBAccess
 	
 	public List<Event> getEventsByCollege(String college)
 	{
-		return queryEventTable(KEY_ASSOCIATED_COLLEGE + "='" + college + "'");
+		return queryEventTable(KEY_ASSOCIATED_COLLEGE + "=\"" + college + "\"");
 	}
 	
 	public List<Event> getEventsByColleges(List<String> colleges)
@@ -356,8 +356,8 @@ public class DBAccess
 		
 		for(int i = 0; i < colleges.size(); i++)
 		{
-			query.append(KEY_ASSOCIATED_COLLEGE + "='" + colleges.get(i) +
-					(i == colleges.size() - 1 ? "'" : "' OR "));
+			query.append(KEY_ASSOCIATED_COLLEGE + "=\"" + colleges.get(i) +
+					(i == colleges.size() - 1 ? "\"" : "\" OR "));
 		}
 		
 		return queryEventTable(query.toString());
@@ -365,7 +365,7 @@ public class DBAccess
 	
 	public List<Event> getEventsBySociety(String society)
 	{
-		return queryEventTable(KEY_ASSOCIATED_SOCIETY + "='" + society + "'");
+		return queryEventTable(KEY_ASSOCIATED_SOCIETY + "=\"" + society + "\"");
 	}
 	
 	public List<Event> getEventsBySocieties(List<String> societies)
@@ -374,8 +374,8 @@ public class DBAccess
 		
 		for(int i = 0; i < societies.size(); i++)
 		{
-			query.append(KEY_ASSOCIATED_SOCIETY + "='" + societies.get(i) +
-					(i == societies.size() - 1 ? "'" : "' OR "));
+			query.append(KEY_ASSOCIATED_SOCIETY + "=\"" + societies.get(i) +
+					(i == societies.size() - 1 ? "\"" : "\" OR "));
 		}
 		
 		return queryEventTable(query.toString());
@@ -396,7 +396,11 @@ public class DBAccess
 		if(row.getColumnIndex(KEY_ICAL_URL) != -1)
 			event.setICalURL(row.getString(row.getColumnIndex(KEY_ICAL_URL)));
 		
-		event.setLocation(getLocation(row.getLong(row.getColumnIndex(KEY_LOCATION_ID))));
+		EventLocation location = getLocation(row.getLong(row.getColumnIndex(KEY_LOCATION_ID)));
+		
+		Log.d("Location", (location != null) ? location.getAddress1() : "null");
+		
+		event.setLocation(location);
 		
 		event.setScope(row.getString(row.getColumnIndex(KEY_SCOPE)));
 		if(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE) != -1)
