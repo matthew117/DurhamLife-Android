@@ -11,6 +11,7 @@ Features
 + Add 'Downloading events for the first time' message
 + If the cache expires but there is no connectivity, state that the app is in 'offline mode'
 + {Student, Staff, Public} skins
++ Loading icon aftering clicking Login?
 
 Optimizations
 
