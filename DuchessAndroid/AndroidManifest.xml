@@ -136,6 +136,7 @@
             android:label="@string/app_name" />
         <activity android:name=".activity.BookmarkedEventListActivity" />
         <activity android:name=".activity.NearEventsActivity" />
+        <activity android:name=".activity.TestEventListActivity"></activity>
     </application>
 
 </manifest>

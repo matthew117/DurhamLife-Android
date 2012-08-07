@@ -35,6 +35,7 @@ public class EventDetailsActivity extends Activity
 	private Button phoneContactButton;
 	private Button emailContactButton;
 	private Button viewWebsiteButton;
+	private TextView txtAccessibility;
 	private LinearLayout eventDetailsContainer;
 	private FrameLayout eventImageContainer;
 	private ProgressBar imageActivityIndicator;
@@ -54,6 +55,7 @@ public class EventDetailsActivity extends Activity
 		phoneContactButton = (Button) findViewById(R.id.telephoneButton);
 		emailContactButton = (Button) findViewById(R.id.emailContactButton);
 		viewWebsiteButton = (Button) findViewById(R.id.websiteButton);
+		txtAccessibility = (TextView) findViewById(R.id.textViewAccessInfo);
 		eventDetailsContainer = (LinearLayout) findViewById(R.id.eventDetailsContainer);
 		eventImageContainer = (FrameLayout) findViewById(R.id.eventImageContainer);
 		imageActivityIndicator = (ProgressBar) findViewById(R.id.eventDetailsImageProgress);
@@ -145,6 +147,8 @@ public class EventDetailsActivity extends Activity
 				startActivity(i);
 			}
 		});
+		
+		if(event.getAccessibilityInformation() != null) txtAccessibility.setText(event.getAccessibilityInformation());
 
 		if(event.getImageURL() != null) (new DownloadImageTask()).execute(event.getImageURL());
 		else eventImageContainer.setVisibility(View.GONE);

@@ -3,18 +3,20 @@ package uk.ac.dur.duchess;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.dur.duchess.activity.CollegeEventListActivity;
 import uk.ac.dur.duchess.activity.EventDetailsTabRootActivity;
+import uk.ac.dur.duchess.activity.EventListActivity;
 import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
-import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -22,28 +24,20 @@ import android.widget.ListView;
 public class EventListView extends ListView
 {
 	private Context listContext;
-	private List<Event> newList;
+	private List<Event> eventList;
 	private Runnable parseData;
 	private EventListAdapter adapter;
-	private List<Event> eventList;
 	private ProgressDialog progressDialog;
 	private AlertDialog alertDialog;
-	private User user;
-	private Activity listActivity;
 
-	public EventListView(Context context, Activity activity)
+	public EventListView(Context context)
 	{
 		super(context);
 		
 		listContext = context;
-		listActivity = activity;
-		user = SessionFunctions.getCurrentUser(activity);
-		
-		eventList = new ArrayList<Event>();
 
-		adapter = new EventListAdapter(context, R.layout.custom_event_list_row, eventList);
+		adapter = new EventListAdapter(context, R.layout.custom_event_list_row, new ArrayList<Event>());
 		setAdapter(adapter);
-		setEmptyView(findViewById(R.id.collegeEventListEmpty));
 
 		setOnItemClickListener(new OnItemClickListener()
 		{
@@ -59,16 +53,42 @@ public class EventListView extends ListView
 				listContext.startActivity(i);
 			}
 		});
+	}
+	
+	public EventListView(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+		
+		listContext = context;
+		
+		adapter = new EventListAdapter(context, R.layout.custom_event_list_row, new ArrayList<Event>());
+		setAdapter(adapter);
 
+		setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
+				Event e = (Event) getAdapter().getItem(position);
+				EventLocation l = e.getLocation();
+				i.putExtra("event_id", e.getEventID());
+				i.putExtra("location_id", l.getLocationID());
+				i.putExtra("event_name", e.getName());
+				listContext.startActivity(i);
+			}
+		});
+	}
+
+	public void loadEvents(final Activity activity)
+	{
 		final Runnable callbackFunction = new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				for (Event e : newList)
-				{
-					adapter.add(e);
-				}
+				for (Event e : eventList) adapter.add(e);
+
 				progressDialog.dismiss();
 			}
 		};
@@ -87,7 +107,7 @@ public class EventListView extends ListView
 						{
 							public void onClick(DialogInterface dialog, int id)
 							{
-								listActivity.finish();
+								activity.finish();
 							}
 						}).setPositiveButton("Retry", new DialogInterface.OnClickListener()
 						{
@@ -111,18 +131,26 @@ public class EventListView extends ListView
 			{
 					GlobalApplicationData delegate = GlobalApplicationData.getInstance();
 					DataProvider dataPro = delegate.getDataProvider();
-					newList = dataPro.getEventsByCollege(listContext, user.getCollege());
 					
-					if (newList != null) listActivity.runOnUiThread(callbackFunction);
-					else                 listActivity.runOnUiThread(errorCallback);
+					if(activity instanceof CollegeEventListActivity)
+					{
+						eventList = dataPro.getEventsByCollege(listContext,
+							SessionFunctions.getCurrentUser(activity).getCollege());
+					}
+					else if(activity instanceof EventListActivity)
+					{
+						
+					}
+					
+					if (eventList != null) activity.runOnUiThread(callbackFunction);
+					else                   activity.runOnUiThread(errorCallback);
 				
 			}
 		};
 
 		Thread thread = new Thread(null, parseData, "SAXParser");
 		thread.start();
-		progressDialog = ProgressDialog.show(context, "Please wait...",
+		progressDialog = ProgressDialog.show(listContext, "Please wait...",
 				"Downloading Events ...", true);
 	}
-
 }

@@ -8,10 +8,14 @@ Features
 + Browse events near to your location
 + Browse near events on a map
 + Search Bar
++ Add 'Downloading events for the first time' message
++ If the cache expires but there is no connectivity, state that the app is in 'offline mode'
++ {Student, Staff, Public} skins
 
 Optimizations
 
 # Reviews should be in a ListView (maybe)
+# Switch between GPS and Network location providers to improve location based features
 
 Bugs
 
@@ -21,7 +25,10 @@ Bugs
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
 - A time instance is added to google calendar even if you press back (out of our control?)
-- TimeActivity only shows defult text when the iCal does not parse due to no wi-fi
+- ListViews jump back to the top of the list on resume
+- Calendar view is not displayed correctly on small devices
+- Compass does not show up on small devices
+- iCal parser should check for connectivity otherwise it will fail and the default layout will be used (useless)
 
  --------------------------------------------------------------------
  ListView              | DataProvider | ProgressDialog | Connectivity

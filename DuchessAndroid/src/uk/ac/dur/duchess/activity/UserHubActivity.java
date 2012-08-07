@@ -110,10 +110,10 @@ public class UserHubActivity extends CustomTitleBarActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), ViewSharedPreferencesActivity.class);
+				Intent i = new Intent(v.getContext(), TestEventListActivity.class);
 				startActivity(i);
-				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
+//						Toast.LENGTH_LONG).show();
 			}
 		});
 

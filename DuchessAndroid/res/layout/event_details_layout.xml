@@ -131,6 +131,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/curved_border_light"
             android:orientation="vertical"
+            android:layout_marginBottom="5dp"
             android:padding="5dp" >
 
             <TextView
@@ -171,6 +172,38 @@
                 android:gravity="left|center_vertical"
                 android:textSize="12sp" />
         </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/accessibiltyInformationContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/curved_border_light"
+            android:orientation="vertical"
+            android:padding="5dp" >
+
+            <TextView
+                android:id="@+id/textViewAccessibility"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="Accessibility"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewAccessInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.1"
+                android:padding="3dp"
+                android:text="No accessibility information available"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                android:typeface="serif" android:autoLink="all"/>
+        </LinearLayout>
+        
     </LinearLayout>
 
 </ScrollView>
