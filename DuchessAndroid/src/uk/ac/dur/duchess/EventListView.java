@@ -3,13 +3,16 @@ package uk.ac.dur.duchess;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.dur.duchess.activity.BookmarkedEventListActivity;
+import uk.ac.dur.duchess.activity.CalendarActivity;
 import uk.ac.dur.duchess.activity.CollegeEventListActivity;
 import uk.ac.dur.duchess.activity.EventDetailsTabRootActivity;
-import uk.ac.dur.duchess.activity.EventListActivity;
+import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
+import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -33,11 +36,13 @@ public class EventListView extends ListView
 	public EventListView(Context context)
 	{
 		super(context);
-		
+
 		listContext = context;
 
 		adapter = new EventListAdapter(context, R.layout.custom_event_list_row, new ArrayList<Event>());
 		setAdapter(adapter);
+		
+		eventList = new ArrayList<Event>();
 
 		setOnItemClickListener(new OnItemClickListener()
 		{
@@ -54,15 +59,17 @@ public class EventListView extends ListView
 			}
 		});
 	}
-	
+
 	public EventListView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-		
+
 		listContext = context;
-		
+
 		adapter = new EventListAdapter(context, R.layout.custom_event_list_row, new ArrayList<Event>());
 		setAdapter(adapter);
+		
+		eventList = new ArrayList<Event>();
 
 		setOnItemClickListener(new OnItemClickListener()
 		{
@@ -87,8 +94,10 @@ public class EventListView extends ListView
 			@Override
 			public void run()
 			{
+				adapter.clear();
 				for (Event e : eventList) adapter.add(e);
-
+				adapter.notifyDataSetChanged();
+				
 				progressDialog.dismiss();
 			}
 		};
@@ -129,28 +138,72 @@ public class EventListView extends ListView
 			@Override
 			public void run()
 			{
-					GlobalApplicationData delegate = GlobalApplicationData.getInstance();
-					DataProvider dataPro = delegate.getDataProvider();
-					
-					if(activity instanceof CollegeEventListActivity)
-					{
-						eventList = dataPro.getEventsByCollege(listContext,
+				GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+				DataProvider dataPro = delegate.getDataProvider();
+
+				if(activity instanceof CollegeEventListActivity)
+				{
+					eventList = dataPro.getEventsByCollege(listContext,
 							SessionFunctions.getCurrentUser(activity).getCollege());
-					}
-					else if(activity instanceof EventListActivity)
-					{
-						
-					}
-					
-					if (eventList != null) activity.runOnUiThread(callbackFunction);
-					else                   activity.runOnUiThread(errorCallback);
-				
+				}
+				else if(activity instanceof BookmarkedEventListActivity)
+				{
+					List<Event> allEvents = dataPro.getAllEvents(listContext);
+					eventList.clear();
+
+					User user = SessionFunctions.getCurrentUser(activity);
+
+					if (allEvents != null)
+						for (Event event : allEvents)
+							if (user.hasPinnedEvent(event.getEventID())) eventList.add(event);	
+				}
+				else if(activity instanceof CalendarActivity)
+				{
+					eventList = dataPro.getAllEvents(listContext);
+				}
+
+				if (eventList != null) activity.runOnUiThread(callbackFunction);
+				else                   activity.runOnUiThread(errorCallback);
 			}
 		};
 
-		Thread thread = new Thread(null, parseData, "SAXParser");
-		thread.start();
-		progressDialog = ProgressDialog.show(listContext, "Please wait...",
-				"Downloading Events ...", true);
+		if(!(activity instanceof BookmarkedEventListActivity))
+		{
+			Thread thread = new Thread(null, parseData, "SAXParser");
+
+			thread.start();
+			progressDialog = ProgressDialog.show(listContext, "Please wait...",
+					"Downloading Events ...", true);
+		}
+		else if(SessionFunctions.getCurrentUser(activity).hasAnyBookmarkedEvents())
+		{
+			Thread thread = new Thread(null, parseData, "SAXParser");
+
+			thread.start();
+			progressDialog = ProgressDialog.show(listContext, "Please wait...",
+					"Downloading Events ...", true);
+		}
+	}
+	
+	public void filterEventByDateRange(String fromDate, String toDate)
+	{
+		adapter.clear();
+
+		if(eventList != null)
+		{
+			for (Event event : eventList)
+			{
+				if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(),
+						fromDate, toDate)) adapter.add(event);
+			}
+		}
+		
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void clearAdapter()
+	{
+		adapter.clear();
+		adapter.notifyDataSetChanged();
 	}
 }

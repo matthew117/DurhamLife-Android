@@ -4,68 +4,66 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <ListView
+
+    <uk.ac.dur.duchess.EventListView
         android:id="@+id/bookmarkListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="#FFFFFF" >
+    </uk.ac.dur.duchess.EventListView>
 
-    </ListView>
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bookmarkListEmpty"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    android:orientation="vertical" >
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/bookmarked_events"
-        android:src="@drawable/bookmark_watermark" />
-
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/bookmarkListEmpty"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="Bookmarked Events"
-        android:textColor="@color/DUPurpleWashout"
-        android:textSize="22sp" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="You have not bookmarked any events yet."
-        android:textColor="@color/DUPurpleWashout"
-        android:textSize="15sp" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/bookmark_tutorial" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:text="Tap the ribbon on an event to save it to this list."
-        android:textColor="@color/DUPurpleWashout"
-        android:textSize="15sp" />
-        
-        </LinearLayout>
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/bookmarked_events"
+            android:src="@drawable/bookmark_watermark" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Bookmarked Events"
+            android:textColor="@color/DUPurpleWashout"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="You have not bookmarked any events yet."
+            android:textColor="@color/DUPurpleWashout"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/bookmark_tutorial" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Tap the ribbon on an event to save it to this list."
+            android:textColor="@color/DUPurpleWashout"
+            android:textSize="15sp" />
+    </LinearLayout>
 
 </LinearLayout>
