@@ -10,10 +10,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +19,6 @@ import android.widget.TextView;
 
 public class EventListAdapter extends ArrayAdapter<Event>
 {
-	private List<Event> events;
 	private Context context;
 	private int rowLayoutResourceID;
 	private User user;
@@ -36,7 +31,6 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	public EventListAdapter(Context context, int rowLayoutResourceID, List<Event> eventList)
 	{
 		super(context, rowLayoutResourceID, eventList);
-		this.events = eventList;
 		this.context = context;
 		this.rowLayoutResourceID = rowLayoutResourceID;
 	}
@@ -51,13 +45,6 @@ public class EventListAdapter extends ArrayAdapter<Event>
 		{			
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 			v = inflater.inflate(rowLayoutResourceID, parent, false);
-			
-			
-			int[] colors = {Color.parseColor("#DDDDDD"), Color.parseColor("#FFFFFF")};
-			GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
-			gradient.setDither(true);
-		
-			v.setBackgroundDrawable(gradient);
 						
 			holder = new ViewHolder();
 
@@ -95,25 +82,36 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				if(categories.size() > 0)
 				{
 					int id = mapCategoryToIcon(categories.get(0));
-					Log.d("CAT_ID", String.valueOf(id));
-					holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
-					holder.categoryIcon1.setVisibility(View.VISIBLE);
+					if(id == -1)
+					{
+						holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+						holder.categoryIcon1.setVisibility(View.VISIBLE);
+					}
+					else holder.categoryIcon1.setVisibility(View.GONE);
 				}
 				else holder.categoryIcon1.setVisibility(View.GONE);
 				
 				if(categories.size() > 1)
 				{
 					int id = mapCategoryToIcon(categories.get(1));
-					holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
-					holder.categoryIcon2.setVisibility(View.VISIBLE);
+					if(id == -1)
+					{
+						holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+						holder.categoryIcon2.setVisibility(View.VISIBLE);
+					}
+					else holder.categoryIcon2.setVisibility(View.GONE);
 				}
 				else holder.categoryIcon2.setVisibility(View.GONE);
 				
 				if(categories.size() > 2)
 				{
 					int id = mapCategoryToIcon(categories.get(2));
-					holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
-					holder.categoryIcon3.setVisibility(View.VISIBLE);
+					if(id == -1)
+					{
+						holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
+						holder.categoryIcon3.setVisibility(View.VISIBLE);
+					}
+					else holder.categoryIcon3.setVisibility(View.GONE);
 				}
 				else holder.categoryIcon3.setVisibility(View.GONE);
 			}
