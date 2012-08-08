@@ -3,15 +3,16 @@ package uk.ac.dur.duchess.activity;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
-public class UserHubActivity extends CustomTitleBarActivity
+public class UserHubActivity extends SherlockActivity
 {
 	private TextView browseButton;
 	private TextView collegeEventButton;
@@ -36,23 +37,6 @@ public class UserHubActivity extends CustomTitleBarActivity
 		settingsButton = (TextView) findViewById(R.id.userHubSettings);
 		societyEventListButton = (TextView) findViewById(R.id.userHubSocietyEvents);
 		calendarButton = (TextView) findViewById(R.id.userHubCalendar);
-
-		// Custom Title Bar properties
-		titleBarButton4.setVisibility(View.GONE);
-		titleBarButton3.setVisibility(View.GONE);
-		titleBarButton2.setVisibility(View.GONE);
-
-		Bitmap aboutIcon = BitmapFactory.decodeResource(getResources(), R.drawable.about);
-		titleBarButton1.setImageBitmap(aboutIcon);
-		titleBarButton1.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent i = new Intent(v.getContext(), AboutBoxActivity.class);
-				startActivity(i);
-			}
-		});
 
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -176,4 +160,24 @@ public class UserHubActivity extends CustomTitleBarActivity
 			}
 		});
 	}
+	
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getSupportMenuInflater().inflate(R.menu.user_hub_menu, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case R.id.showAboutBoxMenuItem:
+			Intent showAboutBoxIntent = new Intent(this, AboutBoxActivity.class);
+			startActivity(showAboutBoxIntent);
+			return true;
+		default:
+			return true;
+		}
+	}
+
 }
