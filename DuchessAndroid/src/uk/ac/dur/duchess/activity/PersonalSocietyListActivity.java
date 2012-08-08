@@ -1,132 +1,108 @@
 package uk.ac.dur.duchess.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.SeparatedListAdapter;
+import uk.ac.dur.duchess.SocietyListAdapter;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.SessionFunctions;
-import uk.ac.dur.duchess.entity.Event;
-import uk.ac.dur.duchess.entity.EventLocation;
+import uk.ac.dur.duchess.entity.Society;
 import uk.ac.dur.duchess.entity.User;
-import uk.ac.dur.duchess.webservice.EventAPI;
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class PersonalSocietyListActivity extends CustomTitleBarActivity
 {
-	private Map<String, List<Event>> eventMap;
-	private Activity activity;
-	private List<String> societyList;
-	private ProgressDialog progressDialog;
-	
-	private SeparatedListAdapter adapter;
+	private List<Society> societyList;
+	private ArrayAdapter<Society> adapter;
 	private ListView listView;
+	private ProgressDialog progressDialog;
+	private User user;
+	private Context context;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.society_list_layout);
 
-		activity = this;
-		listView = new ListView(activity); 
+		this.context = this;
 
-		User user = SessionFunctions.getCurrentUser(this);
-		societyList = user.getSocieties();
+		user = SessionFunctions.getCurrentUser(this);
 
-		eventMap = new TreeMap<String, List<Event>>();
+		listView = (ListView) findViewById(R.id.societyListView);
 
-		for (String s : societyList)
+		adapter = new SocietyListAdapter(this, R.layout.society_list_row, new ArrayList<Society>());
+		listView.setAdapter(adapter);
+
+		listView.setOnItemClickListener(new OnItemClickListener()
 		{
-			eventMap.put(s, new ArrayList<Event>());
-		}
-
-		String[] societyArray = new String[societyList.size()];
-		societyList.toArray(societyArray);
-		
-		(new DownloadEventsBackgroundTask()).execute(societyArray);
-	}
-
-	private class DownloadEventsBackgroundTask extends
-			AsyncTask<String, Void, Map<String, List<Event>>>
-	{
-		@Override
-		protected void onPreExecute()
-		{
-			progressDialog = ProgressDialog.show(PersonalSocietyListActivity.this,
-					"Please wait...", "Downloading Events ...", true);
-		}
-
-		@Override
-		protected Map<String, List<Event>> doInBackground(String... societyArray)
-		{
-			try
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				List<Event> eventList = new ArrayList<Event>();
-				for (String s : societyArray)
+
+				Intent i = new Intent(view.getContext(), SocietyEventListActivity.class);
+				Society s = (Society) adapter.getItem(position);
+				i.putExtra("society_id", s.getSocietyID());
+				i.putExtra("society_name", s.getName());
+				i.putExtra("society_website", s.getWebsite());
+				i.putExtra("society_email", s.getEmail());
+				i.putExtra("society_constitution", s.getConstitution());
+				startActivity(i);
+			}
+		});
+
+		final Runnable callbackFunction = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				List<String> personalSocieties = user.getSocieties();
+				for (Society society : societyList)
+					for(String name : personalSocieties)
+					{
+						if(name.equals(society.getName()))
+						{
+							adapter.add(society);
+							break;
+						}
+					}
+				progressDialog.dismiss();
+				adapter.notifyDataSetChanged();
+			}
+		};
+
+		Runnable parseData = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
 				{
-					eventList = EventAPI.downloadEventsBySociety(s);
-					eventMap.put(s, eventList);
+					GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+					DataProvider data = delegate.getDataProvider();
+					societyList = data.getSocieties(context);
+					runOnUiThread(callbackFunction);
 				}
-				return eventMap;
-			}
-			catch (IOException ex)
-			{
-
-			}
-			return eventMap;
-		}
-
-		@Override
-		protected void onPostExecute(Map<String, List<Event>> eventMap)
-		{
-	        // create our list and custom adapter  
-	        adapter = new SeparatedListAdapter(activity);  
-	        
-			for(String society : eventMap.keySet())
-			{
-				adapter.addSection(society,
-						new EventListAdapter(activity, R.layout.custom_event_list_row, eventMap.get(society))); 
-			}
-			 
-	        listView.setAdapter(adapter);
-	        
-	        listView.setOnItemClickListener(new OnItemClickListener()
-			{
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+				catch (Exception ex)
 				{
-					Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
-					Event e = (Event) adapter.getItem(position);
-					EventLocation l = e.getLocation();
-					i.putExtra("event_id", e.getEventID());
-					i.putExtra("location_id", l.getLocationID());
-					i.putExtra("event_name", e.getName());
-					startActivity(i);
+					ex.printStackTrace();
 				}
-			});
-	        
-	        activity.setContentView(listView);
-			
-			progressDialog.dismiss();
-		}
-	}
-	
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		listView.setAdapter(listView.getAdapter());
+			}
+		};
+
+		Thread thread = new Thread(null, parseData, "DownloadSocietyThread");
+		thread.start();
+		progressDialog = ProgressDialog.show(PersonalSocietyListActivity.this, "Please Wait...",
+				"Downloading Society Information ...", true);
 	}
 }

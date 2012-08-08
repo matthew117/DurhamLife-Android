@@ -82,7 +82,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				if(categories.size() > 0)
 				{
 					int id = mapCategoryToIcon(categories.get(0));
-					if(id == -1)
+					if(id != -1)
 					{
 						holder.categoryIcon1.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
 						holder.categoryIcon1.setVisibility(View.VISIBLE);
@@ -94,7 +94,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				if(categories.size() > 1)
 				{
 					int id = mapCategoryToIcon(categories.get(1));
-					if(id == -1)
+					if(id != -1)
 					{
 						holder.categoryIcon2.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
 						holder.categoryIcon2.setVisibility(View.VISIBLE);
@@ -106,7 +106,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				if(categories.size() > 2)
 				{
 					int id = mapCategoryToIcon(categories.get(2));
-					if(id == -1)
+					if(id != -1)
 					{
 						holder.categoryIcon3.setImageDrawable(context.getResources().getDrawable(CATEGORY_ICONS[id]));
 						holder.categoryIcon3.setVisibility(View.VISIBLE);

@@ -7,9 +7,7 @@ import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.SocietyListAdapter;
 import uk.ac.dur.duchess.data.DataProvider;
-import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.Society;
-import uk.ac.dur.duchess.entity.User;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class SocietyListActivity extends Activity
 {
@@ -28,8 +25,6 @@ public class SocietyListActivity extends Activity
 	private ArrayAdapter<Society> adapter;
 	private ListView listView;
 	private ProgressDialog progressDialog;
-	private User user;
-	private TextView societyNameText;
 	private Context context;
 
 	@Override
@@ -40,10 +35,7 @@ public class SocietyListActivity extends Activity
 
 		this.context = this;
 
-		user = SessionFunctions.getCurrentUser(this);
-
 		listView = (ListView) findViewById(R.id.societyListView);
-		societyNameText = (TextView) findViewById(R.id.nameOnSocietyList);
 
 		adapter = new SocietyListAdapter(this, R.layout.society_list_row, new ArrayList<Society>());
 		listView.setAdapter(adapter);

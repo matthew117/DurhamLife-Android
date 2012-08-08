@@ -37,7 +37,7 @@ public class CollegeEventListActivity extends CustomTitleBarActivity
 		}
 		
 		listView = (EventListView) findViewById(R.id.collegeEventListView);
-		listView.loadEvents(this);
+		listView.loadAllEvents(this, null);
 		listView.setEmptyView(findViewById(R.id.collegeEventListEmpty));
 	}
 

@@ -4,20 +4,12 @@ import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import uk.ac.dur.duchess.EventListAdapter;
-import uk.ac.dur.duchess.GlobalApplicationData;
+import uk.ac.dur.duchess.EventListView;
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.data.CalendarFunctions;
-import uk.ac.dur.duchess.data.DataProvider;
-import uk.ac.dur.duchess.entity.Event;
-import uk.ac.dur.duchess.entity.EventLocation;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -27,13 +19,10 @@ import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class CalendarActivity extends Activity
@@ -51,22 +40,15 @@ public class CalendarActivity extends Activity
 	private ImageView nextMonthButton;
 	
 	private LinearLayout calendarView;
-	
-	private List<Event> eventList;
-	private EventListAdapter adapter;
-	private ListView listView;
+	private EventListView listView;
 	
 	private CalendarButton currentCell;
-	
-	private Context context;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_layout);
-		
-		this.context = this;
 		
 		header = (LinearLayout) findViewById(R.id.calendarHeader);
 		
@@ -76,7 +58,7 @@ public class CalendarActivity extends Activity
 		
 		calendarView = (LinearLayout) findViewById(R.id.calendarView);
 		
-		listView = (ListView) findViewById(R.id.calendarListView);
+		listView = (EventListView) findViewById(R.id.calendarListView);
 		
 		calendar = Calendar.getInstance();
 		
@@ -125,27 +107,6 @@ public class CalendarActivity extends Activity
 			}
 		});
 		
-		eventList = new ArrayList<Event>();
-
-		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
-		listView.setAdapter(adapter);
-		
-		listView.setOnItemClickListener(new OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-
-				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
-				Event e = (Event) adapter.getItem(position);
-				EventLocation l = e.getLocation();
-				i.putExtra("event_id", e.getEventID());
-				i.putExtra("location_id", l.getLocationID());
-				i.putExtra("event_name", e.getName());
-				startActivity(i);
-			}
-		});
-		
 		listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_bottom_border));
 		
 		setupCalendarLayout();
@@ -156,7 +117,11 @@ public class CalendarActivity extends Activity
 		String fromDate = cellToDate(currentCell.cell);
 		String toDate   = cellToDate(currentCell.cell + 1);
 		
-		filterEventByDateRange(fromDate, toDate);
+		Bundle bundle = new Bundle();
+		bundle.putString("from_date", fromDate);
+		bundle.putString("to_date", toDate);
+		
+		listView.loadAllEvents(this, bundle);
 	}
 
 	private void setupCalendarLayout()
@@ -189,8 +154,7 @@ public class CalendarActivity extends Activity
 			calendarView.addView(tableRow);
 		}
 
-		adapter.clear();
-		adapter.notifyDataSetChanged();
+		listView.clearAdapter();
 	}
 	
 	private Button getMonthButton(int cell, int col)
@@ -237,7 +201,7 @@ public class CalendarActivity extends Activity
 				String fromDate = cellToDate(b.cell);
 				String toDate   = cellToDate(b.cell + 1);
 				
-				filterEventByDateRange(fromDate, toDate);
+				listView.filterEventByDateRange(fromDate, toDate);
 			}
 			
 		});
@@ -314,23 +278,6 @@ public class CalendarActivity extends Activity
 		cal.set(Calendar.DAY_OF_MONTH, cell);
 		
 		return range.format(cal.getTime());
-
-	}
-	
-	private void filterEventByDateRange(String fromDate, String toDate)
-	{
-		adapter.clear();
-		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
-		DataProvider dataPro = delegate.getDataProvider();
-		List<Event> events = dataPro.getAllEvents(context);
-
-		for (Event event : events)
-		{
-			if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(), fromDate,
-					toDate)) adapter.add(event);
-		}
-		
-		adapter.notifyDataSetChanged();
 	}
 	
 	@Override

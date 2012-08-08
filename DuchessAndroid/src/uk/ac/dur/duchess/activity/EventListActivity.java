@@ -6,12 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import uk.ac.dur.duchess.EventListAdapter;
+import uk.ac.dur.duchess.EventListView;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.CalendarFunctions;
 import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.data.SessionFunctions;
-import uk.ac.dur.duchess.data.UserFunctions;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventLocation;
 import uk.ac.dur.duchess.entity.User;
@@ -20,7 +20,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,17 +28,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 
-public class EventListActivity extends ListActivity
+public class EventListActivity extends Activity
 {
 	private ProgressDialog progressDialog;
 	private ProgressDialog locationProgress;
@@ -48,13 +42,11 @@ public class EventListActivity extends ListActivity
 	private User currentUser;
 	private Activity activity;
 
-	private ImageView adImageContainer;
-	private Event currentAd;
-
 	private List<Event> eventList;
 	private EventListAdapter adapter;
 
 	private LocationManager lm;
+	private EventListView listView;
 
 	private static final int REQUEST_DATEFRAME = 1;
 	private static final int REQUEST_CATEG0RY = 2;
@@ -73,114 +65,11 @@ public class EventListActivity extends ListActivity
 		currentUser = SessionFunctions.getCurrentUser(this);
 		activity = this;
 
-		adImageContainer = (ImageView) findViewById(R.id.adImageContainer);
-
 		eventList = new ArrayList<Event>();
-
-		adapter = new EventListAdapter(this, R.layout.custom_event_list_row, eventList);
-		setListAdapter(adapter);
-
-		getListView().setOnItemClickListener(new OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				Intent i = new Intent(view.getContext(), EventDetailsTabRootActivity.class);
-				Event e = (Event) getListAdapter().getItem(position);
-				EventLocation l = e.getLocation();
-				i.putExtra("event_id", e.getEventID());
-				i.putExtra("location_id", l.getLocationID());
-				i.putExtra("event_name", e.getName());
-				startActivity(i);
-			}
-		});
-
-		final Runnable callbackFunction = new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				if (eventList != null)
-				{
-					for (Event event : eventList)
-					{
-						adapter.add(event);
-					}
-				}
-				progressDialog.dismiss();
-				adapter.notifyDataSetChanged();
-
-				// for (Event e : eventList)
-				// {
-				// if (e.isFeatured() && e.getAdImageURL() != null)
-				// {
-				// currentAd = e;
-				// Log.d("Download AD", e.getAdImageURL());
-				// adImageContainer.setAdjustViewBounds(true);
-				// adImageContainer.setScaleType(ScaleType.CENTER_CROP);
-				// DisplayMetrics displaymetrics = new DisplayMetrics();
-				// getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-				// int height = displaymetrics.heightPixels;
-				// int width = displaymetrics.widthPixels;
-				// adImageContainer.setMinimumWidth(width);
-				// adImageContainer.setMinimumHeight((int) (width / 3.0));
-				// adImageContainer.setImageBitmap(NetworkFunctions.downloadImage(e
-				// .getAdImageURL()));
-				// adImageContainer.invalidate();
-				// break;
-				// }
-				// }
-
-//				android.os.Debug.stopMethodTracing();
-			}
-		};
-
-		Runnable parseData = new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					GlobalApplicationData delegate = GlobalApplicationData.getInstance();
-					DataProvider dataPro = delegate.getDataProvider();
-					eventList = dataPro.getAllEvents(activity);
-
-					if (currentUser != null && eventList != null)
-					{
-						Log.d("BEFORE FILTER", "" + eventList.size());
-						UserFunctions.filterByPreferences(currentUser, eventList);
-						Log.d("AFTER FILTER", "" + eventList.size());
-					}
-					runOnUiThread(callbackFunction);
-				}
-				catch (Exception ex)
-				{
-					ex.printStackTrace();
-				}
-			}
-		};
-
-		Thread thread = new Thread(null, parseData, "SAXParser");
-		thread.start();
-		progressDialog = ProgressDialog.show(EventListActivity.this, "Please wait...",
-				"Downloading Events ...", true);
-
-		adImageContainer.setClickable(true);
-		adImageContainer.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent i = new Intent(v.getContext(), EventDetailsTabRootActivity.class);
-				Event e = currentAd;
-				EventLocation l = e.getLocation();
-				i.putExtra("event_id", e.getEventID());
-				i.putExtra("location_id", l.getLocationID());
-				i.putExtra("event_name", e.getName());
-				startActivity(i);
-			}
-		});
+		
+		listView = (EventListView) findViewById(R.id.eventListView);
+		listView.loadAllEvents(this, null);
+		listView.setEmptyView(findViewById(R.id.eventListEmpty));
 	}
 
 	@Override
@@ -188,7 +77,7 @@ public class EventListActivity extends ListActivity
 	{
 		super.onResume();
 		currentUser = SessionFunctions.getCurrentUser(this);
-		setListAdapter(getListAdapter());
+		listView.setAdapter(listView.getAdapter());
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -256,13 +145,13 @@ public class EventListActivity extends ListActivity
 			{
 				if (event.isFeatured()) featuredEvents.add(event);
 			}
-			setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
+			listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
 					featuredEvents));
 			featureMode = false;
 		}
 		else
 		{
-			setListAdapter(adapter);
+			listView.setAdapter(adapter);
 			featureMode = true;
 		}
 	}
@@ -277,7 +166,7 @@ public class EventListActivity extends ListActivity
 					toDate)) inRangeEvents.add(event);
 		}
 
-		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, inRangeEvents));
+		listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, inRangeEvents));
 	}
 	
 	private void filterEventByLocation(String location)
@@ -290,7 +179,7 @@ public class EventListActivity extends ListActivity
 				events.add(event);
 		}
 
-		setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, events));
+		listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row, events));
 	}
 
 	private void sortEventsAlphabetically()
@@ -367,7 +256,7 @@ public class EventListActivity extends ListActivity
 				for (Event event : eventList)
 					if (event.getCategoryTags().contains(category)) categoryEvents.add(event);
 
-				setListAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
+				listView.setAdapter(new EventListAdapter(this, R.layout.custom_event_list_row,
 						categoryEvents));
 			}
 			break;

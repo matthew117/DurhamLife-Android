@@ -22,7 +22,7 @@ public class BookmarkedEventListActivity extends Activity
 		setContentView(R.layout.bookmark_list_layout);
 
 		listView = (EventListView) findViewById(R.id.bookmarkListView);
-		listView.loadEvents(this);
+		listView.loadAllEvents(this, null);
 		
 		User user = SessionFunctions.getCurrentUser(this);
 		
