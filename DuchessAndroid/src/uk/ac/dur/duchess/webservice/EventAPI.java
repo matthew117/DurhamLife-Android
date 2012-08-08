@@ -22,6 +22,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
+import uk.ac.dur.duchess.GlobalApplicationData;
+import uk.ac.dur.duchess.data.DataProvider;
 import uk.ac.dur.duchess.entity.Event;
 import uk.ac.dur.duchess.entity.EventXMLParser;
 import android.graphics.Bitmap;
@@ -84,12 +86,16 @@ public class EventAPI
 		conn.setConnectTimeout(15000 /* milliseconds */);
 		conn.setRequestMethod("GET");
 		conn.setDoInput(true);
-
+		
 		conn.connect();
 		int httpResponseCode = conn.getResponseCode();
 
 		if (httpResponseCode != HttpURLConnection.HTTP_OK) throw new IOException();
 
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider data = delegate.getDataProvider();
+		data.setCacheExpiresAt(delegate.getApplicationContext(), conn.getExpiration());
+		
 		InputStream inputStream = conn.getInputStream();
 
 		try

@@ -8,8 +8,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class NetworkFunctions
 {
@@ -98,5 +102,12 @@ public class NetworkFunctions
 			// TODO: handle exception
 		}
 		return bitmap;
+	}
+	
+	public static boolean networkIsConnected(Activity activity)
+	{
+		ConnectivityManager connMgr = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		return (networkInfo != null && networkInfo.isConnected());
 	}
 }

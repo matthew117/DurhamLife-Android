@@ -28,10 +28,17 @@ public class DataProvider
 {
 	public static final String CACHE_SHARED_PREFERENCES_KEY = "duchess_cache";
 	private static final String CACHE_LAST_MODIFIED_KEY = "last_modified";
-	private static final String CACHE_EXPIRES_IN_KEY = "expires_in";
+	private static final String CACHE_EXPIRES_KEY = "expires";
+	
+	private static final int CACHE_EVENTS_FOR = 24 * 60 * 60 * 1000; /*milliseconds*/
 
 	private boolean memoryCacheIsValid = false;
 	private boolean databaseCacheIsValid = false;
+	
+	private boolean societyCacheIsValid = false;
+	
+	private boolean eventDatabaseLock = false;
+	private boolean societydatabaseLock = false;
 
 	private List<Event> eventList;
 
@@ -86,11 +93,18 @@ public class DataProvider
 						}
 						database.close();
 						databaseCacheIsValid = true;
-						updateCacheLastModified(context, System.currentTimeMillis());
-						setCacheExpiresIn(context, 60 * 60 * 1000 /* milliseconds */);
+						
+						/** This is set manually to overide the value given by the webservice for testing purposes */
+						setCacheExpiresAt(context, System.currentTimeMillis() + 24*60*60*1000);
+						
+						eventDatabaseLock = false;
 					}
 				});
-				addEventsToDatabase.start();
+				if (!eventDatabaseLock)
+				{ 
+					eventDatabaseLock = true;
+					addEventsToDatabase.start();
+				}
 				return new ArrayList<Event>(eventList);
 			}
 			catch (IOException e)
@@ -167,7 +181,7 @@ public class DataProvider
 						 */
 					}
 				});
-				addEventsToDatabase.start();
+				/**addEventsToDatabase.start(); There is no separate cache to make use of these*/
 				return collegeEventList;
 			}
 			catch (IOException e)
@@ -207,28 +221,65 @@ public class DataProvider
 		return societyEventList;
 	}
 
-	public List<Society> getSocieties(Context context)
+	public List<Society> getSocieties(final Context context)
 	{
-		List<Society> societyList = new ArrayList<Society>();
+		calculateCacheValidity(context);
 
-		try
+		// the list of societies is stored in the database so use it
+		if (societyCacheIsValid)
 		{
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser parser = factory.newSAXParser();
-			final XMLReader reader = parser.getXMLReader();
-
-			final URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php");
-
-			SocietyXMLParser myXMLHandler = new SocietyXMLParser(societyList);
-
-			reader.setContentHandler(myXMLHandler);
-
-			reader.parse(new InputSource(url.openStream()));
+			List<Society> societyList = new ArrayList<Society>();
+			
+			DBAccess database = new DBAccess(context);
+			database.open();
+			societyList = database.getSocieties();
+			database.close();
+			
+			return societyList;
 		}
-		catch (Exception ex)
-		{}
-
-		return societyList;
+		// the database is empty or old so download and update
+		else
+		{
+			final List<Society> societyList = new ArrayList<Society>();
+			try
+			{
+				SAXParserFactory factory = SAXParserFactory.newInstance();
+				SAXParser parser = factory.newSAXParser();
+				XMLReader reader = parser.getXMLReader();
+				URL url = new URL("http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php");
+				SocietyXMLParser myXMLHandler = new SocietyXMLParser(societyList);
+				reader.setContentHandler(myXMLHandler);
+				reader.parse(new InputSource(url.openStream()));
+			}
+			catch (Exception ex)
+			{
+				return societyList;
+			}
+			
+			Thread addSocietiesToDatabase = new Thread(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					DBAccess database = new DBAccess(context);
+					database.open();
+					for (Society society : societyList)
+					{
+						if (!database.containsSociety(society.getSocietyID()))
+							database.insertSociety(society);
+					}
+					database.close();
+					societyCacheIsValid = true;
+					societydatabaseLock = false;
+				}
+			});
+			if (!societydatabaseLock)
+			{ 
+				societydatabaseLock = true;
+				addSocietiesToDatabase.start();
+			}
+			return societyList;
+		}
 	}
 
 	public List<Review> getReviews(Context context, int eventID)
@@ -271,15 +322,12 @@ public class DataProvider
 
 	private void calculateCacheValidity(Context context)
 	{
-		SharedPreferences sharedPrefs = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY,
-				Context.MODE_PRIVATE);
-		long lastModified = sharedPrefs.getLong(CACHE_LAST_MODIFIED_KEY, 0);
-		long expiresIn = sharedPrefs.getLong(CACHE_EXPIRES_IN_KEY, 0);
+		SharedPreferences sharedPrefs = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+		long expiresAt = sharedPrefs.getLong(CACHE_EXPIRES_KEY, 0);
 
-		Log.d("CACHE",
-				String.format("modified: %d\nexpires:  %d", lastModified, lastModified + expiresIn));
+		Log.d("CACHE", String.format("expires: %d", expiresAt));
 
-		if (System.currentTimeMillis() < lastModified + expiresIn)
+		if (System.currentTimeMillis() < expiresAt)
 		{
 			databaseCacheIsValid = true;
 		}
@@ -289,28 +337,20 @@ public class DataProvider
 			memoryCacheIsValid = false;
 		}
 	}
-
-	private void updateCacheLastModified(Context context, long timeStamp)
-	{
-		Editor editor = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY,
-				Context.MODE_PRIVATE).edit();
-		editor.putLong(CACHE_LAST_MODIFIED_KEY, timeStamp);
-		editor.commit();
-	}
-
-	public void setCacheExpiresIn(Context context, long timeStamp)
-	{
-		Editor editor = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY,
-				Context.MODE_PRIVATE).edit();
-		editor.putLong(CACHE_EXPIRES_IN_KEY, timeStamp);
-		editor.commit();
-	}
 	
 	public void invalidateCache(Context context)
 	{
 		Editor editor = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY,
 				Context.MODE_PRIVATE).edit();
-		editor.putLong(CACHE_EXPIRES_IN_KEY, 0);
+		editor.putLong(CACHE_EXPIRES_KEY, 0);
 		editor.commit();
+	}
+
+	public void setCacheExpiresAt(Context context, long timestamp)
+	{
+		Editor editor = context.getSharedPreferences(CACHE_SHARED_PREFERENCES_KEY,
+				Context.MODE_PRIVATE).edit();
+		editor.putLong(CACHE_EXPIRES_KEY, timestamp);
+		editor.commit();		
 	}
 }
