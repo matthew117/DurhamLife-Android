@@ -1,6 +1,7 @@
 package uk.ac.dur.duchess;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import uk.ac.dur.duchess.activity.BookmarkedEventListActivity;
@@ -22,6 +23,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -122,8 +124,17 @@ public class EventListView extends ListView
 				}
 				else if(activity instanceof CalendarActivity)
 				{
-					eventList = dataPro.getAllEvents(getContext());
-					filterEventByDateRange(bundle.getString("from_date"), bundle.getString("to_date"));
+					List<Event> allEvents = dataPro.getAllEvents(getContext());
+					eventList.clear();
+
+					if(allEvents != null)
+					{
+						for (Event event : allEvents)
+						{
+							if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(),
+									bundle.getString("from_date"), bundle.getString("to_date"))) eventList.add(event);
+						}
+					}
 				}
 				else if(activity instanceof EventListActivity)
 				{
@@ -215,19 +226,145 @@ public class EventListView extends ListView
 		return errorCallback;
 	}
 
-	public void filterEventByDateRange(String fromDate, String toDate)
+	public void filterByDateRange(String fromDate, String toDate)
 	{
 		adapter.clear();
+		
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider dataPro = delegate.getDataProvider();
+		
+		List<Event> allEvents = dataPro.getAllEvents(getContext());
 
-		if(eventList != null)
+		if(allEvents != null)
 		{
-			for (Event event : eventList)
+			for (Event event : allEvents)
 			{
 				if (CalendarFunctions.inRange(event.getStartDate(), event.getEndDate(),
 						fromDate, toDate)) adapter.add(event);
 			}
 		}
 
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void filterByLocation(String location)
+	{
+		adapter.clear();
+		
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider dataPro = delegate.getDataProvider();
+		
+		List<Event> allEvents = dataPro.getAllEvents(getContext());
+
+		if(allEvents != null)
+		{
+			for (Event event : allEvents)
+			{
+				if (event.getLocation().getAddress1().equals(location))
+					adapter.add(event);
+			}
+		}
+
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void filterByCategory(String category)
+	{
+		adapter.clear();
+		
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider dataPro = delegate.getDataProvider();
+		
+		List<Event> allEvents = dataPro.getAllEvents(getContext());
+
+		if(allEvents != null)
+		{
+			for (Event event : allEvents)
+				if (event.getCategoryTags().contains(category)) adapter.add(event);
+		}
+
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void sortByDistance(final Location location)
+	{
+		adapter.sort(new Comparator<Event>()
+		{
+
+			@Override
+			public int compare(Event e1, Event e2)
+			{
+				EventLocation loc1 = e1.getLocation();
+				EventLocation loc2 = e2.getLocation();
+
+				float[] distanceResult1 = new float[3];
+				
+				Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+					Double.parseDouble(loc1.getLatitude()), Double.parseDouble(loc1.getLongitude()),
+					distanceResult1);
+				
+				double distance1 = distanceResult1[0];
+
+				
+				float[] distanceResult2 = new float[3];
+				
+				Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+					Double.parseDouble(loc2.getLatitude()), Double.parseDouble(loc2.getLongitude()),
+					distanceResult2);
+				
+				double distance2 = distanceResult2[0];
+
+				
+				return (int) (distance1 - distance2);
+			}
+		});
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void sortAlphabetically()
+	{
+		adapter.sort(new Comparator<Event>()
+		{
+
+			@Override
+			public int compare(Event obj1, Event obj2)
+			{
+				return obj1.getName().compareTo(obj2.getName());
+			}
+		});
+		adapter.notifyDataSetChanged();
+	}
+
+	public void sortChronologically()
+	{
+		adapter.sort(new Comparator<Event>()
+		{
+			@Override
+			public int compare(Event e1, Event e2)
+			{
+				String sDateStr = e1.getStartDate();
+				String tDateStr = e2.getStartDate();
+
+				return CalendarFunctions.compareDates(sDateStr, tDateStr);
+			}
+
+		});
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void sortByHighestReview()
+	{
+		adapter.sort(new Comparator<Event>()
+		{
+			@Override
+			public int compare(Event e1, Event e2)
+			{
+				if (e1.getReviewScore() == e2.getReviewScore())
+					return e2.getNumberOfReviews() - e1.getNumberOfReviews();
+				return e2.getReviewScore() - e1.getReviewScore();
+			}
+
+		});
 		adapter.notifyDataSetChanged();
 	}
 

@@ -201,7 +201,7 @@ public class CalendarActivity extends Activity
 				String fromDate = cellToDate(b.cell);
 				String toDate   = cellToDate(b.cell + 1);
 				
-				listView.filterEventByDateRange(fromDate, toDate);
+				listView.filterByDateRange(fromDate, toDate);
 			}
 			
 		});
