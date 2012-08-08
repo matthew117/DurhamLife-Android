@@ -4,7 +4,8 @@
     <item
         android:id="@+id/menuEventListSort"
         android:icon="@drawable/sort"
-        android:title="Sort">
+        android:title="Sort"
+        android:showAsAction="ifRoom|withText">
         <menu>
             <item
                 android:id="@+id/submenuEventListAZ"
@@ -27,7 +28,8 @@
     <item
         android:id="@+id/menuEventListFilter"
         android:icon="@drawable/filter"
-        android:title="Filter">
+        android:title="Filter"
+        android:showAsAction="ifRoom|withText">
         <menu>
             <item
                 android:id="@+id/submenuEventListFeatured"
@@ -50,6 +52,7 @@
     <item
         android:id="@+id/menuCategoryBrowse"
         android:icon="@drawable/grid"
-        android:title="Browse Categories"/>
+        android:title="Browse Categories"
+        android:showAsAction="ifRoom|withText"/>
 
 </menu>

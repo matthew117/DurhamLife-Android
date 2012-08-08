@@ -28,12 +28,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.DatePicker;
 
-public class EventListActivity extends Activity
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class EventListActivity extends SherlockActivity
 {
 	private ProgressDialog progressDialog;
 	private ProgressDialog locationProgress;
@@ -82,8 +83,7 @@ public class EventListActivity extends Activity
 
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.event_list_menu, menu);
+		getSupportMenuInflater().inflate(R.menu.event_list_menu, menu);
 		return true;
 	}
 
