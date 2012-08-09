@@ -9,7 +9,7 @@
         <menu>
             <item
                 android:id="@+id/submenuEventListAZ"
-                android:icon="@drawable/arrow"
+                android:icon="@drawable/action_alphabetical"
                 android:title="Alphabetical"/>
             <item
                 android:id="@+id/submenuEventListChronological"
@@ -27,7 +27,7 @@
     </item>
     <item
         android:id="@+id/menuEventListFilter"
-        android:icon="@drawable/filter"
+        android:icon="@drawable/action_filter"
         android:title="Filter"
         android:showAsAction="ifRoom|withText">
         <menu>
@@ -47,8 +47,8 @@
     </item>
     <item
         android:id="@+id/menuCategoryBrowse"
-        android:icon="@drawable/grid"
-        android:title="Browse Categories"
+        android:icon="@drawable/action_grid"
+        android:title="Categories"
         android:showAsAction="ifRoom|withText"/>
 
 </menu>

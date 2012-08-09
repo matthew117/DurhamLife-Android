@@ -1,5 +1,7 @@
 package uk.ac.dur.duchess.activity;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import uk.ac.dur.duchess.EventListView;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.SessionFunctions;
@@ -10,7 +12,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class CollegeEventListActivity extends CustomTitleBarActivity
+public class CollegeEventListActivity extends SherlockActivity
 {
 	private EventListView listView;
 	private ProgressDialog progressDialog;

@@ -4,18 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-   <TextView
-        android:id="@+id/nameOnSocietyList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#7E317B"
-        android:gravity="center"
-        android:padding="2dp"
-        android:text="@string/societies"
-        android:textColor="#FFFFFF"
-        android:textSize="30dp"
-        android:typeface="serif" />
-
     <ListView
         android:id="@+id/societyListView"
         android:layout_width="fill_parent"

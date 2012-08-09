@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/showAboutSocietyMenuItem"
+        android:showAsAction="always"
+        android:title="About"
+        android:icon="@drawable/action_about">
+    </item>
+    
+    <item
+        android:id="@+id/subscribeSocietyMenuItem"
+        android:showAsAction="always"
+        android:title="Subscribe"
+        android:icon="@drawable/action_add">
+    </item>
+
+</menu>

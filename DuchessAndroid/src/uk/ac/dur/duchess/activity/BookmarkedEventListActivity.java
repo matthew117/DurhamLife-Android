@@ -4,12 +4,13 @@ import uk.ac.dur.duchess.EventListView;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.data.SessionFunctions;
 import uk.ac.dur.duchess.entity.User;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
-public class BookmarkedEventListActivity extends Activity
+import com.actionbarsherlock.app.SherlockActivity;
+
+public class BookmarkedEventListActivity extends SherlockActivity
 {
 	private EventListView listView;
 	private ProgressDialog progressDialog;

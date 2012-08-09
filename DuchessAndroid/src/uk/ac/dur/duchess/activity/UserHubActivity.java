@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -93,10 +94,10 @@ public class UserHubActivity extends SherlockActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), TestEventListActivity.class);
-				startActivity(i);
-//				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
-//						Toast.LENGTH_LONG).show();
+//				Intent i = new Intent(v.getContext(), TestEventListActivity.class);
+//				startActivity(i);
+				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
+						Toast.LENGTH_LONG).show();
 			}
 		});
 

@@ -3,6 +3,8 @@ package uk.ac.dur.duchess.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockActivity;
+
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.SocietyListAdapter;
@@ -20,7 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class PersonalSocietyListActivity extends CustomTitleBarActivity
+public class PersonalSocietyListActivity extends SherlockActivity
 {
 	private List<Society> societyList;
 	private ArrayAdapter<Society> adapter;

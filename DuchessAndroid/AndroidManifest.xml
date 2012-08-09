@@ -14,12 +14,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".GlobalApplicationData"
         android:debuggable="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/du_logo"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >
         <uses-library android:name="com.google.android.maps" />
@@ -37,15 +37,15 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/CustomTheme" />
+            android:theme="@style/Theme.Sherlock" />
         <activity
             android:name=".activity.UserHubActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Sherlock" />
         <activity
-            android:theme="@style/Theme.Sherlock"
             android:name=".activity.EventListActivity"
-            android:label="@string/app_name" />
+            android:label="Browse Events"
+            android:theme="@style/Theme.Sherlock.ForceOverflow" />
         <activity
             android:name=".activity.EventDetailsActivity"
             android:label="@string/app_name" >
@@ -73,7 +73,7 @@
         </activity>
         <activity
             android:name=".activity.PreferenceSettingsActivity"
-            android:label="@string/app_name" >
+            android:label="Settings" >
         </activity>
         <activity
             android:name=".activity.FacebookActivity"
@@ -95,18 +95,17 @@
         </activity>
         <activity
             android:name=".activity.CollegeEventListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/CustomTheme" >
+            android:label="College Events"
+            android:theme="@style/Theme.Sherlock" >
         </activity>
         <activity
             android:name=".activity.SocietyListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/CustomTheme" >
+            android:label="Browse Societies"
+            android:theme="@style/Theme.Sherlock" >
         </activity>
         <activity
             android:name=".activity.SocietyEventListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/CustomTheme" >
+            android:theme="@style/Theme.Sherlock" >
         </activity>
         <activity
             android:name=".activity.SocietyAboutActivity"
@@ -115,12 +114,12 @@
         </activity>
         <activity
             android:name=".activity.CalendarActivity"
-            android:label="@string/app_name" >
+            android:label="Event Calendar" >
         </activity>
         <activity
             android:name=".activity.PersonalSocietyListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/CustomTheme" >
+            android:label="Subscribed Societies"
+            android:theme="@style/Theme.Sherlock" >
         </activity>
         <activity
             android:name=".activity.AboutBoxActivity"
@@ -131,13 +130,14 @@
             android:label="@string/app_name" />
         <activity
             android:name=".activity.SettingsActivity"
-            android:label="@string/app_name" />
+            android:label="Settings" />
         <activity
             android:name=".activity.TimeActivity"
             android:label="@string/app_name" />
-        <activity android:name=".activity.BookmarkedEventListActivity" />
+        <activity android:name=".activity.BookmarkedEventListActivity" android:label="Bookmarked Events" android:theme="@style/Theme.Sherlock" />
         <activity android:name=".activity.NearEventsActivity" />
-        <activity android:name=".activity.TestEventListActivity"></activity>
+        <activity android:name=".activity.TestEventListActivity" >
+        </activity>
     </application>
 
 </manifest>
