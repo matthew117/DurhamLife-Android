@@ -71,8 +71,6 @@ public class EventListActivity extends SherlockActivity
 	{
 		switch (item.getItemId())
 		{
-		case R.id.submenuEventListFeatured:
-			return true;
 		case R.id.submenuEventListByDate:
 		{
 			showDialog(DATE_DIALOG_ID);
