@@ -85,7 +85,7 @@ public class SettingsActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				Intent i = new Intent(v.getContext(), AccountSettingsActivity.class);
+				Intent i = new Intent(v.getContext(), NewPasswordActivity.class);
 				startActivity(i);
 			}
 		});

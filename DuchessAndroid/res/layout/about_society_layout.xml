@@ -28,13 +28,13 @@
                 android:id="@+id/emailContactButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/email"/>
+                android:drawableRight="@drawable/email_small"/>
 
             <Button
                 android:id="@+id/websiteButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/internet"/>
+                android:drawableRight="@drawable/internet_small"/>
 
         </LinearLayout>
 

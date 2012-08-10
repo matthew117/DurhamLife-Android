@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AccountSettingsActivity extends Activity
+public class NewPasswordActivity extends Activity
 {
 	private EditText oldPassword;
 	private EditText newPassword;
