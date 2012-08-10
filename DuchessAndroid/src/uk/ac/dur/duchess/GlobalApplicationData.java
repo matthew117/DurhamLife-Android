@@ -1,6 +1,6 @@
 package uk.ac.dur.duchess;
 
-import uk.ac.dur.duchess.data.DataProvider;
+import uk.ac.dur.duchess.io.provider.DataProvider;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;

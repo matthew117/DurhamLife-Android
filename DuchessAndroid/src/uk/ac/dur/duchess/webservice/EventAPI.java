@@ -23,9 +23,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
-import uk.ac.dur.duchess.data.DataProvider;
-import uk.ac.dur.duchess.entity.Event;
-import uk.ac.dur.duchess.entity.EventXMLParser;
+import uk.ac.dur.duchess.io.provider.DataProvider;
+import uk.ac.dur.duchess.io.xml.EventXMLParser;
+import uk.ac.dur.duchess.model.Event;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
