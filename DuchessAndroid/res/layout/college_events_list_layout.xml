@@ -17,7 +17,7 @@
         android:textSize="30dp"
         android:typeface="serif" />
 
-    <uk.ac.dur.duchess.EventListView
+    <uk.ac.dur.duchess.ui.view.EventListView
         android:id="@+id/collegeEventListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -132,7 +132,7 @@
         android:orientation="vertical" >
     </LinearLayout>
 
-    <uk.ac.dur.duchess.EventListView
+    <uk.ac.dur.duchess.ui.view.EventListView
         android:id="@+id/calendarListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>

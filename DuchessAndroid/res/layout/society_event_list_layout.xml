@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <uk.ac.dur.duchess.EventListView
+    <uk.ac.dur.duchess.ui.view.EventListView
         android:id="@+id/societyEventListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
