@@ -134,7 +134,10 @@
         <activity
             android:name=".activity.TimeActivity"
             android:label="@string/app_name" />
-        <activity android:name=".activity.BookmarkedEventListActivity" android:label="Bookmarked Events" android:theme="@style/Theme.Sherlock" />
+        <activity
+            android:name=".activity.BookmarkedEventListActivity"
+            android:label="Bookmarked Events"
+            android:theme="@style/Theme.Sherlock" />
         <activity android:name=".activity.NearEventsActivity" />
         <activity android:name=".activity.TestEventListActivity" >
         </activity>

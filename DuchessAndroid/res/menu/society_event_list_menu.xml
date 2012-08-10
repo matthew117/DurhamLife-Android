@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/showAboutSocietyMenuItem"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|withText"
         android:title="About"
         android:icon="@drawable/action_about">
     </item>
     
     <item
         android:id="@+id/subscribeSocietyMenuItem"
-        android:showAsAction="always"
+        android:showAsAction="always|withText"
         android:title="Subscribe"
         android:icon="@drawable/action_add">
     </item>
