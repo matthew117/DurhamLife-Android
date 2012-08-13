@@ -22,7 +22,6 @@ Bugs
 
 - Orientation change messes things up
 - Need to update user to fix list
-- Unsubcribe button might still be funky (check on mobile phone rather than tablet)
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
 - A time instance is added to google calendar even if you press back (out of our control?)
@@ -30,6 +29,7 @@ Bugs
 - Calendar view is not displayed correctly on small devices
 - Compass does not show up on small devices
 - iCal parser should check for connectivity otherwise it will fail and the default layout will be used (useless)
+- Handle onSaveInstanceState and onPause to save user's text when things change
 
  --------------------------------------------------------------------
  ListView              | DataProvider | ProgressDialog | Connectivity

@@ -93,6 +93,7 @@
         android:layout_marginLeft="4dp"
         android:ellipsize="end"
         android:hint="Event Description Header"
+        android:minLines="2"
         android:maxLines="3"
         android:textColor="#444444"
         android:textSize="12sp"

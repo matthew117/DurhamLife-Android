@@ -7,5 +7,12 @@
         android:title="About"
         android:icon="@drawable/action_about">
     </item>
+    
+    <item
+        android:id="@+id/dashboardSettingsMenuItem"
+        android:showAsAction="always"
+        android:title="Settings"
+        android:icon="@drawable/action_settings">
+    </item>
 
 </menu>

@@ -80,7 +80,7 @@ public class SocietyEventListActivity extends SherlockActivity
 		else
 		{
 			menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.action_add));
-			menu.getItem(1).setTitle("Subcribe");
+			menu.getItem(1).setTitle("Subscribe");
 		}
 		
 		return true;

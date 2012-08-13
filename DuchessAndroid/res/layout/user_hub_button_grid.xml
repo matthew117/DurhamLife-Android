@@ -1,121 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#555"
     android:orientation="vertical" >
-
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:background="@drawable/curved_border_grey_gradient" >
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
 
+        <TableRow>
+
             <TextView
-                android:id="@+id/TextView01"
-                android:layout_width="wrap_content"
+                android:id="@+id/dashboard_browse_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/grid"
                 android:gravity="center"
                 android:text="@string/browse" />
-
+
             <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
+                android:id="@+id/dashboard_calendar_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
+                android:drawableTop="@drawable/calendar_large"
+                android:gravity="center"
+                android:text="@string/calendar" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/dashboard_bookmarked_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_hub_button"
+                android:drawableTop="@drawable/ribbon_star"
+                android:gravity="center"
+                android:text="@string/bookmarked" />
+
+            <TextView
+                android:id="@+id/dashboard_college_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_hub_button"
+                android:drawableTop="@drawable/college"
                 android:gravity="center"
                 android:text="@string/college_events" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/TextView03"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
-                android:gravity="center"
-                android:text="@string/browse" />
-
-            <TextView
-                android:id="@+id/TextView02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
-                android:gravity="center"
-                android:text="@string/browse" />
 
         </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
+        <TableRow>
+
             <TextView
-                android:id="@+id/TextView05"
-                android:layout_width="wrap_content"
+                android:id="@+id/dashboard_societies_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
+                android:drawableTop="@drawable/community"
                 android:gravity="center"
-                android:text="@string/browse" />
-
+                android:text="@string/societies" />
+
             <TextView
-                android:id="@+id/TextView04"
-                android:layout_width="wrap_content"
+                android:id="@+id/dashboard_subscriptions_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
+                android:drawableTop="@drawable/filter"
                 android:gravity="center"
-                android:text="@string/browse" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/TextView07"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
-                android:gravity="center"
-                android:text="@string/browse" />
-
-            <TextView
-                android:id="@+id/TextView06"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
-                android:gravity="center"
-                android:text="@string/browse" />
+                android:text="@string/subscriptions" />
 
         </TableRow>
     </TableLayout>

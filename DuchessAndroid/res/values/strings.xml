@@ -128,5 +128,9 @@
         <string name="you_have_not_bookmarked_any_events_yet_">You have not bookmarked any events yet.</string>
         <string name="tap_the_ribbon_on_an_event_to_save_it_to_this_list_">Tap the ribbon on an event to save it to this list.</string>
         <string name="bookmark_tutorial">Bookmark Tutorial</string>
+        <string name="calendar">Calendar</string>
+        <string name="bookmarked">Bookmarked</string>
+        <string name="subscriptions">Subscriptions</string>
+        <string name="bookmarks">Bookmarks</string>
 
 </resources>

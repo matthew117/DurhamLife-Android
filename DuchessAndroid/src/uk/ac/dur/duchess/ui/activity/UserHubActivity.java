@@ -2,11 +2,17 @@ package uk.ac.dur.duchess.ui.activity;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.io.NetworkFunctions;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -15,29 +21,35 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class UserHubActivity extends SherlockActivity
 {
+	private static final String AD_API_URL = "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/features.php";
+	
 	private TextView browseButton;
 	private TextView collegeEventButton;
 	private TextView myEventsButton;
-	private TextView newsButton;
 	private TextView societiesButton;
-	private TextView settingsButton;
 	private TextView societyEventListButton;
 	private TextView calendarButton;
+	
+	private ImageView adImageView;
+	private TextView adText;
+	private ProgressBar adDownloadActivityIndicator;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.user_hub_table);
+		setContentView(R.layout.dashboard);
 
-		browseButton = (TextView) findViewById(R.id.userHubBrowse);
-		collegeEventButton = (TextView) findViewById(R.id.userHubCollege);
-		myEventsButton = (TextView) findViewById(R.id.userHubMyEvents);
-		newsButton = (TextView) findViewById(R.id.userHubNews);
-		societiesButton = (TextView) findViewById(R.id.userHubSocieties);
-		settingsButton = (TextView) findViewById(R.id.userHubSettings);
-		societyEventListButton = (TextView) findViewById(R.id.userHubSocietyEvents);
-		calendarButton = (TextView) findViewById(R.id.userHubCalendar);
+		browseButton = (TextView) findViewById(R.id.dashboard_browse_button);
+		collegeEventButton = (TextView) findViewById(R.id.dashboard_college_button);
+		myEventsButton = (TextView) findViewById(R.id.dashboard_bookmarked_button);
+		societiesButton = (TextView) findViewById(R.id.dashboard_societies_button);
+		societyEventListButton = (TextView) findViewById(R.id.dashboard_subscriptions_button);
+		calendarButton = (TextView) findViewById(R.id.dashboard_calendar_button);
+		
+		adImageView = (ImageView) findViewById(R.id.dashboardImageView);
+		adText = (TextView) findViewById(R.id.dashboardAdText);
+		adDownloadActivityIndicator = (ProgressBar) findViewById(R.id.dashboardAdProgress);
 
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -89,18 +101,6 @@ public class UserHubActivity extends SherlockActivity
 			}
 		});
 
-		newsButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-//				Intent i = new Intent(v.getContext(), TestEventListActivity.class);
-//				startActivity(i);
-				Toast.makeText(v.getContext(), "Displays a news feed about Durham events",
-						Toast.LENGTH_LONG).show();
-			}
-		});
-
 		societiesButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -114,16 +114,6 @@ public class UserHubActivity extends SherlockActivity
 					tracker.dispatch();
 				}
 				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
-				startActivity(i);
-			}
-		});
-
-		settingsButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent i = new Intent(v.getContext(), SettingsActivity.class);
 				startActivity(i);
 			}
 		});
@@ -160,6 +150,8 @@ public class UserHubActivity extends SherlockActivity
 				startActivity(i);
 			}
 		});
+		
+		(new DownloadImageTask()).execute("");
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -176,8 +168,56 @@ public class UserHubActivity extends SherlockActivity
 			Intent showAboutBoxIntent = new Intent(this, AboutBoxActivity.class);
 			startActivity(showAboutBoxIntent);
 			return true;
+		case R.id.dashboardSettingsMenuItem:
+			Intent settingsIntent = new Intent(this, SettingsActivity.class);
+			startActivity(settingsIntent);
+			return true;
 		default:
 			return true;
+		}
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+	
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
+	{
+		private String text;
+		@Override
+		protected Bitmap doInBackground(String... vargs)
+		{
+			try 
+			{ 
+				String adSpec[] = NetworkFunctions.downloadText(AD_API_URL).split("\n");
+				text = adSpec[1];
+				return NetworkFunctions.downloadImage(adSpec[2]); 
+			}
+			catch (Exception ex)
+			{
+				if (adDownloadActivityIndicator != null && adDownloadActivityIndicator.isShown())
+					adDownloadActivityIndicator.setVisibility(View.GONE);
+				// TODO error handling
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap bitmap)
+		{
+			if (bitmap == null)
+			{
+				if (adDownloadActivityIndicator != null && adDownloadActivityIndicator.isShown())
+					adDownloadActivityIndicator.setVisibility(View.GONE);
+				//TODO error handling
+			}
+			adText.setText(text);
+			adImageView.setImageBitmap(bitmap);
+			adImageView.invalidate();
+			if (adDownloadActivityIndicator != null && adDownloadActivityIndicator.isShown())
+				adDownloadActivityIndicator.setVisibility(View.GONE);
 		}
 	}
 

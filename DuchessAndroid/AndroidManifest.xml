@@ -39,6 +39,7 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Sherlock" />
         <activity
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:name=".ui.activity.UserHubActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Sherlock" />
