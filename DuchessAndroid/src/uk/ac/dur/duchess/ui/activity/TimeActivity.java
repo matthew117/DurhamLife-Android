@@ -12,9 +12,6 @@ import uk.ac.dur.duchess.ui.view.FlowLayout;
 import uk.ac.dur.duchess.util.TimeUtils;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -109,25 +106,6 @@ public class TimeActivity extends Activity
 			calendar = TimeUtils.parseICalFromURL(iCalURL);
 			
 			
-			int[] headerColors = {Color.parseColor("#67226D"), Color.parseColor("#D8ACE0")};
-			
-			GradientDrawable headerGradient = new GradientDrawable(Orientation.BOTTOM_TOP, headerColors);
-			headerGradient.setDither(true);
-			
-			findViewById(R.id.weekHeader).setBackgroundDrawable(headerGradient);
-			
-			
-			int[] subHeaderColors = {Color.parseColor("#BBBBBB"), Color.parseColor("#DDDDDD"), Color.parseColor("#FFFFFF")};
-			
-			GradientDrawable subHeaderGradient = new GradientDrawable(Orientation.BOTTOM_TOP, subHeaderColors);
-			subHeaderGradient.setDither(true);
-			
-			for(TextView view : dayTextViews)
-				view.setBackgroundDrawable(subHeaderGradient);
-
-			findViewById(R.id.footerView).setBackgroundDrawable(subHeaderGradient);
-			
-			
 			String value = android.provider.Settings.System.getString
 					(this.getContentResolver(), android.provider.Settings.System.TIME_12_24);
 			
@@ -195,7 +173,7 @@ public class TimeActivity extends Activity
 		java.util.Calendar monday = TimeUtils.getMondayOfGivenWeek(week);
 		java.util.Calendar sunday = TimeUtils.getSundayOfGivenWeek(week);
 		
-		dateRangeTextView.setText(       (new SimpleDateFormat("d MMM yyyy")).format(monday.getTime()));
+		dateRangeTextView.setText(       (new SimpleDateFormat("d MMM")).format(monday.getTime()));
 		dateRangeTextView.append(" - " + (new SimpleDateFormat("d MMM yyyy")).format(sunday.getTime()));
 		
 		List<String> unformatted = TimeUtils.getDatesBetween(monday, sunday);

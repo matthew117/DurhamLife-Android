@@ -14,8 +14,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +31,7 @@ public class CalendarActivity extends Activity
 	private int lastBound;
 	private int currentDay = -1;
 	
-	private LinearLayout header;
+	private Bitmap todayIndicator;
 	
 	private TextView monthText;
 	private ImageView prevMonthButton;
@@ -50,8 +48,6 @@ public class CalendarActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_layout);
 		
-		header = (LinearLayout) findViewById(R.id.calendarHeader);
-		
 		monthText = (TextView) findViewById(R.id.monthText);
 		prevMonthButton = (ImageView) findViewById(R.id.prevMonthButton);
 		nextMonthButton = (ImageView) findViewById(R.id.nextMonthButton);
@@ -67,13 +63,6 @@ public class CalendarActivity extends Activity
 		SimpleDateFormat month = new SimpleDateFormat("MMMMM yyyy");
 		
 		monthText.setText(month.format(calendar.getTime()));
-		
-		int[] colors = {Color.parseColor("#7E317B"), Color.parseColor("#D8ACE0")};
-		
-		GradientDrawable gradient = new GradientDrawable(Orientation.BOTTOM_TOP, colors);
-		gradient.setDither(true);
-		
-		header.setBackgroundDrawable(gradient);
 		
 		prevMonthButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -106,6 +95,9 @@ public class CalendarActivity extends Activity
 				setupCalendarLayout();
 			}
 		});
+		
+		todayIndicator =
+				 BitmapFactory.decodeResource(getResources(), R.drawable.today_indicator);
 		
 		listView.setBackgroundDrawable(getResources().getDrawable(R.drawable.top_bottom_border));
 		
@@ -226,22 +218,17 @@ public class CalendarActivity extends Activity
 		 @Override
 		 protected void onDraw(Canvas canvas)
 		 {
-			 super.onDraw(canvas);
-			 
-			 Calendar.getInstance();		 
+			 super.onDraw(canvas);		 
 			 
 			 if(cell == currentDay && currentDay != -1)
 			 {
 				 float w = getWidth()  / 2;
 				 float h = getHeight() / 2;
 				 
-				 Bitmap bitmap =
-						 BitmapFactory.decodeResource(getResources(), R.drawable.today_indicator);
+				 w -= todayIndicator.getWidth()  / 2;
+				 h -= todayIndicator.getHeight() / 2;
 				 
-				 w -= bitmap.getWidth()  / 2;
-				 h -= bitmap.getHeight() / 2;
-				 
-			     canvas.drawBitmap(bitmap, w, h, null);
+			     canvas.drawBitmap(todayIndicator, w, h, null);
 			 }
 		 }
 	}
