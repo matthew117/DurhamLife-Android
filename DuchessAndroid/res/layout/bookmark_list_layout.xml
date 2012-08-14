@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
                 android:gravity="center"
                 android:text="@string/tap_the_ribbon_on_an_event_to_save_it_to_this_list_"
                 android:textColor="@color/DUPurpleWashout"

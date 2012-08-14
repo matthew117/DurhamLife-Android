@@ -59,7 +59,7 @@
                 android:drawableTop="@drawable/ribbon_star"
                 android:gravity="center"
                 android:text="@string/bookmarked" />
-
+
             <TextView
                 android:id="@+id/dashboard_college_button"
                 android:layout_width="0dp"
@@ -70,7 +70,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/college"
+                android:drawableTop="@drawable/college_dashboard_icon"
                 android:gravity="center"
                 android:text="@string/college_events" />
 
