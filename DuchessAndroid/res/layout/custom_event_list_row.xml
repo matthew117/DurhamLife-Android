@@ -3,8 +3,7 @@
     android:id="@+id/listRowLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/xlight_gradient"
-    android:orientation="vertical" >
+    android:orientation="vertical" android:background="@drawable/light_gradient">
 
     <RelativeLayout
         android:id="@+id/rowHeaderLayout"
@@ -29,6 +28,19 @@
             android:textStyle="bold"
             android:typeface="serif" />
 
+        <TextView
+            android:id="@+id/txtEventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtEventName"
+            android:layout_toLeftOf="@+id/pinButton"
+            android:hint="Location + Duration"
+            android:lineSpacingMultiplier="1.1"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/pinButton"
             android:layout_width="wrap_content"
@@ -37,53 +49,35 @@
             android:layout_alignParentTop="true"
             android:clickable="true"
             android:src="@drawable/clear_bookmark" />
+    </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/RelativeLayout1"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="4dp" >
+
+        <ImageView
+            android:id="@+id/categoryIcon1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/txtEventName"
-            android:layout_toLeftOf="@+id/pinButton" >
+            android:paddingRight="3dp"
+            android:src="@drawable/full_star" />
 
-            <TextView
-                android:id="@+id/txtEventDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Location + Duration"
-                android:lineSpacingMultiplier="1.1"
-                android:textColor="#666666"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/categoryIcon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="3dp"
+            android:src="@drawable/full_star" />
 
-            <LinearLayout
-                android:id="@+id/categoryIcons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_alignParentRight="true" android:layout_centerVertical="true">
-
-                <ImageView
-                    android:id="@+id/categoryIcon1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="3dp"
-                    android:src="@drawable/full_star" />
-
-                <ImageView
-                    android:id="@+id/categoryIcon2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="3dp"
-                    android:src="@drawable/full_star" />
-
-                <ImageView
-                    android:id="@+id/categoryIcon3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="3dp"
-                    android:src="@drawable/full_star" />
-            </LinearLayout>
-        </RelativeLayout>
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/categoryIcon3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="3dp"
+            android:src="@drawable/full_star" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtEventDescription"
