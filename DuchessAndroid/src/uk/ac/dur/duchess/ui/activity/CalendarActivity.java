@@ -45,11 +45,15 @@ public class CalendarActivity extends Activity
 
 	private CalendarButton currentCell;
 
+	private Context context;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.calendar_layout);
+
+		context = this;
 
 		monthText = (TextView) findViewById(R.id.monthText);
 		prevMonthButton = (ImageView) findViewById(R.id.prevMonthButton);
@@ -116,9 +120,9 @@ public class CalendarActivity extends Activity
 		bundle.putString("from_date", fromDate);
 		bundle.putString("to_date", toDate);
 
-		listView.loadAllEvents(this, bundle);
-		
-		Toast.makeText(this, "Long screen = " + isLong(this), Toast.LENGTH_LONG).show();
+		if(isLongScreen(this)) listView.loadAllEvents(this, bundle);
+
+		Toast.makeText(this, "Long screen = " + isLongScreen(this), Toast.LENGTH_LONG).show();
 	}
 
 	private void setupCalendarLayout()
@@ -177,7 +181,9 @@ public class CalendarActivity extends Activity
 
 		button.setText(String.valueOf(day));
 		button.setTextSize(16);
-		button.setPadding(5, 15, 5, 15);
+		
+		if(isLongScreen(context)) button.setPadding(5, 15, 5, 15);
+		else button.setPadding(5, 5, 5, 5);
 		button.setTextColor(color);
 		button.setBackgroundColor(Color.WHITE);
 
@@ -197,15 +203,17 @@ public class CalendarActivity extends Activity
 
 				String fromDate = cellToDate(b.cell);
 				String toDate   = cellToDate(b.cell + 1);
-				
-				Intent i = new Intent(v.getContext(), CalendarEventListActivity.class);
-				i.putExtra("from_date", fromDate);
-				i.putExtra("to_date", toDate);
-				startActivity(i);
 
-//				listView.filterByDateRange(fromDate, toDate);
+				if(isLongScreen(context))
+					listView.filterByDateRange(fromDate, toDate);
+				else
+				{
+					Intent i = new Intent(v.getContext(), CalendarEventListActivity.class);
+					i.putExtra("from_date", fromDate);
+					i.putExtra("to_date", toDate);
+					startActivity(i);
+				}
 			}
-
 		});
 
 		return button;
@@ -284,7 +292,7 @@ public class CalendarActivity extends Activity
 		listView.setAdapter(listView.getAdapter());
 	}
 
-	public static boolean isLong(Context context)
+	public static boolean isLongScreen(Context context)
 	{
 		return (context.getResources().getConfiguration().screenLayout
 				& Configuration.SCREENLAYOUT_LONG_MASK)

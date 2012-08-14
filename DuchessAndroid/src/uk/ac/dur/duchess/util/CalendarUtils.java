@@ -22,6 +22,37 @@ public class CalendarUtils
 		return getEventDate(event.getStartDate(), event.getEndDate());
 	}
 	
+	public static String getTitleDate(String date)
+	{
+		try
+		{
+			SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat destinationFormat = new SimpleDateFormat("d MMMMM yyyy");
+			SimpleDateFormat yearlessFormat = new SimpleDateFormat("d MMMMM");
+			
+			Calendar _now = Calendar.getInstance();
+			String now = sourceFormat.format(_now.getTime());
+			
+			if (isSameDate(now, date)) return "Today";
+			if (compareByDay(now, date) == 1) return "Tomorrow";
+			
+			Calendar _date = Calendar.getInstance(); _date.setTime(sourceFormat.parse(date));
+			
+			boolean inThisYear = _now.get(Calendar.YEAR) == _date.get(Calendar.YEAR);
+			
+			String titleDate;
+			
+			if(inThisYear) titleDate = yearlessFormat.format(_date.getTime());	
+			else titleDate = destinationFormat.format(_date.getTime());
+						
+			return titleDate;
+		}
+		catch (ParseException e1)
+		{
+			return "Data Unavailable";
+		}
+	}
+	
 	public static String getEventDate(String start, String end)
 	{
 		try

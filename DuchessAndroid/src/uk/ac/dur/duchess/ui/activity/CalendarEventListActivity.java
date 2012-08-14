@@ -22,7 +22,7 @@ public class CalendarEventListActivity extends BaseActivity
 		Bundle bundle = getIntent().getExtras();
 		String fromDate = bundle.getString("from_date");
 		String toDate   = bundle.getString("to_date");
-		setTitle(CalendarUtils.getEventDate(fromDate, fromDate));
+		setTitle(CalendarUtils.getTitleDate(fromDate));
 		
 		listView = (EventListView) findViewById(R.id.eventListView);
 		listView.loadAllEvents(this, bundle);
