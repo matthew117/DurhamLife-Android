@@ -3,17 +3,10 @@ package uk.ac.dur.duchess.ui.activity;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.ui.view.EventListView;
 import uk.ac.dur.duchess.util.CalendarUtils;
-import android.app.ProgressDialog;
-import android.location.LocationManager;
 import android.os.Bundle;
 
-public class CalendarEventListActivity extends BaseActivity
+public class CalendarEventListActivity extends SortableListActivity
 {
-	private EventListView listView;
-	
-	private ProgressDialog locationProgress;
-	private LocationManager locationManager;
-	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
