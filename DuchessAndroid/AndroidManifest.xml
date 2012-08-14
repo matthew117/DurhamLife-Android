@@ -109,6 +109,9 @@
         <activity
             android:name=".ui.activity.SocietyEventListActivity"
             android:theme="@style/Theme.Sherlock.ForceOverflow" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
         </activity>
         <activity
             android:name=".ui.activity.SocietyAboutActivity"
@@ -140,14 +143,20 @@
             android:label="@string/app_name" />
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:label="Settings" >
+            android:label="Settings"
+            android:theme="@style/Theme.Sherlock" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.UserHubActivity" />
         </activity>
         <activity
             android:name=".ui.activity.TimeActivity"
-            android:label="@string/app_name" />
+            android:label="Event Times"
+            android:theme="@style/Theme.Sherlock" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.BookmarkedEventListActivity"
             android:label="Bookmarked Events"
@@ -156,8 +165,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.UserHubActivity" />
         </activity>
-        <activity
-            android:name=".ui.activity.NearEventsActivity"/>
+        <activity android:name=".ui.activity.NearEventsActivity" />
         <activity
             android:name=".ui.activity.CalendarEventListActivity"
             android:theme="@style/Theme.Sherlock" >

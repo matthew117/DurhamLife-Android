@@ -10,7 +10,6 @@ import net.fortuna.ical4j.model.Calendar;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.ui.view.FlowLayout;
 import uk.ac.dur.duchess.util.TimeUtils;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class TimeActivity extends Activity
+public class TimeActivity extends BaseActivity
 {	
 	private TextView eventNameTextView;
 	private TextView dateRangeTextView;
