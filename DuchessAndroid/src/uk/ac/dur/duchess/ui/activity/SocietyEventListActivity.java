@@ -12,13 +12,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public class SocietyEventListActivity extends SherlockActivity
+public class SocietyEventListActivity extends SortableListActivity
 {
-	private EventListView listView;
 	private User user;
 	
 	private long societyID;
@@ -26,6 +24,9 @@ public class SocietyEventListActivity extends SherlockActivity
 	private String societyName;
 	
 	private Context context;
+	
+	private MenuItem aboutMenuItem;
+	private MenuItem subscribeMenuItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -68,9 +69,9 @@ public class SocietyEventListActivity extends SherlockActivity
 	
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		getSupportMenuInflater().inflate(R.menu.society_event_list_menu, menu);
-		
 		User user = SessionFunctions.getCurrentUser(this);
+		
+		
 		
 		if(user.isSubscribedToSociety(societyName))
 		{

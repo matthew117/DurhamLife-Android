@@ -3,25 +3,31 @@ package uk.ac.dur.duchess.ui.activity;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
-public class UserHubActivity extends SherlockActivity
+public class UserHubActivity extends BaseActivity
 {
 	private static final String AD_API_URL = "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/features.php";
+	
+	private Context context;
 	
 	private TextView browseButton;
 	private TextView collegeEventButton;
@@ -30,9 +36,15 @@ public class UserHubActivity extends SherlockActivity
 	private TextView societyEventListButton;
 	private TextView calendarButton;
 	
-	private ImageView adImageView;
+	private ViewSwitcher adViewSwitcher;
 	private TextView adText;
-	private ProgressBar adDownloadActivityIndicator;
+	private String adLink;
+	
+	private ImageView defaultImage;
+	private ImageView adImage;
+	
+	private Animation imageFadeIn;
+	private boolean imageHasLoaded = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -40,6 +52,8 @@ public class UserHubActivity extends SherlockActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dashboard);
 
+		context = this;
+		
 		browseButton = (TextView) findViewById(R.id.dashboard_browse_button);
 		collegeEventButton = (TextView) findViewById(R.id.dashboard_college_button);
 		myEventsButton = (TextView) findViewById(R.id.dashboard_bookmarked_button);
@@ -47,9 +61,14 @@ public class UserHubActivity extends SherlockActivity
 		societyEventListButton = (TextView) findViewById(R.id.dashboard_subscriptions_button);
 		calendarButton = (TextView) findViewById(R.id.dashboard_calendar_button);
 		
-		adImageView = (ImageView) findViewById(R.id.dashboardImageView);
+		adViewSwitcher = (ViewSwitcher) findViewById(R.id.dashboardAdAnimator);
+		
+		defaultImage = new ImageView(this);
+		defaultImage.setScaleType(ScaleType.CENTER_CROP);
+		defaultImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.the_great_wave_of_kanagawa));
+		
+		adViewSwitcher.addView(defaultImage);
 		adText = (TextView) findViewById(R.id.dashboardAdText);
-		adDownloadActivityIndicator = (ProgressBar) findViewById(R.id.dashboardAdProgress);
 
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -151,6 +170,20 @@ public class UserHubActivity extends SherlockActivity
 			}
 		});
 		
+		adViewSwitcher.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (adLink != null && imageHasLoaded)
+				{
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(adLink));
+					startActivity(i);
+				}
+			}
+		});
+		
 		(new DownloadImageTask()).execute("");
 	}
 	
@@ -172,9 +205,8 @@ public class UserHubActivity extends SherlockActivity
 			Intent settingsIntent = new Intent(this, SettingsActivity.class);
 			startActivity(settingsIntent);
 			return true;
-		default:
-			return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
@@ -193,12 +225,11 @@ public class UserHubActivity extends SherlockActivity
 			{ 
 				String adSpec[] = NetworkFunctions.downloadText(AD_API_URL).split("\n");
 				text = adSpec[1];
+				adLink = adSpec[3];
 				return NetworkFunctions.downloadImage(adSpec[2]); 
 			}
 			catch (Exception ex)
 			{
-				if (adDownloadActivityIndicator != null && adDownloadActivityIndicator.isShown())
-					adDownloadActivityIndicator.setVisibility(View.GONE);
 				// TODO error handling
 			}
 			return null;
@@ -209,15 +240,16 @@ public class UserHubActivity extends SherlockActivity
 		{
 			if (bitmap == null)
 			{
-				if (adDownloadActivityIndicator != null && adDownloadActivityIndicator.isShown())
-					adDownloadActivityIndicator.setVisibility(View.GONE);
 				//TODO error handling
 			}
 			adText.setText(text);
-			adImageView.setImageBitmap(bitmap);
-			adImageView.invalidate();
-			if (adDownloadActivityIndicator != null && adDownloadActivityIndicator.isShown())
-				adDownloadActivityIndicator.setVisibility(View.GONE);
+			adImage = new ImageView(context);
+			adImage.setScaleType(ScaleType.CENTER_CROP);
+			adImage.setImageBitmap(bitmap);
+						
+			adViewSwitcher.addView(adImage);
+			adViewSwitcher.showNext();
+			imageHasLoaded = true;
 		}
 	}
 

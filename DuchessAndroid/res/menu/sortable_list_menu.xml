@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/menuSortableListSort"
+        android:icon="@drawable/action_sort"
+        android:title="Sort"
+        android:showAsAction="ifRoom|withText">
+        <menu>
+            <item
+                android:id="@+id/submenuSortableListAZ"
+                android:icon="@drawable/action_alphabetical"
+                android:title="Alphabetical"/>
+            <item
+                android:id="@+id/submenuSortableListChronological"
+                android:icon="@drawable/action_time"
+                android:title="Chronological"/>
+            <item
+                android:id="@+id/submenuSortableListRatings"
+                android:icon="@drawable/action_rating"
+                android:title="Highest Rating"/>
+            <item
+                android:id="@+id/submenuSortableListDistance"
+                android:icon="@drawable/action_location"
+                android:title="Distance"/>
+        </menu>
+    </item>
+
+</menu>

@@ -18,14 +18,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
-        <ImageView
-            android:id="@+id/dashboardImageView"
+        <ViewSwitcher
+            android:id="@+id/dashboardAdAnimator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:cropToPadding="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/the_great_wave_of_kanagawa" />
+            android:inAnimation="@anim/image_fadein_animation"
+            android:outAnimation="@anim/image_fadeout_animation" />
 
         <TextView
             android:id="@+id/dashboardAdText"
@@ -35,13 +33,6 @@
             android:background="#BB111111"
             android:padding="5dp"
             android:text="Durham Life" />
-
-        <ProgressBar
-            android:id="@+id/dashboardAdProgress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
 
     </FrameLayout>
 

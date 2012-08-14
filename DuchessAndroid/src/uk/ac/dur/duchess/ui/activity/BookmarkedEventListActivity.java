@@ -8,11 +8,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
-public class BookmarkedEventListActivity extends SherlockActivity
+public class BookmarkedEventListActivity extends SortableListActivity
 {
-	private EventListView listView;
 	private ProgressDialog progressDialog;
 	private AlertDialog alertDialog;
 	

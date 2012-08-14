@@ -1,7 +1,5 @@
 package uk.ac.dur.duchess.ui.activity;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.SessionFunctions;
 import uk.ac.dur.duchess.model.User;
@@ -12,9 +10,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class CollegeEventListActivity extends SherlockActivity
+public class CollegeEventListActivity extends SortableListActivity
 {
-	private EventListView listView;
 	private ProgressDialog progressDialog;
 	private AlertDialog alertDialog;
 	private User user;

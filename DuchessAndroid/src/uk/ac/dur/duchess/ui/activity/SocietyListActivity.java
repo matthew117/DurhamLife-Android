@@ -21,7 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class SocietyListActivity extends SherlockActivity
+public class SocietyListActivity extends BaseActivity
 {
 	private List<Society> societyList;
 	private ArrayAdapter<Society> adapter;
@@ -64,7 +64,8 @@ public class SocietyListActivity extends SherlockActivity
 			@Override
 			public void run()
 			{
-				for (Society society : societyList) adapter.add(society);
+				for (Society society : societyList)
+					adapter.add(society);
 				progressDialog.dismiss();
 				adapter.notifyDataSetChanged();
 			}

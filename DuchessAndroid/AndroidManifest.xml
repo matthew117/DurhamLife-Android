@@ -39,14 +39,18 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Sherlock" />
         <activity
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:name=".ui.activity.UserHubActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/Theme.Sherlock" />
         <activity
             android:name=".ui.activity.EventListActivity"
             android:label="Browse Events"
-            android:theme="@style/Theme.Sherlock.ForceOverflow" />
+            android:theme="@style/Theme.Sherlock.ForceOverflow" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.EventDetailsActivity"
             android:label="@string/app_name" >
@@ -90,11 +94,17 @@
             android:name=".ui.activity.CollegeEventListActivity"
             android:label="College Events"
             android:theme="@style/Theme.Sherlock" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
         </activity>
         <activity
             android:name=".ui.activity.SocietyListActivity"
             android:label="Browse Societies"
             android:theme="@style/Theme.Sherlock" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
         </activity>
         <activity
             android:name=".ui.activity.SocietyEventListActivity"
@@ -108,11 +118,17 @@
         <activity
             android:name=".ui.activity.CalendarActivity"
             android:label="Event Calendar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
         </activity>
         <activity
             android:name=".ui.activity.PersonalSocietyListActivity"
             android:label="Subscribed Societies"
             android:theme="@style/Theme.Sherlock" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
         </activity>
         <activity
             android:name=".ui.activity.AboutBoxActivity"
@@ -123,14 +139,22 @@
             android:label="@string/app_name" />
         <activity
             android:name=".ui.activity.SettingsActivity"
-            android:label="Settings" />
+            android:label="Settings" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
+        </activity>
         <activity
             android:name=".ui.activity.TimeActivity"
             android:label="@string/app_name" />
         <activity
             android:name=".ui.activity.BookmarkedEventListActivity"
             android:label="Bookmarked Events"
-            android:theme="@style/Theme.Sherlock" />
+            android:theme="@style/Theme.Sherlock" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.UserHubActivity" />
+        </activity>
         <activity android:name=".ui.activity.NearEventsActivity" />
     </application>
 

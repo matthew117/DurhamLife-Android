@@ -16,7 +16,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class SettingsActivity extends Activity
+public class SettingsActivity extends BaseActivity
 {
 	private EditText email;
 	private Button password;
@@ -47,6 +47,8 @@ public class SettingsActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings_layout);
+		
+		setTitle("Settings");
 		
 		activity = this;
 		currentUser = SessionFunctions.getCurrentUser(activity);
