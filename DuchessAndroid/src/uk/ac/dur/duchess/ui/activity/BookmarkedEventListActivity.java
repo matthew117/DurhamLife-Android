@@ -29,13 +29,6 @@ public class BookmarkedEventListActivity extends SortableListActivity
 	}
 
 	@Override
-	public void onResume()
-	{
-		super.onResume();
-		listView.setAdapter(listView.getAdapter());
-	}
-
-	@Override
 	public void onDestroy()
 	{
 		super.onDestroy();

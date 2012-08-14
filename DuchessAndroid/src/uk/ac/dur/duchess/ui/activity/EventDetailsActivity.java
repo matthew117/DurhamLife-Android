@@ -2,10 +2,8 @@ package uk.ac.dur.duchess.ui.activity;
 
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
-import uk.ac.dur.duchess.io.SessionFunctions;
 import uk.ac.dur.duchess.io.provider.DatabaseHandler;
 import uk.ac.dur.duchess.model.Event;
-import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.util.CalendarUtils;
 import android.app.Activity;
 import android.content.Intent;
@@ -194,19 +192,6 @@ public class EventDetailsActivity extends Activity
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.event_details_menu, menu);
 		
-		User user = SessionFunctions.getCurrentUser(getParent());
-		
-		if(user.hasPinnedEvent(event.getEventID()))
-		{
-			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.bookmark));
-			menu.getItem(0).setTitle("Remove Bookmark");
-		}
-		else
-		{
-			menu.getItem(0).setIcon(getParent().getResources().getDrawable(R.drawable.clear_bookmark));
-			menu.getItem(0).setTitle("Bookmark");
-		}
-		
 		return true;
 	}
 
@@ -214,38 +199,15 @@ public class EventDetailsActivity extends Activity
 	{
 		switch (item.getItemId())
 		{
-		case R.id.menuItemBookmark:
-			
-			User user = SessionFunctions.getCurrentUser(this);
-			
-			if(user.hasPinnedEvent(event.getEventID()))
+			case R.id.menuItemShare:
 			{
-				item.setIcon(getParent().getResources().getDrawable(R.drawable.clear_bookmark));
-				item.setTitle("Bookmark");
+				Intent i = new Intent(getBaseContext(), FacebookActivity.class);
+				i.putExtras(getIntent());
+				startActivity(i);
 				
-				user.removeEvent(event.getEventID());
+				return true;
 			}
-			else
-			{
-				item.setIcon(getParent().getResources().getDrawable(R.drawable.bookmark));
-				item.setTitle("Remove Bookmark");
-				
-				user.addEvent(event.getEventID());
-			}
-			
-			SessionFunctions.saveUserPreferences(this, user);
-			
-			return true;
-		case R.id.menuItemShare:
-		{
-			Intent i = new Intent(getBaseContext(), FacebookActivity.class);
-			i.putExtras(getIntent());
-			startActivity(i);
-			
-			return true;
-		}
-		default:
-			return true;
+			default: return true;
 		}
 	}
 }

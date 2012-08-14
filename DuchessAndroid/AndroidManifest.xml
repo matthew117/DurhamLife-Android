@@ -117,7 +117,8 @@
         </activity>
         <activity
             android:name=".ui.activity.CalendarActivity"
-            android:label="Event Calendar" >
+            android:label="Event Calendar"
+            android:theme="@style/Theme.Sherlock" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.UserHubActivity" />
@@ -162,7 +163,7 @@
             android:theme="@style/Theme.Sherlock" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.CalendarActivity" />
+                android:value=".ui.activity.UserHubActivity" />
         </activity>
     </application>
 

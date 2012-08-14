@@ -6,11 +6,16 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import uk.ac.dur.duchess.R;
+import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.view.EventListView;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,9 +29,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class CalendarActivity extends Activity
+public class CalendarActivity extends SortableListActivity
 {
 	private Calendar calendar;
 	private int lowerBound;
@@ -41,8 +45,7 @@ public class CalendarActivity extends Activity
 	private ImageView nextMonthButton;
 
 	private LinearLayout calendarView;
-	private EventListView listView;
-
+	
 	private CalendarButton currentCell;
 
 	private Context context;
@@ -121,8 +124,6 @@ public class CalendarActivity extends Activity
 		bundle.putString("to_date", toDate);
 
 		if(isLongScreen(this)) listView.loadAllEvents(this, bundle);
-
-		Toast.makeText(this, "Long screen = " + isLongScreen(this), Toast.LENGTH_LONG).show();
 	}
 
 	private void setupCalendarLayout()
@@ -288,8 +289,21 @@ public class CalendarActivity extends Activity
 	@Override
 	public void onResume()
 	{
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		super.onResume();
-		listView.setAdapter(listView.getAdapter());
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+	    super.onConfigurationChanged(newConfig);
+	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		if(isLongScreen(context)) return super.onCreateOptionsMenu(menu);
+		else return false;
 	}
 
 	public static boolean isLongScreen(Context context)

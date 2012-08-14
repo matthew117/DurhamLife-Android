@@ -59,14 +59,6 @@ public class SocietyEventListActivity extends SortableListActivity
 		listView.loadAllEvents(this, b);
 	}
 
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		user = SessionFunctions.getCurrentUser(this);
-		listView.setAdapter(listView.getAdapter());
-	}
-
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		User user = SessionFunctions.getCurrentUser(this);

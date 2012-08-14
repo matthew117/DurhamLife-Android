@@ -53,13 +53,6 @@ public class EventListActivity extends BaseActivity
 		listView.setEmptyView(findViewById(R.id.eventListEmpty));
 	}
 
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		listView.setAdapter(listView.getAdapter());
-	}
-
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getSupportMenuInflater().inflate(R.menu.event_list_menu, menu);

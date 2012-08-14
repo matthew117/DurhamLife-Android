@@ -91,12 +91,4 @@ public class CollegeEventListActivity extends SortableListActivity
 		else if (collegeName.equals("Stephenson")) return R.drawable.stephenson;
 		else return R.drawable.college;
 	}
-	
-	@Override
-	public void onResume()
-	{
-		super.onResume();
-		listView.setAdapter(listView.getAdapter());
-	}
-
 }
