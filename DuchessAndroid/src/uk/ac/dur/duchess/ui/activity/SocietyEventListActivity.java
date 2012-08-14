@@ -18,13 +18,13 @@ import com.actionbarsherlock.view.MenuItem;
 public class SocietyEventListActivity extends SortableListActivity
 {
 	private User user;
-	
+
 	private long societyID;
 
 	private String societyName;
-	
+
 	private Context context;
-	
+
 	private MenuItem aboutMenuItem;
 	private MenuItem subscribeMenuItem;
 
@@ -35,7 +35,7 @@ public class SocietyEventListActivity extends SortableListActivity
 		setContentView(R.layout.society_event_list_layout);
 
 		context = this;
-		
+
 		user = SessionFunctions.getCurrentUser(this);
 
 		final Bundle s = getIntent().getExtras();
@@ -45,17 +45,17 @@ public class SocietyEventListActivity extends SortableListActivity
 			setTitle(s.getString("society_name"));
 			societyName = s.getString("society_name");
 		}
-		
+
 		if (s.getLong("society_id") != -1)
 		{
 			societyID = s.getLong("society_id");
 		}
-		
+
 		listView = (EventListView) findViewById(R.id.societyEventListView);
-		
+
 		Bundle b = new Bundle();
 		b.putString("society_name", societyName);
-		
+
 		listView.loadAllEvents(this, b);
 	}
 
@@ -66,32 +66,40 @@ public class SocietyEventListActivity extends SortableListActivity
 		user = SessionFunctions.getCurrentUser(this);
 		listView.setAdapter(listView.getAdapter());
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		User user = SessionFunctions.getCurrentUser(this);
-		
-		
-		
-		if(user.isSubscribedToSociety(societyName))
+
+		menu.add("About");
+		aboutMenuItem = menu.getItem(menu.size() - 1);
+		aboutMenuItem.setIcon(R.drawable.action_about);
+		aboutMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+				| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+		if (user.isSubscribedToSociety(societyName))
 		{
-			menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.action_remove));
-			menu.getItem(1).setTitle("Unsubscribe");
+			menu.add("Unsubscribe");
+			subscribeMenuItem = menu.getItem(menu.size() - 1);
+			subscribeMenuItem.setIcon(getResources().getDrawable(R.drawable.action_remove));
+			subscribeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+					| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		}
 		else
 		{
-			menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.action_add));
-			menu.getItem(1).setTitle("Subscribe");
+			menu.add("Subscribe");
+			subscribeMenuItem = menu.getItem(menu.size() - 1);
+			subscribeMenuItem.setIcon(getResources().getDrawable(R.drawable.action_add));
+			subscribeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+					| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		}
-		
-		return true;
+
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch (item.getItemId())
-		{
-		case R.id.showAboutSocietyMenuItem:
+		if (item.equals(aboutMenuItem))
 		{
 			Intent i = new Intent(context, SocietyAboutActivity.class);
 			Bundle societyInfo = getIntent().getExtras();
@@ -103,23 +111,23 @@ public class SocietyEventListActivity extends SortableListActivity
 			i.putExtra("society_email", societyInfo.getString("society_email"));
 
 			startActivity(i);
-			
+
 			return true;
 		}
-		case R.id.subscribeSocietyMenuItem:
+		else if (item.equals(subscribeMenuItem))
 		{
-			if(!user.isSubscribedToSociety(societyName))
+			if (!user.isSubscribedToSociety(societyName))
 			{
 				Thread t = new Thread(new Runnable()
-				{		
+				{
 					@Override
 					public void run()
 					{
 						try
 						{
 							InputStream is = NetworkFunctions.getHTTPResponseStream(
-									"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php?userID=" +
-											user.getUserID() + "&societyID=" + societyID, "GET", null);
+									"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/societies.php?userID="
+											+ user.getUserID() + "&societyID=" + societyID, "GET", null);
 						}
 						catch (IOException e)
 						{
@@ -136,7 +144,8 @@ public class SocietyEventListActivity extends SortableListActivity
 			}
 			else
 			{
-				// TODO Should also update in the external database not just in the shared preferences 
+				// TODO Should also update in the external database not just in the shared
+				// preferences
 				user.getSocieties().remove(societyName);
 				item.setIcon(getResources().getDrawable(R.drawable.action_add));
 				item.setTitle("Subscribe");
@@ -145,8 +154,6 @@ public class SocietyEventListActivity extends SortableListActivity
 			SessionFunctions.saveUserPreferences(this, user);
 			return true;
 		}
-		
-		default: return true;
-		}
+		return super.onOptionsItemSelected(item);
 	}
 }
