@@ -50,6 +50,7 @@ public class UserHubActivity extends BaseActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.dashboard);
 
 		context = this;
@@ -185,6 +186,13 @@ public class UserHubActivity extends BaseActivity
 		});
 		
 		(new DownloadImageTask()).execute("");
+	}
+	
+	@Override
+	public void onResume()
+	{
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		super.onResume();
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu)
