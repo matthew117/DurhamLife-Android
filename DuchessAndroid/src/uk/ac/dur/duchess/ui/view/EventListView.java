@@ -6,7 +6,6 @@ import java.util.List;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.R.layout;
 import uk.ac.dur.duchess.io.SessionFunctions;
 import uk.ac.dur.duchess.io.UserFunctions;
 import uk.ac.dur.duchess.io.provider.DataProvider;
@@ -15,6 +14,7 @@ import uk.ac.dur.duchess.model.EventLocation;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.activity.BookmarkedEventListActivity;
 import uk.ac.dur.duchess.ui.activity.CalendarActivity;
+import uk.ac.dur.duchess.ui.activity.CalendarEventListActivity;
 import uk.ac.dur.duchess.ui.activity.CollegeEventListActivity;
 import uk.ac.dur.duchess.ui.activity.EventDetailsTabRootActivity;
 import uk.ac.dur.duchess.ui.activity.EventListActivity;
@@ -126,7 +126,7 @@ public class EventListView extends ListView
 				{
 					eventList = dataPro.getEventsBySociety(getContext(), bundle.getString("society_name"));
 				}
-				else if(activity instanceof CalendarActivity)
+				else if(activity instanceof CalendarActivity || activity instanceof CalendarEventListActivity)
 				{
 					List<Event> allEvents = dataPro.getAllEvents(getContext());
 					eventList.clear();

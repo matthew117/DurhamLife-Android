@@ -108,7 +108,7 @@
         </activity>
         <activity
             android:name=".ui.activity.SocietyEventListActivity"
-            android:theme="@style/Theme.Sherlock" >
+            android:theme="@style/Theme.Sherlock.ForceOverflow" >
         </activity>
         <activity
             android:name=".ui.activity.SocietyAboutActivity"
@@ -155,7 +155,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.UserHubActivity" />
         </activity>
-        <activity android:name=".ui.activity.NearEventsActivity" />
+        <activity
+            android:name=".ui.activity.NearEventsActivity"/>
+        <activity
+            android:name=".ui.activity.CalendarEventListActivity"
+            android:theme="@style/Theme.Sherlock" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.CalendarActivity" />
+        </activity>
     </application>
 
 </manifest>
