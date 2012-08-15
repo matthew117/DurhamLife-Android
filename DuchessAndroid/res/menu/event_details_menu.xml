@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menuItemShare" android:title="Share" android:icon="@drawable/facebook"></item>
-    
+
+    <item
+        android:id="@+id/menuItemShare"
+        android:icon="@drawable/action_share"
+        android:title="Share"
+        android:showAsAction="ifRoom|withText">
+         <menu>
+            <item
+                android:id="@+id/submenuFacebook"
+                android:icon="@drawable/facebook"
+                android:title="Facebook"/>
+            <item
+                android:id="@+id/submenuShareMore"
+                android:title="More..."/>
+        </menu>
+    </item>
 
 </menu>

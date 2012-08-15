@@ -12,9 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.util.Linkify;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -184,30 +181,6 @@ public class EventDetailsActivity extends Activity
 			image.setImageBitmap(bitmap);
 			imageActivityIndicator.setVisibility(View.GONE);
 			image.invalidate();
-		}
-	}
-	
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.event_details_menu, menu);
-		
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-			case R.id.menuItemShare:
-			{
-				Intent i = new Intent(getBaseContext(), FacebookActivity.class);
-				i.putExtras(getIntent());
-				startActivity(i);
-				
-				return true;
-			}
-			default: return true;
 		}
 	}
 }

@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -79,37 +78,9 @@ public class FacebookActivity extends Activity
 	
 	public void share(View button)
 	{
-		if(!facebook.isSessionValid()) loginAndPostToWall();
+		if(!facebook.isSessionValid())
+			facebook.authorize(this, PERMISSIONS, Facebook.FORCE_DIALOG_AUTH, new LoginDialogListener());
 		else postToWall();
-	}
-
-	public void loginAndPostToWall()
-	{
-		facebook.authorize(this, PERMISSIONS, Facebook.FORCE_DIALOG_AUTH, new LoginDialogListener());
-	}
-
-	public void postToWall(String message)
-	{
-		Bundle parameters = new Bundle();
-		parameters.putString("message", message);
-		parameters.putString("description", "topic share");
-		
-		try
-		{
-			facebook.request("me");
-			String response = facebook.request("me/feed", parameters, "POST");
-			Log.d("Tests", "got response: " + response);
-			
-			if(response == null || response.equals("") || response.equals("false"))
-				 showToast("Blank response.");
-			else showToast("Message posted to your facebook wall!");
-		}
-		catch (Exception e)
-		{
-			showToast("Failed to post to wall!");
-			e.printStackTrace();
-		}
-		finally { finish(); } 
 	}
 	
 	public void postToWall()
@@ -132,7 +103,7 @@ public class FacebookActivity extends Activity
 		Bundle params = new Bundle();
 		
 		params.putString("method", "POST");
-		params.putString("message", "I'm attending " + name);
+		params.putString("message", name);
 		params.putString("name", name);
 		params.putString("caption", "Runs from " + date);
 		params.putString("link", webAddress);
@@ -174,7 +145,6 @@ public class FacebookActivity extends Activity
 		public void onComplete(Bundle values)
 		{
 			saveCredentials(facebook);
-			
 			if (messageToPost != null) postToWall();
 		}
 		
