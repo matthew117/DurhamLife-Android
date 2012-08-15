@@ -242,17 +242,16 @@ public class UserHubActivity extends BaseActivity
 			}
 			catch (Exception ex)
 			{
-				// TODO error handling
+				return null;
 			}
-			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Bitmap bitmap)
 		{
-			if (bitmap == null)
+			if (bitmap == null || text == null)
 			{
-				//TODO error handling
+				return;
 			}
 			adText.setText(text);
 			
