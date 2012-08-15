@@ -128,7 +128,7 @@
         </activity>
         <activity
             android:name=".ui.activity.PersonalSocietyListActivity"
-            android:label="Subscribed Societies"
+            android:label="My Societies"
             android:theme="@style/Theme.Sherlock" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class UserHubActivity extends BaseActivity
 	
 	private ImageView defaultImage;
 	private ImageView adImage;
+	private ImageView adNavigationIndicator;
 	
 	private Animation imageFadeIn;
 	private boolean imageHasLoaded = false;
@@ -70,6 +72,7 @@ public class UserHubActivity extends BaseActivity
 		
 		adViewSwitcher.addView(defaultImage);
 		adText = (TextView) findViewById(R.id.dashboardAdText);
+		adNavigationIndicator = (ImageView) findViewById(R.id.adNavigationIndicator);
 
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -171,7 +174,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 		
-		adViewSwitcher.setOnClickListener(new View.OnClickListener()
+		adNavigationIndicator.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -252,6 +255,12 @@ public class UserHubActivity extends BaseActivity
 				//TODO error handling
 			}
 			adText.setText(text);
+			
+			Animation navIndicatorFade = AnimationUtils.loadAnimation(context, R.anim.image_fadein_animation);
+			
+			adNavigationIndicator.setVisibility(View.VISIBLE);
+			adNavigationIndicator.startAnimation(navIndicatorFade);
+			
 			adImage = new ImageView(context);
 			adImage.setScaleType(ScaleType.CENTER_CROP);
 			adImage.setImageBitmap(bitmap);

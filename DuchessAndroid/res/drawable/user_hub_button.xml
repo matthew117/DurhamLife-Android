@@ -12,8 +12,8 @@
 
     <gradient
         android:angle="90"
-        android:endColor="#68615c"
-        android:startColor="#3f3b38" />
+        android:endColor="#615d5e"
+        android:startColor="#231f20" />
     
     <stroke android:width="1dp"
         android:color="#111111"/>

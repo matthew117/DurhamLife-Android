@@ -73,7 +73,7 @@ public class SocietyEventListActivity extends SortableListActivity
 		{
 			menu.add("Unsubscribe");
 			subscribeMenuItem = menu.getItem(menu.size() - 1);
-			subscribeMenuItem.setIcon(getResources().getDrawable(R.drawable.action_remove));
+			subscribeMenuItem.setIcon(getResources().getDrawable(R.drawable.remove_society_action_icon));
 			subscribeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
 					| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		}
@@ -81,7 +81,7 @@ public class SocietyEventListActivity extends SortableListActivity
 		{
 			menu.add("Subscribe");
 			subscribeMenuItem = menu.getItem(menu.size() - 1);
-			subscribeMenuItem.setIcon(getResources().getDrawable(R.drawable.action_add));
+			subscribeMenuItem.setIcon(getResources().getDrawable(R.drawable.add_society_action_icon));
 			subscribeMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
 					| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		}
@@ -131,7 +131,7 @@ public class SocietyEventListActivity extends SortableListActivity
 				t.start();
 
 				user.getSocieties().add(societyName);
-				item.setIcon(getResources().getDrawable(R.drawable.action_remove));
+				item.setIcon(getResources().getDrawable(R.drawable.remove_society_action_icon));
 				item.setTitle("Unsubscribe");
 			}
 			else
@@ -139,7 +139,7 @@ public class SocietyEventListActivity extends SortableListActivity
 				// TODO Should also update in the external database not just in the shared
 				// preferences
 				user.getSocieties().remove(societyName);
-				item.setIcon(getResources().getDrawable(R.drawable.action_add));
+				item.setIcon(getResources().getDrawable(R.drawable.add_society_action_icon));
 				item.setTitle("Subscribe");
 			}
 

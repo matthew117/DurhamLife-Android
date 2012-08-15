@@ -4,17 +4,17 @@
     android:layout_height="match_parent" >
 
     <include
-        android:id="@+id/include1"
+        android:id="@+id/dashboardButtonGrid"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         layout="@layout/user_hub_button_grid" />
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/include1"
+        android:layout_above="@+id/dashboardButtonGrid"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
@@ -22,6 +22,8 @@
             android:id="@+id/dashboardAdAnimator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
             android:inAnimation="@anim/image_fadein_animation"
             android:outAnimation="@anim/image_fadeout_animation" />
 
@@ -29,11 +31,25 @@
             android:id="@+id/dashboardAdText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dashboardAdAnimator"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="#BB111111"
             android:padding="5dp"
             android:text="Durham Life" />
+
+        <ImageView
+            android:id="@+id/adNavigationIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/dashboardAdText"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/dashboardAdAnimator"
+            android:layout_gravity="right"
+            android:background="#77111111"
+            android:src="@drawable/ad_navigation"
+            android:visibility="gone" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

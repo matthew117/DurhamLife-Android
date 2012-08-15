@@ -13,7 +13,7 @@
         android:background="@drawable/curved_border_grey_gradient" >
 
         <TableRow>
-
+
             <TextView
                 android:id="@+id/dashboard_browse_button"
                 android:layout_width="0dp"
@@ -24,10 +24,10 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/grid"
+                android:drawableTop="@drawable/browse_dashboard_icon"
                 android:gravity="center"
                 android:text="@string/browse" />
-
+
             <TextView
                 android:id="@+id/dashboard_calendar_button"
                 android:layout_width="0dp"
@@ -38,14 +38,13 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/calendar_large"
+                android:drawableTop="@drawable/calendar_dashboard_icon"
                 android:gravity="center"
                 android:text="@string/calendar" />
-
         </TableRow>
 
         <TableRow>
-
+
             <TextView
                 android:id="@+id/dashboard_bookmarked_button"
                 android:layout_width="0dp"
@@ -56,10 +55,10 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/ribbon_star"
+                android:drawableTop="@drawable/bookmark_dashboard_icon"
                 android:gravity="center"
                 android:text="@string/bookmarked" />
-
+
             <TextView
                 android:id="@+id/dashboard_college_button"
                 android:layout_width="0dp"
@@ -73,11 +72,10 @@
                 android:drawableTop="@drawable/college_dashboard_icon"
                 android:gravity="center"
                 android:text="@string/college_events" />
-
         </TableRow>
 
         <TableRow>
-
+
             <TextView
                 android:id="@+id/dashboard_societies_button"
                 android:layout_width="0dp"
@@ -88,10 +86,10 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/community"
+                android:drawableTop="@drawable/society_dashboard_icon"
                 android:gravity="center"
                 android:text="@string/societies" />
-
+
             <TextView
                 android:id="@+id/dashboard_subscriptions_button"
                 android:layout_width="0dp"
@@ -102,9 +100,9 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
-                android:drawableTop="@drawable/filter"
+                android:drawableTop="@drawable/my_society_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/subscriptions" />
+                android:text="@string/my_societies" />
 
         </TableRow>
     </TableLayout>

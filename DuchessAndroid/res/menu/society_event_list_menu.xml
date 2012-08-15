@@ -5,14 +5,14 @@
         android:id="@+id/showAboutSocietyMenuItem"
         android:showAsAction="ifRoom|withText"
         android:title="About"
-        android:icon="@drawable/action_about">
+        android:icon="@drawable/remove_society_action_icon">
     </item>
     
     <item
         android:id="@+id/subscribeSocietyMenuItem"
         android:showAsAction="always|withText"
         android:title="Subscribe"
-        android:icon="@drawable/action_add">
+        android:icon="@drawable/add_society_action_icon">
     </item>
 
 </menu>
