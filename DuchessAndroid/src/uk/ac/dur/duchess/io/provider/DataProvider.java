@@ -204,10 +204,16 @@ public class DataProvider
 		List<Event> eventList = getAllEvents(context);
 		List<Event> societyEventList = new ArrayList<Event>();
 
-		for (Event event : eventList)
+		if(eventList != null)
 		{
-			if (event.getAssociatedSociety() != null ? event.getAssociatedSociety().equals(society) : false) societyEventList.add(event);
+			for (Event event : eventList)
+			{
+				if (event.getAssociatedSociety() != null ?
+						event.getAssociatedSociety().equals(society) : false)
+					societyEventList.add(event);
+			}
 		}
+		else return null;
 
 		return societyEventList;
 	}
@@ -240,6 +246,7 @@ public class DataProvider
 		else
 		{
 			final List<Society> societyList = new ArrayList<Society>();
+			
 			try
 			{
 				SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -252,7 +259,7 @@ public class DataProvider
 			}
 			catch (Exception ex)
 			{
-				return societyList;
+				return null;
 			}
 			
 			Thread addSocietiesToDatabase = new Thread(new Runnable()
@@ -272,11 +279,13 @@ public class DataProvider
 					societydatabaseLock = false;
 				}
 			});
+			
 			if (!societydatabaseLock)
 			{ 
 				societydatabaseLock = true;
 				addSocietiesToDatabase.start();
 			}
+			
 			return societyList;
 		}
 	}

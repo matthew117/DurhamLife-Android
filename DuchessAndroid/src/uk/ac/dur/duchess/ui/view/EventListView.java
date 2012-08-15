@@ -38,8 +38,10 @@ import android.widget.ListView;
 public class EventListView extends ListView
 {
 	private List<Event> eventList;
-	private Runnable parseData;
 	private EventListAdapter adapter;
+	
+	private Runnable dataProviderThread;
+	
 	private ProgressDialog progressDialog;
 	private AlertDialog alertDialog;
 
@@ -98,7 +100,7 @@ public class EventListView extends ListView
 		final Runnable uiThreadCallback = getCallback();
 		final Runnable errorCallback = getErrorCallback(activity);
 
-		parseData = new Runnable()
+		dataProviderThread = new Runnable()
 		{
 			@Override
 			public void run()
@@ -119,8 +121,12 @@ public class EventListView extends ListView
 					User user = SessionFunctions.getCurrentUser(activity);
 
 					if (allEvents != null && user != null)
+					{
 						for (Event event : allEvents)
-							if (user.hasPinnedEvent(event.getEventID())) eventList.add(event);	
+							if (user.hasPinnedEvent(event.getEventID()))
+								eventList.add(event);
+					}
+					else eventList = null;			
 				}
 				else if(activity instanceof SocietyEventListActivity)
 				{
@@ -139,6 +145,7 @@ public class EventListView extends ListView
 									bundle.getString("from_date"), bundle.getString("to_date"))) eventList.add(event);
 						}
 					}
+					else eventList = null;
 				}
 				else if(activity instanceof EventListActivity)
 				{
@@ -160,7 +167,7 @@ public class EventListView extends ListView
 
 		if(!(activity instanceof BookmarkedEventListActivity))
 		{
-			Thread thread = new Thread(null, parseData, "SAXParser");
+			Thread thread = new Thread(null, dataProviderThread, "SAXParser");
 
 			thread.start();
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
@@ -168,7 +175,7 @@ public class EventListView extends ListView
 		}
 		else if(SessionFunctions.getCurrentUser(activity).hasAnyBookmarkedEvents())
 		{
-			Thread thread = new Thread(null, parseData, "SAXParser");
+			Thread thread = new Thread(null, dataProviderThread, "SAXParser");
 
 			thread.start();
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
@@ -216,7 +223,7 @@ public class EventListView extends ListView
 						{
 							public void onClick(DialogInterface dialog, int id)
 							{
-								Thread thread = new Thread(null, parseData, "SAXParser");
+								Thread thread = new Thread(null, dataProviderThread, "SAXParser");
 								thread.start();
 								progressDialog = ProgressDialog.show(getContext(), "Please wait...",
 										"Downloading Events ...", true);

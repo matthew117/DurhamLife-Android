@@ -4,10 +4,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ListView
+    <uk.ac.dur.duchess.ui.view.SocietyListView
         android:id="@+id/societyListView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:background="#FFFFFF">
-    </ListView>
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF" />
 
 </LinearLayout>
