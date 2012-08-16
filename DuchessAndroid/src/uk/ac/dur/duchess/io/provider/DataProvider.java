@@ -3,6 +3,7 @@ package uk.ac.dur.duchess.io.provider;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -11,10 +12,13 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 import uk.ac.dur.duchess.io.xml.ReviewXMLParser;
 import uk.ac.dur.duchess.io.xml.SocietyXMLParser;
 import uk.ac.dur.duchess.model.Event;
 import uk.ac.dur.duchess.model.EventLocation;
+import uk.ac.dur.duchess.model.EventScope;
 import uk.ac.dur.duchess.model.Review;
 import uk.ac.dur.duchess.model.Society;
 import uk.ac.dur.duchess.webservice.EventAPI;
@@ -326,6 +330,43 @@ public class DataProvider
 		database.close();
 		
 		return locations;
+	}
+	
+	public List<Event> getPublicEvents(Context context)
+	{
+		List<Event> eventList = getAllEvents(context);
+		List<Event> publicEvents = new ArrayList<Event>();
+		
+		for (Event event : eventList)
+		{
+			if (event.getScope() == EventScope.PUBLIC) publicEvents.add(event);
+		}
+		
+		return publicEvents;
+	}
+	
+	public Event getRandomFeaturedEvent(Context context)
+	{
+		calculateCacheValidity(context);
+		if (!memoryCacheIsValid || !databaseCacheIsValid) return null;
+		
+		List<Event> eventList = getAllEvents(context);
+		List<Event> featuredEventList = new ArrayList<Event>();
+		
+		for (Event event : eventList)
+		{
+			if (event.isFeatured()) featuredEventList.add(event);
+		}
+		
+		if (featuredEventList.size() > 0)
+		{
+			Collections.shuffle(featuredEventList);
+			return featuredEventList.get(0);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private void calculateCacheValidity(Context context)

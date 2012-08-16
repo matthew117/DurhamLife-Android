@@ -23,6 +23,7 @@ public class EventXMLParser extends DefaultHandler
 	
 	private boolean isAssociatedCollege = false;
 	private boolean isEventScope = false;
+	private boolean isEventPrivacy = false;
 	private boolean isAssociatedSociety = false;
 
 	private boolean isContactTelephoneNumber = false;
@@ -88,6 +89,7 @@ public class EventXMLParser extends DefaultHandler
 		
 		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = true;
 		else if (localName.equalsIgnoreCase("eventScope")) isEventScope = true;
+		else if (localName.equalsIgnoreCase("eventPrivacy")) isEventPrivacy = true;
 		else if (localName.equalsIgnoreCase("associatedSociety")) isAssociatedSociety = true;
 		
 		else if (localName.equalsIgnoreCase("contactTelephoneNumber")) isContactTelephoneNumber = true;
@@ -139,6 +141,7 @@ public class EventXMLParser extends DefaultHandler
 		
 		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = false;
 		else if (localName.equalsIgnoreCase("eventScope")) isEventScope = false;
+		else if (localName.equalsIgnoreCase("eventPrivacy")) isEventPrivacy = false;
 		else if (localName.equalsIgnoreCase("associatedSociety")) isAssociatedSociety = false;
 
 		else if (localName.equalsIgnoreCase("contactTelephoneNumber")) isContactTelephoneNumber = false;
@@ -182,10 +185,10 @@ public class EventXMLParser extends DefaultHandler
 		
 		else if (isAssociatedCollege) event.setAssociatedCollege(new String(ch, start, length));
 		else if (isEventScope) event.setScope(new String(ch, start, length));
+		else if (isEventPrivacy) event.setPrivacy(new String(ch, start, length));
 		else if (isAssociatedSociety) event.setAssociatedSociety(new String(ch, start, length));
 
-		else if (isContactTelephoneNumber) event.setContactTelephoneNumber(new String(ch, start,
-				length));
+		else if (isContactTelephoneNumber) event.setContactTelephoneNumber(new String(ch, start, length));
 		else if (isContactEmailAddress) event.setContactEmailAddress(new String(ch, start, length));
 		else if (isWebAddress) event.setWebAddress(new String(ch, start, length));
 
@@ -198,18 +201,13 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (isCategory && tagID != -1) categoryTags.add(new String(ch, start, length));
 
-		else if (isAccessibilityInformation) event.setAccessibilityInformation(new String(ch,
-				start, length));
+		else if (isAccessibilityInformation) event.setAccessibilityInformation(new String(ch, start, length));
 
 		else if (isAdImageURL) event.setAdImageURL(new String(ch, start, length));
 
-		else if (isReviewScore) event.setReviewScore(Integer
-				.parseInt(new String(ch, start, length)));
+		else if (isReviewScore) event.setReviewScore(Integer .parseInt(new String(ch, start, length)));
 
-		else if (isImageURL)
-		{
-			event.setImageURL(new String(ch, start, length));
-		}
+		else if (isImageURL) event.setImageURL(new String(ch, start, length));
 	}
 
 }

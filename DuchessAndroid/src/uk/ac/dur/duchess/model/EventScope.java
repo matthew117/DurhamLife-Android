@@ -2,7 +2,7 @@ package uk.ac.dur.duchess.model;
 
 public enum EventScope 
 {
-	 OPEN,
+	 PUBLIC,
 	 UNIVERSITY,
 	 COLLEGE,
 	 SOCIETY;
@@ -12,6 +12,6 @@ public enum EventScope
 		 for(EventScope e : EventScope.values())
 			 if(e.toString().equalsIgnoreCase(scope)) return e;
 		 
-		 return OPEN;
+		 return PUBLIC;
 	 }
 }

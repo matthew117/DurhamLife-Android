@@ -21,6 +21,7 @@ public class Event
 	private EventLocation location;
 	
 	private EventScope scope;
+	private EventPrivacy privacy;
 	private String associatedCollege;
 	private String associatedSociety;
 
@@ -38,6 +39,21 @@ public class Event
 	private int reviewScore;
 	private int numberOfReviews;
 	
+	public EventPrivacy getPrivacy()
+	{
+		return privacy;
+	}
+
+	public void setPrivacy(EventPrivacy privacy)
+	{
+		this.privacy = privacy;
+	}
+	
+	public void setPrivacy(String privacy)
+	{
+		this.privacy = EventPrivacy.parsePrivacy(privacy);
+	}
+
 	public String getICalURL()
 	{
 		return iCalURL;
