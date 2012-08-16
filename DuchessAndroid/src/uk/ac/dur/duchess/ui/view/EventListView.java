@@ -194,6 +194,7 @@ public class EventListView extends ListView
 				for (Event e : eventList) adapter.add(e);
 				adapter.notifyDataSetChanged();
 
+				if (progressDialog != null && progressDialog.isShowing())
 				progressDialog.dismiss();
 			}
 		};
@@ -208,6 +209,7 @@ public class EventListView extends ListView
 			@Override
 			public void run()
 			{
+				if (progressDialog != null && progressDialog.isShowing())
 				progressDialog.dismiss();
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 				builder.setMessage(

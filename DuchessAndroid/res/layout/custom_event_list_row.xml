@@ -3,7 +3,7 @@
     android:id="@+id/listRowLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" android:background="@drawable/light_gradient">
+    android:orientation="vertical" android:background="@drawable/list_row_background">
 
     <RelativeLayout
         android:id="@+id/rowHeaderLayout"
@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:hint="Event Name"
             android:maxLines="1"
-            android:textColor="@color/DUPurple"
+            android:textColor="@color/list_title_color"
             android:textSize="18sp"
             android:textStyle="bold"
             android:typeface="serif" />
@@ -37,7 +37,7 @@
             android:layout_toLeftOf="@+id/pinButton"
             android:hint="Location + Duration"
             android:lineSpacingMultiplier="1.1"
-            android:textColor="#666666"
+            android:textColor="@color/list_subtitle_color"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -88,7 +88,7 @@
         android:ellipsize="end"
         android:hint="Event Description Header"
         android:maxLines="3"
-        android:textColor="#444444"
+        android:textColor="@color/list_description_color"
         android:textSize="12sp"
         android:textStyle="italic"
         android:typeface="serif" />

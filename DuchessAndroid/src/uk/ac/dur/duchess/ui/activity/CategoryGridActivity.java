@@ -1,21 +1,16 @@
 package uk.ac.dur.duchess.ui.activity;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.ui.adapter.ImageGridAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
+import android.view.WindowManager.LayoutParams;
+import android.widget.TextView;
 
 public class CategoryGridActivity extends Activity
 {
-
-	private GridView gridView;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -23,53 +18,29 @@ public class CategoryGridActivity extends Activity
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.category_grid_layout);
+		setContentView(R.layout.category_grid);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
-		gridView = (GridView) findViewById(R.id.categoryGridViewID);
-
-		Integer[] imageIDs = new Integer[] { R.drawable.university, R.drawable.college,
-				R.drawable.music, R.drawable.theatre, R.drawable.exhibitions, R.drawable.sport,
-				R.drawable.conference, R.drawable.community };
-
-		String[] categoryLabels = new String[] {"University", "College", "Music", "Theatre", "Exhibitions", "Sport", "Conferences", "Community"};
+		Integer[] iconIDs = new Integer[] { R.id.categoryGridUniversity, R.id.categoryGridCollege,
+				R.id.categoryGridMusic, R.id.categoryGridTheatre, R.id.categoryGridExhibitions, R.id.categoryGridSport,
+				R.id.categoryGridConferences, R.id.categoryGridCommunity };
 		
-		gridView.setAdapter(new ImageGridAdapter(this, imageIDs, categoryLabels));
-
-		gridView.setOnItemClickListener(new OnItemClickListener()
+		for (int id : iconIDs)
 		{
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+			final TextView icon = (TextView) findViewById(id);
+			icon.setOnClickListener(new View.OnClickListener()
 			{
-				Intent i = new Intent();
-				i.putExtra("category_filter", categorySelection(position));
-				setResult(RESULT_OK, i);
-				finish();
-			}
-		});
-
-	}
-
-	private String categorySelection(int i)
-	{
-		switch (i)
-		{
-		case 0:
-			return "University";
-		case 1:
-			return "College";
-		case 2:
-			return "Music";
-		case 3:
-			return "Theatre";
-		case 4:
-			return "Exhibitions";
-		case 5:
-			return "Sport";
-		case 6:
-			return "Conferences";
-		case 7:
-			return "Community";
-		default:
-			return "NULL Category";
+				@Override
+				public void onClick(View v)
+				{
+					Intent i = new Intent();
+					i.putExtra("category_filter", icon.getText());
+					setResult(RESULT_OK, i);
+					finish();					
+				}
+			});
 		}
+
 	}
+
 }

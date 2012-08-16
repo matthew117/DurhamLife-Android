@@ -141,8 +141,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 			Point screenPoint = new Point();
 			mapView.getProjection().toPixels(point, screenPoint);
 
-			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
-			canvas.drawBitmap(bmp, screenPoint.x - 36, screenPoint.y - 50, null);
+			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.google_maps_pin_purple);
+			canvas.drawBitmap(bmp, screenPoint.x - (bmp.getWidth()/2), screenPoint.y - bmp.getHeight(), null);
 			Bitmap base = BitmapFactory.decodeResource(getResources(), R.drawable.compass_base);
 
 			Display display = getWindowManager().getDefaultDisplay(); 

@@ -26,7 +26,8 @@
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/browse_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/browse" />
+                android:text="@string/browse"
+                android:textColor="#ffffff" />
 
             <TextView
                 android:id="@+id/dashboard_calendar_button"
@@ -40,7 +41,8 @@
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/calendar_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/calendar" />
+                android:text="@string/calendar"
+                android:textColor="#ffffff" />
         </TableRow>
 
         <TableRow>
@@ -57,7 +59,8 @@
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/bookmark_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/bookmarked" />
+                android:text="@string/bookmarked"
+                android:textColor="#ffffff" />
 
             <TextView
                 android:id="@+id/dashboard_college_button"
@@ -71,7 +74,8 @@
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/college_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/college_events" />
+                android:text="@string/college_events"
+                android:textColor="#ffffff" />
         </TableRow>
 
         <TableRow>
@@ -88,8 +92,9 @@
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/society_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/societies" />
-
+                android:text="@string/societies"
+                android:textColor="#ffffff" />
+
             <TextView
                 android:id="@+id/dashboard_subscriptions_button"
                 android:layout_width="0dp"
@@ -102,8 +107,8 @@
                 android:background="@drawable/user_hub_button"
                 android:drawableTop="@drawable/my_society_dashboard_icon"
                 android:gravity="center"
-                android:text="@string/my_societies" />
-
+                android:text="@string/my_societies"
+                android:textColor="#ffffff" />
         </TableRow>
     </TableLayout>
 
