@@ -154,9 +154,7 @@ public class EventListView extends ListView
 					
 					if (user != null && eventList != null)
 					{
-						Log.d("BEFORE FILTER", "" + eventList.size());
 						UserFunctions.filterByPreferences(user, eventList);
-						Log.d("AFTER FILTER", "" + eventList.size());
 					}
 				}
 
@@ -167,19 +165,19 @@ public class EventListView extends ListView
 
 		if(!(activity instanceof BookmarkedEventListActivity))
 		{
-			Thread thread = new Thread(null, dataProviderThread, "SAXParser");
+			Thread thread = new Thread(null, dataProviderThread, "LoadEventThread");
 
 			thread.start();
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
-					"Downloading Events ...", true);
+					"Loading Events ...", true);
 		}
 		else if(SessionFunctions.getCurrentUser(activity).hasAnyBookmarkedEvents())
 		{
-			Thread thread = new Thread(null, dataProviderThread, "SAXParser");
+			Thread thread = new Thread(null, dataProviderThread, "LoadEventThread");
 
 			thread.start();
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
-					"Downloading Events ...", true);
+					"Loading Events ...", true);
 		}
 	}
 
@@ -225,10 +223,10 @@ public class EventListView extends ListView
 						{
 							public void onClick(DialogInterface dialog, int id)
 							{
-								Thread thread = new Thread(null, dataProviderThread, "SAXParser");
+								Thread thread = new Thread(null, dataProviderThread, "LoadEventThread");
 								thread.start();
 								progressDialog = ProgressDialog.show(getContext(), "Please wait...",
-										"Downloading Events ...", true);
+										"Loading Events ...", true);
 							}
 						});
 				alertDialog = builder.create();
