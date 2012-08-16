@@ -2,7 +2,8 @@ package uk.ac.dur.duchess.model;
 
 public enum EventPrivacy
 {
-	OPEN, PRIVATE;
+	OPEN,
+	PRIVATE;
 
 	public static EventPrivacy parsePrivacy(String privacy)
 	{

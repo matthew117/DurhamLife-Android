@@ -12,6 +12,7 @@ public class User
 	private String password;
 	private String emailAddress;
 	private String dateJoined;
+	private DurhamAffiliation affiliation;
 	private String department;
 	private String college;
 	private List<String> categoryPreferences;
@@ -30,6 +31,23 @@ public class User
 	public boolean hasPinnedEvent(Long i) { return events.contains(i); }
 	
 	public boolean hasAnyBookmarkedEvents() { return events.size() > 0; }
+	
+	public DurhamAffiliation getAffiliation()
+	{
+		return affiliation;
+	}
+	
+	public void setAffiliation(DurhamAffiliation affiliation)
+	{
+		this.affiliation = affiliation;
+	}
+	
+	public void setAffiliation(String affiliation)
+	{
+		this.affiliation = DurhamAffiliation.parseScope(affiliation);
+	}
+	
+	public boolean isAffiliated() { return affiliation != DurhamAffiliation.NONE; }
 
 	public List<String> getSocieties()
 	{

@@ -29,6 +29,7 @@ public class DatabaseHandler
 	public static final String KEY_ICAL_URL = "iCalURL";
 	
 	public static final String KEY_SCOPE = "scope";
+	public static final String KEY_PRIVACY = "privacy";
 	public static final String KEY_ASSOCIATED_COLLEGE = "associatedCollege";
 	public static final String KEY_ASSOCIATED_SOCIETY = "associatedSociety";
 	
@@ -82,6 +83,7 @@ public class DatabaseHandler
 			+ KEY_ICAL_URL + " TEXT, "
 			+ KEY_LOCATION_ID + " INTEGER NOT NULL, "
 			+ KEY_SCOPE + " TEXT NOT NULL, "
+			+ KEY_PRIVACY + " TEXT NOT NULL, "
 			+ KEY_ASSOCIATED_COLLEGE + " TEXT, "
 			+ KEY_ASSOCIATED_SOCIETY + " TEXT, "
 			+ KEY_CONTACT_TELEPHONE_NUMBER + " TEXT, "
@@ -202,6 +204,7 @@ public class DatabaseHandler
 			insertLocation(event.getLocation());
 		
 		values.put(KEY_SCOPE, (event.getScope() != null) ? event.getScope().name() : "OPEN");
+		values.put(KEY_PRIVACY, (event.getPrivacy() != null) ? event.getPrivacy().name() : "OPEN");
 		values.put(KEY_ASSOCIATED_COLLEGE, event.getAssociatedCollege());
 		values.put(KEY_ASSOCIATED_SOCIETY, event.getAssociatedSociety());
 		
@@ -404,6 +407,7 @@ public class DatabaseHandler
 		event.setLocation(location);
 		
 		event.setScope(row.getString(row.getColumnIndex(KEY_SCOPE)));
+		event.setPrivacy(row.getString(row.getColumnIndex(KEY_PRIVACY)));
 		if(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE) != -1)
 			event.setAssociatedCollege(row.getString(row.getColumnIndex(KEY_ASSOCIATED_COLLEGE)));
 		if(row.getColumnIndex(KEY_ASSOCIATED_SOCIETY) != -1)

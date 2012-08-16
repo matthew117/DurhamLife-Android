@@ -17,6 +17,7 @@ public class SessionFunctions
 	private static final String PASSWORD_KEY = "password";
 	private static final String EMAIL_ADDRESS_KEY = "emailAddress";
 	private static final String DATE_JOINED_KEY = "dateJoined";
+	private static final String AFFILIATION_KEY = "affiliation";
 	private static final String DEPARTMENT_KEY = "department";
 	private static final String COLLEGE_KEY = "college";
 	private static final String PREFERENCES_KEY = "categoryPreferences";
@@ -55,6 +56,7 @@ public class SessionFunctions
 		editor.putString(PASSWORD_KEY, user.getPassword());
 		editor.putString(EMAIL_ADDRESS_KEY, user.getEmailAddress());
 		editor.putString(DATE_JOINED_KEY, user.getDateJoined());
+		editor.putString(AFFILIATION_KEY, user.getAffiliation().name());
 		editor.putString(DEPARTMENT_KEY, user.getDepartment());
 		editor.putString(COLLEGE_KEY, user.getCollege());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
@@ -106,6 +108,7 @@ public class SessionFunctions
 		user.setPassword(prefs.getString(PASSWORD_KEY, ""));
 		user.setEmailAddress(prefs.getString(EMAIL_ADDRESS_KEY, ""));
 		user.setDateJoined(prefs.getString(DATE_JOINED_KEY, ""));
+		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "NONE"));
 		user.setDepartment(prefs.getString(DEPARTMENT_KEY, ""));
 		user.setCollege(prefs.getString(COLLEGE_KEY, ""));
 		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "")));

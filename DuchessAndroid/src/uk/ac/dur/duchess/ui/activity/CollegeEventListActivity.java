@@ -26,7 +26,7 @@ public class CollegeEventListActivity extends SortableListActivity
 		user = SessionFunctions.getCurrentUser(this);
 
 		collegeNameText = (TextView) findViewById(R.id.collegeNameOnEventList);
-
+		
 		if (user != null && user.getCollege() != null)
 		{
 			collegeNameText.setText(user.getCollege());
