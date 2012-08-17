@@ -89,16 +89,20 @@ public class EventListActivity extends BaseActivity
 			listView.sortByHighestReview();
 			return true;
 		case R.id.submenuEventListDistance:
+		{
 			locationProgress = ProgressDialog.show(this, "Sorting By Distance",
 					"Retrieving Location...");
 			lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			LocationListener locationListener = new NearEventsListener();
 			lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 			return true;
+		}
 		case R.id.menuCategoryBrowse:
+		{
 			Intent i = new Intent(this, CategoryGridActivity.class);
 			startActivityForResult(i, REQUEST_CATEG0RY);
 			return true;
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}

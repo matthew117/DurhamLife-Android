@@ -14,7 +14,7 @@ public class User
 	private String dateJoined;
 	private DurhamAffiliation affiliation;
 	private String department;
-	private String college;
+	private List<String> colleges = new ArrayList<String>();
 	private List<String> categoryPreferences;
 	private Map<Long, String> subcategoryPreferences;
 	private List<String> societies;
@@ -133,12 +133,23 @@ public class User
 
 	public String getCollege()
 	{
-		return college;
+		return colleges.get(0);
 	}
 
 	public void setCollege(String college)
 	{
-		this.college = college;
+		colleges.clear();
+		colleges.add(college);
+	}
+	
+	public List<String> getColleges()
+	{
+		return colleges;
+	}
+	
+	public void setColleges(List<String> colleges)
+	{
+		this.colleges = colleges;
 	}
 
 	public List<String> getCategoryPreferences()

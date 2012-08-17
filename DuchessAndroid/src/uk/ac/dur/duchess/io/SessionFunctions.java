@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.ac.dur.duchess.model.User;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import uk.ac.dur.duchess.model.User;
 
 public class SessionFunctions
 {
@@ -19,7 +19,7 @@ public class SessionFunctions
 	private static final String DATE_JOINED_KEY = "dateJoined";
 	private static final String AFFILIATION_KEY = "affiliation";
 	private static final String DEPARTMENT_KEY = "department";
-	private static final String COLLEGE_KEY = "college";
+	private static final String COLLEGES_KEY = "colleges";
 	private static final String PREFERENCES_KEY = "categoryPreferences";
 	private static final String SOCIETIES_KEY = "societies";
 	private static final String EVENTS_KEY = "events";
@@ -56,9 +56,9 @@ public class SessionFunctions
 		editor.putString(PASSWORD_KEY, user.getPassword());
 		editor.putString(EMAIL_ADDRESS_KEY, user.getEmailAddress());
 		editor.putString(DATE_JOINED_KEY, user.getDateJoined());
-		editor.putString(AFFILIATION_KEY, user.getAffiliation().name());
+		editor.putString(AFFILIATION_KEY, (user.getAffiliation() != null) ? user.getAffiliation().name() : "NONE");
 		editor.putString(DEPARTMENT_KEY, user.getDepartment());
-		editor.putString(COLLEGE_KEY, user.getCollege());
+		editor.putString(COLLEGES_KEY, user.getColleges().toString());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
 		editor.putString(SOCIETIES_KEY, user.getSocieties().toString());
 		editor.putString(EVENTS_KEY, user.getEvents().toString());
@@ -110,7 +110,7 @@ public class SessionFunctions
 		user.setDateJoined(prefs.getString(DATE_JOINED_KEY, ""));
 		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "NONE"));
 		user.setDepartment(prefs.getString(DEPARTMENT_KEY, ""));
-		user.setCollege(prefs.getString(COLLEGE_KEY, ""));
+		user.setColleges(getCollegesFromString(prefs.getString(COLLEGES_KEY, "")));
 		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "")));
 		user.setSocieties(getSocietiesFromString(prefs.getString(SOCIETIES_KEY, "")));
 		user.setEvents(getEventsFromString(prefs.getString(EVENTS_KEY, "")));
@@ -168,6 +168,23 @@ public class SessionFunctions
 			}
 			
 			return events;
+		}
+	}
+	
+	private static List<String> getCollegesFromString(String s)
+	{
+		if (s.equals("") || s.equals("[]"))
+		{
+			return new ArrayList<String>();
+		}
+		else
+		{
+			List<String> colleges = new ArrayList<String>();
+			String[] sa = s.substring(1, s.length() - 1).split(", ");
+			
+			for(String str : sa) colleges.add(str);
+			
+			return colleges;
 		}
 	}
 }

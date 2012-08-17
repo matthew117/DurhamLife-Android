@@ -1,21 +1,35 @@
 package uk.ac.dur.duchess.ui.activity;
 
+import java.util.List;
+
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.model.DurhamAffiliation;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.view.EventListView;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 public class CollegeEventListActivity extends SortableListActivity
 {
+	private static final int COLLEGE_DIALOG_ID = 1;
+	private static final int REQUEST_COLLEGE = 1;
+	
 	private ProgressDialog progressDialog;
 	private AlertDialog alertDialog;
 	private User user;
 	private TextView collegeNameText;
+	private MenuItem filterMenuItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -24,15 +38,22 @@ public class CollegeEventListActivity extends SortableListActivity
 		setContentView(R.layout.college_events_list_layout);
 		
 		user = SessionFunctions.getCurrentUser(this);
-
+		
 		collegeNameText = (TextView) findViewById(R.id.collegeNameOnEventList);
 		
-		if (user != null && user.getCollege() != null)
+		if(user != null)
 		{
-			collegeNameText.setText(user.getCollege());
-			collegeNameText.setBackgroundColor(collegeToColor(user.getCollege()));
-			collegeNameText.setCompoundDrawablesWithIntrinsicBounds(
+			if(user.getAffiliation() == DurhamAffiliation.STAFF)
+			{
+				collegeNameText.setVisibility(View.GONE);
+			}
+			else if(user.getCollege() != null)
+			{
+				collegeNameText.setText(user.getCollege());
+				collegeNameText.setBackgroundColor(collegeToColor(user.getCollege()));
+				collegeNameText.setCompoundDrawablesWithIntrinsicBounds(
 					collegeToImage(user.getCollege()), 0, 0, 0);
+			}
 		}
 		
 		listView = (EventListView) findViewById(R.id.collegeEventListView);
@@ -46,6 +67,76 @@ public class CollegeEventListActivity extends SortableListActivity
 		super.onDestroy();
 		if (alertDialog != null && alertDialog.isShowing()) alertDialog.dismiss();
 		if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		User user = SessionFunctions.getCurrentUser(this);
+
+		if(user.getAffiliation() == DurhamAffiliation.STAFF)
+		{
+			menu.add("Filter");
+			filterMenuItem = menu.getItem(menu.size() - 1);
+			filterMenuItem.setIcon(R.drawable.action_filter);
+			filterMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS
+					| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		}
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		if (item.equals(filterMenuItem))
+		{
+			showDialog(COLLEGE_DIALOG_ID);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int responseCode, Intent data)
+	{
+		switch (requestCode)
+		{
+		case REQUEST_COLLEGE:
+		{
+			if (responseCode == RESULT_OK)
+				listView.filterByCollege(data.getStringExtra("college"));
+			break;
+		}
+		default: break;
+		}
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id)
+	{
+		switch (id)
+		{
+			case COLLEGE_DIALOG_ID:
+			{		
+				List<String> colleges = SessionFunctions.getCurrentUser(this).getColleges();
+	
+				final CharSequence[] items = new CharSequence[colleges.size()];	
+				for(int i = 0; i < items.length; i++) items[i] = colleges.get(i);
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("Pick a college");
+				builder.setItems(items, new DialogInterface.OnClickListener()
+				{
+				    public void onClick(DialogInterface dialog, int item)
+				    {
+				        listView.filterByLocation(items[item].toString());
+				    }
+				});
+				
+				return builder.create();
+			}
+		}
+		return null;
 	}
 
 	private int collegeToColor(String collegeName)

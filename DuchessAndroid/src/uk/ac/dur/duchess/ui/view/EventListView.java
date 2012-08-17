@@ -9,6 +9,7 @@ import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.SessionFunctions;
 import uk.ac.dur.duchess.io.UserFunctions;
 import uk.ac.dur.duchess.io.provider.DataProvider;
+import uk.ac.dur.duchess.model.DurhamAffiliation;
 import uk.ac.dur.duchess.model.Event;
 import uk.ac.dur.duchess.model.EventLocation;
 import uk.ac.dur.duchess.model.User;
@@ -30,7 +31,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -110,8 +110,11 @@ public class EventListView extends ListView
 
 				if(activity instanceof CollegeEventListActivity)
 				{
-					eventList = dataPro.getEventsByCollege(getContext(),
-							SessionFunctions.getCurrentUser(activity).getCollege());
+					User user = SessionFunctions.getCurrentUser(activity);
+					
+					if(user.getAffiliation() == DurhamAffiliation.STAFF)
+						 eventList = dataPro.getEventsByCollege(getContext(), user.getCollege());
+					else eventList = dataPro.getEventsByColleges(getContext(), user.getColleges());
 				}
 				else if(activity instanceof BookmarkedEventListActivity)
 				{
@@ -274,6 +277,23 @@ public class EventListView extends ListView
 				if (event.getLocation().getAddress1().equals(location))
 					adapter.add(event);
 			}
+		}
+
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void filterByCollege(String college)
+	{
+		adapter.clear();
+		
+		GlobalApplicationData delegate = GlobalApplicationData.getInstance();
+		DataProvider dataPro = delegate.getDataProvider();
+		
+		List<Event> collegeEvents = dataPro.getEventsByCollege(getContext(), college);
+
+		if(collegeEvents != null)
+		{
+			for (Event event : collegeEvents) adapter.add(event);
 		}
 
 		adapter.notifyDataSetChanged();

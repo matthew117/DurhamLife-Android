@@ -26,8 +26,10 @@ public class UserXMLParser extends DefaultHandler
 	private boolean isSociety = false;
 	
 	private User user;
+	private List<String> colleges;
 	private List<String> preferences;
 	private List<String> societies;
+	private boolean isColleges;
 	
 	public UserXMLParser(User user)
 	{
@@ -43,6 +45,7 @@ public class UserXMLParser extends DefaultHandler
 			long userID = (id != null) ? Long.parseLong(id) : -1;
 			if(userID != -1) user.setUserID(userID);
 			
+			colleges = new ArrayList<String>();
 			preferences = new ArrayList<String>();
 			societies = new ArrayList<String>();
 		}
@@ -56,6 +59,7 @@ public class UserXMLParser extends DefaultHandler
 		else if (localName.equalsIgnoreCase("affiliation")) isAffilation = true;
 		else if (localName.equalsIgnoreCase("department")) isDepartment = true;
 		else if (localName.equalsIgnoreCase("college")) isCollege = true;
+		else if (localName.equalsIgnoreCase("colleges")) isColleges = true;
 		else if (localName.equalsIgnoreCase("emailAddress")) isEmail = true;
 		
 		else if (localName.equalsIgnoreCase("category")) isCategory = true;
@@ -91,6 +95,12 @@ public class UserXMLParser extends DefaultHandler
 		{
 			user.setSocieties(societies);
 		}
+		
+		else if (localName.equalsIgnoreCase("colleges"))
+		{
+			user.setColleges(colleges);
+			isColleges = false;
+		}
 	}
 
 	@Override
@@ -102,7 +112,11 @@ public class UserXMLParser extends DefaultHandler
 		else if (isDateJoined) user.setDateJoined(new String(ch, start, length));
 		else if (isAffilation) user.setAffiliation(new String(ch, start, length));
 		else if (isDepartment) user.setDepartment(new String(ch, start, length));
-		else if (isCollege) user.setCollege(new String(ch, start, length));
+		else if (isCollege)
+		{
+			if(isColleges) colleges.add(new String(ch, start, length));
+			else user.setCollege(new String(ch, start, length));
+		}
 		else if (isEmail) user.setEmailAddress(new String(ch, start, length));
 		else if (isSociety) societies.add(new String(ch, start, length));
 		else if (isCategory) preferences.add(new String(ch, start, length));
