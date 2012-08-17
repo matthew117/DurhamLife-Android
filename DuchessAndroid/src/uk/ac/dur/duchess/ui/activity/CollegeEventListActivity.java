@@ -11,7 +11,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.actionbarsherlock.view.MenuItem;
 public class CollegeEventListActivity extends SortableListActivity
 {
 	private static final int COLLEGE_DIALOG_ID = 1;
-	private static final int REQUEST_COLLEGE = 1;
 	
 	private ProgressDialog progressDialog;
 	private AlertDialog alertDialog;
@@ -95,21 +93,6 @@ public class CollegeEventListActivity extends SortableListActivity
 		
 		return super.onOptionsItemSelected(item);
 	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int responseCode, Intent data)
-	{
-		switch (requestCode)
-		{
-		case REQUEST_COLLEGE:
-		{
-			if (responseCode == RESULT_OK)
-				listView.filterByCollege(data.getStringExtra("college"));
-			break;
-		}
-		default: break;
-		}
-	}
 
 	@Override
 	protected Dialog onCreateDialog(int id)
@@ -129,7 +112,7 @@ public class CollegeEventListActivity extends SortableListActivity
 				{
 				    public void onClick(DialogInterface dialog, int item)
 				    {
-				        listView.filterByLocation(items[item].toString());
+				        listView.filterByCollege(items[item].toString());
 				    }
 				});
 				

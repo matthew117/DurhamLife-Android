@@ -5,6 +5,7 @@ import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
 import uk.ac.dur.duchess.io.SessionFunctions;
 import uk.ac.dur.duchess.model.User;
+import uk.ac.dur.duchess.model.DurhamAffiliation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -22,7 +23,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.actionbarsherlock.view.Menu;
@@ -32,27 +32,21 @@ import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 public class UserHubActivity extends BaseActivity
 {
 	private static final String AD_API_URL = "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/features.php";
-	
+
 	private Context context;
-	
+
+	private static final int REQUEST_AFFILIATION = 1;
+
 	private FrameLayout buttonGrid;
-	
-	private TextView browseButton;
-	private TextView collegeEventButton;
-	private TextView myEventsButton;
-	private TextView societiesButton;
-	private TextView societyEventListButton;
-	private TextView calendarButton;
-	
+
 	private ViewSwitcher adViewSwitcher;
 	private TextView adText;
 	private String adLink;
-	
+
 	private ImageView defaultImage;
 	private ImageView adImage;
 	private ImageView adNavigationIndicator;
-	
-	private Animation imageFadeIn;
+
 	private boolean imageHasLoaded = false;
 
 	@Override
@@ -60,194 +54,100 @@ public class UserHubActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dashboard);
-		
+
 		buttonGrid = (FrameLayout) findViewById(R.id.dashboardButtonGrid);
-		
+
 		User user = SessionFunctions.getCurrentUser(this);
-		
-		if (user.getForename().equals("User"))
+
+		switch(user.getAffiliation())
 		{
-			LayoutInflater inflater = getLayoutInflater();
-			View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
-		}
-		else
-		{
-			LayoutInflater inflater = getLayoutInflater();
-			View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+			case NONE:
+			{
+				LayoutInflater inflater = getLayoutInflater();
+				View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
+				break;
+			}
+			case STUDENT:
+			case STAFF:
+			{
+				LayoutInflater inflater = getLayoutInflater();
+				View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+				break;
+			}
 		}
 
 		context = this;
-		
-		browseButton = (TextView) buttonGrid.findViewById(R.id.dashboard_browse_button);
-		collegeEventButton = (TextView) buttonGrid.findViewById(R.id.dashboard_college_button);
-		myEventsButton = (TextView) buttonGrid.findViewById(R.id.dashboard_bookmarked_button);
-		societiesButton = (TextView) buttonGrid.findViewById(R.id.dashboard_societies_button);
-		societyEventListButton = (TextView) buttonGrid.findViewById(R.id.dashboard_subscriptions_button);
-		calendarButton = (TextView) buttonGrid.findViewById(R.id.dashboard_calendar_button);
-		
+
 		adViewSwitcher = (ViewSwitcher) findViewById(R.id.dashboardAdAnimator);
-		
+
 		defaultImage = new ImageView(this);
 		defaultImage.setScaleType(ScaleType.CENTER_CROP);
 		defaultImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.the_great_wave_of_kanagawa));
-		
+
 		adViewSwitcher.addView(defaultImage);
 		adText = (TextView) findViewById(R.id.dashboardAdText);
 		adNavigationIndicator = (ImageView) findViewById(R.id.adNavigationIndicator);
 
-//		setButtonGridOnClickListeners();
-		
+		if (adNavigationIndicator != null)
+			adNavigationIndicator.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					if (adLink != null && imageHasLoaded)
+					{
+						Intent i = new Intent(Intent.ACTION_VIEW);
+						i.setData(Uri.parse(adLink));
+						startActivity(i);
+					}
+				}
+			});
+
 		(new DownloadImageTask()).execute("");
 	}
 
-	private void setButtonGridOnClickListeners()
+	@Override
+	protected void onActivityResult(int requestCode, int responseCode, Intent data)
 	{
-		if (browseButton != null)
-		browseButton.setOnClickListener(new View.OnClickListener()
+		switch (requestCode)
 		{
-			@Override
-			public void onClick(View v)
+			case REQUEST_AFFILIATION:
 			{
-				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+				if (responseCode == RESULT_OK)
 				{
-					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked", "Browse Events", 0);
-					tracker.dispatch();
-				}
-				Intent i = new Intent(v.getContext(), EventListActivity.class);
-				startActivity(i);
-			}
-		});
-
-		if (collegeEventButton != null)
-		collegeEventButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
-				{
-					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
-							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked", "College Events", 0);
-					tracker.dispatch();
-				}
-				Intent i = new Intent(v.getContext(), CollegeEventListActivity.class);
-				startActivity(i);
-			}
-		});
-
-		if (myEventsButton != null)
-		myEventsButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
-				{
-					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
-							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked", "Bookmarked Events", 0);
-					tracker.dispatch();
-				}
-				Intent i = new Intent(v.getContext(), BookmarkedEventListActivity.class);
-				startActivity(i);
-			}
-		});
-
-		if (societiesButton != null)
-		societiesButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
-				{
-					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
-							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked", "Browse Societies", 0);
-					tracker.dispatch();
-				}
-				Intent i = new Intent(v.getContext(), SocietyListActivity.class);
-				startActivity(i);
-			}
-		});
-
-		if (societyEventListButton != null)
-		societyEventListButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
-				{
-					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
-					tracker.dispatch();
-				}
-				Intent i = new Intent(v.getContext(), PersonalSocietyListActivity.class);
-				startActivity(i);
-			}
-		});
-
-		if (calendarButton != null)
-		calendarButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
-				{
-					GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
-							.getTracker();
-					tracker.trackEvent("UserHub", "ButtonClicked", "Event Calendar", 0);
-					tracker.dispatch();
-				}
-				Intent i = new Intent(v.getContext(), CalendarActivity.class);
-				startActivity(i);
-			}
-		});
-		
-		if (adNavigationIndicator != null)
-		adNavigationIndicator.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				if (adLink != null && imageHasLoaded)
-				{
-					Intent i = new Intent(Intent.ACTION_VIEW);
-					i.setData(Uri.parse(adLink));
-					startActivity(i);
-				}
-			}
-		});
-	}
+					User user = SessionFunctions.getCurrentUser(this);
+					buttonGrid.removeAllViews();
 	
+					switch(user.getAffiliation())
+					{
+						case NONE:
+						{
+							LayoutInflater inflater = getLayoutInflater();
+							View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
+							break;
+						}
+						case STUDENT:
+						case STAFF:
+						{
+							LayoutInflater inflater = getLayoutInflater();
+							View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+							break;
+						}
+					}
+				}
+				break;
+			}
+			default: break;
+		}
+	}
+
 	@Override
 	public void onResume()
 	{
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		
-		User user = SessionFunctions.getCurrentUser(this);
-		
-		buttonGrid.removeAllViews();
-		
-		if (user.getForename().equals("User"))
-		{
-			LayoutInflater inflater = getLayoutInflater();
-			View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
-		}
-		else
-		{
-			LayoutInflater inflater = getLayoutInflater();
-			View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
-		}
-		
-//		setButtonGridOnClickListeners();		
 		super.onResume();
 	}
-	
+
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		getSupportMenuInflater().inflate(R.menu.user_hub_menu, menu);
@@ -264,19 +164,19 @@ public class UserHubActivity extends BaseActivity
 			return true;
 		case R.id.dashboardSettingsMenuItem:
 			Intent settingsIntent = new Intent(this, SettingsActivity.class);
-			startActivity(settingsIntent);
+			startActivityForResult(settingsIntent, REQUEST_AFFILIATION);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig)
 	{
-	    super.onConfigurationChanged(newConfig);
-	    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
-	
+
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap>
 	{
 		private String text;
@@ -304,50 +204,96 @@ public class UserHubActivity extends BaseActivity
 				return;
 			}
 			adText.setText(text);
-			
+
 			Animation navIndicatorFade = AnimationUtils.loadAnimation(context, R.anim.image_fadein_animation);
-			
+
 			adNavigationIndicator.setVisibility(View.VISIBLE);
 			adNavigationIndicator.startAnimation(navIndicatorFade);
-			
+
 			adImage = new ImageView(context);
 			adImage.setScaleType(ScaleType.CENTER_CROP);
 			adImage.setImageBitmap(bitmap);
-						
+
 			adViewSwitcher.addView(adImage);
 			adViewSwitcher.showNext();
 			imageHasLoaded = true;
 		}
 	}
-	
+
 	public void startBrowseActivity(View v)
 	{
-		Toast.makeText(this, "BROWSE", Toast.LENGTH_SHORT).show();
+		if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+		{
+			GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
+			tracker.trackEvent("UserHub", "ButtonClicked", "Browse Events", 0);
+			tracker.dispatch();
+		}
+		Intent i = new Intent(v.getContext(), EventListActivity.class);
+		startActivity(i);
 	}
-	
+
 	public void startCalendarActivity(View v)
 	{
-		Toast.makeText(this, "CALENDAR", Toast.LENGTH_SHORT).show();
+		if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+		{
+			GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
+					.getTracker();
+			tracker.trackEvent("UserHub", "ButtonClicked", "Event Calendar", 0);
+			tracker.dispatch();
+		}
+		Intent i = new Intent(v.getContext(), CalendarActivity.class);
+		startActivity(i);
 	}
-	
+
 	public void startBookmarkActivity(View v)
 	{
-		Toast.makeText(this, "BOOKMARK", Toast.LENGTH_SHORT).show();
+		if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+		{
+			GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
+					.getTracker();
+			tracker.trackEvent("UserHub", "ButtonClicked", "Bookmarked Events", 0);
+			tracker.dispatch();
+		}
+		Intent i = new Intent(v.getContext(), BookmarkedEventListActivity.class);
+		startActivity(i);
 	}
-	
+
 	public void startCollegeEventsActivity(View v)
 	{
-		Toast.makeText(this, "COLLEGE", Toast.LENGTH_SHORT).show();
+		if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+		{
+			GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
+					.getTracker();
+			tracker.trackEvent("UserHub", "ButtonClicked", "College Events", 0);
+			tracker.dispatch();
+		}
+		Intent i = new Intent(v.getContext(), CollegeEventListActivity.class);
+		startActivity(i);
 	}
-	
+
 	public void startSocietyBrowseActivity(View v)
 	{
-		Toast.makeText(this, "SOCIETY", Toast.LENGTH_SHORT).show();
+		if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+		{
+			GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication())
+					.getTracker();
+			tracker.trackEvent("UserHub", "ButtonClicked", "Browse Societies", 0);
+			tracker.dispatch();
+		}
+		Intent i = new Intent(v.getContext(), SocietyListActivity.class);
+		startActivity(i);
 	}
-	
+
 	public void startMySocietiesActivity(View v)
 	{
-		Toast.makeText(this, "MY SOCIETY", Toast.LENGTH_SHORT).show();
+		if (GlobalApplicationData.getAnalyticsPermission(v.getContext()))
+		{
+			GoogleAnalyticsTracker tracker = ((GlobalApplicationData) getApplication()).getTracker();
+			tracker.trackEvent("UserHub", "ButtonClicked", "Society Events", 0);
+			tracker.dispatch();
+		}
+		Intent i = new Intent(v.getContext(), PersonalSocietyListActivity.class);
+		startActivity(i);
 	}
 
 }

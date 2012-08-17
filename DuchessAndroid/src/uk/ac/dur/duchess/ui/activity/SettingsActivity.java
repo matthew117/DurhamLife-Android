@@ -5,6 +5,7 @@ import java.util.List;
 
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.model.DurhamAffiliation;
 import uk.ac.dur.duchess.model.User;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +24,7 @@ public class SettingsActivity extends BaseActivity
 	
 	private EditText forename;
 	private EditText surname;
+	private Spinner affiliation;
 	private Spinner college;
 	private Spinner department;
 	
@@ -58,8 +60,9 @@ public class SettingsActivity extends BaseActivity
 		
 		forename   = (EditText) findViewById(R.id.forenameEdit);
 		surname    = (EditText) findViewById(R.id.surnameEdit);
-		college    = (Spinner)  findViewById(R.id.collegeSpinner);
-		department = (Spinner)  findViewById(R.id.departmentSpinner);
+		affiliation = (Spinner) findViewById(R.id.affiliationSpinner);
+		college     = (Spinner) findViewById(R.id.collegeSpinner);
+		department  = (Spinner) findViewById(R.id.departmentSpinner);
 		
 		universityCheckBox  = (CheckBox) findViewById(R.id.checkBoxUniversity);
 		collegeCheckBox     = (CheckBox) findViewById(R.id.checkBoxCollege);
@@ -92,11 +95,16 @@ public class SettingsActivity extends BaseActivity
 			}
 		});
 		
+		String[] affiliations = getResources().getStringArray(R.array.durham_affiliation);
 		String[] colleges = getResources().getStringArray(R.array.college_array);
 		String[] departments = getResources().getStringArray(R.array.durham_departments);
 		
 		forename.setText(currentUser.getForename());
 		surname.setText(currentUser.getSurname());
+		
+		for(int i = 0; i < affiliations.length; i++)
+			if(affiliations[i].equalsIgnoreCase(currentUser.getAffiliation().name()))
+				{affiliation.setSelection(i); break;}
 		
 		for(int i = 0; i < colleges.length; i++)
 			if(colleges[i].equals(currentUser.getCollege()))
@@ -140,6 +148,10 @@ public class SettingsActivity extends BaseActivity
 		currentUser.setForename(forename.getText().toString());
 		currentUser.setSurname(surname.getText().toString());
 		currentUser.setCollege(college.getSelectedItem().toString());
+		
+		DurhamAffiliation _affiliation = currentUser.getAffiliation();
+		
+		currentUser.setAffiliation(affiliation.getSelectedItem().toString());
 		currentUser.setDepartment(department.getSelectedItem().toString());
 		
 		List<String> newPreferences = new ArrayList<String>();
@@ -155,6 +167,11 @@ public class SettingsActivity extends BaseActivity
 		currentUser.setCategoryPreferences(newPreferences);
 		
 		SessionFunctions.saveUserPreferences(activity, currentUser);
+		
+		Intent i = new Intent();
+		
+		if(currentUser.getAffiliation() != _affiliation) setResult(RESULT_OK);
+		else setResult(RESULT_CANCELED);
 		
 		finish();
 	}	

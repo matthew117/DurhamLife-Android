@@ -93,6 +93,22 @@
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/affiliationEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingLeft="2dp"
+                android:text="Affiliation"
+                android:textColor="@android:color/primary_text_light"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/affiliationSpinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/durham_affiliation" />
+
+            <TextView
                 android:id="@+id/collegeEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
