@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ImageCheckbox">
+        <attr name="checkboxAnchor">
+            <enum name="topright" value="1"/>
+            <enum name="bottomright" value="2"/>
+        </attr>
+        <attr name="checkboxCheckedImage" format="reference"/>
+        <attr name="checkboxUncheckedImage" format="reference"/>
+    </declare-styleable>
+</resources>
