@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#555"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/curved_border_grey_gradient" >
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/dashboard_browse_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_hub_button"
+                android:drawableTop="@drawable/browse_dashboard_icon"
+                android:gravity="center"
+                android:text="@string/browse"
+                android:clickable="true"
+                android:onClick="startBrowseActivity"
+                android:textColor="#ffffff" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/dashboard_calendar_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_hub_button"
+                android:drawableTop="@drawable/calendar_dashboard_icon"
+                android:gravity="center"
+                android:text="@string/calendar"
+                android:textColor="#ffffff"
+                android:clickable="true"
+                android:onClick="startCalendarActivity" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/dashboard_bookmarked_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_hub_button"
+                android:drawableTop="@drawable/bookmark_dashboard_icon"
+                android:gravity="center"
+                android:text="@string/bookmarked"
+                android:clickable="true"
+                android:onClick="startBookmarkActivity"
+                android:textColor="#ffffff" />
+
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

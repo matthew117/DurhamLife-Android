@@ -24,8 +24,10 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
+                android:clickable="true"
                 android:drawableTop="@drawable/browse_dashboard_icon"
                 android:gravity="center"
+                android:onClick="startBrowseActivity"
                 android:text="@string/browse"
                 android:textColor="#ffffff" />
 
@@ -39,8 +41,10 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
+                android:clickable="true"
                 android:drawableTop="@drawable/calendar_dashboard_icon"
                 android:gravity="center"
+                android:onClick="startCalendarActivity"
                 android:text="@string/calendar"
                 android:textColor="#ffffff" />
         </TableRow>
@@ -57,8 +61,10 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
+                android:clickable="true"
                 android:drawableTop="@drawable/bookmark_dashboard_icon"
                 android:gravity="center"
+                android:onClick="startBookmarkActivity"
                 android:text="@string/bookmarked"
                 android:textColor="#ffffff" />
 
@@ -72,8 +78,10 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
+                android:clickable="true"
                 android:drawableTop="@drawable/college_dashboard_icon"
                 android:gravity="center"
+                android:onClick="startCollegeEventsActivity"
                 android:text="@string/college_events"
                 android:textColor="#ffffff" />
         </TableRow>
@@ -90,8 +98,10 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
+                android:clickable="true"
                 android:drawableTop="@drawable/society_dashboard_icon"
                 android:gravity="center"
+                android:onClick="startSocietyBrowseActivity"
                 android:text="@string/societies"
                 android:textColor="#ffffff" />
 
@@ -105,8 +115,10 @@
                 android:layout_marginTop="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/user_hub_button"
+                android:clickable="true"
                 android:drawableTop="@drawable/my_society_dashboard_icon"
                 android:gravity="center"
+                android:onClick="startMySocietiesActivity"
                 android:text="@string/my_societies"
                 android:textColor="#ffffff" />
         </TableRow>

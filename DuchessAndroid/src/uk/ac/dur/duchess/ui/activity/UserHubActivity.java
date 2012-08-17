@@ -3,6 +3,8 @@ package uk.ac.dur.duchess.ui.activity;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
+import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.model.User;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -12,12 +14,15 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.actionbarsherlock.view.Menu;
@@ -29,6 +34,8 @@ public class UserHubActivity extends BaseActivity
 	private static final String AD_API_URL = "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/features.php";
 	
 	private Context context;
+	
+	private FrameLayout buttonGrid;
 	
 	private TextView browseButton;
 	private TextView collegeEventButton;
@@ -52,17 +59,31 @@ public class UserHubActivity extends BaseActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
 		setContentView(R.layout.dashboard);
+		
+		buttonGrid = (FrameLayout) findViewById(R.id.dashboardButtonGrid);
+		
+		User user = SessionFunctions.getCurrentUser(this);
+		
+		if (user.getForename().equals("User"))
+		{
+			LayoutInflater inflater = getLayoutInflater();
+			View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
+		}
+		else
+		{
+			LayoutInflater inflater = getLayoutInflater();
+			View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+		}
 
 		context = this;
 		
-		browseButton = (TextView) findViewById(R.id.dashboard_browse_button);
-		collegeEventButton = (TextView) findViewById(R.id.dashboard_college_button);
-		myEventsButton = (TextView) findViewById(R.id.dashboard_bookmarked_button);
-		societiesButton = (TextView) findViewById(R.id.dashboard_societies_button);
-		societyEventListButton = (TextView) findViewById(R.id.dashboard_subscriptions_button);
-		calendarButton = (TextView) findViewById(R.id.dashboard_calendar_button);
+		browseButton = (TextView) buttonGrid.findViewById(R.id.dashboard_browse_button);
+		collegeEventButton = (TextView) buttonGrid.findViewById(R.id.dashboard_college_button);
+		myEventsButton = (TextView) buttonGrid.findViewById(R.id.dashboard_bookmarked_button);
+		societiesButton = (TextView) buttonGrid.findViewById(R.id.dashboard_societies_button);
+		societyEventListButton = (TextView) buttonGrid.findViewById(R.id.dashboard_subscriptions_button);
+		calendarButton = (TextView) buttonGrid.findViewById(R.id.dashboard_calendar_button);
 		
 		adViewSwitcher = (ViewSwitcher) findViewById(R.id.dashboardAdAnimator);
 		
@@ -74,6 +95,14 @@ public class UserHubActivity extends BaseActivity
 		adText = (TextView) findViewById(R.id.dashboardAdText);
 		adNavigationIndicator = (ImageView) findViewById(R.id.adNavigationIndicator);
 
+//		setButtonGridOnClickListeners();
+		
+		(new DownloadImageTask()).execute("");
+	}
+
+	private void setButtonGridOnClickListeners()
+	{
+		if (browseButton != null)
 		browseButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -90,6 +119,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 
+		if (collegeEventButton != null)
 		collegeEventButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -107,6 +137,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 
+		if (myEventsButton != null)
 		myEventsButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -124,6 +155,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 
+		if (societiesButton != null)
 		societiesButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -141,6 +173,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 
+		if (societyEventListButton != null)
 		societyEventListButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -157,6 +190,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 
+		if (calendarButton != null)
 		calendarButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -174,6 +208,7 @@ public class UserHubActivity extends BaseActivity
 			}
 		});
 		
+		if (adNavigationIndicator != null)
 		adNavigationIndicator.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -187,14 +222,29 @@ public class UserHubActivity extends BaseActivity
 				}
 			}
 		});
-		
-		(new DownloadImageTask()).execute("");
 	}
 	
 	@Override
 	public void onResume()
 	{
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		User user = SessionFunctions.getCurrentUser(this);
+		
+		buttonGrid.removeAllViews();
+		
+		if (user.getForename().equals("User"))
+		{
+			LayoutInflater inflater = getLayoutInflater();
+			View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
+		}
+		else
+		{
+			LayoutInflater inflater = getLayoutInflater();
+			View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+		}
+		
+//		setButtonGridOnClickListeners();		
 		super.onResume();
 	}
 	
@@ -268,6 +318,36 @@ public class UserHubActivity extends BaseActivity
 			adViewSwitcher.showNext();
 			imageHasLoaded = true;
 		}
+	}
+	
+	public void startBrowseActivity(View v)
+	{
+		Toast.makeText(this, "BROWSE", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void startCalendarActivity(View v)
+	{
+		Toast.makeText(this, "CALENDAR", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void startBookmarkActivity(View v)
+	{
+		Toast.makeText(this, "BOOKMARK", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void startCollegeEventsActivity(View v)
+	{
+		Toast.makeText(this, "COLLEGE", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void startSocietyBrowseActivity(View v)
+	{
+		Toast.makeText(this, "SOCIETY", Toast.LENGTH_SHORT).show();
+	}
+	
+	public void startMySocietiesActivity(View v)
+	{
+		Toast.makeText(this, "MY SOCIETY", Toast.LENGTH_SHORT).show();
 	}
 
 }
