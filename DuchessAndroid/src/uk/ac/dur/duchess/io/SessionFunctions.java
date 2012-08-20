@@ -171,7 +171,7 @@ public class SessionFunctions
 		}
 	}
 	
-	private static List<String> getCollegesFromString(String s)
+	public static List<String> getCollegesFromString(String s)
 	{
 		if (s.equals("") || s.equals("[]"))
 		{

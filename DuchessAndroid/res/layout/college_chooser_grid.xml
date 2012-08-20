@@ -1,61 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/uk.ac.dur.duchess"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res/uk.ac.dur.duchess">
+    android:layout_height="match_parent" >
 
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" >
-
+
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/collingwoodIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/collingwood"
             android:gravity="center_horizontal"
             android:text="Collingwood"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
             app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
-        
+
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/greyIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/grey"
             android:gravity="center_horizontal"
             android:text="Grey"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
             app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
-        
+
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/hatfieldIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/hatfield"
             android:gravity="center_horizontal"
             android:text="Hatfield"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
             app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
-        
+
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/butlerIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/butler"
             android:gravity="center_horizontal"
             android:text="Josephine Butler"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -68,28 +77,32 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" >
-        
-               <uk.ac.dur.duchess.ui.view.ImageCheckbox
-                   android:id="@+id/stAidansIconCheckbox"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="1"
-                   android:drawableTop="@drawable/st_aidans"
-                   android:gravity="center_horizontal"
-                   android:text="St. Aidan&apos;s"
-                   android:textSize="12sp"
-                   app:checkboxAnchor="bottomright"
-                   app:checkboxCheckedImage="@drawable/dur_checkbox"
-                   app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
+
+        <uk.ac.dur.duchess.ui.view.ImageCheckbox
+            android:id="@+id/stAidansIconCheckbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableTop="@drawable/st_aidans"
+            android:gravity="center_horizontal"
+            android:text="St. Aidan&apos;s"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="12sp"
+            app:checkboxAnchor="bottomright"
+            app:checkboxCheckedImage="@drawable/dur_checkbox"
+            app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
 
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/stChadsIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/chads"
             android:gravity="center_horizontal"
             android:text="St. Chad&apos;s"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -100,9 +113,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/cuthberts"
             android:gravity="center_horizontal"
             android:text="St. Cuthbert&apos;s"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -113,9 +128,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/hild_bede"
             android:gravity="center_horizontal"
             android:text="St. Hild &amp; Bede"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -128,28 +145,32 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" >
-        
-               <uk.ac.dur.duchess.ui.view.ImageCheckbox
-                   android:id="@+id/stJohnsIconCheckbox"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="1"
-                   android:drawableTop="@drawable/st_johns"
-                   android:gravity="center_horizontal"
-                   android:text="St. John&apos;s"
-                   android:textSize="12sp"
-                   app:checkboxAnchor="bottomright"
-                   app:checkboxCheckedImage="@drawable/dur_checkbox"
-                   app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
+
+        <uk.ac.dur.duchess.ui.view.ImageCheckbox
+            android:id="@+id/stJohnsIconCheckbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableTop="@drawable/st_johns"
+            android:gravity="center_horizontal"
+            android:text="St. John&apos;s"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="12sp"
+            app:checkboxAnchor="bottomright"
+            app:checkboxCheckedImage="@drawable/dur_checkbox"
+            app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
 
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/stMarysIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/st_marys"
             android:gravity="center_horizontal"
             android:text="St. Mary&apos;s"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -160,9 +181,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/trevelyan"
             android:gravity="center_horizontal"
             android:text="Trevelyan"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -173,9 +196,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/castle"
             android:gravity="center_horizontal"
             android:text="University"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -188,28 +213,32 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1" >
-        
-               <uk.ac.dur.duchess.ui.view.ImageCheckbox
-                   android:id="@+id/vanMildertIconCheckbox"
-                   android:layout_width="0dp"
-                   android:layout_height="wrap_content"
-                   android:layout_weight="1"
-                   android:drawableTop="@drawable/van_mildert"
-                   android:gravity="center_horizontal"
-                   android:text="Van Mildert"
-                   android:textSize="12sp"
-                   app:checkboxAnchor="bottomright"
-                   app:checkboxCheckedImage="@drawable/dur_checkbox"
-                   app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
+
+        <uk.ac.dur.duchess.ui.view.ImageCheckbox
+            android:id="@+id/vanMildertIconCheckbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawableTop="@drawable/van_mildert"
+            android:gravity="center_horizontal"
+            android:text="Van Mildert"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="12sp"
+            app:checkboxAnchor="bottomright"
+            app:checkboxCheckedImage="@drawable/dur_checkbox"
+            app:checkboxUncheckedImage="@drawable/dur_checkbox_unchecked" />
 
         <uk.ac.dur.duchess.ui.view.ImageCheckbox
             android:id="@+id/ustinovIconCheckbox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/ustinov"
             android:gravity="center_horizontal"
             android:text="Ustinov"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -220,9 +249,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/john_snow"
             android:gravity="center_horizontal"
             android:text="John Snow"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"
@@ -233,9 +264,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:drawableTop="@drawable/stephenson"
             android:gravity="center_horizontal"
             android:text="Stephenson"
+            android:textColor="@android:color/primary_text_dark"
             android:textSize="12sp"
             app:checkboxAnchor="bottomright"
             app:checkboxCheckedImage="@drawable/dur_checkbox"

@@ -113,7 +113,7 @@ public class EventListView extends ListView
 				{
 					User user = SessionFunctions.getCurrentUser(activity);
 					
-					if(user.getAffiliation() == DurhamAffiliation.STAFF)
+					if(user.getAffiliation() != DurhamAffiliation.STAFF)
 						 eventList = dataPro.getEventsByCollege(getContext(), user.getCollege());
 					else eventList = dataPro.getEventsByColleges(getContext(), user.getColleges());
 				}

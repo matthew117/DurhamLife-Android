@@ -132,5 +132,6 @@
         <string name="subscriptions">Subscriptions</string>
         <string name="bookmarks">Bookmarks</string>
         <string name="my_societies">My Societies</string>
+        <string name="affiliation">Affiliation</string>
 
 </resources>

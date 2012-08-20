@@ -5,7 +5,6 @@ import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
 import uk.ac.dur.duchess.io.SessionFunctions;
 import uk.ac.dur.duchess.model.User;
-import uk.ac.dur.duchess.model.DurhamAffiliation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
