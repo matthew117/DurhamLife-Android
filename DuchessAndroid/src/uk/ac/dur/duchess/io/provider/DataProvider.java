@@ -3,7 +3,6 @@ package uk.ac.dur.duchess.io.provider;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -11,8 +10,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 import uk.ac.dur.duchess.io.xml.ReviewXMLParser;
 import uk.ac.dur.duchess.io.xml.SocietyXMLParser;
@@ -26,6 +23,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class DataProvider
 {
@@ -199,7 +197,11 @@ public class DataProvider
 	{
 		List<Event> collegeEventList = new ArrayList<Event>();
 		for (String college : colleges)
-			collegeEventList.addAll(getEventsByCollege(context, college));
+		{
+			List<Event> collegeEvents = getEventsByCollege(context, college);
+			if(collegeEvents == null) return null;
+			else collegeEventList.addAll(collegeEvents);
+		}
 		return collegeEventList;
 	}
 

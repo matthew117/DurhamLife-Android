@@ -9,5 +9,24 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="#FFFFFF" />
+    
+        <LinearLayout
+        android:id="@+id/societyEventListEmpty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:background="#FFFFFF" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:padding="5dp"
+            android:gravity="center_horizontal"
+            android:text="There are currently no events listed by this society"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#A06DB8" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -36,7 +36,7 @@
             android:layout_marginTop="30dp"
             android:padding="5dp"
             android:gravity="center_horizontal"
-            android:text="There are currently no events on at college."
+            android:text="There are currently no events on at college"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#A06DB8" />

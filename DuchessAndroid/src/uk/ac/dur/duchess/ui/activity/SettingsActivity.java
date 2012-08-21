@@ -10,7 +10,6 @@ import uk.ac.dur.duchess.model.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,21 +17,19 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 public class SettingsActivity extends BaseActivity
 {
 	protected static final int REQUEST_COLLEGES = 1;
 
-	private EditText email;
-	private Button password;
-
-	private EditText forename;
-	private EditText surname;
 	private Spinner affiliation;
 	private ViewSwitcher college;
+	private boolean multipleColleges;
+	private Spinner collegeSpinner;
+	private Button collegeButton;
 	private Spinner department;
 
 	private CheckBox universityCheckBox;
@@ -43,6 +40,7 @@ public class SettingsActivity extends BaseActivity
 	private CheckBox exhibitionsCheckBox;
 	private CheckBox conferencesCheckBox;
 	private CheckBox communityCheckBox;
+
 	private Button selectAll;
 	private Button clearAll;
 
@@ -50,10 +48,6 @@ public class SettingsActivity extends BaseActivity
 	private User currentUser;
 
 	private CheckBox[] preferences;
-
-	private Spinner collegeSpinner;
-
-	private Button collegeButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -66,11 +60,6 @@ public class SettingsActivity extends BaseActivity
 		activity = this;
 		currentUser = SessionFunctions.getCurrentUser(activity);
 
-		email    = (EditText) findViewById(R.id.editEmailEditText);
-		password = (Button)   findViewById(R.id.passwordButton);
-
-		forename   = (EditText) findViewById(R.id.forenameEdit);
-		surname    = (EditText) findViewById(R.id.surnameEdit);
 		affiliation = (Spinner) findViewById(R.id.affiliationSpinner);
 		college     = (ViewSwitcher) findViewById(R.id.collegeSelector);
 		department  = (Spinner) findViewById(R.id.departmentSpinner);
@@ -85,33 +74,18 @@ public class SettingsActivity extends BaseActivity
 		communityCheckBox   = (CheckBox) findViewById(R.id.checkBoxCommunity);
 
 		preferences = new CheckBox[]
-				{
-				universityCheckBox, collegeCheckBox, musicCheckBox,
-				theatreCheckBox, exhibitionsCheckBox, sportCheckBox, 
-				conferencesCheckBox, communityCheckBox
-				};
+		{
+			universityCheckBox, collegeCheckBox, musicCheckBox,
+			theatreCheckBox, exhibitionsCheckBox, sportCheckBox, 
+			conferencesCheckBox, communityCheckBox
+		};
 
 		selectAll = (Button) findViewById(R.id.selectPreferencesButton);
 		clearAll  = (Button) findViewById(R.id.clearPreferencesButton);
 
-		email.setText(currentUser.getEmailAddress());
-
-		password.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent i = new Intent(v.getContext(), NewPasswordActivity.class);
-				startActivity(i);
-			}
-		});
-
-		String[] affiliations = getResources().getStringArray(R.array.durham_affiliation);
-		String[] colleges = getResources().getStringArray(R.array.college_array);
-		String[] departments = getResources().getStringArray(R.array.durham_departments);
-
-		forename.setText(currentUser.getForename());
-		surname.setText(currentUser.getSurname());
+		final String[] affiliations = getResources().getStringArray(R.array.durham_affiliation);
+		final String[] colleges = getResources().getStringArray(R.array.college_array);
+		final String[] departments = getResources().getStringArray(R.array.durham_departments);
 
 		if(currentUser.getAffiliation() != null)
 		{
@@ -119,19 +93,54 @@ public class SettingsActivity extends BaseActivity
 				if(affiliations[i].equalsIgnoreCase(currentUser.getAffiliation().name()))
 				{affiliation.setSelection(i); break;}
 		}
-		
+
 		affiliation.setOnItemSelectedListener(new OnItemSelectedListener()
 		{
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) 
 			{
-				college.showNext();
+				if(position != 0)
+				{
+					findViewById(R.id.collegeEdit).setVisibility(View.VISIBLE);
+					findViewById(R.id.departmentEdit).setVisibility(View.VISIBLE);
+
+					college.setVisibility(View.VISIBLE);
+					department.setVisibility(View.VISIBLE);
+
+					if(position == 1 && multipleColleges)
+					{
+						multipleColleges = false;
+
+						if(currentUser.getColleges().size() > 0)
+						{
+							for(int i = 0; i < colleges.length; i++)
+								if(colleges[i].equals(currentUser.getCollege()))
+								{collegeSpinner.setSelection(i); break;}
+						}
+						else collegeSpinner.setSelection(0);
+						
+						college.showNext();
+					}
+					else if(position == 2 && !multipleColleges)
+					{	
+						multipleColleges = true;
+						college.showNext();
+					}
+				}
+				else
+				{
+					findViewById(R.id.collegeEdit).setVisibility(View.GONE);
+					findViewById(R.id.departmentEdit).setVisibility(View.GONE);
+
+					college.setVisibility(View.GONE);
+					department.setVisibility(View.GONE);
+				}
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parentView) 
 			{
-				
+
 			}
 		});
 
@@ -144,6 +153,22 @@ public class SettingsActivity extends BaseActivity
 		collegeSpinner = new Spinner(this);
 		collegeSpinner.setPrompt("College");
 		collegeSpinner.setAdapter(collegeAdapter);
+		
+		collegeSpinner.setOnItemSelectedListener(new OnItemSelectedListener()
+		{
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) 
+			{
+				if(position != 0)
+					currentUser.setCollege(collegeSpinner.getSelectedItem().toString());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) 
+			{
+
+			}
+		});
 
 		if(currentUser.getColleges().size() > 0)
 		{
@@ -155,12 +180,12 @@ public class SettingsActivity extends BaseActivity
 		collegeButton = new Button(this);
 		collegeButton.setText("Set Colleges");
 		collegeButton.setTextSize(16);
-		
+
 		int left   = collegeButton.getPaddingLeft();
 		int top    = collegeButton.getPaddingTop();
 		int right  = collegeButton.getPaddingRight();
 		int bottom = collegeButton.getPaddingBottom();
-		
+
 		collegeButton.setPadding(left, top + 10, right, bottom + 10);
 		collegeButton.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
 		collegeButton.setOnClickListener(new View.OnClickListener()
@@ -168,6 +193,7 @@ public class SettingsActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
+				SessionFunctions.saveUserPreferences(activity, currentUser);
 				Intent i = new Intent(v.getContext(), CollegeGridActivity.class);
 				startActivityForResult(i, REQUEST_COLLEGES);
 			}
@@ -182,9 +208,33 @@ public class SettingsActivity extends BaseActivity
 				if(departments[i].equals(currentUser.getDepartment()))
 				{department.setSelection(i); break;}
 		}
-		
-		if(currentUser.getAffiliation() != DurhamAffiliation.STUDENT)
-			college.showNext(); 
+
+
+		switch(currentUser.getAffiliation())
+		{
+		case STAFF:
+		{
+			multipleColleges = true;
+			break;
+		}
+		case STUDENT:
+		{
+			college.showNext();
+			multipleColleges = false;
+			break;
+		}
+		case NONE:
+		{
+			findViewById(R.id.collegeEdit).setVisibility(View.GONE);
+			findViewById(R.id.departmentEdit).setVisibility(View.GONE);
+
+			college.setVisibility(View.GONE);
+			department.setVisibility(View.GONE);
+
+			multipleColleges = true;
+			break;
+		}
+		}
 
 		List<String> categoryPreferences = currentUser.getCategoryPreferences();
 
@@ -214,13 +264,16 @@ public class SettingsActivity extends BaseActivity
 
 	@Override
 	public void onBackPressed()
-	{
-		currentUser.setEmailAddress(email.getText().toString());
-
-		currentUser.setForename(forename.getText().toString());
-		currentUser.setSurname(surname.getText().toString());
-		if(currentUser.getAffiliation() == DurhamAffiliation.STUDENT)
-			currentUser.setCollege(collegeSpinner.getSelectedItem().toString());
+	{	
+		if(affiliation.getSelectedItem().toString().equals("Student"))
+		{
+			if(collegeSpinner.getSelectedItem().toString().equals("Select a college"))
+			{
+				Toast.makeText(activity, "Please select a college", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			else currentUser.setCollege(collegeSpinner.getSelectedItem().toString());
+		}
 
 		DurhamAffiliation _affiliation = currentUser.getAffiliation();
 
@@ -235,8 +288,6 @@ public class SettingsActivity extends BaseActivity
 		for(int i = 0; i < categories.length; i++)
 			if(preferences[i].isChecked()) newPreferences.add(categories[i]);
 
-		Log.d("CATEGORIES", newPreferences.toString());
-
 		currentUser.setCategoryPreferences(newPreferences);
 
 		SessionFunctions.saveUserPreferences(activity, currentUser);
@@ -247,7 +298,7 @@ public class SettingsActivity extends BaseActivity
 		else setResult(RESULT_CANCELED);
 
 		finish();
-	}	
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int responseCode, Intent data)
@@ -261,7 +312,7 @@ public class SettingsActivity extends BaseActivity
 				currentUser.setColleges(
 						SessionFunctions.getCollegesFromString(
 								data.getStringExtra("colleges")));
-				
+	
 				SessionFunctions.saveUserPreferences(this, currentUser);
 			}
 			break;

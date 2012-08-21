@@ -23,7 +23,7 @@
     <string name="ok">OK</string>
 
     <string-array name="college_array">
-        <item>N/A</item>
+        <item>Select a college</item>
         <item>Collingwood</item>
         <item>Grey</item>
         <item>Hatfield</item>
@@ -47,7 +47,7 @@
         <item>Staff</item>
     </string-array>
     <string-array name="durham_departments">
-        <item>N/A</item>
+        <item>Select a department</item>
         <item>Anthropology</item>
         <item>Archaeology</item>
         <item>Biological &amp; Biomedical</item>

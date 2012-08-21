@@ -57,6 +57,7 @@ public class SocietyEventListActivity extends SortableListActivity
 		b.putString("society_name", societyName);
 
 		listView.loadAllEvents(this, b);
+		listView.setEmptyView(findViewById(R.id.societyEventListEmpty));
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu)

@@ -111,11 +111,11 @@ public class SessionFunctions
 		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "NONE"));
 		user.setDepartment(prefs.getString(DEPARTMENT_KEY, ""));
 		user.setColleges(getCollegesFromString(prefs.getString(COLLEGES_KEY, "")));
-		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "")));
+		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "11111111")));
 		user.setSocieties(getSocietiesFromString(prefs.getString(SOCIETIES_KEY, "")));
 		user.setEvents(getEventsFromString(prefs.getString(EVENTS_KEY, "")));
 		
-		return (user.getUserID() == -1) ? null : user;
+		return user;
 	}
 
 	/**
