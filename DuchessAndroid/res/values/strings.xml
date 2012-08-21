@@ -133,5 +133,7 @@
         <string name="bookmarks">Bookmarks</string>
         <string name="my_societies">My Societies</string>
         <string name="affiliation">Affiliation</string>
+        <string name="you_have_not_subscribed_to_any_societies_yet_">You have not subscribed to any societies yet.</string>
+        <string name="select_a_society_from_the_list_and_then_press_subscribe_">Select a society from the list and then press subscribe.</string>
 
 </resources>
