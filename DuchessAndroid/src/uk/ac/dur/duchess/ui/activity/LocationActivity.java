@@ -11,8 +11,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,8 +21,16 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.Display;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -34,23 +42,36 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 {
 	private GeoPoint point;
 	private GeoPoint currentLocation;
+
+	private ViewSwitcher mapSwitcher;
+	private ImageButton mapToggle;
 	private MapView mapView;
+	private LinearLayout compassLayout;
+	private CompassView compassView;
+	private TextView compassText;
+	private boolean mapMode = true;
+
 	private MapController mc;
 
 	private TextView addressBlock;
 	private TextView eventName;
-	
+
 	private SensorManager mySensorManager;
 	private Sensor mySensor;
 
 	private Bitmap compass;
+	private Bitmap base;
+	
 	private double distance = 0;
+	private float bearing = 0;
 	private float rotation = 0;
-	private LocationManager lm;
+	
+	private LocationManager locationManager;
 	private LocationListener locationListener;
+	
 	private double eventLat;
 	private double eventLon;
-	public float bearing = 0;
+	
 	private EventLocation location;
 
 	@Override
@@ -62,24 +83,25 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
 		eventName = (TextView) findViewById(R.id.locationEventNameLabel);
 
-		compass = BitmapFactory.decodeResource(getResources(), R.drawable.compass_arrow);
+		compass = BitmapFactory.decodeResource(getResources(), R.drawable.compass_arrow_2);
+		base = BitmapFactory.decodeResource(getResources(), R.drawable.compass_base_2);
 
 		Bundle e = getIntent().getExtras();
 
 		// TODO add error checking
-		
+
 		DatabaseHandler database = new DatabaseHandler(this);
 		database.open();
-		
+
 		location = database.getLocation(e.getLong("location_id"));
-		
+
 		database.close();
 
 		addressBlock.setText(location.getAddress1() + ", " + location.getAddress2() + "\n"
 				+ location.getCity() + ", " + location.getPostcode());
 		eventName.setText(e.getString("event_name"));
 
-		mapView = (MapView) findViewById(R.id.mapView);
+		mapView = (MapView) getLayoutInflater().inflate(R.layout.map_view, null, false);
 		mapView.setBuiltInZoomControls(true);
 
 		mc = mapView.getController();
@@ -97,31 +119,101 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		listOfOverlays.clear();
 		listOfOverlays.add(mapOverlay);
 
-		lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationListener = new MyLocationListener();
 
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		mapView.invalidate();
 
+		mapSwitcher = (ViewSwitcher) findViewById(R.id.mapSwitcher);
+		
+		mapToggle = (ImageButton) findViewById(R.id.mapToggleButton);
+		mapToggle.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				mapMode = !mapMode;
+				mapSwitcher.showNext();
+				
+				if(mapMode) mapToggle.setImageResource(R.drawable.compass_icon);
+				else mapToggle.setImageResource(R.drawable.location_tab_icon);
+			}
+		});
+		
+		compassLayout = new LinearLayout(this);
+		compassLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+		compassLayout.setOrientation(LinearLayout.VERTICAL);
+		
+		compassView = new CompassView(this);
+		compassView.setScaleType(ScaleType.CENTER);
+		
+		compassText = new TextView(this);
+		compassText.setText(String.format("Distance to Event: Calculating..."));
+		compassText.setTextColor(Color.BLACK);
+		compassText.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+		compassText.setPadding(10, 30, 10, 10);
+		compassText.setGravity(Gravity.CENTER_HORIZONTAL);
+		
+		compassLayout.addView(compassText);
+		compassLayout.addView(compassView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		
+
+		mapSwitcher.addView(mapView);
+		mapSwitcher.addView(compassLayout, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
 		mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-	
+
 		mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 	}
 
+	public class CompassView extends ImageView
+	{	 
+		public CompassView(Context context)
+		{
+			super(context);
+		}
+
+		@Override
+		protected void onDraw(Canvas canvas)
+		{
+			super.onDraw(canvas);
+
+			int width = getWidth();
+			int height = getHeight();
+
+			int x = (width  / 2) - (base.getWidth()  / 2); 
+			int y = (height / 2) - (base.getHeight() / 2);
+
+			int bx = x + (base.getWidth()  / 2) - (compass.getWidth()  / 2);
+			int by = y + (base.getHeight() / 2) - (compass.getHeight() / 2);
+
+			Matrix matrix = new Matrix();
+			matrix.reset();
+			matrix.setTranslate(x, y);
+
+			canvas.drawBitmap(base, matrix, null);
+
+			matrix.setTranslate(bx, by);
+			matrix.preRotate(getCompassRotation(), (compass.getWidth() / 2), (compass.getHeight() / 2));
+
+			canvas.drawBitmap(compass, matrix, null);
+		} 
+	}
 
 	protected void onResume()
 	{
 		super.onResume();
 		mySensorManager.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 	}
 
 	protected void onPause()
 	{
 		super.onPause();
 		mySensorManager.unregisterListener(this);
-		lm.removeUpdates(locationListener);
+		locationManager.removeUpdates(locationListener);
 	}
 
 
@@ -143,42 +235,12 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 			Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.google_maps_pin_purple);
 			canvas.drawBitmap(bmp, screenPoint.x - (bmp.getWidth()/2), screenPoint.y - bmp.getHeight(), null);
-			Bitmap base = BitmapFactory.decodeResource(getResources(), R.drawable.compass_base);
-
-			Display display = getWindowManager().getDefaultDisplay(); 
-			int width = canvas.getWidth();
-			int height = canvas.getHeight();
-
-			int x = width - 100;
-			int y = height - 400;
-			int px = x + (compass.getWidth()  / 2);
-			int py = y + (compass.getHeight() / 2);
-			int bx = x + (base.getWidth()  / 2) - (compass.getWidth()  / 2);
-			int by = y + (base.getHeight() / 2) - (compass.getHeight() / 2);
-
-			Matrix matrix = new Matrix();
-			matrix.reset();
-			matrix.setTranslate(x, y);
-			
-			canvas.drawBitmap(base, matrix, null);
-			
-			matrix.setTranslate(bx, by);
-			matrix.preRotate(getRotation(), (compass.getWidth() / 2), (compass.getHeight() / 2));
-			
-			Paint paint = new Paint();
-			paint.setStyle(Paint.Style.FILL);
-			paint.setColor(Color.BLACK);
-			paint.setAntiAlias(true);
-			paint.setTextSize(30);	
-			
-			canvas.drawText(String.format("%.3f", distance), px, py - 50, paint);
-			canvas.drawBitmap(compass, matrix, null);
 
 			return true;
 		}
 	}
 
-	private float getRotation()
+	private float getCompassRotation()
 	{
 		if(currentLocation != null) return (float) bearing - rotation;
 		else return rotation;
@@ -197,9 +259,13 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 				float[] distanceResult = new float[3];
 				Location.distanceBetween(newLocation.getLatitude(), newLocation.getLongitude(), 
 						eventLat, eventLon, distanceResult);
-				
+
 				distance = distanceResult[0];
-				bearing   = distanceResult[1]; 
+				bearing  = distanceResult[1];
+				
+				compassText.setText("Distance to Event: " + String.format("%.3f", distance) + "m");
+				
+				compassView.postInvalidate();
 			}
 		}
 
@@ -229,6 +295,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	public void onSensorChanged(SensorEvent event)
 	{
 		rotation = (float) event.values[0];
+		compassView.postInvalidate();
 	}
 
 }

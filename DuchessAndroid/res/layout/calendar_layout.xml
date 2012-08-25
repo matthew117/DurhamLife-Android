@@ -16,13 +16,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="2dp" >
-
+
             <ImageView
                 android:id="@+id/prevMonthButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:src="@drawable/month_backward" />
+                android:src="@drawable/previous_button" />
 
             <TextView
                 android:id="@+id/monthText"
@@ -36,13 +36,14 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:typeface="serif" />
-
+
             <ImageView
                 android:id="@+id/nextMonthButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:src="@drawable/month_forward" />
+                android:src="@drawable/next_button" />
+
         </LinearLayout>
 
         <LinearLayout
