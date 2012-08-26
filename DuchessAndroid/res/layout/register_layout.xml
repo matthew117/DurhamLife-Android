@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="7dp" >
+    android:layout_height="fill_parent" >
 
-    <EditText
-        android:id="@+id/forenameRegister"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/forename"
-        android:inputType="textPersonName" />
+        android:background="@android:color/background_light"
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/surnameRegister"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/surname"
-        android:inputType="textPersonName" />
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/DUPurple"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="Welcome to Durham Life!"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/registerEmailEditText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" >
+        <CheckBox
+            android:id="@+id/usageDataCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Allow this application to send anonymous usage data?"
+            android:textColor="@android:color/primary_text_light" />
 
-        <requestFocus />
-    </EditText>
+        <CheckBox
+            android:id="@+id/bugReportCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Allow this application to send bug/error reports?"
+            android:textColor="@android:color/primary_text_light" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Customise this application via the Settings icon on the dashboard"
+            android:textColor="@android:color/black" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/action_settings_tutorial" />
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center_horizontal"
+            android:text="Would you like to customise now?"
+            android:textColor="@android:color/black" />
 
-    <EditText
-        android:id="@+id/registerPasswordEditText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:background="@color/DUPurple"
+            android:paddingBottom="2dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingTop="5dp" >
+
+            <Button
+                android:id="@+id/registerNowButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Now" />
+
+            <Button
+                android:id="@+id/registerLaterButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Later" />
 
-    <EditText
-        android:id="@+id/registerConfirmPasswordEditText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password_confirm"
-        android:inputType="textPassword" />
+        </LinearLayout>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:paddingLeft="2dp"
-        android:text="@string/college"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/collegeSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/college_array"
-        android:prompt="@string/college" />
-
-    <TextView
-        android:id="@+id/registerDepartmentLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="2dp"
-        android:paddingLeft="2dp"
-        android:text="@string/department"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
-
-    <Spinner
-        android:id="@+id/departmentSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/durham_departments"
-        android:prompt="@string/department" />
-
-    <Button
-        android:id="@+id/registerUserButton"
-        android:layout_width="158dp"
-        android:layout_height="wrap_content"
-        android:text="@string/regsiter" />
-
-</LinearLayout>
+</ScrollView>

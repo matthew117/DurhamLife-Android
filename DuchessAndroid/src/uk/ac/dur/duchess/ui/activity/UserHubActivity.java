@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -35,6 +36,7 @@ public class UserHubActivity extends BaseActivity
 	private Context context;
 
 	private static final int REQUEST_AFFILIATION = 1;
+	private static final int REQUEST_SETTINGS = 2;
 
 	private FrameLayout buttonGrid;
 
@@ -103,6 +105,14 @@ public class UserHubActivity extends BaseActivity
 			});
 
 		(new DownloadImageTask()).execute("");
+		
+		if (GlobalApplicationData.isFirstRun(this))
+		{
+			GlobalApplicationData.setFirstRun(this, false);
+			
+			Intent i = new Intent(this, RegisterActivity.class);
+			startActivityForResult(i, REQUEST_SETTINGS);
+		}
 	}
 
 	@Override
@@ -133,6 +143,15 @@ public class UserHubActivity extends BaseActivity
 							break;
 						}
 					}
+				}
+				break;
+			}
+			case REQUEST_SETTINGS:
+			{			
+				if (responseCode == RESULT_OK)
+				{
+					Intent settingsIntent = new Intent(this, SettingsActivity.class);
+					startActivityForResult(settingsIntent, REQUEST_AFFILIATION);
 				}
 				break;
 			}
