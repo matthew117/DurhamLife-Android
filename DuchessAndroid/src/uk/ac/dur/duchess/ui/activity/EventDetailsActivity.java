@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventDetailsActivity extends Activity
 {
@@ -36,12 +37,15 @@ public class EventDetailsActivity extends Activity
 	private ProgressBar imageActivityIndicator;
 	
 	private Event event;
+	private Activity activity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.event_details_layout);
+		
+		activity = this;
 
 		txtName = (TextView) findViewById(R.id.textViewEventName);
 		txtDate = (TextView) findViewById(R.id.textViewEventDate);
@@ -79,13 +83,18 @@ public class EventDetailsActivity extends Activity
 			@Override
 			public void onClick(View view)
 			{
-				Intent timeIntent = new Intent(view.getContext(), TimeActivity.class);
-		        timeIntent.putExtra("event_name", event.getName());
-		        timeIntent.putExtra("event_start_date", event.getStartDate());
-		        timeIntent.putExtra("event_end_date", event.getEndDate());
-		        timeIntent.putExtra("event_address", event.getLocation().getAddress1());
-		        timeIntent.putExtra("ical_url", event.getICalURL());
-		        startActivity(timeIntent);
+				if(NetworkFunctions.networkIsConnected(activity))
+				{
+					Intent timeIntent = new Intent(view.getContext(), TimeActivity.class);
+			        timeIntent.putExtra("event_name", event.getName());
+			        timeIntent.putExtra("event_start_date", event.getStartDate());
+			        timeIntent.putExtra("event_end_date", event.getEndDate());
+			        timeIntent.putExtra("event_address", event.getLocation().getAddress1());
+			        timeIntent.putExtra("ical_url", event.getICalURL());
+			        startActivity(timeIntent);
+				}
+				else Toast.makeText(activity, "Times unavailable." +
+					" Are you sure that you have an internet connection?", Toast.LENGTH_LONG).show();
 			}
 		});
 		

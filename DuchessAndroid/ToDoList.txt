@@ -10,8 +10,6 @@ Features
 + Search Bar
 + Add 'Downloading events for the first time' message
 + If the cache expires but there is no connectivity, state that the app is in 'offline mode'
-+ {Student, Staff, Public} skins
-+ Loading icon aftering clicking Login?
 
 Optimizations
 
@@ -21,21 +19,7 @@ Optimizations
 Bugs
 
 - Orientation change messes things up
-- Need to update user to fix list
 - No syncing to database for societies or pinned events
 - Review box only seems to submit the last paragraph of a review and ignore any previous paragraphs
 - A time instance is added to google calendar even if you press back (out of our control?)
-- Compass does not show up on small devices
-- iCal parser should check for connectivity otherwise it will fail and the default layout will be used (useless)
 - Handle onSaveInstanceState and onPause to save user's text when things change
-
- --------------------------------------------------------------------
- ListView              | DataProvider | ProgressDialog | Connectivity
- --------------------------------------------------------------------
- College Events        |       Y      |        Y       |       Y
- Browse                |       Y      |        Y       |       N
- Calendar              |       Y      |        N       |       N
- My Events (Bookmarks) |       Y      |        Y       |       Y
- Societies             |       Y      |        Y       |       N
- Personal Societies    |       N      |        Y       |       N
- Society               |       N      |        Y       |       N
