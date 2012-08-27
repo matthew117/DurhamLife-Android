@@ -28,7 +28,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
-public class UserHubActivity extends BaseActivity
+public class DashboardActivity extends BaseActivity
 {
 	private static final String AD_API_URL = "http://www.dur.ac.uk/cs.seg01/duchess/api/v1/features.php";
 
@@ -71,7 +71,7 @@ public class UserHubActivity extends BaseActivity
 			case STAFF:
 			{
 				LayoutInflater inflater = getLayoutInflater();
-				View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+				View v = inflater.inflate(R.layout.durham_dashboard_button_grid, buttonGrid, true);
 				break;
 			}
 		}
@@ -138,7 +138,7 @@ public class UserHubActivity extends BaseActivity
 						case STAFF:
 						{
 							LayoutInflater inflater = getLayoutInflater();
-							View v = inflater.inflate(R.layout.user_hub_button_grid, buttonGrid, true);
+							View v = inflater.inflate(R.layout.durham_dashboard_button_grid, buttonGrid, true);
 							break;
 						}
 					}

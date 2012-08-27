@@ -7,6 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -21,7 +22,9 @@ public class AboutBoxActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.about_duchess_layout);
+		
+		setContentView(R.layout.about_app_layout);
+		getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		
 		versionText = (TextView) findViewById(R.id.aboutBoxVersion);
 		okButton = (Button) findViewById(R.id.aboutBoxButtonOK);

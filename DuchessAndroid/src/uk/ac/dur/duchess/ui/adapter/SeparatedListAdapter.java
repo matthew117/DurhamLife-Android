@@ -4,8 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.R.layout;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;

@@ -2,9 +2,7 @@ Features
 
 + News Feed
 + Unsubcribe from societies (doesn't sync)
-+ Caching
 + Download more events when you reach the end of the list (pagination)
-+ Browse events by location
 + Browse events near to your location
 + Browse near events on a map
 + Search Bar

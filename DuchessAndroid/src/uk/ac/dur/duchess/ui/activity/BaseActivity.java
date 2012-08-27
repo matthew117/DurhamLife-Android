@@ -14,7 +14,7 @@ public abstract class BaseActivity extends SherlockActivity
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		
-		if (!(this instanceof UserHubActivity))
+		if (!(this instanceof DashboardActivity))
 		{
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
@@ -26,7 +26,7 @@ public abstract class BaseActivity extends SherlockActivity
 		switch (item.getItemId())
 		{
 		case android.R.id.home:
-			if (this instanceof UserHubActivity) { return false; }
+			if (this instanceof DashboardActivity) { return false; }
 
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
