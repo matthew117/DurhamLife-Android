@@ -5,7 +5,7 @@ import java.util.List;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.io.provider.DataProvider;
 import uk.ac.dur.duchess.model.Society;
 import uk.ac.dur.duchess.ui.activity.PersonalSocietyListActivity;
@@ -105,7 +105,7 @@ public class SocietyListView extends ListView
 				else if(activity instanceof PersonalSocietyListActivity)
 				{
 					List<String> subscribedSocieties =
-							SessionFunctions.getCurrentUser(activity).getSocieties();
+							SessionHandler.getCurrentUser(activity).getSocieties();
 
 					List<Society> societies = dataPro.getSocieties(getContext());
 
@@ -139,7 +139,7 @@ public class SocietyListView extends ListView
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
 					"Downloading Society Information ...", true);
 		}
-		else if(SessionFunctions.getCurrentUser(activity).getSocieties().size() > 0)
+		else if(SessionHandler.getCurrentUser(activity).getSocieties().size() > 0)
 		{
 			Thread thread = new Thread(null, dataProviderThread, "DownloadSocietyThread");
 

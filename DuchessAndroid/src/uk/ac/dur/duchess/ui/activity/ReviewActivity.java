@@ -14,7 +14,7 @@ import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.io.xml.ReviewXMLParser;
 import uk.ac.dur.duchess.model.Review;
 import uk.ac.dur.duchess.model.User;
@@ -70,7 +70,7 @@ public class ReviewActivity extends Activity
 		setContentView(R.layout.review_layout);
 		
 		activity = this;
-		currentUser = SessionFunctions.getCurrentUser(activity);
+		currentUser = SessionHandler.getCurrentUser(activity);
 		e = getIntent().getExtras();
 
 		layout = (LinearLayout) findViewById(R.id.reviewLayoutID);

@@ -42,7 +42,7 @@
         <item>Van Mildert</item>
     </string-array>
     <string-array name="durham_affiliation">
-        <item>None</item>
+        <item>Guest</item>
         <item>Student</item>
         <item>Staff</item>
     </string-array>

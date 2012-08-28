@@ -6,7 +6,7 @@ import java.util.List;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.io.UserFunctions;
 import uk.ac.dur.duchess.io.provider.DataProvider;
 import uk.ac.dur.duchess.model.DurhamAffiliation;
@@ -110,7 +110,7 @@ public class EventListView extends ListView
 
 				if(activity instanceof CollegeEventListActivity)
 				{
-					User user = SessionFunctions.getCurrentUser(activity);
+					User user = SessionHandler.getCurrentUser(activity);
 					
 					if(user.getAffiliation() != DurhamAffiliation.STAFF)
 						 eventList = dataPro.getEventsByCollege(getContext(), user.getCollege());
@@ -121,7 +121,7 @@ public class EventListView extends ListView
 					List<Event> allEvents = dataPro.getAllEvents(getContext());
 					eventList.clear();
 
-					User user = SessionFunctions.getCurrentUser(activity);
+					User user = SessionHandler.getCurrentUser(activity);
 
 					if (allEvents != null && user != null)
 					{
@@ -153,7 +153,7 @@ public class EventListView extends ListView
 				else if(activity instanceof EventListActivity)
 				{
 					eventList = dataPro.getAllEvents(activity);
-					User user = SessionFunctions.getCurrentUser(activity);
+					User user = SessionHandler.getCurrentUser(activity);
 					
 					if (user != null && eventList != null)
 					{
@@ -174,7 +174,7 @@ public class EventListView extends ListView
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
 					"Loading Events ...", true);
 		}
-		else if(SessionFunctions.getCurrentUser(activity).hasAnyBookmarkedEvents())
+		else if(SessionHandler.getCurrentUser(activity).hasAnyBookmarkedEvents())
 		{
 			Thread thread = new Thread(null, dataProviderThread, "LoadEventThread");
 

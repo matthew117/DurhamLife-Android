@@ -6,7 +6,7 @@ import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.R.array;
 import uk.ac.dur.duchess.R.drawable;
 import uk.ac.dur.duchess.R.id;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.Event;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.util.CalendarUtils;
@@ -66,7 +66,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 			holder.numberOfReviewsDisplay = (TextView) v.findViewById(R.id.numberOfReviewsOnList);
 			holder.pinButton = (ImageView) v.findViewById(R.id.pinButton);
 			
-			user = SessionFunctions.getCurrentUser((Activity) context);
+			user = SessionHandler.getCurrentUser((Activity) context);
 			
 			v.setTag(holder);
 		}
@@ -153,7 +153,7 @@ public class EventListAdapter extends ArrayAdapter<Event>
 						user.addEvent(getItem(position).getEventID());
 					}
 					
-					SessionFunctions.saveUserPreferences((Activity) context, user);
+					SessionHandler.saveUserPreferences((Activity) context, user);
 				}
 			});
 			

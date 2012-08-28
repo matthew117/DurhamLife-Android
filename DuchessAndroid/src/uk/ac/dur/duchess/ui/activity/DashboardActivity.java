@@ -3,7 +3,7 @@ package uk.ac.dur.duchess.ui.activity;
 import uk.ac.dur.duchess.GlobalApplicationData;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.User;
 import android.content.Context;
 import android.content.Intent;
@@ -57,11 +57,11 @@ public class DashboardActivity extends BaseActivity
 
 		buttonGrid = (FrameLayout) findViewById(R.id.dashboardButtonGrid);
 
-		User user = SessionFunctions.getCurrentUser(this);
+		User user = SessionHandler.getCurrentUser(this);
 
 		switch(user.getAffiliation())
 		{
-			case NONE:
+			case GUEST:
 			{
 				LayoutInflater inflater = getLayoutInflater();
 				View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
@@ -123,12 +123,12 @@ public class DashboardActivity extends BaseActivity
 			{
 				if (responseCode == RESULT_OK)
 				{
-					User user = SessionFunctions.getCurrentUser(this);
+					User user = SessionHandler.getCurrentUser(this);
 					buttonGrid.removeAllViews();
 	
 					switch(user.getAffiliation())
 					{
-						case NONE:
+						case GUEST:
 						{
 							LayoutInflater inflater = getLayoutInflater();
 							View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);

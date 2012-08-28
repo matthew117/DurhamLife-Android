@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.DurhamAffiliation;
 import uk.ac.dur.duchess.model.User;
 import android.app.Activity;
@@ -58,7 +58,7 @@ public class SettingsActivity extends BaseActivity
 		setTitle("Settings");
 
 		activity = this;
-		currentUser = SessionFunctions.getCurrentUser(activity);
+		currentUser = SessionHandler.getCurrentUser(activity);
 
 		affiliation = (Spinner) findViewById(R.id.affiliationSpinner);
 		college     = (ViewSwitcher) findViewById(R.id.collegeSelector);
@@ -193,7 +193,7 @@ public class SettingsActivity extends BaseActivity
 			@Override
 			public void onClick(View v)
 			{
-				SessionFunctions.saveUserPreferences(activity, currentUser);
+				SessionHandler.saveUserPreferences(activity, currentUser);
 				Intent i = new Intent(v.getContext(), CollegeGridActivity.class);
 				startActivityForResult(i, REQUEST_COLLEGES);
 			}
@@ -223,7 +223,7 @@ public class SettingsActivity extends BaseActivity
 			multipleColleges = false;
 			break;
 		}
-		case NONE:
+		case GUEST:
 		{
 			findViewById(R.id.collegeEdit).setVisibility(View.GONE);
 			findViewById(R.id.departmentEdit).setVisibility(View.GONE);
@@ -290,7 +290,7 @@ public class SettingsActivity extends BaseActivity
 
 		currentUser.setCategoryPreferences(newPreferences);
 
-		SessionFunctions.saveUserPreferences(activity, currentUser);
+		SessionHandler.saveUserPreferences(activity, currentUser);
 
 		Intent i = new Intent();
 
@@ -310,10 +310,10 @@ public class SettingsActivity extends BaseActivity
 			if (responseCode == RESULT_OK)
 			{
 				currentUser.setColleges(
-						SessionFunctions.getCollegesFromString(
+						SessionHandler.getCollegesFromString(
 								data.getStringExtra("colleges")));
 	
-				SessionFunctions.saveUserPreferences(this, currentUser);
+				SessionHandler.saveUserPreferences(this, currentUser);
 			}
 			break;
 		}

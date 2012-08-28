@@ -3,7 +3,7 @@ package uk.ac.dur.duchess.ui.activity;
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.DurhamAffiliation;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.view.EventListView;
@@ -35,7 +35,7 @@ public class CollegeEventListActivity extends SortableListActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.college_events_list_layout);
 		
-		user = SessionFunctions.getCurrentUser(this);
+		user = SessionHandler.getCurrentUser(this);
 		
 		collegeNameText = (TextView) findViewById(R.id.collegeNameOnEventList);
 		
@@ -69,7 +69,7 @@ public class CollegeEventListActivity extends SortableListActivity
 	
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		User user = SessionFunctions.getCurrentUser(this);
+		User user = SessionHandler.getCurrentUser(this);
 
 		if(user.getAffiliation() == DurhamAffiliation.STAFF)
 		{
@@ -101,7 +101,7 @@ public class CollegeEventListActivity extends SortableListActivity
 		{
 			case COLLEGE_DIALOG_ID:
 			{		
-				List<String> colleges = SessionFunctions.getCurrentUser(this).getColleges();
+				List<String> colleges = SessionHandler.getCurrentUser(this).getColleges();
 	
 				final CharSequence[] items = new CharSequence[colleges.size()];	
 				for(int i = 0; i < items.length; i++) items[i] = colleges.get(i);

@@ -5,7 +5,7 @@ import java.io.InputStream;
 
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.io.NetworkFunctions;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.view.EventListView;
 import android.content.Context;
@@ -36,7 +36,7 @@ public class SocietyEventListActivity extends SortableListActivity
 
 		context = this;
 
-		user = SessionFunctions.getCurrentUser(this);
+		user = SessionHandler.getCurrentUser(this);
 
 		final Bundle s = getIntent().getExtras();
 
@@ -62,7 +62,7 @@ public class SocietyEventListActivity extends SortableListActivity
 
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		User user = SessionFunctions.getCurrentUser(this);
+		User user = SessionHandler.getCurrentUser(this);
 
 		menu.add("About");
 		aboutMenuItem = menu.getItem(menu.size() - 1);
@@ -144,7 +144,7 @@ public class SocietyEventListActivity extends SortableListActivity
 				item.setTitle("Subscribe");
 			}
 
-			SessionFunctions.saveUserPreferences(this, user);
+			SessionHandler.saveUserPreferences(this, user);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

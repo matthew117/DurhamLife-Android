@@ -6,6 +6,8 @@ import uk.ac.dur.duchess.model.Event;
 import uk.ac.dur.duchess.util.CalendarUtils;
 import android.app.LocalActivityManager;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
@@ -126,6 +128,7 @@ public class EventDetailsTabRootActivity extends BaseActivity
 	@Override
 	public void onResume()
 	{
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		super.onResume();
 		tabManager.dispatchResume();
 	}
@@ -136,5 +139,12 @@ public class EventDetailsTabRootActivity extends BaseActivity
 		super.onPause();
 		tabManager.dispatchPause(isFinishing());
 
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	}
 }

@@ -9,7 +9,7 @@ import uk.ac.dur.duchess.model.User;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-public class SessionFunctions
+public class SessionHandler
 {
 	private static final String USER_ID_KEY = "userID";
 	private static final String FORENAME_KEY = "forename";
@@ -56,7 +56,7 @@ public class SessionFunctions
 		editor.putString(PASSWORD_KEY, user.getPassword());
 		editor.putString(EMAIL_ADDRESS_KEY, user.getEmailAddress());
 		editor.putString(DATE_JOINED_KEY, user.getDateJoined());
-		editor.putString(AFFILIATION_KEY, (user.getAffiliation() != null) ? user.getAffiliation().name() : "NONE");
+		editor.putString(AFFILIATION_KEY, (user.getAffiliation() != null) ? user.getAffiliation().name() : "GUEST");
 		editor.putString(DEPARTMENT_KEY, user.getDepartment());
 		editor.putString(COLLEGES_KEY, user.getColleges().toString());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
@@ -108,7 +108,7 @@ public class SessionFunctions
 		user.setPassword(prefs.getString(PASSWORD_KEY, ""));
 		user.setEmailAddress(prefs.getString(EMAIL_ADDRESS_KEY, ""));
 		user.setDateJoined(prefs.getString(DATE_JOINED_KEY, ""));
-		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "NONE"));
+		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "GUEST"));
 		user.setDepartment(prefs.getString(DEPARTMENT_KEY, ""));
 		user.setColleges(getCollegesFromString(prefs.getString(COLLEGES_KEY, "")));
 		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "11111111")));

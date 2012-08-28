@@ -1,7 +1,7 @@
 package uk.ac.dur.duchess.ui.activity;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.view.EventListView;
 import android.app.AlertDialog;
@@ -22,7 +22,7 @@ public class BookmarkedEventListActivity extends SortableListActivity
 		listView = (EventListView) findViewById(R.id.bookmarkListView);
 		listView.loadAllEvents(this, null);
 		
-		User user = SessionFunctions.getCurrentUser(this);
+		User user = SessionHandler.getCurrentUser(this);
 		
 		if (!user.hasAnyBookmarkedEvents())
 			listView.setEmptyView(findViewById(R.id.bookmarkListEmpty));

@@ -203,7 +203,7 @@ public class DatabaseHandler
 		if(!containsLocation(event.getLocation().getLocationID()))
 			insertLocation(event.getLocation());
 		
-		values.put(KEY_SCOPE, (event.getScope() != null) ? event.getScope().name() : "OPEN");
+		values.put(KEY_SCOPE, (event.getScope() != null) ? event.getScope().name() : "PUBLIC");
 		values.put(KEY_PRIVACY, (event.getPrivacy() != null) ? event.getPrivacy().name() : "OPEN");
 		values.put(KEY_ASSOCIATED_COLLEGE, event.getAssociatedCollege());
 		values.put(KEY_ASSOCIATED_SOCIETY, event.getAssociatedSociety());

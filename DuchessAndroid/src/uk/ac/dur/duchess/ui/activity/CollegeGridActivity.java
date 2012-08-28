@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.io.SessionFunctions;
+import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.User;
 import uk.ac.dur.duchess.ui.view.ImageCheckbox;
 import android.app.Activity;
@@ -34,7 +34,7 @@ public class CollegeGridActivity extends Activity
 			 R.id.trevelyanIconCheckbox,   R.id.castleIconCheckbox,   R.id.ustinovIconCheckbox,  R.id.vanMildertIconCheckbox};
 		
 		String[] colleges = getResources().getStringArray(R.array.college_array);
-		User user = SessionFunctions.getCurrentUser(this);
+		User user = SessionHandler.getCurrentUser(this);
 		List<String> userColleges = user.getColleges();
 		
 		for (int i = 1; i < colleges.length; i++)
