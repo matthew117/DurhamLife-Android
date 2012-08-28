@@ -16,5 +16,6 @@ public class PersonalSocietyListActivity extends BaseActivity
 
 		listView = (SocietyListView) findViewById(R.id.societyListView);
 		listView.loadSocieties(this);
+		listView.setEmptyView(findViewById(R.id.mySocietyListEmpty));
 	}
 }

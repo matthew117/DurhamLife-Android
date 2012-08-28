@@ -28,7 +28,7 @@
                 android:drawableTop="@drawable/browse_dashboard_icon"
                 android:gravity="center"
                 android:onClick="startBrowseActivity"
-                android:text="@string/browse"
+                android:text="@string/events"
                 android:textColor="#ffffff" />
 
             <TextView
