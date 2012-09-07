@@ -21,6 +21,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -147,7 +148,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		compassLayout.setOrientation(LinearLayout.VERTICAL);
 		
 		compassView = new CompassView(this);
-		compassView.setScaleType(ScaleType.CENTER);
+		compassView.setScaleType(ScaleType.CENTER_INSIDE);
 		
 		compassText = new TextView(this);
 		compassText.setText(String.format("Distance to Event: Calculating..."));
@@ -294,6 +295,18 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	@Override
 	public void onSensorChanged(SensorEvent event)
 	{
+//		float[] R = new float[9];
+//		float[] gravity = new float[3];
+//		float[] geomagnetic = new float[3];
+//		float[] values = new float[3];
+//		boolean rotated = false;
+//		
+//		rotated = SensorManager.getRotationMatrix(R, null, gravity, geomagnetic);
+//		values = SensorManager.getOrientation(R, values);
+//		
+//		Log.d("COMPASS", ""+rotated);
+//		Log.d("COMPASS", values[0] + ", " + values[1] + ", " + values[2]);
+		
 		rotation = (float) event.values[0];
 		compassView.postInvalidate();
 	}

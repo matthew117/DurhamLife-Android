@@ -2,7 +2,7 @@ package uk.ac.dur.duchess.model;
 
 public enum DurhamAffiliation
 {
-	 GUEST,
+	 VISITOR,
 	 STUDENT,
 	 STAFF;
 	 
@@ -11,6 +11,6 @@ public enum DurhamAffiliation
 		 for(DurhamAffiliation a : DurhamAffiliation.values())
 			 if(a.toString().equalsIgnoreCase(affiliation)) return a;
 		 
-		 return GUEST;
+		 return VISITOR;
 	 }
 }

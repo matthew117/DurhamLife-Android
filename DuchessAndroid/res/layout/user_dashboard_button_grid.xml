@@ -53,7 +53,7 @@
         </TableRow>
 
         <TableRow>
-
+
             <TextView
                 android:id="@+id/dashboard_bookmarked_button"
                 android:layout_width="0dp"
@@ -70,6 +70,7 @@
                 android:onClick="startBookmarkActivity"
                 android:text="@string/bookmarked"
                 android:textColor="#ffffff" />
+
         </TableRow>
     </TableLayout>
 

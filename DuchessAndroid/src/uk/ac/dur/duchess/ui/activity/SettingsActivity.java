@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.actionbarsherlock.view.MenuItem;
+
 public class SettingsActivity extends BaseActivity
 {
 	protected static final int REQUEST_COLLEGES = 1;
@@ -223,7 +225,7 @@ public class SettingsActivity extends BaseActivity
 			multipleColleges = false;
 			break;
 		}
-		case GUEST:
+		case VISITOR:
 		{
 			findViewById(R.id.collegeEdit).setVisibility(View.GONE);
 			findViewById(R.id.departmentEdit).setVisibility(View.GONE);
@@ -261,15 +263,19 @@ public class SettingsActivity extends BaseActivity
 			}
 		});
 	}
-
+	
 	@Override
-	public void onBackPressed()
-	{	
-		if(affiliation.getSelectedItem().toString().equals("Student"))
+	public void finish()
+	{
+		if(affiliation.getSelectedItem().toString().equalsIgnoreCase("Student"))
 		{
 			if(collegeSpinner.getSelectedItem().toString().equals("Select a college"))
 			{
 				Toast.makeText(activity, "Please select a college", Toast.LENGTH_SHORT).show();
+				
+				currentUser.setAffiliation(affiliation.getSelectedItem().toString());
+				SessionHandler.saveUserPreferences(activity, currentUser);
+				
 				return;
 			}
 			else currentUser.setCollege(collegeSpinner.getSelectedItem().toString());
@@ -296,8 +302,23 @@ public class SettingsActivity extends BaseActivity
 
 		if(currentUser.getAffiliation() != _affiliation) setResult(RESULT_OK);
 		else setResult(RESULT_CANCELED);
+		
+		super.finish();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+			{
+				finish();
+				return true;
+			}
 
-		finish();
+			default: return true;
+		}
 	}
 
 	@Override

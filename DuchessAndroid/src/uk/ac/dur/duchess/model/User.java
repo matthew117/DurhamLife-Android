@@ -47,7 +47,7 @@ public class User
 		this.affiliation = DurhamAffiliation.parseScope(affiliation);
 	}
 	
-	public boolean isAffiliated() { return affiliation != DurhamAffiliation.GUEST; }
+	public boolean isAffiliated() { return affiliation != DurhamAffiliation.VISITOR; }
 
 	public List<String> getSocieties()
 	{

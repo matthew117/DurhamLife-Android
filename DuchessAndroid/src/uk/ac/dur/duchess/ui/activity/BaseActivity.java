@@ -1,5 +1,6 @@
 package uk.ac.dur.duchess.ui.activity;
 
+import uk.ac.dur.duchess.R;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 
@@ -13,6 +14,7 @@ public abstract class BaseActivity extends SherlockActivity
 	{
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setIcon(getResources().getDrawable(R.drawable.action_home));
 		
 		if (!(this instanceof DashboardActivity))
 		{

@@ -56,7 +56,7 @@ public class SessionHandler
 		editor.putString(PASSWORD_KEY, user.getPassword());
 		editor.putString(EMAIL_ADDRESS_KEY, user.getEmailAddress());
 		editor.putString(DATE_JOINED_KEY, user.getDateJoined());
-		editor.putString(AFFILIATION_KEY, (user.getAffiliation() != null) ? user.getAffiliation().name() : "GUEST");
+		editor.putString(AFFILIATION_KEY, (user.getAffiliation() != null) ? user.getAffiliation().name() : "VISITOR");
 		editor.putString(DEPARTMENT_KEY, user.getDepartment());
 		editor.putString(COLLEGES_KEY, user.getColleges().toString());
 		editor.putString(PREFERENCES_KEY, getPreferencesBitString(user.getCategoryPreferences()));
@@ -108,7 +108,7 @@ public class SessionHandler
 		user.setPassword(prefs.getString(PASSWORD_KEY, ""));
 		user.setEmailAddress(prefs.getString(EMAIL_ADDRESS_KEY, ""));
 		user.setDateJoined(prefs.getString(DATE_JOINED_KEY, ""));
-		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "GUEST"));
+		user.setAffiliation(prefs.getString(AFFILIATION_KEY, "VISITOR"));
 		user.setDepartment(prefs.getString(DEPARTMENT_KEY, ""));
 		user.setColleges(getCollegesFromString(prefs.getString(COLLEGES_KEY, "")));
 		user.setCategoryPreferences(getPreferencesFromBitString(prefs.getString(PREFERENCES_KEY, "11111111")));

@@ -61,7 +61,7 @@ public class DashboardActivity extends BaseActivity
 
 		switch(user.getAffiliation())
 		{
-			case GUEST:
+			case VISITOR:
 			{
 				LayoutInflater inflater = getLayoutInflater();
 				View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
@@ -128,7 +128,7 @@ public class DashboardActivity extends BaseActivity
 	
 					switch(user.getAffiliation())
 					{
-						case GUEST:
+						case VISITOR:
 						{
 							LayoutInflater inflater = getLayoutInflater();
 							View v = inflater.inflate(R.layout.user_dashboard_button_grid, buttonGrid, true);
