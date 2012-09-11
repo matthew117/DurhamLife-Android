@@ -89,8 +89,6 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 		Bundle e = getIntent().getExtras();
 
-		// TODO add error checking
-
 		DatabaseHandler database = new DatabaseHandler(this);
 		database.open();
 
@@ -123,7 +121,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationListener = new MyLocationListener();
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
 		mapView.invalidate();
 
@@ -142,6 +140,14 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 				else mapToggle.setImageResource(R.drawable.location_tab_icon);
 			}
 		});
+		
+		/*
+		 * ---------------------------------------------------------------------
+		 * The line below disables the compass feature, which is implemented but
+		 * does not function correctly on all devices and screen resolutions
+		 * --------------------------------------------------------------------- 
+		 */
+		mapToggle.setVisibility(View.GONE);
 		
 		compassLayout = new LinearLayout(this);
 		compassLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -206,8 +212,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	protected void onResume()
 	{
 		super.onResume();
-		mySensorManager.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		//mySensorManager.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 	}
 
 	protected void onPause()
@@ -304,7 +310,6 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 //		rotated = SensorManager.getRotationMatrix(R, null, gravity, geomagnetic);
 //		values = SensorManager.getOrientation(R, values);
 //		
-//		Log.d("COMPASS", ""+rotated);
 //		Log.d("COMPASS", values[0] + ", " + values[1] + ", " + values[2]);
 		
 		rotation = (float) event.values[0];
