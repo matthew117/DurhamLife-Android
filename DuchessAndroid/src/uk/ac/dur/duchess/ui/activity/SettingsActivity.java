@@ -109,7 +109,7 @@ public class SettingsActivity extends BaseActivity
 					college.setVisibility(View.VISIBLE);
 					department.setVisibility(View.VISIBLE);
 
-					if(position == 1 && multipleColleges)
+					if((position == 1 || position == 2) && multipleColleges)
 					{
 						multipleColleges = false;
 
@@ -123,7 +123,7 @@ public class SettingsActivity extends BaseActivity
 						
 						college.showNext();
 					}
-					else if(position == 2 && !multipleColleges)
+					else if(position == 3 && !multipleColleges)
 					{	
 						multipleColleges = true;
 						college.showNext();
@@ -220,6 +220,7 @@ public class SettingsActivity extends BaseActivity
 			break;
 		}
 		case STUDENT:
+		case ALUMNI:
 		{
 			college.showNext();
 			multipleColleges = false;
@@ -267,7 +268,8 @@ public class SettingsActivity extends BaseActivity
 	@Override
 	public void finish()
 	{
-		if(affiliation.getSelectedItem().toString().equalsIgnoreCase("Student"))
+		if(affiliation.getSelectedItem().toString().equalsIgnoreCase("Student") ||
+		   affiliation.getSelectedItem().toString().equalsIgnoreCase("Alumni") 	  )
 		{
 			if(collegeSpinner.getSelectedItem().toString().equals("Select a college"))
 			{

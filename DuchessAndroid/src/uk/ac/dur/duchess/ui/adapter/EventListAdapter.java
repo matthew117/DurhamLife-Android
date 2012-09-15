@@ -3,9 +3,6 @@ package uk.ac.dur.duchess.ui.adapter;
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.R.array;
-import uk.ac.dur.duchess.R.drawable;
-import uk.ac.dur.duchess.R.id;
 import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.model.Event;
 import uk.ac.dur.duchess.model.User;
@@ -28,9 +25,9 @@ public class EventListAdapter extends ArrayAdapter<Event>
 	private User user;
 	
 	private static final Integer[] CATEGORY_ICONS = new Integer[]
-		{R.drawable.university_small, R.drawable.college_small, R.drawable.music_small,
-		 R.drawable.theatre_small, R.drawable.exhibitions_small, R.drawable.sport_small,
-		 R.drawable.conference_small, R.drawable.community_small};
+		{R.drawable.university_black, R.drawable.college_black, R.drawable.music_black,
+		 R.drawable.theatre_black, R.drawable.exhibition_black, R.drawable.sport_black,
+		 R.drawable.conference_black, R.drawable.community_black};
 
 	public EventListAdapter(Context context, int rowLayoutResourceID, List<Event> eventList)
 	{
@@ -178,11 +175,11 @@ public class EventListAdapter extends ArrayAdapter<Event>
 				holder.numberOfReviewsDisplay.setText("based on " + numberOfReviews + " review" + ((numberOfReviews != 1) ? "s" : ""));
 				int rating = e.getReviewScore();
 				Bitmap emptyStar = BitmapFactory.decodeResource(
-						((Activity) context).getResources(), R.drawable.empty_star);
+						((Activity) context).getResources(), R.drawable.star_grey_small);
 				Bitmap halfStar = BitmapFactory.decodeResource(((Activity) context).getResources(),
-						R.drawable.half_star);
+						R.drawable.star_half_small);
 				Bitmap fullStar = BitmapFactory.decodeResource(((Activity) context).getResources(),
-						R.drawable.full_star);
+						R.drawable.star_purple_small);
 				
 				holder.star1.setVisibility(View.VISIBLE);
 				holder.star2.setVisibility(View.VISIBLE);

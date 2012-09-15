@@ -1,55 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reviewLayoutID"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="@color/DUPurple">
+    android:layout_height="fill_parent"
+    android:background="@color/DUPurple"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/reviewLayoutID"
+    <TextView
+        android:id="@+id/reviewEventNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/default_event_name"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
+
+    <EditText
+        android:id="@+id/reviewTextBox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="5dp"
+        android:ems="10"
+        android:hint="write a review ..."
+        android:inputType="textMultiLine" >
 
-        <TextView
-            android:id="@+id/reviewEventNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/default_event_name"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:typeface="serif" android:padding="5dp"/>
+        <requestFocus />
+    </EditText>
+
+    <RatingBar
+        android:id="@+id/ratingStars"
+        style="@style/CustomRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
-        <EditText
-            android:id="@+id/reviewTextBox"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine" android:hint="write a review ..." android:layout_margin="5dp">
+    <Button
+        android:id="@+id/submitReviewButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:paddingTop="6dp"
+        android:text="@string/submit" />
 
-            <requestFocus />
-        </EditText>
+    <ProgressBar
+        android:id="@+id/reviewDownloadProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
-        <RatingBar
-            android:id="@+id/ratingStars"
-            style="@style/CustomRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:id="@+id/submitReviewButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="6dp"
-            android:text="@string/submit" android:layout_margin="5dp"/>
-
-        <ProgressBar
-            android:id="@+id/reviewDownloadProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

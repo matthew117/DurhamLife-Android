@@ -9,28 +9,15 @@
         android:id="@+id/societyListRowSocietyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/societies"
-        android:textColor="@color/list_title_color"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="serif" />
-
-    <TextView
-        android:id="@+id/societyListRowSocietyDescription"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:paddingRight="3dp"
-        android:text="@string/society_description"
-        android:textColor="@color/list_description_color"
-        android:textSize="12sp"
-        android:typeface="serif" />
+        android:textColor="@color/society_list_title_color"
+        android:textSize="16sp"
+        android:typeface="normal" />
 
 </LinearLayout>

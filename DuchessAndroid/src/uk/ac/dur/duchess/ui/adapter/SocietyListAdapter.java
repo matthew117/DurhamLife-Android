@@ -3,9 +3,7 @@ package uk.ac.dur.duchess.ui.adapter;
 import java.util.List;
 
 import uk.ac.dur.duchess.R;
-import uk.ac.dur.duchess.R.id;
 import uk.ac.dur.duchess.model.Society;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class SocietyListAdapter extends ArrayAdapter<Society> {
-
+public class SocietyListAdapter extends ArrayAdapter<Society>
+{
 	private Context context;
 	private int rowLayoutResourceID;
 	
@@ -41,11 +39,8 @@ public class SocietyListAdapter extends ArrayAdapter<Society> {
 		
 		if (s != null)
 		{
-			TextView societyName = (TextView) v.findViewById(R.id.societyListRowSocietyName);
-			TextView societyDescription = (TextView) v.findViewById(R.id.societyListRowSocietyDescription);
-			
+			TextView societyName = (TextView) v.findViewById(R.id.societyListRowSocietyName);			
 			societyName.setText(s.getName());
-			societyDescription.setText(s.getConstitution());
 		}
 		
 		return v;

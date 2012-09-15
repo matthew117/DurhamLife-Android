@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="5dp" >
-
+
         <TextView
             android:id="@+id/textViewEventName"
             android:layout_width="fill_parent"
@@ -21,8 +21,8 @@
             android:textColor="@android:color/primary_text_dark"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:typeface="serif" />
-
+            android:typeface="normal" />
+
         <FrameLayout
             android:id="@+id/eventImageContainer"
             android:layout_width="fill_parent"
@@ -38,14 +38,13 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:contentDescription="@string/event_image"
                 android:padding="5dp" />
-
+
             <ProgressBar
                 android:id="@+id/eventDetailsImageProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="10dp" />
-
         </FrameLayout>
 
         <LinearLayout
@@ -80,7 +79,7 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-
+
             <Button
                 android:id="@+id/timeChooserButton"
                 android:layout_width="fill_parent"
@@ -90,7 +89,6 @@
                 android:gravity="left|center_vertical"
                 android:text="View Times"
                 android:textSize="12sp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -116,22 +114,22 @@
                 android:id="@+id/textViewEventDescription"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:autoLink="all"
                 android:lineSpacingMultiplier="1.1"
                 android:padding="3dp"
                 android:text="@string/default_description"
                 android:textColor="#000000"
                 android:textSize="12sp"
-                android:textStyle="italic"
-                android:typeface="serif" android:autoLink="all"/>
+                android:typeface="normal" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/contactDetailsContainer"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/curved_border_light"
             android:orientation="vertical"
-            android:layout_marginBottom="5dp"
             android:padding="5dp" >
 
             <TextView
@@ -143,7 +141,7 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-
+
             <Button
                 android:id="@+id/telephoneButton"
                 android:layout_width="fill_parent"
@@ -172,7 +170,7 @@
                 android:gravity="left|center_vertical"
                 android:textSize="12sp" />
         </LinearLayout>
-        
+
         <LinearLayout
             android:id="@+id/accessibiltyInformationContainer"
             android:layout_width="fill_parent"
@@ -195,15 +193,14 @@
                 android:id="@+id/textViewAccessInfo"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:autoLink="all"
                 android:lineSpacingMultiplier="1.1"
                 android:padding="3dp"
                 android:text="No accessibility information available"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="12sp"
-                android:textStyle="italic"
-                android:typeface="serif" android:autoLink="all"/>
+                android:typeface="normal" />
         </LinearLayout>
-        
     </LinearLayout>
 
 </ScrollView>

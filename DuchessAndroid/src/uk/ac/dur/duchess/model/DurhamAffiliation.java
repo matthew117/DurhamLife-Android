@@ -4,6 +4,7 @@ public enum DurhamAffiliation
 {
 	 VISITOR,
 	 STUDENT,
+	 ALUMNI,
 	 STAFF;
 	 
 	 public static DurhamAffiliation parseScope(String affiliation)

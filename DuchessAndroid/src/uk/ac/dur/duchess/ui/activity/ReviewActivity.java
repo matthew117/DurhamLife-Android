@@ -18,19 +18,18 @@ import uk.ac.dur.duchess.io.SessionHandler;
 import uk.ac.dur.duchess.io.xml.ReviewXMLParser;
 import uk.ac.dur.duchess.model.Review;
 import uk.ac.dur.duchess.model.User;
-import uk.ac.dur.duchess.util.CalendarUtils;
+import uk.ac.dur.duchess.ui.adapter.ReviewListAdapter;
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.ActionBar.LayoutParams;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -192,48 +191,15 @@ public class ReviewActivity extends Activity
 				t.setPadding(5, 5, 5, 5);
 				layout.addView(t);
 			}
-			
-			for (int i = 0; i < reviewList.size(); i++)
+			else
 			{
-				Review review = reviewList.get(i);
-
-				View v = new View(getApplicationContext());
-
-				LayoutInflater inflater = getLayoutInflater();
-				v = inflater.inflate(R.layout.review_comment_layout, layout, false);
-
-				TextView commentDate = (TextView) v.findViewById(R.id.reviewSubmitDate);
-				TextView commentText = (TextView) v.findViewById(R.id.reviewComment);
-				ImageView star1 = (ImageView) v.findViewById(R.id.reviewStar1);
-				ImageView star2 = (ImageView) v.findViewById(R.id.reviewStar2);
-				ImageView star3 = (ImageView) v.findViewById(R.id.reviewStar3);
-				ImageView star4 = (ImageView) v.findViewById(R.id.reviewStar4);
-				ImageView star5 = (ImageView) v.findViewById(R.id.reviewStar5);
-
-				commentDate.setText(CalendarUtils.getReviewTime(review));
-				commentText.setText(review.getComment());
-
-				int rating = review.getRating();
-
-				Bitmap emptyStar = BitmapFactory.decodeResource(getResources(),
-						R.drawable.empty_star);
-				Bitmap halfStar = BitmapFactory
-						.decodeResource(getResources(), R.drawable.half_star);
-
-				if (rating < 10) star5.setImageBitmap(halfStar);
-				if (rating < 9) star5.setImageBitmap(emptyStar);
-				if (rating < 8) star4.setImageBitmap(halfStar);
-				if (rating < 7) star4.setImageBitmap(emptyStar);
-				if (rating < 6) star3.setImageBitmap(halfStar);
-				if (rating < 5) star3.setImageBitmap(emptyStar);
-				if (rating < 4) star2.setImageBitmap(halfStar);
-				if (rating < 3) star2.setImageBitmap(emptyStar);
-				if (rating < 2) star1.setImageBitmap(halfStar);
-				if (rating < 1) star1.setImageBitmap(emptyStar);
-
-				layout.addView(v);
+				ListView reviews = new ListView(getApplicationContext());
+				reviews.setAdapter(new ReviewListAdapter(activity, R.layout.review_comment_layout, reviewList));
+				reviews.setVerticalFadingEdgeEnabled(true);
+				reviews.setBackgroundColor(Color.WHITE);
+				layout.addView(reviews, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			}
+
 		}
 	}
-
 }

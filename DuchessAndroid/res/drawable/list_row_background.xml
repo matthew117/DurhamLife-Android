@@ -13,6 +13,6 @@
           android:state_window_focused="true"
           android:drawable="@drawable/blue_highlight" />
 
-    <item android:drawable="@drawable/xlight_gradient" />
+    <item android:drawable="@android:color/background_light"/>
 
 </selector>

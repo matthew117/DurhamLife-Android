@@ -11,99 +11,101 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/categoryGridUniversity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/university"
+                android:drawableTop="@drawable/university_white"
                 android:gravity="center"
                 android:text="@string/university"
                 android:textSize="12sp" />
-
+
             <TextView
                 android:id="@+id/categoryGridCollege"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/college"
+                android:drawableTop="@drawable/college_white"
                 android:gravity="center"
                 android:text="@string/college"
                 android:textSize="12sp" />
-
+
             <TextView
                 android:id="@+id/categoryGridMusic"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/music"
+                android:drawableTop="@drawable/music_white"
                 android:gravity="center"
                 android:text="@string/music"
                 android:textSize="12sp" />
-
+
             <TextView
                 android:id="@+id/categoryGridTheatre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/theatre"
+                android:drawableTop="@drawable/theatre_white"
                 android:gravity="center"
                 android:text="@string/theatre"
                 android:textSize="12sp" />
+
         </TableRow>
 
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/categoryGridExhibitions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/exhibitions"
+                android:drawableTop="@drawable/exhibition_white"
                 android:gravity="center"
                 android:text="@string/exhibitions"
                 android:textSize="12sp" />
-
+
             <TextView
                 android:id="@+id/categoryGridSport"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/sport"
+                android:drawableTop="@drawable/sport_white"
                 android:gravity="center"
                 android:text="@string/sport"
                 android:textSize="12sp" />
-
+
             <TextView
                 android:id="@+id/categoryGridConferences"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/conference"
+                android:drawableTop="@drawable/conference_white"
                 android:gravity="center"
                 android:text="@string/conferences"
                 android:textSize="12sp" />
-
+
             <TextView
                 android:id="@+id/categoryGridCommunity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/community"
+                android:drawableTop="@drawable/community_white"
                 android:gravity="center"
                 android:text="@string/community"
                 android:textSize="12sp" />
+
         </TableRow>
     </TableLayout>
 

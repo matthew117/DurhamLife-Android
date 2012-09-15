@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:src="@drawable/previous_button" />
-
+
             <TextView
                 android:id="@+id/monthText"
                 android:layout_width="0dp"
@@ -35,7 +35,7 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:typeface="serif" />
+                android:typeface="normal" />
 
             <ImageView
                 android:id="@+id/nextMonthButton"

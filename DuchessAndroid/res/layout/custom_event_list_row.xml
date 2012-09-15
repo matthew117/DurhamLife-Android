@@ -3,7 +3,8 @@
     android:id="@+id/listRowLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" android:background="@drawable/list_row_background">
+    android:background="@drawable/list_row_background"
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/rowHeaderLayout"
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="4dp" >
-
+
         <TextView
             android:id="@+id/txtEventName"
             android:layout_width="fill_parent"
@@ -26,7 +27,7 @@
             android:textColor="@color/list_title_color"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:typeface="serif" />
+            android:typeface="normal" />
 
         <TextView
             android:id="@+id/txtEventDate"
@@ -78,20 +79,21 @@
             android:paddingRight="3dp"
             android:src="@drawable/full_star" />
     </LinearLayout>
-
+
     <TextView
         android:id="@+id/txtEventDescription"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:ellipsize="end"
         android:hint="Event Description Header"
         android:maxLines="3"
         android:textColor="@color/list_description_color"
         android:textSize="12sp"
-        android:textStyle="italic"
-        android:typeface="serif" />
+        android:textStyle="normal"
+        android:typeface="normal" />
 
     <LinearLayout
         android:id="@+id/reviewStarsEventListHolder"
