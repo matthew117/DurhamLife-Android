@@ -1,6 +1,6 @@
 package uk.ac.dur.duchess.ui.activity;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -132,7 +133,7 @@ public class CalendarActivity extends SortableListActivity
 		for(int row = 0; row < 6; row++)
 		{
 			LinearLayout tableRow = new LinearLayout(this);
-			tableRow.setLayoutParams(new LayoutParams(FILL_PARENT, WRAP_CONTENT, 0));
+			tableRow.setLayoutParams(new LayoutParams(MATCH_PARENT, WRAP_CONTENT, 0));
 
 			for(int col = 0; col < 7; col++)
 			{
@@ -303,8 +304,16 @@ public class CalendarActivity extends SortableListActivity
 		else return false;
 	}
 
-	public static boolean isLongScreen(Context context)
-	{
+	@SuppressWarnings("deprecation")
+	public boolean isLongScreen(Context context)
+	{	
+		int calendarHeight = findViewById(R.id.calendarView).getHeight() + calendarView.getHeight();
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+
+		Log.d("HEIGHT", "Calendar: " + calendarHeight + ", Screen: " + screenHeight);
+		
+		if(calendarHeight != 0 && screenHeight - calendarHeight > 100) return true;
+		
 		return (context.getResources().getConfiguration().screenLayout
 				& Configuration.SCREENLAYOUT_LONG_MASK)
 				== Configuration.SCREENLAYOUT_LONG_YES;
