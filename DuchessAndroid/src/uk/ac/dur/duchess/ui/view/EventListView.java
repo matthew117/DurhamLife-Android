@@ -83,6 +83,9 @@ public class EventListView extends ListView
 		setAdapter(adapter);
 
 		eventList = new ArrayList<Event>();
+		
+		setDivider(new ColorDrawable(Color.BLACK));
+		setDividerHeight(1);
 
 		setOnItemClickListener(new OnItemClickListener()
 		{

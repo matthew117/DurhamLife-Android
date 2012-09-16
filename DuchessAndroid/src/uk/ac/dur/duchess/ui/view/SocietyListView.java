@@ -72,6 +72,9 @@ public class SocietyListView extends ListView
 		setAdapter(adapter);
 
 		societyList = new ArrayList<Society>();
+		
+		setDivider(new ColorDrawable(Color.BLACK));
+		setDividerHeight(1);
 
 		setOnItemClickListener(new OnItemClickListener()
 		{
