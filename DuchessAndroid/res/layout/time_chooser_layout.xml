@@ -6,6 +6,20 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText" android:background="@color/DUPurple">
 
+    <FrameLayout
+        android:id="@+id/time_chooser_placeholder"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/calendar_watermark" />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/weekHeader"
         android:layout_width="fill_parent"

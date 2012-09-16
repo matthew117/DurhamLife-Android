@@ -57,27 +57,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="4dp" >
-
+
         <ImageView
             android:id="@+id/categoryIcon1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="3dp"
-            android:src="@drawable/full_star" />
-
+            android:paddingRight="3dp" />
+
         <ImageView
             android:id="@+id/categoryIcon2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="3dp"
-            android:src="@drawable/full_star" />
-
+            android:paddingRight="3dp" />
+
         <ImageView
             android:id="@+id/categoryIcon3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="3dp"
-            android:src="@drawable/full_star" />
+            android:paddingRight="3dp" />
+
     </LinearLayout>
 
     <TextView
@@ -101,41 +99,36 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="4dp" >
-
+
         <ImageView
             android:id="@+id/newStar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/rating"
-            android:src="@drawable/full_star" />
-
+            android:contentDescription="@string/rating" />
+
         <ImageView
             android:id="@+id/newStar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/rating"
-            android:src="@drawable/full_star" />
-
+            android:contentDescription="@string/rating" />
+
         <ImageView
             android:id="@+id/newStar3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/rating"
-            android:src="@drawable/full_star" />
-
+            android:contentDescription="@string/rating" />
+
         <ImageView
             android:id="@+id/newStar4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/rating"
-            android:src="@drawable/full_star" />
-
+            android:contentDescription="@string/rating" />
+
         <ImageView
             android:id="@+id/newStar5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/rating"
-            android:src="@drawable/full_star" />
+            android:contentDescription="@string/rating" />
 
         <TextView
             android:id="@+id/numberOfReviewsOnList"

@@ -14,8 +14,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -43,7 +45,7 @@ public class DashboardActivity extends BaseActivity
 	private TextView adText;
 	private String adLink;
 
-	private ImageView defaultImage;
+	private TextView welcomeText;
 	private ImageView adImage;
 	private ImageView adNavigationIndicator;
 
@@ -80,11 +82,13 @@ public class DashboardActivity extends BaseActivity
 
 		adViewSwitcher = (ViewSwitcher) findViewById(R.id.dashboardAdAnimator);
 
-		defaultImage = new ImageView(this);
-		defaultImage.setScaleType(ScaleType.CENTER_CROP);
-		defaultImage.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.the_great_wave_of_kanagawa));
-
-		adViewSwitcher.addView(defaultImage);
+		welcomeText = new TextView(this);
+		welcomeText.setTextSize(24);
+		welcomeText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		welcomeText.setGravity(Gravity.CENTER);
+		welcomeText.setText("Welcome to Durham Life.");
+		
+		adViewSwitcher.addView(welcomeText);
 		adText = (TextView) findViewById(R.id.dashboardAdText);
 		adNavigationIndicator = (ImageView) findViewById(R.id.adNavigationIndicator);
 

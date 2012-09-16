@@ -84,8 +84,8 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		addressBlock = (TextView) findViewById(R.id.addressBlockTextView);
 		eventName = (TextView) findViewById(R.id.locationEventNameLabel);
 
-		compass = BitmapFactory.decodeResource(getResources(), R.drawable.compass_arrow_2);
-		base = BitmapFactory.decodeResource(getResources(), R.drawable.compass_base_2);
+		//compass = BitmapFactory.decodeResource(getResources(), R.drawable.compass_arrow_2);
+		//base = BitmapFactory.decodeResource(getResources(), R.drawable.compass_base_2);
 
 		Bundle e = getIntent().getExtras();
 

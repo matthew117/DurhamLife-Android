@@ -10,10 +10,17 @@ import net.fortuna.ical4j.model.Calendar;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.ui.view.FlowLayout;
 import uk.ac.dur.duchess.util.TimeUtils;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -58,11 +65,22 @@ public class TimeActivity extends BaseActivity
 	private String startDate;
 	private String firstWeek;
 	
+	private Context context;
+	private Activity activity;
+	
+	private ProgressDialog progressDialog;
+	private AlertDialog alertDialog;
+	
+	private FrameLayout placeholder;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.time_chooser_layout);
+		
+		context = this;
+		activity = this;
 		
 		eventNameTextView = (TextView) findViewById(R.id.textViewEventName);
 		dateRangeTextView = (TextView) findViewById(R.id.timeViewDateRange);
@@ -86,6 +104,8 @@ public class TimeActivity extends BaseActivity
 		saturdayContainer  = (FlowLayout) findViewById(R.id.saturdayDateContainer);
 		sundayContainer    = (FlowLayout) findViewById(R.id.sundayDateContainer);
 		
+		placeholder = (FrameLayout) findViewById(R.id.time_chooser_placeholder);
+		
 		containers = new FlowLayout[] {sundayContainer, mondayContainer, tuesdayContainer,
 				wednesdayContainer, thursdayContainer, fridayContainer, saturdayContainer};
 		
@@ -101,57 +121,19 @@ public class TimeActivity extends BaseActivity
 			startDate = e.getString("event_start_date");
 			endDate = e.getString("event_end_date");
 			
-			eventNameTextView.setText(eventName);
-			calendar = TimeUtils.parseICalFromURL(iCalURL);
+			eventNameTextView.setText(eventName);			
 			
-			
-			String value = android.provider.Settings.System.getString
-					(this.getContentResolver(), android.provider.Settings.System.TIME_12_24);
-			
-			String format12 = "hh:mm a";
-			String format24 = "HH:mm";
-			
-			boolean usesAM_PM = value.equals("12");
-			
-			source = new SimpleDateFormat(format24);
-			timeFormat = new SimpleDateFormat(usesAM_PM ? format12 : format24);
-			
-			week = java.util.Calendar.getInstance();
-			
-			week.setTime((new SimpleDateFormat("yyyy-MM-dd")).parse(startDate));
-			week = TimeUtils.getClosestFutureWeek(week);
-			
-			firstWeek = (new SimpleDateFormat("yyyy-MM-dd")).format(week.getTime());
-
-			setupWeekView();
-			
-			prevWeekButton.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View view)
-				{
-					week.add(java.util.Calendar.WEEK_OF_YEAR, -1);
-					week.get(0);
-					
-					try { setupWeekView(); }
-					catch (ParseException e) { e.printStackTrace(); } // TODO
-				}
-			});
-			
-			nextWeekButton.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View view)
-				{
-					week.add(java.util.Calendar.WEEK_OF_YEAR, 1);
-					week.get(0);
-					
-					try { setupWeekView(); }
-					catch (ParseException e) { e.printStackTrace(); } // TODO
-				}
-			});
+			(new BackgroundTask()).execute(iCalURL);
 		}
 		catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		if (alertDialog != null && alertDialog.isShowing()) alertDialog.dismiss();
+		if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
 	}
 
 	private void setupWeekView() throws ParseException
@@ -271,5 +253,112 @@ public class TimeActivity extends BaseActivity
 		});
 		
 		return b;
+	}
+	
+	private class BackgroundTask extends AsyncTask<String, Void, Calendar>
+	{		
+		@Override
+		protected void onPreExecute()
+		{
+			progressDialog = ProgressDialog.show(context, "Please wait...",
+					"Downloading and parsing calendar file...", true);
+		}
+		
+		@Override
+		protected Calendar doInBackground(String... args)
+		{
+			try
+			{
+				calendar = TimeUtils.parseICalFromURL(args[0]);
+				return calendar;
+			}
+			catch (Exception ex)
+			{
+				return calendar;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Calendar calendar)
+		{
+			if (calendar != null)
+			{
+				String value = android.provider.Settings.System.getString(
+						context.getContentResolver(), android.provider.Settings.System.TIME_12_24);
+				String format12 = "hh:mm a";
+				String format24 = "HH:mm";
+				boolean usesAM_PM = value.equals("12");
+				source = new SimpleDateFormat(format24);
+				timeFormat = new SimpleDateFormat(usesAM_PM ? format12 : format24);
+				week = java.util.Calendar.getInstance();
+				try
+				{
+
+					week.setTime((new SimpleDateFormat("yyyy-MM-dd")).parse(startDate));
+					week = TimeUtils.getClosestFutureWeek(week);
+
+					firstWeek = (new SimpleDateFormat("yyyy-MM-dd")).format(week.getTime());
+
+					setupWeekView();
+				}
+				catch (Exception ex)
+				{}
+				prevWeekButton.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View view)
+					{
+						week.add(java.util.Calendar.WEEK_OF_YEAR, -1);
+						week.get(0);
+
+						try
+						{
+							setupWeekView();
+						}
+						catch (ParseException e)
+						{
+							e.printStackTrace();
+						} // TODO
+					}
+				});
+				nextWeekButton.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View view)
+					{
+						week.add(java.util.Calendar.WEEK_OF_YEAR, 1);
+						week.get(0);
+
+						try
+						{
+							setupWeekView();
+						}
+						catch (ParseException e)
+						{
+							e.printStackTrace();
+						} // TODO
+					}
+				});
+				placeholder.setVisibility(View.GONE);
+				if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+			}
+			else
+			{
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setMessage(
+						"Could not download calendar file.")
+						.setCancelable(false)
+						.setNegativeButton("Back", new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int id)
+							{
+								activity.finish();
+							}
+						});
+				alertDialog = builder.create();
+				if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+				alertDialog.show();
+			}
+		}
 	}
 }
