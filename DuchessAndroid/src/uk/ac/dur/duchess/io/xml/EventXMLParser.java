@@ -175,10 +175,27 @@ public class EventXMLParser extends DefaultHandler
 	@Override
 	public void characters(char[] ch, int start, int length)
 	{
-		if (isName) event.setName(new String(ch, start, length));
-		else if (isDescriptionHeader) event.setDescriptionHeader(new String(ch, start, length));
-		else if (isDescriptionBody) event.setDescriptionBody(new String(ch, start, length));
-
+		if (isName) 
+		{
+			if (event.getName() == null)
+				event.setName(new String(ch, start, length));
+			else
+				event.setName(event.getName() + (new String(ch, start, length)));
+		}
+		else if (isDescriptionHeader)
+		{
+			if (event.getDescriptionHeader() == null)
+				event.setDescriptionHeader(new String(ch, start, length));
+			else
+				event.setDescriptionHeader(event.getDescriptionHeader() + (new String(ch, start, length)));
+		}
+		else if (isDescriptionBody)
+		{
+			if (event.getDescriptionBody() == null)
+				event.setDescriptionBody(new String(ch, start, length));
+			else
+				event.setDescriptionBody(event.getDescriptionBody() + (new String(ch, start, length)));
+		}
 		else if (isStartDate) event.setStartDate(new String(ch, start, length));
 		else if (isEndDate) event.setEndDate(new String(ch, start, length));
 		else if (isICalURL) event.setICalURL(new String(ch, start, length));

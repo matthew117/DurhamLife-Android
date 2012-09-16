@@ -55,10 +55,21 @@ public class SocietyXMLParser extends DefaultHandler
 	@Override
 	public void characters(char[] ch, int start, int length)
 	{
-		if (isNameTag) s.setName(new String(ch,start,length));
+		if (isNameTag)
+		{
+			if (s.getName() == null) s.setName(new String(ch, start, length));
+			else s.setName(s.getName() + (new String(ch, start, length)));
+
+		}
 		else if (isWebsiteTag) s.setWebsite(new String(ch,start,length));
 		else if (isEmailTag) s.setEmail(new String(ch,start,length));
-		else if (isConstitutionTag) s.setConstitution(new String(ch,start,length));
+		else if (isConstitutionTag)
+		{
+			if (s.getConstitution() == null)
+				s.setConstitution(new String(ch, start, length));
+			else
+				s.setConstitution(s.getConstitution() + (new String(ch, start, length)));
+		}
 	}
 
 }
