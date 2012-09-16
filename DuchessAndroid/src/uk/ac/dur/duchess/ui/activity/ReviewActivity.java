@@ -22,6 +22,7 @@ import uk.ac.dur.duchess.ui.adapter.ReviewListAdapter;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -197,6 +198,8 @@ public class ReviewActivity extends Activity
 				reviews.setAdapter(new ReviewListAdapter(activity, R.layout.review_comment_layout, reviewList));
 				reviews.setVerticalFadingEdgeEnabled(true);
 				reviews.setBackgroundColor(Color.WHITE);
+				reviews.setDivider(new ColorDrawable(Color.BLACK));
+				reviews.setDividerHeight(1);
 				layout.addView(reviews, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			}
 

@@ -18,6 +18,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,6 +43,9 @@ public class SocietyListView extends ListView
 		setAdapter(adapter);
 
 		societyList = new ArrayList<Society>();
+		
+		setDivider(new ColorDrawable(Color.BLACK));
+		setDividerHeight(1);
 
 		setOnItemClickListener(new OnItemClickListener()
 		{

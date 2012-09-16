@@ -28,6 +28,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -53,6 +55,9 @@ public class EventListView extends ListView
 		setAdapter(adapter);
 
 		eventList = new ArrayList<Event>();
+		
+		setDivider(new ColorDrawable(Color.BLACK));
+		setDividerHeight(1);
 
 		setOnItemClickListener(new OnItemClickListener()
 		{
