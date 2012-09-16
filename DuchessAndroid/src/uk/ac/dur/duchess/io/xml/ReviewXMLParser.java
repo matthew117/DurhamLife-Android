@@ -53,7 +53,13 @@ public class ReviewXMLParser extends DefaultHandler
 	@Override
 	public void characters(char[] ch, int start, int length)
 	{
-		if (isPost) review.setComment(new String(ch, start, length));
+		if (isPost)
+			{
+			if (review.getComment() == null)
+				review.setComment(new String(ch, start, length));
+			else
+				review.setComment(review.getComment() + (new String(ch, start, length)));
+			}
 		else if (isRating) review.setRating(Integer.parseInt(new String(ch, start, length)));
 		else if (isTimeStamp) review.setTimestamp(new String(ch, start, length));
 	}

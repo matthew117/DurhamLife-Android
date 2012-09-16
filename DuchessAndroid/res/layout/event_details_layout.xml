@@ -79,7 +79,7 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-
+
             <Button
                 android:id="@+id/timeChooserButton"
                 android:layout_width="fill_parent"
@@ -88,7 +88,9 @@
                 android:drawablePadding="5dp"
                 android:gravity="left|center_vertical"
                 android:text="View Times"
+                android:textColor="@android:color/black"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -141,7 +143,7 @@
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="12sp"
                 android:textStyle="bold" />
-
+
             <Button
                 android:id="@+id/telephoneButton"
                 android:layout_width="fill_parent"
@@ -150,8 +152,9 @@
                 android:drawableLeft="@drawable/phone_small"
                 android:drawablePadding="5dp"
                 android:gravity="left|center_vertical"
+                android:textColor="@android:color/black"
                 android:textSize="12sp" />
-
+
             <Button
                 android:id="@+id/emailContactButton"
                 android:layout_width="fill_parent"
@@ -159,8 +162,9 @@
                 android:drawableLeft="@drawable/email_small"
                 android:drawablePadding="5dp"
                 android:gravity="left|center_vertical"
+                android:textColor="@android:color/black"
                 android:textSize="12sp" />
-
+
             <Button
                 android:id="@+id/websiteButton"
                 android:layout_width="fill_parent"
@@ -168,7 +172,9 @@
                 android:drawableLeft="@drawable/internet_small"
                 android:drawablePadding="5dp"
                 android:gravity="left|center_vertical"
+                android:textColor="@android:color/black"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <LinearLayout

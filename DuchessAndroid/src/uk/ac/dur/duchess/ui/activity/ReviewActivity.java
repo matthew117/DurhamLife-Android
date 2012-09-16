@@ -110,23 +110,11 @@ public class ReviewActivity extends Activity
 							currentUser.getUserID(), e.getLong("event_id"),
 							(int) (ratingBar.getRating() * 2), reviewEditText.getText(),
 							System.currentTimeMillis() / 1000);
+					
+					(new SubmitTask()).execute(userXMLRequest);
 
-					try
-					{
-						InputStream response = NetworkFunctions.getHTTPResponseStream(
-								"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
-										+ e.getLong("event_id"), "PUT", userXMLRequest.getBytes());
-						
-						reviewEditText.setText("");
-						ratingBar.setRating(0);
-						
-						Toast.makeText(v.getContext(), "Review submitted", Toast.LENGTH_LONG).show();
-					}
-					catch (IOException e1)
-					{
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					reviewEditText.setText("");
+					ratingBar.setRating(0);
 				}
 				else if(reviewEditText.getText().length() == 0)
 				{
@@ -202,6 +190,36 @@ public class ReviewActivity extends Activity
 				reviews.setDividerHeight(1);
 				layout.addView(reviews, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			}
+
+		}
+	}
+	
+	private class SubmitTask extends AsyncTask<String, Void, Boolean>
+	{	
+		@Override
+		protected Boolean doInBackground(String... userXMLRequest)
+		{
+			try
+			{
+				InputStream response = NetworkFunctions.getHTTPResponseStream(
+						"http://www.dur.ac.uk/cs.seg01/duchess/api/v1/reviews.php/"
+								+ e.getLong("event_id"), "PUT", userXMLRequest[0].getBytes());
+				return true;
+				
+			}
+			catch (IOException e1)
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				return false;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Boolean postedSuccessfully)
+		{
+			if (postedSuccessfully) Toast.makeText(activity, "Review submitted. Thank you for submitting a review. Note that reviews are moderated and may take a while to appear.", Toast.LENGTH_LONG).show();
+			else Toast.makeText(activity, "Network Problem. Review was not submitted.", Toast.LENGTH_LONG).show();
 
 		}
 	}
