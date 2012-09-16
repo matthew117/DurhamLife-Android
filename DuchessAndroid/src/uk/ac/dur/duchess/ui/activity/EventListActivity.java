@@ -16,8 +16,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -53,10 +51,6 @@ public class EventListActivity extends BaseActivity
 		listView = (EventListView) findViewById(R.id.eventListView);
 		listView.loadAllEvents(this, null);
 		listView.setEmptyView(findViewById(R.id.eventListEmpty));
-		
-		listView.setDivider(new ColorDrawable(Color.BLACK));
-		listView.setDividerHeight(1);
-
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu)

@@ -11,7 +11,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
         android:orientation="vertical" >
-
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="fill_parent"
@@ -19,10 +19,11 @@
             android:background="@color/DUPurple"
             android:padding="5dp"
             android:text="Profile"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
             android:textColor="@android:color/primary_text_dark"
-            android:textStyle="italic"
-            android:typeface="serif" />
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:typeface="normal" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -80,7 +81,7 @@
                 android:entries="@array/durham_departments"
                 android:prompt="@string/department" />
         </LinearLayout>
-
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="fill_parent"
@@ -88,10 +89,11 @@
             android:background="@color/DUPurple"
             android:padding="5dp"
             android:text="Preferences"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
             android:textColor="@android:color/primary_text_dark"
-            android:textStyle="italic"
-            android:typeface="serif" />
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:typeface="normal" />
 
         <TableLayout
             android:layout_width="fill_parent"

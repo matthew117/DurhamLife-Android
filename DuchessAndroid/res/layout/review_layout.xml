@@ -25,10 +25,8 @@
         android:ems="10"
         android:hint="write a review ..."
         android:inputType="textMultiLine" >
-
-        <requestFocus />
     </EditText>
-
+
     <RatingBar
         android:id="@+id/ratingStars"
         style="@style/CustomRatingBar"

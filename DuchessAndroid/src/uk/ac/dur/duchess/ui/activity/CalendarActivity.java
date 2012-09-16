@@ -306,7 +306,10 @@ public class CalendarActivity extends SortableListActivity
 
 	@SuppressWarnings("deprecation")
 	public boolean isLongScreen(Context context)
-	{	
+	{
+		if ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_LONG_MASK)
+				== Configuration.SCREENLAYOUT_LONG_YES) return true;
+		
 		int calendarHeight = findViewById(R.id.calendarView).getHeight() + calendarView.getHeight();
 		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 
@@ -314,8 +317,6 @@ public class CalendarActivity extends SortableListActivity
 		
 		if(calendarHeight != 0 && screenHeight - calendarHeight > 100) return true;
 		
-		return (context.getResources().getConfiguration().screenLayout
-				& Configuration.SCREENLAYOUT_LONG_MASK)
-				== Configuration.SCREENLAYOUT_LONG_YES;
+		return false;
 	}
 }
