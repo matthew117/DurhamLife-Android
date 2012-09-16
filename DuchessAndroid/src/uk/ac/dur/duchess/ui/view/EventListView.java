@@ -180,7 +180,7 @@ public class EventListView extends ListView
 
 			thread.start();
 			progressDialog = ProgressDialog.show(getContext(), "Please wait...",
-					"Loading Events ...", true);
+					"Loading Events...", true);
 		}
 		else if(SessionHandler.getCurrentUser(activity).hasAnyBookmarkedEvents())
 		{
