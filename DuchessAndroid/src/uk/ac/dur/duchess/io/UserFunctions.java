@@ -9,7 +9,6 @@ import java.util.List;
 
 import uk.ac.dur.duchess.model.Event;
 import uk.ac.dur.duchess.model.User;
-import android.util.Log;
 
 public class UserFunctions
 {
@@ -71,8 +70,6 @@ public class UserFunctions
 	{
 		ArrayList<Event> newList = new ArrayList<Event>();
 		ArrayList<String> preferences = (ArrayList<String>) user.getCategoryPreferences();
-
-		Log.d("PREFERENCES", preferences.toString());
 		
 		for (Event e : eventList)
 		{

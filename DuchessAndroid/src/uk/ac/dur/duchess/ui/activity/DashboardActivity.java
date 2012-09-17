@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,6 +69,7 @@ public class DashboardActivity extends BaseActivity
 				break;
 			}
 			case STUDENT:
+			case ALUMNI:
 			case STAFF:
 			{
 				LayoutInflater inflater = getLayoutInflater();
@@ -139,6 +139,7 @@ public class DashboardActivity extends BaseActivity
 							break;
 						}
 						case STUDENT:
+						case ALUMNI:
 						case STAFF:
 						{
 							LayoutInflater inflater = getLayoutInflater();

@@ -3,7 +3,6 @@ package uk.ac.dur.duchess.ui.activity;
 import uk.ac.dur.duchess.R;
 import uk.ac.dur.duchess.util.CalendarUtils;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -31,7 +30,6 @@ public class FacebookActivity extends Activity
 
 	private Facebook facebook;
 	private String messageToPost = "Hi";
-	private ProgressDialog progress;
 	private Handler handler = new Handler();
 
 	public boolean saveCredentials(Facebook facebook)
@@ -65,8 +63,6 @@ public class FacebookActivity extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.facebook_layout);
-		
-		progress = new ProgressDialog(this);
 
 		String facebookMessage = getIntent().getStringExtra("facebookMessage");
 		if (facebookMessage == null) facebookMessage = "Test wall post";

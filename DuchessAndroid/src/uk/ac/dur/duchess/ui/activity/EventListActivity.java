@@ -182,8 +182,6 @@ public class EventListActivity extends BaseActivity
 
 	private class NearEventsListener implements LocationListener
 	{
-		private static final int WALKING_DISTANCE = 800;
-
 		@Override
 		public void onLocationChanged(final Location newLocation)
 		{

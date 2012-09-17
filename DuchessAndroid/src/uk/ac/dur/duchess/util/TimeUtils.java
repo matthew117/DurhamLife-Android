@@ -29,8 +29,6 @@ import android.util.Log;
 
 public class TimeUtils
 {
-	private List<String> eventTimestamps;
-
 	public TimeUtils(String iCalFileURL) throws IOException, ParserException
 	{
 		List<String> eventTimestamps = new ArrayList<String>();
@@ -116,7 +114,6 @@ public class TimeUtils
 	public static int dayOfTheWeekFromTimestamp(String timeStamp) throws ParseException
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Log.d("TEST", sdf.parse(timeStamp).toGMTString());
 		Calendar c = Calendar.getInstance(Locale.UK);
 		c.setTime(sdf.parse(timeStamp));
 		return c.get(DAY_OF_WEEK);
@@ -129,7 +126,6 @@ public class TimeUtils
 
 		for (String timeStamp : timeStampList)
 		{
-			Log.d("TEST", timeStamp.substring(0,10));
 			Integer dayOfWeek = dayOfTheWeekFromTimestamp(timeStamp.substring(0,10));
 			if (!map.containsKey(dayOfWeek))
 			{
@@ -186,12 +182,8 @@ public class TimeUtils
 			{				
 				PeriodList recurrenceSet = vEvent.calculateRecurrenceSet(new Period(new DateTime(monday.getTime()), new DateTime(sunday.getTime())));
 				
-				Log.d("SIZE", "Size of RecurrenceSet: " + recurrenceSet.size());
-				Log.d("SIZE", "RecurrenceSet: " + recurrenceSet.toString());
-				
 				for (Object obj : recurrenceSet)
 				{
-					Log.d("SIZE", "Hi");
 					Period p = (Period) obj;
 					
 					DateTime start = p.getStart();

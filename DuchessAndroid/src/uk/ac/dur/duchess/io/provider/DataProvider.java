@@ -31,7 +31,7 @@ public class DataProvider
 	private static final String CACHE_LAST_MODIFIED_KEY = "last_modified";
 	private static final String CACHE_EXPIRES_KEY = "expires";
 	
-	private static final int CACHE_EVENTS_FOR = 5 * 60 * 1000; /*milliseconds*/
+	private static final int CACHE_EVENTS_FOR = 24 * 60 * 60 * 1000; /*milliseconds*/
 
 	private boolean memoryCacheIsValid = false;
 	private boolean databaseCacheIsValid = false;
@@ -96,7 +96,7 @@ public class DataProvider
 						databaseCacheIsValid = true;
 						
 						/** This is set manually to overide the value given by the webservice for testing purposes */
-						setCacheExpiresAt(context, System.currentTimeMillis() + 24*60*60*1000);
+						setCacheExpiresAt(context, System.currentTimeMillis() + CACHE_EVENTS_FOR);
 						
 						eventDatabaseLock = false;
 					}

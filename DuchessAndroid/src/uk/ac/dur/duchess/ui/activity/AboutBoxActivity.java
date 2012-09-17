@@ -41,6 +41,15 @@ public class AboutBoxActivity extends Activity
 			}
 		});
 		
+		termsButton.setOnClickListener(new View.OnClickListener()
+		{	
+			@Override
+			public void onClick(View v)
+			{
+								
+			}
+		});
+		
 	}
 	
 	private String getVersion(Context context)

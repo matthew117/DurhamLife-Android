@@ -21,7 +21,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -58,7 +57,7 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 	private TextView eventName;
 
 	private SensorManager mySensorManager;
-	private Sensor mySensor;
+	//private Sensor mySensor;
 
 	private Bitmap compass;
 	private Bitmap base;
@@ -172,14 +171,17 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 
 		mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-		mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+		//mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 	}
 
 	public class CompassView extends ImageView
 	{	 
+		private Matrix matrix;
+
 		public CompassView(Context context)
 		{
 			super(context);
+			matrix = new Matrix();
 		}
 
 		@Override
@@ -196,7 +198,6 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 			int bx = x + (base.getWidth()  / 2) - (compass.getWidth()  / 2);
 			int by = y + (base.getHeight() / 2) - (compass.getHeight() / 2);
 
-			Matrix matrix = new Matrix();
 			matrix.reset();
 			matrix.setTranslate(x, y);
 

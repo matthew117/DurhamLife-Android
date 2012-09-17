@@ -166,7 +166,6 @@ public class EventXMLParser extends DefaultHandler
 		{
 			event.setCategoryTags(categoryTags);
 			event.setLocation(location);
-			Log.d("EventXMLParser", "About to add to list.");
 			Log.d("EventXMLParser", "event.getName() => " + event.getName());
 			list.add(event);
 		}

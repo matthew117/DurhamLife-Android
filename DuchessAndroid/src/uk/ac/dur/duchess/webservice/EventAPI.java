@@ -128,7 +128,7 @@ public class EventAPI
 		return eventList;
 	}
 
-	private static String downloadText(InputStream inputStream) throws IOException
+	public static String downloadText(InputStream inputStream) throws IOException
 	{
 		int BUFFER_SIZE = 2000;
 		InputStreamReader streamReader = new InputStreamReader(inputStream);
@@ -145,7 +145,7 @@ public class EventAPI
 		return sb.toString();
 	}
 
-	private static Bitmap downloadImage(InputStream inputStream)
+	public static Bitmap downloadImage(InputStream inputStream)
 	{
 		return BitmapFactory.decodeStream(inputStream);
 	}

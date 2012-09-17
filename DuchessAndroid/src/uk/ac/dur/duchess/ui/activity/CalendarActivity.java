@@ -17,7 +17,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -312,8 +311,6 @@ public class CalendarActivity extends SortableListActivity
 		
 		int calendarHeight = findViewById(R.id.calendarView).getHeight() + calendarView.getHeight();
 		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-
-		Log.d("HEIGHT", "Calendar: " + calendarHeight + ", Screen: " + screenHeight);
 		
 		if(calendarHeight != 0 && screenHeight - calendarHeight > 100) return true;
 		
