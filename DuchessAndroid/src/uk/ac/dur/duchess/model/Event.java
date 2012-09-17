@@ -16,6 +16,8 @@ public class Event
 
 	private String startDate;
 	private String endDate;
+	private String startTime;
+	private String endTime;
 	private String iCalURL;
 	
 	private EventLocation location;
@@ -269,6 +271,22 @@ public class Event
 
 	public void setLocation(EventLocation location) {
 		this.location = location;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 }

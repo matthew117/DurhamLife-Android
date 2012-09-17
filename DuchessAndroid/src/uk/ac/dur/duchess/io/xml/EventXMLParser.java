@@ -19,6 +19,8 @@ public class EventXMLParser extends DefaultHandler
 
 	private boolean isStartDate = false;
 	private boolean isEndDate = false;
+	private boolean isStartTime = false;
+	private boolean isEndTime = false;
 	private boolean isICalURL = false;
 	
 	private boolean isAssociatedCollege = false;
@@ -85,6 +87,8 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (localName.equalsIgnoreCase("startDate")) isStartDate = true;
 		else if (localName.equalsIgnoreCase("endDate")) isEndDate = true;
+		else if (localName.equalsIgnoreCase("startTime")) isStartTime = true;
+		else if (localName.equalsIgnoreCase("endTime")) isEndTime = true;
 		else if (localName.equalsIgnoreCase("iCalURL")) isICalURL = true;
 		
 		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = true;
@@ -137,6 +141,8 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (localName.equalsIgnoreCase("startDate")) isStartDate = false;
 		else if (localName.equalsIgnoreCase("endDate")) isEndDate = false;
+		else if (localName.equalsIgnoreCase("startTime")) isStartTime = false;
+		else if (localName.equalsIgnoreCase("endTime")) isEndTime = false;
 		else if (localName.equalsIgnoreCase("iCalURL")) isICalURL = false;
 		
 		else if (localName.equalsIgnoreCase("associatedCollege")) isAssociatedCollege = false;
@@ -197,6 +203,8 @@ public class EventXMLParser extends DefaultHandler
 		}
 		else if (isStartDate) event.setStartDate(new String(ch, start, length));
 		else if (isEndDate) event.setEndDate(new String(ch, start, length));
+		else if (isStartTime) event.setStartTime(new String(ch, start, length));
+		else if (isEndTime) event.setEndTime(new String(ch, start, length));
 		else if (isICalURL) event.setICalURL(new String(ch, start, length));
 		
 		else if (isAssociatedCollege) event.setAssociatedCollege(new String(ch, start, length));
@@ -221,7 +229,7 @@ public class EventXMLParser extends DefaultHandler
 
 		else if (isAdImageURL) event.setAdImageURL(new String(ch, start, length));
 
-		else if (isReviewScore) event.setReviewScore(Integer .parseInt(new String(ch, start, length)));
+		else if (isReviewScore) event.setReviewScore(Integer.parseInt(new String(ch, start, length)));
 
 		else if (isImageURL) event.setImageURL(new String(ch, start, length));
 	}

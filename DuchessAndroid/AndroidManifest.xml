@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="uk.ac.dur.duchess"
     android:versionCode="1"
-    android:versionName="1.0 Beta r315"
+    android:versionName="1.0 Beta r317"
     tools:ignore="HardcodedDebugMode" >
 
     <uses-sdk

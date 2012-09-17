@@ -26,6 +26,8 @@ public class DatabaseHandler
 	
 	public static final String KEY_START_DATE = "startDate";
 	public static final String KEY_END_DATE = "endDate";
+	public static final String KEY_START_TIME = "startTime";
+	public static final String KEY_END_TIME = "endTime";
 	public static final String KEY_ICAL_URL = "iCalURL";
 	
 	public static final String KEY_SCOPE = "scope";
@@ -80,6 +82,8 @@ public class DatabaseHandler
 			+ KEY_DESCRIPTION_BODY + " TEXT NOT NULL, "
 			+ KEY_START_DATE + " DATE NOT NULL, "
 			+ KEY_END_DATE + " DATE NOT NULL, "
+			+ KEY_START_TIME + " DATE, "
+			+ KEY_END_TIME + " DATE, "
 			+ KEY_ICAL_URL + " TEXT, "
 			+ KEY_LOCATION_ID + " INTEGER NOT NULL, "
 			+ KEY_SCOPE + " TEXT NOT NULL, "
@@ -196,6 +200,8 @@ public class DatabaseHandler
 		
 		values.put(KEY_START_DATE, event.getStartDate());
 		values.put(KEY_END_DATE, event.getEndDate());
+		values.put(KEY_START_TIME, event.getStartTime());
+		values.put(KEY_END_TIME, event.getEndTime());
 		values.put(KEY_ICAL_URL, event.getICalURL());
 		
 		values.put(KEY_LOCATION_ID, event.getLocation().getLocationID());
@@ -400,6 +406,11 @@ public class DatabaseHandler
 		
 		event.setStartDate(row.getString(row.getColumnIndex(KEY_START_DATE)));
 		event.setEndDate(row.getString(row.getColumnIndex(KEY_END_DATE)));
+		if(row.getColumnIndex(KEY_START_TIME) != -1)
+			event.setStartTime(row.getString(row.getColumnIndex(KEY_START_TIME)));
+		if(row.getColumnIndex(KEY_END_TIME) != -1)
+			event.setEndTime(row.getString(row.getColumnIndex(KEY_END_TIME)));
+		
 		if(row.getColumnIndex(KEY_ICAL_URL) != -1)
 			event.setICalURL(row.getString(row.getColumnIndex(KEY_ICAL_URL)));
 		
