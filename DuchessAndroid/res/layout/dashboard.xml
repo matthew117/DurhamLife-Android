@@ -25,7 +25,7 @@
             android:layout_alignParentTop="true"
             android:inAnimation="@anim/image_fadein_animation"
             android:outAnimation="@anim/image_fadeout_animation" />
-
+
         <TextView
             android:id="@+id/dashboardAdText"
             android:layout_width="match_parent"
@@ -34,7 +34,9 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="#BB111111"
-            android:padding="5dp"
+            android:drawableRight="@drawable/ad_navigation"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
             android:text="Durham Life" />
 
         <ImageView

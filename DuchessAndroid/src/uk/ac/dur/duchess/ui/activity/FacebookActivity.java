@@ -101,7 +101,7 @@ public class FacebookActivity extends Activity
 		params.putString("method", "POST");
 		params.putString("message", name);
 		params.putString("name", name);
-		params.putString("caption", "Runs from " + date);
+		params.putString("caption", date);
 		params.putString("link", webAddress);
 		params.putString("description", description);
 		params.putString("picture", image_url);

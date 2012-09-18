@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,8 +18,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -46,8 +45,7 @@ public class DashboardActivity extends BaseActivity
 
 	private TextView welcomeText;
 	private ImageView adImage;
-	private ImageView adNavigationIndicator;
-
+	
 	private boolean imageHasLoaded = false;
 
 	@Override
@@ -90,10 +88,13 @@ public class DashboardActivity extends BaseActivity
 		
 		adViewSwitcher.addView(welcomeText);
 		adText = (TextView) findViewById(R.id.dashboardAdText);
-		adNavigationIndicator = (ImageView) findViewById(R.id.adNavigationIndicator);
 
-		if (adNavigationIndicator != null)
-			adNavigationIndicator.setOnClickListener(new View.OnClickListener()
+		if (adText != null)
+		{
+			adText.setClickable(true);
+			adText.setTextColor(Color.WHITE);
+			
+			adText.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View v)
@@ -106,6 +107,7 @@ public class DashboardActivity extends BaseActivity
 					}
 				}
 			});
+		}
 
 		(new DownloadImageTask()).execute("");
 		
@@ -226,11 +228,6 @@ public class DashboardActivity extends BaseActivity
 				return;
 			}
 			adText.setText(text);
-
-			Animation navIndicatorFade = AnimationUtils.loadAnimation(context, R.anim.image_fadein_animation);
-
-			adNavigationIndicator.setVisibility(View.VISIBLE);
-			adNavigationIndicator.startAnimation(navIndicatorFade);
 
 			adImage = new ImageView(context);
 			adImage.setScaleType(ScaleType.CENTER_CROP);
