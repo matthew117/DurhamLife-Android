@@ -1,5 +1,5 @@
-Durham Life - Android
-==================
+#Durham Life
+### Android
 
 This is Durham Life for Android, a client for browsing events organised by Durham University.
 
