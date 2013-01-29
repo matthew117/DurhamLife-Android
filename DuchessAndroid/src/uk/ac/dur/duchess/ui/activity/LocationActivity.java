@@ -94,84 +94,93 @@ public class LocationActivity extends MapActivity implements SensorEventListener
 		location = database.getLocation(e.getLong("location_id"));
 
 		database.close();
+		
+		String address = "";
+		
+		if(location.getAddress1() != null) address += location.getAddress1();
+		if(location.getAddress2() != null) address += ", " + location.getAddress2();
+		
+		if(location.getCity() != null) address += "\n" + location.getCity();
+		if(location.getPostcode() != null) address += ", " + location.getPostcode();
 
-		addressBlock.setText(location.getAddress1() + ", " + location.getAddress2() + "\n"
-				+ location.getCity() + ", " + location.getPostcode());
+		addressBlock.setText(address);
 		eventName.setText(e.getString("event_name"));
-
-		mapView = (MapView) getLayoutInflater().inflate(R.layout.map_view, null, false);
-		mapView.setBuiltInZoomControls(true);
-
-		mc = mapView.getController();
-
-		eventLat = Double.parseDouble(location.getLatitude());
-		eventLon = Double.parseDouble(location.getLongitude());
-
-		point = new GeoPoint((int) (eventLat * 1E6), (int) (eventLon * 1E6));
-
-		mc.animateTo(point);
-		mc.setZoom(18);
-
-		MapOverlay mapOverlay = new MapOverlay();
-		List<Overlay> listOfOverlays = mapView.getOverlays();
-		listOfOverlays.clear();
-		listOfOverlays.add(mapOverlay);
-
+		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		locationListener = new MyLocationListener();
-
-		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-		mapView.invalidate();
-
-		mapSwitcher = (ViewSwitcher) findViewById(R.id.mapSwitcher);
-		
-		mapToggle = (ImageButton) findViewById(R.id.mapToggleButton);
-		mapToggle.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				mapMode = !mapMode;
-				mapSwitcher.showNext();
-				
-				if(mapMode) mapToggle.setImageResource(R.drawable.compass_icon);
-				else mapToggle.setImageResource(R.drawable.location_tab_icon);
-			}
-		});
-		
-		/*
-		 * ---------------------------------------------------------------------
-		 * The line below disables the compass feature, which is implemented but
-		 * does not function correctly on all devices and screen resolutions
-		 * --------------------------------------------------------------------- 
-		 */
-		mapToggle.setVisibility(View.GONE);
-		
-		compassLayout = new LinearLayout(this);
-		compassLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-		compassLayout.setOrientation(LinearLayout.VERTICAL);
-		
-		compassView = new CompassView(this);
-		compassView.setScaleType(ScaleType.CENTER_INSIDE);
-		
-		compassText = new TextView(this);
-		compassText.setText(String.format("Distance to Event: Calculating..."));
-		compassText.setTextColor(Color.BLACK);
-		compassText.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-		compassText.setPadding(10, 30, 10, 10);
-		compassText.setGravity(Gravity.CENTER_HORIZONTAL);
-		
-		compassLayout.addView(compassText);
-		compassLayout.addView(compassView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		
-
-		mapSwitcher.addView(mapView);
-		mapSwitcher.addView(compassLayout, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-
 		mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-		//mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+		locationListener = new MyLocationListener();
+		
+		if(location.getLatitude() != null && location.getLongitude() != null)
+		{
+			mapView = (MapView) getLayoutInflater().inflate(R.layout.map_view, null, false);
+			mapView.setBuiltInZoomControls(true);
+	
+			mc = mapView.getController();
+	
+			eventLat = Double.parseDouble(location.getLatitude());
+			eventLon = Double.parseDouble(location.getLongitude());
+	
+			point = new GeoPoint((int) (eventLat * 1E6), (int) (eventLon * 1E6));
+	
+			mc.animateTo(point);
+			mc.setZoom(18);
+	
+			MapOverlay mapOverlay = new MapOverlay();
+			List<Overlay> listOfOverlays = mapView.getOverlays();
+			listOfOverlays.clear();
+			listOfOverlays.add(mapOverlay);
+	
+			//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+	
+			mapView.invalidate();
+	
+			mapSwitcher = (ViewSwitcher) findViewById(R.id.mapSwitcher);
+			
+			mapToggle = (ImageButton) findViewById(R.id.mapToggleButton);
+			mapToggle.setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					mapMode = !mapMode;
+					mapSwitcher.showNext();
+					
+					if(mapMode) mapToggle.setImageResource(R.drawable.compass_icon);
+					else mapToggle.setImageResource(R.drawable.location_tab_icon);
+				}
+			});
+			
+			/*
+			 * ---------------------------------------------------------------------
+			 * The line below disables the compass feature, which is implemented but
+			 * does not function correctly on all devices and screen resolutions
+			 * --------------------------------------------------------------------- 
+			 */
+			mapToggle.setVisibility(View.GONE);
+			
+			compassLayout = new LinearLayout(this);
+			compassLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+			compassLayout.setOrientation(LinearLayout.VERTICAL);
+			
+			compassView = new CompassView(this);
+			compassView.setScaleType(ScaleType.CENTER_INSIDE);
+			
+			compassText = new TextView(this);
+			compassText.setText(String.format("Distance to Event: Calculating..."));
+			compassText.setTextColor(Color.BLACK);
+			compassText.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+			compassText.setPadding(10, 30, 10, 10);
+			compassText.setGravity(Gravity.CENTER_HORIZONTAL);
+			
+			compassLayout.addView(compassText);
+			compassLayout.addView(compassView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			
+	
+			mapSwitcher.addView(mapView);
+			mapSwitcher.addView(compassLayout, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+	
+			//mySensor = mySensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+		}
 	}
 
 	public class CompassView extends ImageView

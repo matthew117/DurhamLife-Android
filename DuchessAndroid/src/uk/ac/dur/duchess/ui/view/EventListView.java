@@ -37,6 +37,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+/**
+ * 
+ * The EventListView class provides a custom ListView designed to display a list
+ * of events. The events are summarised by: name, description header, first line
+ * of address, and date(s) as defined by its custom ListAdapter, EventListAdapter.
+ * 
+ * A different set of events can be loaded into the list depending on which
+ * activity accesses the list. If these events cannot be loaded due to network
+ * problems for example, this class is also responsible for reporting the problem
+ * to the user and displaying download progress.
+ * 
+ * The class also provides utilities for sorting and filtering a list of events
+ * in a number of ways.
+ * 
+ * @author Jamie Bates
+ *
+ */
 public class EventListView extends ListView
 {
 	private List<Event> eventList;
@@ -58,7 +75,8 @@ public class EventListView extends ListView
 		
 		setDivider(new ColorDrawable(Color.BLACK));
 		setDividerHeight(1);
-
+		
+		//When an event from the list is clicked, start a new activity to display more information about the event
 		setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
@@ -78,7 +96,8 @@ public class EventListView extends ListView
 	public EventListView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-
+		
+		//uses a custom ListAdapter to organise event details appropriately
 		adapter = new EventListAdapter(context, R.layout.custom_event_list_row, new ArrayList<Event>());
 		setAdapter(adapter);
 

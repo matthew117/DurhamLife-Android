@@ -32,6 +32,7 @@ public class DataProvider
 	private static final String CACHE_EXPIRES_KEY = "expires";
 	
 	private static final int CACHE_EVENTS_FOR = 24 * 60 * 60 * 1000; /*milliseconds*/
+	//events are cached for a day (24 hours)
 
 	private boolean memoryCacheIsValid = false;
 	private boolean databaseCacheIsValid = false;

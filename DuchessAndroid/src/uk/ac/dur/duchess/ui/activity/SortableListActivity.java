@@ -12,6 +12,16 @@ import android.os.Bundle;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+/**
+ * 
+ * Any activities that wishes to include a sortable list of events should extend
+ * this class.
+ * 
+ * Activites that extend this class will gain a SORT option in its menu.
+ * 
+ * @author Jamie Bates
+ *
+ */
 public abstract class SortableListActivity extends BaseActivity
 {
 	protected EventListView   listView;

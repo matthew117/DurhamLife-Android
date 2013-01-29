@@ -27,6 +27,24 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 
+/**
+ * 
+ * This activity allows the user to quickly view which events are on a particular
+ * day by selected the day of interest from a calendar. Since the Calendar widget
+ * is not available using the target API of Durham Life, a custom LinearLayout is
+ * created to provide similar functionalites to that of a Calendar widget.
+ * 
+ * When a user clicks on a particular day, the events scheduled for that day are
+ * displayed beneath the calendar via an EventListView. By default, this list displays
+ * events scheduled for the current date.
+ * 
+ * When the dimensions of a screen are too small for a list of events to be reasonably
+ * displayed beneath a calendar, a CalendarEventListActivity is started instead,
+ * allowing the user to view the list using the fill height of the screen.
+ * 
+ * @author Jamie Bates
+ *
+ */
 public class CalendarActivity extends SortableListActivity
 {
 	private Calendar calendar;

@@ -7,6 +7,17 @@ import android.support.v4.app.NavUtils;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 
+/**
+ * 
+ * Any activities that wishes to include a menu (action) bar should extend this
+ * class.
+ * 
+ * Activites that extend this class will gain access to the features of Action Bar
+ * Sherlock.
+ * 
+ * @author Jamie Bates
+ *
+ */
 public abstract class BaseActivity extends SherlockActivity
 {
 	@Override

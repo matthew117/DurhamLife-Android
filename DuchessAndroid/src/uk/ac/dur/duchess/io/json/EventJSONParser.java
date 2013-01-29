@@ -51,11 +51,14 @@ public class EventJSONParser
 				if(eventObject.has("full_description")) event.setDescriptionBody(eventObject.getString("full_description"));
 				else event.setDescriptionBody(eventObject.getString("description"));
 				
-				//TODO venue information
+				//TODO venue information is currently derived from venue element in JSON
 				EventLocation location = new EventLocation();
 				
 				String venue = eventObject.getString("venue");
 				String[] address = venue.split(", ");
+				
+				//TODO until events are linked to locations in the API, IDs will be assigned automatically
+				location.setLocationID(i);
 				
 				if(address.length > 0) location.setAddress1(address[0]);
 				if(address.length > 1) location.setAddress2(address[1]);
