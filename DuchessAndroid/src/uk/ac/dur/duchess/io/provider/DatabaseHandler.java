@@ -76,7 +76,7 @@ public class DatabaseHandler
 	private static final String EVENT_CREATE_STATEMENT =
 		"CREATE TABLE " + EVENT_TABLE + "("
 			+ KEY_EVENT_ID + " INTEGER PRIMARY KEY, "
-			+ KEY_FEATURED + " INTEGER NOT NULL, "
+			+ KEY_FEATURED + " INTEGER, "
 			+ KEY_EVENT_NAME + " TEXT NOT NULL, "
 			+ KEY_DESCRIPTION_HEADER + " TEXT NOT NULL, "
 			+ KEY_DESCRIPTION_BODY + " TEXT NOT NULL, "
@@ -86,8 +86,8 @@ public class DatabaseHandler
 			+ KEY_END_TIME + " DATE, "
 			+ KEY_ICAL_URL + " TEXT, "
 			+ KEY_LOCATION_ID + " INTEGER NOT NULL, "
-			+ KEY_SCOPE + " TEXT NOT NULL, "
-			+ KEY_PRIVACY + " TEXT NOT NULL, "
+			+ KEY_SCOPE + " TEXT, "
+			+ KEY_PRIVACY + " TEXT, "
 			+ KEY_ASSOCIATED_COLLEGE + " TEXT, "
 			+ KEY_ASSOCIATED_SOCIETY + " TEXT, "
 			+ KEY_CONTACT_TELEPHONE_NUMBER + " TEXT, "
@@ -103,12 +103,12 @@ public class DatabaseHandler
 	private static final String LOCATION_CREATE_STATEMENT =
 		"CREATE TABLE " + LOCATION_TABLE + "("
 			+ KEY_LOCATION_ID + " INTEGER PRIMARY KEY, "
-			+ KEY_ADDRESS_1 + " TEXT NOT NULL, "
-			+ KEY_ADDRESS_2 + " TEXT NOT NULL, "
-			+ KEY_CITY + " TEXT NOT NULL, "
-			+ KEY_POSTCODE + " TEXT NOT NULL, "
-			+ KEY_LATITUDE + " TEXT NOT NULL, "
-			+ KEY_LONGITUDE + " TEXT NOT NULL)";
+			+ KEY_ADDRESS_1 + " TEXT, "
+			+ KEY_ADDRESS_2 + " TEXT, "
+			+ KEY_CITY + " TEXT, "
+			+ KEY_POSTCODE + " TEXT, "
+			+ KEY_LATITUDE + " TEXT, "
+			+ KEY_LONGITUDE + " TEXT)";
 	
 	private static final String SOCIETY_CREATE_STATEMENT =
 		"CREATE TABLE " + SOCIETY_TABLE + "("

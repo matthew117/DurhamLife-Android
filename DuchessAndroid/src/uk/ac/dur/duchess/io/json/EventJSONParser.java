@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.dur.duchess.model.Event;
+import uk.ac.dur.duchess.model.EventLocation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,14 +47,27 @@ public class EventJSONParser
 				event.setEventID(eventObject.getLong("id"));
 				event.setName(eventObject.getString("title"));
 				event.setDescriptionHeader(eventObject.getString("summary"));
-				event.setDescriptionBody(eventObject.getString("description"));
+				
+				if(eventObject.has("full_description")) event.setDescriptionBody(eventObject.getString("full_description"));
+				else event.setDescriptionBody(eventObject.getString("description"));
 				
 				//TODO venue information
+				EventLocation location = new EventLocation();
+				
+				String venue = eventObject.getString("venue");
+				String[] address = venue.split(", ");
+				
+				if(address.length > 0) location.setAddress1(address[0]);
+				if(address.length > 1) location.setAddress2(address[1]);
+				if(address.length > 2) location.setCity(address[2]);
+				if(address.length > 3) location.setPostcode(address[3]);
+				
+				event.setLocation(location);
 				
 				event.setContactEmailAddress(eventObject.getString("contact_email"));
 				
-				String start = eventObject.getString("start");
-				String end = eventObject.getString("end");
+				String start = eventObject.has("start") ? eventObject.getString("start") : eventObject.getString("start_date_time");
+				String end = eventObject.has("end") ? eventObject.getString("end") : eventObject.getString("end_date_time");
 				
 				event.setStartDate(start.substring(0, 10));
 				event.setStartTime(start);
@@ -61,7 +75,8 @@ public class EventJSONParser
 				event.setEndDate(end.substring(0, 10));
 				event.setEndTime(end);
 				
-				event.setImageURL(eventObject.getString("image_url"));
+				if(eventObject.has("image_url")) event.setImageURL(eventObject.getString("image_url"));
+				else event.setImageURL(eventObject.getString("image_URL"));
 				
 				JSONArray categoriesArray = eventObject.getJSONArray("categories");
 				List<String> categories = new ArrayList<String>();
@@ -71,12 +86,18 @@ public class EventJSONParser
 					JSONObject categoryObject = categoriesArray.getJSONObject(j);
 					
 					long id = categoryObject.getLong("id");
-					String category = categoryObject.getString("name");
+					String category = categoryObject.has("name") ? categoryObject.getString("name") : categoryObject.getString("category");
 					
 					if(isSuitableCategory(id, category)) categories.add(category);
 				}
 				
 				event.setCategoryTags(categories);
+				
+				if(eventObject.has("links"))
+				{			
+					JSONObject linksObject = eventObject.getJSONObject("links");
+					event.setICalURL(linksObject.getString("ical"));
+				}
 				
 				events.add(event);
 			}

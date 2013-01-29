@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 import uk.ac.dur.duchess.GlobalApplicationData;
+import uk.ac.dur.duchess.io.json.EventJSONParser;
 import uk.ac.dur.duchess.io.provider.DataProvider;
 import uk.ac.dur.duchess.io.xml.EventXMLParser;
 import uk.ac.dur.duchess.model.Event;
@@ -40,7 +41,9 @@ public class EventAPI
 
 	public static List<Event> downloadAllEvents() throws IOException
 	{
-		return downloadEventXML(EVENT_BASE_URI);
+//		return downloadEventXML(EVENT_BASE_URI);
+		
+		return EventJSONParser.parseJSONEvents("https://api.dur.ac.uk/events?category=50");
 	}
 
 	public static List<Event> downloadNewEvents(String timestamp) throws IOException,
